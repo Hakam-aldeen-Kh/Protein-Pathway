@@ -1,7 +1,7 @@
 function SearchBox() {
   return (
-    <div className="flex gap-2 items-center self-stretch my-auto min-h-[40px] w-full lg:w-auto lg:min-w-[240px]">
-      <form className="flex flex-col self-stretch my-auto w-full lg:w-[200px]">
+    <div className="flex gap-2 items-center self-stretch my-auto min-h-[40px] min-w-[240px]">
+      <form className="flex flex-col self-stretch my-auto w-[200px]">
         <label htmlFor="searchInput" className="sr-only">Search</label>
         <input
           type="search"
