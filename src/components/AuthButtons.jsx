@@ -1,7 +1,7 @@
 function AuthButtons() {
   const buttons = [
-    { text: "Login", href: "login" },
-    { text: "Register", href: "register" }
+    { text: "Login", href: "/login" },
+    { text: "Register", href: "/register" },
   ];
 
   return (
