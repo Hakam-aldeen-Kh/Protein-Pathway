@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "Soka University",
+    "iframeSrc": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.4390404584988!2d139.32435917563512!3d35.69081217258416!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60191e54e1f331d7%3A0x1e7ff0811c66662d!2sSoka%20University!5e0!3m2!1sen!2sfr!4v1734513197900!5m2!1sen!2sfr",
+    "imageSrc": "/images/universities/soka.png",
+    "href": "https://www.soka.ac.jp/"
+  },
+  {
+    "id": 2,
+    "name": "IGCORE",
+    "iframeSrc": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3249.6780283204807!2d136.73715307562466!3d35.462764672658665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6003ad4894c2befd%3A0xc519edc483dd3cd3!2z57OW6Y6W55Sf5ZG944Kz44Ki56CU56m25oug54K5IGlHQ09SRQ!5e0!3m2!1sen!2sfr!4v1734513407255!5m2!1sen!2sfr",
+    "imageSrc": "/images/universities/igcore.png",
+    "href": "https://igcore.thers.ac.jp/"
+  },
+  {
+    "id": 3,
+    "name": "Tokai National Higher Education and Research System",
+    "iframeSrc": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d103989.73314080221!2d136.6573267285149!3d35.462736645153775!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6003a9292570c9dd%3A0x664262c199a8498a!2z5qCq5byP5Lya56S-VE9LQUkgSkFQQU4!5e0!3m2!1sen!2sfr!4v1734513524905!5m2!1sen!2sfr",
+    "imageSrc": "/images/universities/thers.png",
+    "href": "https://www.thers.ac.jp/"
+  },
+  {
+    "id": 4,
+    "name": "National Institute of Natural Sciences",
+    "iframeSrc": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.5426697900384!2d139.74160567563393!3d35.66363767259299!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188b90d1ebca89%3A0x1ce180623d495efb!2sNational%20Institute%20of%20Natural%20Sciences!5e0!3m2!1sen!2sfr!4v1734513589101!5m2!1sen!2sfr",
+    "imageSrc": "/images/universities/nins.png",
+    "href": "https://www.nins.jp/"
+  },
+  {
+    "id": 5,
+    "name": "ExCELLS",
+    "iframeSrc": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3270.4846483608785!2d137.17162917560083!3d34.94445967283405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6004bde97e17eadd%3A0xe39cd37fe7ea4aad!2z6Ieq54S256eR5a2m56CU56m25qmf5qeLIOeUn-WRveWJteaIkOaOoueptuOCu-ODs-OCv-ODvO-8iEV4Q0VMTFPvvIk!5e0!3m2!1sen!2sfr!4v1734513728710!5m2!1sen!2sfr",
+    "imageSrc": "/images/universities/excells.png",
+    "href": "https://www.excells.orion.ac.jp/"
+  },
+  {
+    "id": 6,
+    "name": "GALSIC",
+    "iframeSrc": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.4390404584988!2d139.32435917563512!3d35.69081217258416!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60191e54e1f331d7%3A0x1e7ff0811c66662d!2sSoka%20University!5e0!3m2!1sen!2sfr!4v1734513197900!5m2!1sen!2sfr",
+    "imageSrc": "/images/universities/glycan.png",
+    "href": "https://www.soka.ac.jp/glycan/"
+  }
+]
