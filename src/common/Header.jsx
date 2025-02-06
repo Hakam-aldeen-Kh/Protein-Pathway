@@ -2,15 +2,16 @@ import LanguageSelector from "../components/LanguageSelector";
 import AuthButtons from "../components/AuthButtons";
 import NavigationLinks from "../components/NavigationLinks";
 import SearchBox from "../components/SearchBox";
+import { Link } from "react-router";
 
 function Header() {
   return (
     <header className="flex flex-col px-5 py-3 bg-white">
       <div className="flex justify-between lg:space-x-[40px] items-center w-full">
         {/* Logo */}
-        <a href="/" className="w-[150px] md:w-[200px]">
+        <Link to="/" className="w-[150px] md:w-[200px]">
           <img src="/Logo.svg" alt="Company Logo" />
-        </a>
+        </Link>
 
         {/* Desktop Menu */}
         <nav className="flex justify-between items-center w-full">
