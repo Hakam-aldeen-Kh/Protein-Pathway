@@ -1,0 +1,22 @@
+function NavigationLinks() {
+  const links = [
+    { text: "Protein Pathway", href: "new-pathway" },
+    { text: "Glycan Synthetic Pathway", href: "glycan-pathway" }
+  ];
+
+  return (
+    <nav className="flex gap-5 items-center self-stretch my-auto text-base min-w-[240px] text-neutral-900">
+      {links.map((link, index) => (
+        <a
+          key={index}
+          href={link.href}
+          className="self-stretch my-auto min-h-[24px]"
+        >
+          {link.text}
+        </a>
+      ))}
+    </nav>
+  );
+}
+
+export default NavigationLinks;

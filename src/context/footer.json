@@ -1,0 +1,56 @@
+{
+  "email": {
+    "label": "CONTACT: info@tohsa.com",
+    "href": "info@tohsa.com"
+  },
+  "twitter": {
+    "href": "/"
+  },
+  "youtube": {
+    "href": "/"
+  },
+  "linksGroup_1": [
+    {
+      "id": "1",
+      "label": "ABOUT TOHSA",
+      "href": "/about"
+    },
+    {
+      "id": "2",
+      "label": "DISCOVERY",
+      "href": "/"
+    },
+    {
+      "id": "3",
+      "label": "ACCESS",
+      "href": "/"
+    },
+    {
+      "id": "4",
+      "label": "LEARN",
+      "href": "/learn"
+    }
+  ],
+  "linksGroup_2": [
+    {
+      "id": "1",
+      "label": "RESOURSES",
+      "href": "/"
+    },
+    {
+      "id": "2",
+      "label": "TOOLS",
+      "href": "/"
+    },
+    {
+      "id": "3",
+      "label": "STANDARDS",
+      "href": "/"
+    }
+  ],
+  "version": {
+    "number": "1.2",
+    "historyHref": "/"
+  },
+  "privacy": "/privacy-policy"
+}
