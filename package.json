@@ -13,6 +13,7 @@
     "lucide-react": "^0.474.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-modal": "^3.16.3",
     "react-router": "^7.1.5",
     "sweetalert2": "^11.15.10"
   },

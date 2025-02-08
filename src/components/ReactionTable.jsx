@@ -1,39 +1,43 @@
+import { useState } from "react";
 import { Link } from "react-router";
+import EditModal from "./EditModal";
 
 function ReactionTable() {
+  const [selectedReaction, setSelectedReaction] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const reactionData = [
     {
       rxnId: "1",
-      reactant: {
-        code: "G04602LA",
-        image: "/images/gpr.png",
-      },
+      reactant: { code: "G04602LA", image: "/images/gpr.png" },
       enzyme: "-",
       sugarNucleotide: "D-Glucose",
-      product: {
-        code: "G04602LA",
-        image: "/images/gpr.png",
-      },
+      product: { code: "G04602LA", image: "/images/gpr.png" },
       cellLocation: "Cytosol",
     },
     {
       rxnId: "2",
-      reactant: {
-        code: "G04602LA",
-        image: "/images/gpr.png",
-      },
+      reactant: { code: "G04602LA", image: "/images/gpr.png" },
       enzyme: "-",
       sugarNucleotide: "L-Fucose",
-      product: {
-        code: "G04602LA",
-        image: "/images/gpr.png",
-      },
+      product: { code: "G04602LA", image: "/images/gpr.png" },
       cellLocation: "Cytosol",
     },
   ];
 
+  const handleEditClick = (reaction) => {
+    setSelectedReaction(reaction);
+    setModalOpen(true);
+  };
+
   return (
     <div className="w-full mt-10">
+      <EditModal
+        isOpen={isModalOpen}
+        setIsOpen={setModalOpen}
+        data={selectedReaction}
+      />
+
       <div className="flex flex-wrap gap-2.5 justify-center items-center w-full max-md:max-w-full mb-5">
         <h2 className="flex-1 shrink self-stretch my-auto text-2xl font-bold basis-0 text-neutral-900 max-md:max-w-full">
           Reaction Table
@@ -51,7 +55,6 @@ function ReactionTable() {
 
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
-          {/* Table Header */}
           <thead>
             <tr className="text-left text-sm font-semibold">
               <th className="p-3">RXN ID</th>
@@ -64,7 +67,6 @@ function ReactionTable() {
             </tr>
           </thead>
 
-          {/* Table Body */}
           <tbody>
             {reactionData.map((reaction, index) => (
               <tr
@@ -103,13 +105,13 @@ function ReactionTable() {
 
                 <td className="px-4 flex items-center h-full gap-2 -translate-y-[10px]">
                   <button>
-                    <img src="images/icons/add-square.svg" />
+                    <img src="images/icons/add-square.svg" alt="Edit" />
+                  </button>
+                  <button onClick={() => handleEditClick(reaction)}>
+                    <img src="images/icons/edit-square.svg" alt="Edit" />
                   </button>
                   <button>
-                    <img src="images/icons/edit-square.svg" />
-                  </button>
-                  <button>
-                    <img src="images/icons/trash-square.svg" />
+                    <img src="images/icons/trash-square.svg" alt="Delete" />
                   </button>
                 </td>
               </tr>
