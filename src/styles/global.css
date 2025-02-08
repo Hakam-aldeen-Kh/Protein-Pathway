@@ -1,0 +1,15 @@
+.custom-toast {
+  @apply bg-white text-black rounded-lg shadow-lg p-4 w-80 text-left relative top-10;
+}
+
+.custom-toast .swal2-title {
+  @apply text-lg font-bold mb-1 flex justify-between items-center;
+}
+
+.custom-toast .swal2-html-container {
+  @apply text-sm text-gray-600;
+}
+
+.custom-toast .close-btn {
+  @apply text-black text-xl font-bold cursor-pointer hover:text-gray-500;
+}

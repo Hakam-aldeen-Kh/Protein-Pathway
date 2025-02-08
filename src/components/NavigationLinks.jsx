@@ -3,7 +3,7 @@ import { Link } from "react-router";
 function NavigationLinks() {
   const links = [
     { text: "Protein Pathway", href: "/pathway-data" },
-    { text: "Glycan Synthetic Pathway", href: "/glycan-pathway" },
+    { text: "Glycan Synthetic Pathway", href: "/" },
   ];
 
   return (

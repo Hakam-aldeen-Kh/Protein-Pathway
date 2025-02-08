@@ -49,7 +49,7 @@ const AppRouter = () => {
         }
       />
       <Route
-        path="/preview"
+        path="/preview/:id"
         element={
           <ProtectedRoute>
             <Layout>
