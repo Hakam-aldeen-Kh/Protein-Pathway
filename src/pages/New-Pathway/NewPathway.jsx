@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { ChevronUpIcon, ChevronDownIcon, TrashIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { useNavigate } from 'react-router';
 
 function NewPathway() {
+  const navigate = useNavigate()
   const [isBasicInfoOpen, setIsBasicInfoOpen] = useState(true);
   const [activeTap, setActiveTap] = useState("reactants");
   const [reactions, setReactions] = useState([
@@ -98,6 +100,8 @@ function NewPathway() {
   const handleSubmit = () => {
     console.log("basicInfoData : ", basicInfoData)
     console.log("reactions : ", reactions)
+    navigate("/pathway-result")
+
   }
 
   const toggleState = (type, reactionId, itemId = null) => {
