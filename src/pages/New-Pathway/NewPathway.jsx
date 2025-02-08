@@ -4,20 +4,51 @@ import { ChevronUpIcon, ChevronDownIcon, TrashIcon, PlusIcon } from '@heroicons/
 function NewPathway() {
   const [isBasicInfoOpen, setIsBasicInfoOpen] = useState(true);
   const [activeTap, setActiveTap] = useState("reactants");
-  const [reactions, setReactions] = useState(
-    [
-      {
-        id: 0,
-        reactants: [{ id: 0 }],
-        controllers: [{ id: 0 }],
-        products: [{ id: 0 }]
-      }
-    ]
-  );
-
-  const handleSubmit = () => {
-    console.log(reactions)
-  }
+  const [reactions, setReactions] = useState([
+    {
+      id: 0,
+      reactants:
+        [
+          {
+            id: 0,
+            cellType: "",
+            location: "",
+            reactantType: "",
+            glycanTextType: "",
+            glycanText: "",
+            bindingSiteCode: "",
+            aminoAcidBindingSite: ""
+          }
+        ],
+      controllers:
+        [
+          {
+            id: 0,
+            cellType: "",
+            location: "",
+            controllerType: "",
+            actionType: "",
+            goOntology: "",
+            notGoOntology: "",
+            useNextReaction: false
+          }
+        ],
+      products:
+        [
+          {
+            id: 0,
+            cellType: "",
+            location: "",
+            productType: "",
+            bindingSiteCode: "",
+            proteinSymbol: "",
+            startingSite: "",
+            endingSite: "",
+            useNextReaction: false
+          }
+        ]
+    }
+  ]);
 
   const [reactionsState, setReactionsState] = useState(
     [
@@ -30,6 +61,44 @@ function NewPathway() {
       }
     ]
   );
+
+  const [basicInfoData, setBasicInfoData] = useState({
+    title: "",
+    description: "",
+    species: "",
+    category: "",
+    tissue: "",
+    disease: "",
+    diseaseInput: ""
+  });
+
+  const handleChangeBasicInfo = (e) => {
+    const { name, value } = e.target;
+    setBasicInfoData({
+      ...basicInfoData,
+      [name]: value,
+    });
+  };
+
+  const handleChange = (reactionId, type, index, field, value) => {
+    setReactions((prevReactions) =>
+      prevReactions.map((reaction) =>
+        reaction.id === reactionId
+          ? {
+            ...reaction,
+            [type]: reaction[type].map((item, i) =>
+              i === index ? { ...item, [field]: value } : item
+            ),
+          }
+          : reaction
+      )
+    );
+  };
+
+  const handleSubmit = () => {
+    console.log("basicInfoData : ", basicInfoData)
+    console.log("reactions : ", reactions)
+  }
 
   const toggleState = (type, reactionId, itemId = null) => {
     setReactionsState((prevState) =>
@@ -71,9 +140,46 @@ function NewPathway() {
     setReactions((prev) => [...prev,
     {
       id: prev[prev.length - 1]?.id + 1 || 0,
-      reactants: [{ id: 0 }],
-      controllers: [{ id: 0 }],
-      products: [{ id: 0 }]
+      reactants:
+        [
+          {
+            id: 0,
+            cellType: "",
+            location: "",
+            reactantType: "",
+            glycanTextType: "",
+            glycanText: "",
+            bindingSiteCode: "",
+            aminoAcidBindingSite: ""
+          }
+        ],
+      controllers:
+        [
+          {
+            id: 0,
+            cellType: "",
+            location: "",
+            controllerType: "",
+            actionType: "",
+            goOntology: "",
+            notGoOntology: "",
+            useNextReaction: false
+          }
+        ],
+      products:
+        [
+          {
+            id: 0,
+            cellType: "",
+            location: "",
+            productType: "",
+            bindingSiteCode: "",
+            proteinSymbol: "",
+            startingSite: "",
+            endingSite: "",
+            useNextReaction: false
+          }
+        ]
     }
     ])
 
@@ -89,7 +195,20 @@ function NewPathway() {
     setReactions((prev) =>
       prev.map((reaction) =>
         reaction.id === reactionId
-          ? { ...reaction, reactants: [...reaction.reactants, { id: reaction.reactants[reaction.reactants.length - 1]?.id + 1 || 0 }] }
+          ? {
+            ...reaction, reactants: [...reaction.reactants,
+            {
+              id: reaction.reactants[reaction.reactants.length - 1]?.id + 1 || 0,
+              cellType: "",
+              location: "",
+              reactantType: "",
+              glycanTextType: "",
+              glycanText: "",
+              bindingSiteCode: "",
+              aminoAcidBindingSite: ""
+            }
+            ]
+          }
           : reaction
       )
     );
@@ -125,7 +244,19 @@ function NewPathway() {
     setReactions((prev) =>
       prev.map((reaction) =>
         reaction.id === reactionId
-          ? { ...reaction, controllers: [...reaction.controllers, { id: reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0 }] }
+          ? {
+            ...reaction, controllers: [...reaction.controllers,
+            {
+              id: reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0,
+              cellType: "",
+              location: "",
+              controllerType: "",
+              actionType: "",
+              goOntology: "",
+              notGoOntology: "",
+              useNextReaction: false
+            }]
+          }
           : reaction
       )
     );
@@ -163,7 +294,19 @@ function NewPathway() {
     setReactions((prev) =>
       prev.map((reaction) =>
         reaction.id === reactionId
-          ? { ...reaction, products: [...reaction.products, { id: reaction.products[reaction.products.length - 1]?.id + 1 || 0 }] }
+          ? {
+            ...reaction, products: [...reaction.products, {
+              id: reaction.products[reaction.products.length - 1]?.id + 1 || 0,
+              cellType: "",
+              location: "",
+              productType: "",
+              bindingSiteCode: "",
+              proteinSymbol: "",
+              startingSite: "",
+              endingSite: "",
+              useNextReaction: false
+            }]
+          }
           : reaction
       )
     );
@@ -230,6 +373,9 @@ function NewPathway() {
                     </label>
                     <input
                       type="text"
+                      name="title"
+                      value={basicInfoData.title}
+                      onChange={handleChangeBasicInfo}
                       className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                       placeholder="Add Title"
                     />
@@ -240,6 +386,9 @@ function NewPathway() {
                     </label>
                     <input
                       type="text"
+                      name="description"
+                      value={basicInfoData.description}
+                      onChange={handleChangeBasicInfo}
                       className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                       placeholder="Add Description"
                     />
@@ -249,37 +398,67 @@ function NewPathway() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Species</label>
-                    <select className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                      <option>Select Species</option>
+                    <select
+                      name="species"
+                      value={basicInfoData.species}
+                      onChange={handleChangeBasicInfo}
+                      className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    >
+                      <option value="">Select Species</option>
+                      <option value="Human">Human</option>
+                      <option value="Mouse">Mouse</option>
                     </select>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Pathway Category</label>
-                    <select className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                      <option>Select Category</option>
+                    <select
+                      name="category"
+                      value={basicInfoData.category}
+                      onChange={handleChangeBasicInfo}
+                      className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    >
+                      <option value="">Select Category</option>
+                      <option value="Metabolic">Metabolic</option>
+                      <option value="Signaling">Signaling</option>
                     </select>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Tissue</label>
-                    <select className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                      <option>Select Tissue</option>
+                    <select
+                      name="tissue"
+                      value={basicInfoData.tissue}
+                      onChange={handleChangeBasicInfo}
+                      className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    >
+                      <option value="">Select Tissue</option>
+                      <option value="Liver">Liver</option>
+                      <option value="Heart">Heart</option>
                     </select>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Related Disease</label>
-                    <select className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                      <option>Type or Select Disease</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Citation</label>
-                    <input
-                      type="text"
-                      className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
+                    <div className="space-x-1">
+                      <select
+                        name="disease"
+                        value={basicInfoData.disease}
+                        onChange={handleChangeBasicInfo}
+                        className="mt-1 w-[49%] rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      >
+                        <option value="">Type or Select Disease</option>
+                        <option value="Diabetes">Diabetes</option>
+                        <option value="Cancer">Cancer</option>
+                      </select>
+                      <input
+                        type="text"
+                        name="diseaseInput"
+                        value={basicInfoData.diseaseInput}
+                        onChange={handleChangeBasicInfo}
+                        className="mt-1 w-[49%] rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -290,7 +469,7 @@ function NewPathway() {
           {reactions.map((reaction, reactionIndex) => (
             <div key={reaction.id} className="border rounded-lg mb-4">
               <div className="bg-purple-50 rounded-t-lg px-4 py-3 flex justify-between items-center">
-                <h2 className="font-medium">Reaction {reaction.id}</h2>
+                <h2 className="font-medium">Reaction - {reaction.id}</h2>
                 <div className="flex items-center space-x-2">
                   <button onClick={() => deleteReaction(reaction.id)} className="p-1 hover:bg-purple-100 rounded">
                     <TrashIcon className="h-5 w-5 text-gray-500" />
@@ -339,16 +518,32 @@ function NewPathway() {
                                       <label className="block text-sm font-medium text-gray-700">
                                         Cell Type
                                       </label>
-                                      <select className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        <option>Select Cell Type</option>
+                                      <select
+                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        value={item.cellType}
+                                        onChange={(e) =>
+                                          handleChange(reaction.id, "reactants", index, "cellType", e.target.value)
+                                        }
+                                      >
+                                        <option value="">Select Cell Type</option>
+                                        <option value="a1">A1</option>
+                                        <option value="a2">A2</option>
                                       </select>
                                     </div>
                                     <div>
                                       <label className="block text-sm font-medium text-gray-700">
                                         Cellular Location
                                       </label>
-                                      <select className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        <option>Select Location</option>
+                                      <select
+                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        value={item.location}
+                                        onChange={(e) =>
+                                          handleChange(reaction.id, "reactants", index, "location", e.target.value)
+                                        }
+                                      >
+                                        <option value="">Select Location</option>
+                                        <option value="a1">A1</option>
+                                        <option value="a2">A2</option>
                                       </select>
                                     </div>
                                   </div>
@@ -357,8 +552,16 @@ function NewPathway() {
                                     <label className="block text-sm font-medium text-gray-700">
                                       Reactant Type
                                     </label>
-                                    <select className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                      <option>Glycan</option>
+                                    <select
+                                      className="mt-1 border block w-1/2 rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                      value={item.reactantType}
+                                      onChange={(e) =>
+                                        handleChange(reaction.id, "reactants", index, "reactantType", e.target.value)
+                                      }
+                                    >
+                                      <option value="">Select Reactant Type</option>
+                                      <option value="a1">A1</option>
+                                      <option value="a2">A2</option>
                                     </select>
                                   </div>
 
@@ -367,8 +570,16 @@ function NewPathway() {
                                       <label className="block text-sm font-medium text-gray-700">
                                         Glycan Text Type
                                       </label>
-                                      <select className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        <option>GlyTouCan ID</option>
+                                      <select
+                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        value={item.glycanTextType}
+                                        onChange={(e) =>
+                                          handleChange(reaction.id, "reactants", index, "glycanTextType", e.target.value)
+                                        }
+                                      >
+                                        <option value="">Select Glycan Text Type</option>
+                                        <option value="a1">A1</option>
+                                        <option value="a2">A2</option>
                                       </select>
                                     </div>
                                     <div>
@@ -379,32 +590,50 @@ function NewPathway() {
                                         type="text"
                                         className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                         placeholder="Type Glycan Text"
+                                        value={item.glycanText}
+                                        onChange={(e) =>
+                                          handleChange(reaction.id, "reactants", index, "glycanText", e.target.value)
+                                        }
                                       />
                                     </div>
                                   </div>
 
-                                  <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700">
-                                        Binding Site Code
-                                      </label>
-                                      <input
-                                        type="text"
-                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        placeholder="Three letters code of binding site (e.g. ser, tyr...)"
-                                      />
-                                    </div>
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700">
-                                        Number of Amino Acid Binding Site
-                                      </label>
-                                      <input
-                                        type="text"
-                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        placeholder="Type number of amino acid binding site (e.g. 123)"
-                                      />
+                                  <div>
+                                    <span className="font-bold text-xs block py-4">
+                                      Binding Backbone Information
+                                    </span>
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700">
+                                          Binding Site Code
+                                        </label>
+                                        <input
+                                          type="text"
+                                          className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                          placeholder="Three letters code of binding site (e.g. ser, tyr...)"
+                                          value={item.bindingSiteCode}
+                                          onChange={(e) =>
+                                            handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
+                                          }
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700">
+                                          Number of Amino Acid Binding Site
+                                        </label>
+                                        <input
+                                          type="text"
+                                          className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                          placeholder="Type number of amino acid binding site (e.g. 123)"
+                                          value={item.aminoAcidBindingSite}
+                                          onChange={(e) =>
+                                            handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
+                                          }
+                                        />
+                                      </div>
                                     </div>
                                   </div>
+
                                 </div>
                               }
                             </div>
@@ -439,13 +668,22 @@ function NewPathway() {
 
                               {reactionsState[reactionIndex].controllers[index].state &&
                                 <div className="space-y-4 p-4">
+
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
                                       <label className="block text-sm font-medium text-gray-700">
                                         Cell Type
                                       </label>
-                                      <select className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        <option>Select Cell Type</option>
+                                      <select
+                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        value={item.cellType}
+                                        onChange={(e) =>
+                                          handleChange(reaction.id, "controllers", index, "cellType", e.target.value)
+                                        }
+                                      >
+                                        <option value="">Select Cell Type</option>
+                                        <option value="a1">A1</option>
+                                        <option value="a2">A2</option>
                                       </select>
                                     </div>
 
@@ -453,8 +691,16 @@ function NewPathway() {
                                       <label className="block text-sm font-medium text-gray-700">
                                         Cellular Location
                                       </label>
-                                      <select className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        <option>Select Location</option>
+                                      <select
+                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        value={item.location}
+                                        onChange={(e) =>
+                                          handleChange(reaction.id, "controllers", index, "location", e.target.value)
+                                        }
+                                      >
+                                        <option value="">Select Location</option>
+                                        <option value="a1">A1</option>
+                                        <option value="a2">A2</option>
                                       </select>
                                     </div>
                                   </div>
@@ -464,8 +710,16 @@ function NewPathway() {
                                       <label className="block text-sm font-medium text-gray-700">
                                         Controller Type
                                       </label>
-                                      <select className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        <option>Glycan</option>
+                                      <select
+                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        value={item.controllerType}
+                                        onChange={(e) =>
+                                          handleChange(reaction.id, "controllers", index, "controllerType", e.target.value)
+                                        }
+                                      >
+                                        <option value="">Select Controller Type</option>
+                                        <option value="a1">A1</option>
+                                        <option value="a2">A2</option>
                                       </select>
                                     </div>
 
@@ -473,8 +727,16 @@ function NewPathway() {
                                       <label className="block text-sm font-medium text-gray-700">
                                         Action Type
                                       </label>
-                                      <select className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        <option>Select Action</option>
+                                      <select
+                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        value={item.actionType}
+                                        onChange={(e) =>
+                                          handleChange(reaction.id, "controllers", index, "actionType", e.target.value)
+                                        }
+                                      >
+                                        <option value="">Select Action Type</option>
+                                        <option value="a1">A1</option>
+                                        <option value="a2">A2</option>
                                       </select>
                                     </div>
                                   </div>
@@ -482,44 +744,51 @@ function NewPathway() {
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
                                       <label className="block text-sm font-medium text-gray-700">
-                                        When you re complex is in GO ontology complex.
+                                        When your complex is in GO ontology complex.
                                       </label>
-                                      <div className=' space-x-2'>
-                                        <input
-                                          type="text"
-                                          className="mt-1 border w-[49%] rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                          placeholder=""
-                                        />
-                                        <input
-                                          type="text"
-                                          className="mt-1 border  w-[49%] rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                          placeholder=""
-                                        />
-                                      </div>
+                                      <input
+                                        type="text"
+                                        className="mt-1 border w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        value={item.goOntology}
+                                        onChange={(e) =>
+                                          handleChange(reaction.id, "controllers", index, "goOntology", e.target.value)
+                                        }
+                                      />
                                     </div>
                                     <div>
                                       <label className="block text-sm font-medium text-gray-700">
-                                        When you re complex is not in GO ontology complex.
+                                        When your complex is not in GO ontology complex.
                                       </label>
                                       <input
                                         type="text"
                                         className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        placeholder=""
+                                        value={item.notGoOntology}
+                                        onChange={(e) =>
+                                          handleChange(reaction.id, "controllers", index, "notGoOntology", e.target.value)
+                                        }
                                       />
-
                                     </div>
                                   </div>
 
                                   <div className="grid grid-cols-2 gap-4">
-                                    <div className=' space-x-3'>
+                                    <div className="space-x-3">
                                       <input
                                         type="checkbox"
+                                        checked={item.useNextReaction}
+                                        onChange={(e) =>
+                                          handleChange(
+                                            reaction.id,
+                                            "controllers",
+                                            index,
+                                            "useNextReaction",
+                                            e.target.checked
+                                          )
+                                        }
                                       />
                                       <label className="text-sm font-medium text-gray-700">
                                         Use this Controller in the next reaction
                                       </label>
                                     </div>
-
                                   </div>
 
 
@@ -544,7 +813,7 @@ function NewPathway() {
                           <div className="border rounded-lg mb-4">
                             <div className="">
                               <div className="flex p-4 border-b justify-between items-center">
-                                <span>Product {item.id}</span>
+                                <span>Product - {item.id}</span>
                                 <div className="flex items-center space-x-2">
                                   <button onClick={() => deleteProduct(reaction.id, item.id)} className="p-1 hover:bg-red-100 rounded">
                                     <TrashIcon className="h-5 w-5 text-gray-500" />
@@ -559,73 +828,108 @@ function NewPathway() {
                                 <div className="space-y-4 p-4">
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                      <label className="block text-sm font-medium text-gray-700">
-                                        Cell Type
-                                      </label>
-                                      <select className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        <option>Select Cell Type</option>
+                                      <label className="block text-sm font-medium text-gray-700">Cell Type</label>
+                                      <select
+                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        value={item.cellType}
+                                        onChange={(e) => handleChange(reaction.id, "products", index, "cellType", e.target.value)}
+                                      >
+                                        <option value="">Select Cell Type</option>
+                                        <option value="a1">A1</option>
+                                        <option value="a2">A2</option>
                                       </select>
                                     </div>
                                     <div>
-                                      <label className="block text-sm font-medium text-gray-700">
-                                        Cellular Location
-                                      </label>
-                                      <select className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        <option>Select Location</option>
+                                      <label className="block text-sm font-medium text-gray-700">Cellular Location</label>
+                                      <select
+                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        value={item.location}
+                                        onChange={(e) => handleChange(reaction.id, "products", index, "location", e.target.value)}
+                                      >
+                                        <option value="">Select Location</option>
+                                        <option value="a1">A1</option>
+                                        <option value="a2">A2</option>
                                       </select>
                                     </div>
                                   </div>
 
                                   <div>
-                                    <label className="block text-sm font-medium text-gray-700">
-                                      Reactant Type
-                                    </label>
-                                    <select className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                      <option>Glycan</option>
+                                    <label className="block text-sm font-medium text-gray-700">Product Type</label>
+                                    <select
+                                      className="mt-1 border block w-1/2 rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                      value={item.productType}
+                                      onChange={(e) => handleChange(reaction.id, "products", index, "productType", e.target.value)}
+                                    >
+                                      <option value="">Select Product Type</option>
+                                      <option value="a1">A1</option>
+                                      <option value="a2">A2</option>
                                     </select>
                                   </div>
 
-                                  <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700">
-                                        Glycan Text Type
-                                      </label>
-                                      <select className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        <option>GlyTouCan ID</option>
-                                      </select>
+                                  <div>
+                                    <span className=' font-bold text-xs block py-4'>Protein Name</span>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700">
+                                          Binding site Code
+                                        </label>
+                                        <input
+                                          type="text"
+                                          className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                          placeholder="Three letters code of binding site (e.g. ser, tyr...)"
+                                          value={item.bindingSiteCode}
+                                          onChange={(e) => handleChange(reaction.id, "products", index, "bindingSiteCode", e.target.value)}
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700">Protein Symbol</label>
+                                        <input
+                                          type="text"
+                                          className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                          placeholder="Type protein symbol"
+                                          value={item.proteinSymbol}
+                                          onChange={(e) => handleChange(reaction.id, "products", index, "proteinSymbol", e.target.value)}
+                                        />
+                                      </div>
                                     </div>
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700">
-                                        Glycan Text
-                                      </label>
-                                      <input
-                                        type="text"
-                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        placeholder="Type Glycan Text"
-                                      />
+                                  </div>
+
+                                  <div>
+                                    <span className=' font-bold text-xs block py-4'>Protein size (Fragmented protein size information)</span>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700">Starting Site</label>
+                                        <input
+                                          type="text"
+                                          className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                          placeholder="Starting site"
+                                          value={item.startingSite}
+                                          onChange={(e) => handleChange(reaction.id, "products", index, "startingSite", e.target.value)}
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700">Ending Site</label>
+                                        <input
+                                          type="text"
+                                          className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                          placeholder="Ending site"
+                                          value={item.endingSite}
+                                          onChange={(e) => handleChange(reaction.id, "products", index, "endingSite", e.target.value)}
+                                        />
+                                      </div>
                                     </div>
                                   </div>
 
                                   <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700">
-                                        Binding Site Code
-                                      </label>
+                                    <div className='space-x-3'>
                                       <input
-                                        type="text"
-                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        placeholder="Three letters code of binding site (e.g. ser, tyr...)"
+                                        type="checkbox"
+                                        checked={item.useNextReaction}
+                                        onChange={(e) => handleChange(reaction.id, "products", index, "useNextReaction", e.target.checked)}
                                       />
-                                    </div>
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700">
-                                        Number of Amino Acid Binding Site
-                                      </label>
-                                      <input
-                                        type="text"
-                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        placeholder="Type number of amino acid binding site (e.g. 123)"
-                                      />
+                                      <label className="text-sm font-medium text-gray-700">Use this product in the next reaction</label>
                                     </div>
                                   </div>
                                 </div>
