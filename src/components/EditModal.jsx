@@ -36,7 +36,7 @@ const EditModal = ({ isOpen, setIsOpen, data }) => {
       <div className="flex justify-between items-center pb-5">
         <h2 className="text-xl font-bold">Edit Reaction</h2>
         <button onClick={() => setIsOpen(false)}>
-          <img src="images/icons/close.svg" alt="Close" />
+          <img src="/images/icons/close.svg" alt="Close" />
         </button>
       </div>
 
@@ -60,7 +60,7 @@ const EditModal = ({ isOpen, setIsOpen, data }) => {
           <InputField label="Uniport Protein" placeholder="Type protein name" />
           <button className="w-[40px] h-[40px]  border border-[#878787] p-2 self-end ">
             <img
-              src="images/icons/search-normal.svg"
+              src="/images/icons/search-normal.svg"
               alt="Search"
               className="min-w-[24px] h-[24px]"
             />

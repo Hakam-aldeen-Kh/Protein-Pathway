@@ -1,10 +1,10 @@
-function PathwayInfo() {
+function PathwayInfo({ pathway }) {
   const pathwayData = [
-    { label: "Species", value: "Escherichia coli" },
-    { label: "Pathway Category:", value: "Notch Signaling Pathway" },
+    { label: "Species", value: pathway.species },
+    { label: "Pathway Category:", value: pathway.category },
     { label: "Tissue:", value: "Blood" },
     { label: "Related Disease:", value: "Human, Leukemia" },
-    { label: "Record Date:", value: "15.2.2025" },
+    { label: "Record Date:", value: pathway.date },
   ];
 
   return (

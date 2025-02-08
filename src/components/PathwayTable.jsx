@@ -19,7 +19,7 @@ const TableCell = ({ content, isArray = false, link, id }) => (
         ))}
       </div>
     ) : link ? (
-      <Link to={`/pathway/${id}`} className="text-violet-900 hover:text-violet-600">
+      <Link to={`/preview/${id}`} className="text-violet-900 hover:text-violet-600">
         {content}
       </Link>
     ) : (

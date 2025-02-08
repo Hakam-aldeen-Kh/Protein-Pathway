@@ -105,13 +105,13 @@ function ReactionTable() {
 
                 <td className="px-4 flex items-center h-full gap-2 -translate-y-[10px]">
                   <button>
-                    <img src="images/icons/add-square.svg" alt="Edit" />
+                    <img src="/images/icons/add-square.svg" alt="add" />
                   </button>
                   <button onClick={() => handleEditClick(reaction)}>
-                    <img src="images/icons/edit-square.svg" alt="Edit" />
+                    <img src="/images/icons/edit-square.svg" alt="Edit" />
                   </button>
                   <button>
-                    <img src="images/icons/trash-square.svg" alt="Delete" />
+                    <img src="/images/icons/trash-square.svg" alt="Delete" />
                   </button>
                 </td>
               </tr>

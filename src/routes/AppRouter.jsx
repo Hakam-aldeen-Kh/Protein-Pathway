@@ -35,7 +35,7 @@ const AppRouter = () => {
       />
       <Route path="/login" element={<Login />} />
       <Route
-        path="/preview"
+        path="/preview/:id"
         element={
           <Layout>
             <Preview />

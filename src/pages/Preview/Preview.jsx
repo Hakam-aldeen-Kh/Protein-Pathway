@@ -1,15 +1,25 @@
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import PathwayInfo from "../../components/PathwayInfo";
 import ReactionTable from "../../components/ReactionTable";
 import Swal from "sweetalert2";
+import samplePathways from "../../data/simpleData";
 import "../../styles/global.css";
 
 const Preview = () => {
+  const { id } = useParams();
+  const pathway = samplePathways.find((p) => p.id === id);
+
+  if (!pathway) {
+    return (
+      <p className="text-center text-red-500 text-xl">Pathway not found</p>
+    );
+  }
+
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
     showConfirmButton: false,
-    timer: 300000,
+    timer: 3000,
     timerProgressBar: false,
     customClass: {
       popup: "custom-toast",
@@ -60,8 +70,8 @@ const Preview = () => {
             </p>
           </div>
         </div>
-        <PathwayInfo />
-        <ReactionTable />
+        <PathwayInfo pathway={pathway} />
+        <ReactionTable reactions={pathway.reactants} />
       </div>
     </div>
   );
