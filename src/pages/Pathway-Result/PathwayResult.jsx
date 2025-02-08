@@ -1,0 +1,102 @@
+import cytoscape from "cytoscape";
+import CytoscapeComponent from "react-cytoscapejs";
+import sbgnStylesheet from "cytoscape-sbgn-stylesheet";
+
+import { elements } from "./data";
+import { layouts } from "./layouts";
+import setupCy from "./setupCy";
+import { useState } from "react";
+
+setupCy();
+
+const PathwayResult = () => {
+  const cyStylesheet = sbgnStylesheet(cytoscape);
+  const [layout, setLayout] = useState(null);
+
+  const handleExport = () => {
+    if (window.cy) {
+      const png = window.cy.png({ full: true });
+      const link = document.createElement("a");
+      link.href = png;
+      link.download = "pathway.png";
+      link.click();
+    }
+  };
+
+  const handleZoomIn = () => {
+    if (window.cy) {
+      window.cy.zoom(window.cy.zoom() + 0.1);
+    }
+
+    Object.keys(layouts).map((l) => (
+      console.log(l)
+    ))
+  };
+
+  const handleZoomOut = () => {
+    if (window.cy) {
+      window.cy.zoom(window.cy.zoom() - 0.1);
+    }
+  };
+
+  return (
+    <div className="w-full h-[calc(100vh-71px)] flex items-start justify-center gap-2 p-2 bg-gray-100 relative">
+
+      <div className="flex-1 h-full bg-white rounded-lg shadow-lg flex items-center justify-center">
+        <CytoscapeComponent
+          zoom={0.5}
+          elements={elements}
+          style={{ width: "100%", height: "100%" }}
+          maxZoom={2}
+          minZoom={0.05}
+          layout={layout}
+          cy={(cy) => {
+            cy.style(cyStylesheet);
+            window.cy = cy;
+            cy.center();
+          }}
+        />
+      </div>
+
+      <div className="w-[150px] space-y-2">
+        <button
+          onClick={handleExport}
+          className=" w-full bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600"
+        >
+          Export as PNG
+        </button>
+        <button
+          onClick={handleZoomIn}
+          className="bg-green-500 w-full text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600"
+        >
+          Zoom In
+        </button>
+        <button
+          onClick={handleZoomOut}
+          className="bg-red-500 w-full text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600"
+        >
+          Zoom Out
+        </button>
+
+        <select
+          className="bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          onChange={(e) => {
+            setLayout({ ...layouts[e.target.value] });
+          }}
+        >
+          <option value={"klay"}>
+            Select layout
+          </option>
+          {Object.keys(layouts).map((l) => (
+            <option key={l} value={l}>
+              {l}
+            </option>
+          ))}
+        </select>
+
+      </div>
+    </div>
+  );
+};
+
+export default PathwayResult;

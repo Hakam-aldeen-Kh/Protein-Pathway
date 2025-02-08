@@ -6,6 +6,7 @@ import NewPathway from "../pages/New-Pathway/NewPathway";
 import Login from "../pages/Login/Login";
 import Preview from "../pages/Preview/Preview";
 import ProtectedRoute from "../components/ProtectedRoute";
+import PathwayResult from "../pages/Pathway-Result/PathwayResult";
 
 const AppRouter = () => {
   return (
@@ -53,6 +54,17 @@ const AppRouter = () => {
           <ProtectedRoute>
             <Layout>
               <Preview />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/pathway-result"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <PathwayResult />
             </Layout>
           </ProtectedRoute>
         }
