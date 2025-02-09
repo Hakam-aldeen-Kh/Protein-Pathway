@@ -53,7 +53,9 @@ function PathwayInfo({ pathway }) {
               onClick={() => navigate("/pathway-result")}
               className="object-contain cursor-pointer z-0 flex-1 shrink w-full aspect-[2.87] basis-0 min-w-[240px] max-md:max-w-full relative"
             /> */}
-            <div className="w-full h-full object-contain cursor-pointer z-0 flex-1 shrink aspect-[2.87] basis-0 min-w-[240px] max-md:max-w-full relative" onClick={() => navigate("/pathway-result")}>
+            <div className="w-full h-full object-contain cursor-pointer z-0 flex-1 shrink aspect-[2.87] basis-0 min-w-[240px] max-md:max-w-full relative"
+            // onClick={() => navigate("/pathway-result")}
+            >
               <Graph elements={elements} layout={layouts.fcose} touch={false} />
             </div>
 
