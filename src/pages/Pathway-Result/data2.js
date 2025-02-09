@@ -1,69 +1,249 @@
+//  class: compartment(reaction) || simple chemical (circle) ||
+//         phenotype (polygon 6) || complex (container with lable)  ||
+//         macromolecule (squar) || process (simple squar) ||
+//         association (circle black) ||
+//         dissociation (circle inside circle) ||
+//         complex multimer (rectancle inside rectangle)
+
+
+
+//  group: nodes || edges
+
+// ---------------------------------node--------------------
+/*
+{
+    data: {
+        id: "",
+        class: "",
+        label: "",
+        parent: "",
+        stateVariables: [
+            {
+                id: "",
+                class: "state variable",
+                state: {
+                    variable: "",
+                    value: ""
+                }
+            }
+        ],
+        unitsOfInformation: [],
+        bbox: {
+            x: "",
+            y: "",
+            w: "",
+            h: ""
+        }
+    },
+    position: {
+        x: "",
+        y: ""
+    },
+    group: "nodes",
+    removed: false,
+    selected: false,
+    selectable: true,
+    locked: false,
+    grabbable: true,
+    pannable: false,
+    classes: ""
+}
+*/
+
+// ---------------------------------edge--------------------
+//  {
+//     data: {
+//         id: "glyph19-glyph5",
+//         class: "production",
+//         cardinality: 0,
+//         source: "glyph19",
+//         target: "glyph5",
+//         bendPointPositions: [],
+//         portSource: "glyph19",
+//         portTarget: "glyph5"
+//     },
+//     position: {
+//         x: 0,
+//         y: 0
+//     },
+//     group: "edges",
+//     removed: false,
+//     selected: false,
+//     selectable: true,
+//     locked: false,
+//     grabbable: true,
+//     pannable: true,
+//     classes: ""
+// },
+
 export const elements = [
-    // reaction
     {
         data: {
-            id: "glyph2",
-            class: "compartment",
-            label: "muscle cytosol",
-            stateVariables: [],
-            unitsOfInformation: [],
-        },
-        group: "nodes",
-        removed: false,
-        selected: false,
-        selectable: true,
-        locked: false,
-        grabbable: true,
-        pannable: false,
-        classes: ""
-    },
-    {
-        data: {
-            id: "glyph14",
-            class: "compartment",
-            label: "synaptic vesicle",
-            parent: "glyph0",
-            stateVariables: [],
-            unitsOfInformation: [],
-        },
-        group: "nodes",
-        removed: false,
-        selected: false,
-        selectable: true,
-        locked: false,
-        grabbable: true,
-        pannable: false,
-        classes: ""
-    },
-    {
-        data: {
-            id: "glyph0",
-            class: "compartment",
-            label: "synaptic button",
-            stateVariables: [],
-            unitsOfInformation: [],
-        },
-        group: "nodes",
-        removed: false,
-        selected: false,
-        selectable: true,
-        locked: false,
-        grabbable: true,
-        pannable: false,
-        classes: ""
-    },
-    {
-        data: {
-            id: "glyph23",
-            class: "simple chemical",
+            id: "1",
+            class: "simple chemical multimer",
+            parent: "",
             label: "1",
-            parent: "glyph2",
             stateVariables: [],
             unitsOfInformation: [],
         },
-        position: {
-            x: 1234.605196936252,
-            y: 69.5655680733905
+        group: "nodes",
+        removed: false,
+        selected: false,
+        selectable: true,
+        locked: false,
+        grabbable: true,
+        pannable: false,
+        classes: ""
+    },
+    {
+        data: {
+            id: "2",
+            class: "macromolecule multimer",
+            label: "2",
+            stateVariables: [],
+            unitsOfInformation: [],
+        },
+        group: "nodes",
+        removed: false,
+        selected: false,
+        selectable: true,
+        locked: false,
+        grabbable: true,
+        pannable: false,
+        classes: ""
+    },
+    {
+        data: {
+            id: "3",
+            class: "nucleic acid feature multimer",
+            label: "3",
+            stateVariables: [],
+            unitsOfInformation: [],
+        },
+        group: "nodes",
+        removed: false,
+        selected: false,
+        selectable: true,
+        locked: false,
+        grabbable: true,
+        pannable: false,
+        classes: ""
+    },
+    {
+        data: {
+            id: "4",
+            class: "complex multimer",
+            label: "4",
+            stateVariables: [],
+            unitsOfInformation: [],
+        },
+        group: "nodes",
+        removed: false,
+        selected: false,
+        selectable: true,
+        locked: false,
+        grabbable: true,
+        pannable: false,
+        classes: ""
+    },
+    {
+        data: {
+            id: "5",
+            class: "simple chemical",
+            label: "5",
+            stateVariables: [],
+            unitsOfInformation: [],
+        },
+        group: "nodes",
+        removed: false,
+        selected: false,
+        selectable: true,
+        locked: false,
+        grabbable: true,
+        pannable: false,
+        classes: ""
+    },
+    {
+        data: {
+            id: "3",
+            class: "nucleic acid feature multimer",
+            label: "3",
+            stateVariables: [],
+            unitsOfInformation: [],
+        },
+        group: "nodes",
+        removed: false,
+        selected: false,
+        selectable: true,
+        locked: false,
+        grabbable: true,
+        pannable: false,
+        classes: ""
+    },
+    {
+        data: {
+            id: "3",
+            class: "nucleic acid feature multimer",
+            label: "3",
+            stateVariables: [],
+            unitsOfInformation: [],
+        },
+        group: "nodes",
+        removed: false,
+        selected: false,
+        selectable: true,
+        locked: false,
+        grabbable: true,
+        pannable: false,
+        classes: ""
+    },
+    {
+        data: {
+            id: "3",
+            class: "nucleic acid feature multimer",
+            label: "3",
+            stateVariables: [],
+            unitsOfInformation: [],
+        },
+        group: "nodes",
+        removed: false,
+        selected: false,
+        selectable: true,
+        locked: false,
+        grabbable: true,
+        pannable: false,
+        classes: ""
+    },
+    {
+        data: {
+            id: "3",
+            class: "nucleic acid feature multimer",
+            label: "3",
+            stateVariables: [],
+            unitsOfInformation: [],
+        },
+        group: "nodes",
+        removed: false,
+        selected: false,
+        selectable: true,
+        locked: false,
+        grabbable: true,
+        pannable: false,
+        classes: ""
+    }
+]
+
+
+/*
+
+// start reactions
+    {
+        data: {
+            id: "reaction0",
+            class: "compartment",
+            label: "Reaction - 0",
+            stateVariables: [],
+            unitsOfInformation: [],
         },
         group: "nodes",
         removed: false,
@@ -77,22 +257,54 @@ export const elements = [
 
     {
         data: {
-            id: "glyph32",
-            class: "phenotype",
-            label: "muscle contraction",
-            parent: "glyph2",
+            id: "reaction1",
+            class: "compartment",
+            label: "Reaction - 1",
             stateVariables: [],
             unitsOfInformation: [],
-            bbox: {
-                x: 1976.8873538946682,
-                y: 651.7369383828263,
-                w: 160,
-                h: 60
-            }
         },
-        position: {
-            x: 2197.7323146171566,
-            y: 1095.7604895957215
+        group: "nodes",
+        removed: false,
+        selected: false,
+        selectable: true,
+        locked: false,
+        grabbable: true,
+        pannable: false,
+        classes: ""
+    },
+
+    {
+        data: {
+            id: "reaction2",
+            class: "compartment",
+            label: "Reaction - 2",
+            stateVariables: [],
+            unitsOfInformation: [],
+        },
+        group: "nodes",
+        removed: false,
+        selected: false,
+        selectable: true,
+        locked: false,
+        grabbable: true,
+        pannable: false,
+        classes: ""
+    },
+    // end reactions
+
+    // ------------------------------------------------------------
+
+    // start all nodes
+
+    // start nodes for reaction 0
+    {
+        data: {
+            id: "reactant0",
+            class: "simple chemical",
+            label: "Reactant - 0",
+            parent: "reaction2",
+            stateVariables: [],
+            unitsOfInformation: [],
         },
         group: "nodes",
         removed: false,
@@ -108,8 +320,8 @@ export const elements = [
         data: {
             id: "glyph37",
             class: "complex",
-            label: "",
-            parent: "glyph2",
+            label: "aaaaaaaaaaaaaaa",
+            parent: "reaction2",
             stateVariables: [
                 {
                     id: "glyph37a",
@@ -121,16 +333,6 @@ export const elements = [
                 }
             ],
             unitsOfInformation: [],
-            bbox: {
-                x: 1891.4159362399225,
-                y: 479.6244130185455,
-                w: 121.5,
-                h: 136.5
-            }
-        },
-        position: {
-            x: 2200.592163339548,
-            y: 824.7365081837149
         },
         group: "nodes",
         removed: false,
@@ -150,45 +352,6 @@ export const elements = [
             parent: "glyph37",
             stateVariables: [],
             unitsOfInformation: [],
-            bbox: {
-                x: 1891.4159362399225,
-                y: 517.1244130185455,
-                w: 120,
-                h: 60
-            }
-        },
-        position: {
-            x: 2201.011704216743,
-            y: 780.2521185889852
-        },
-        group: "nodes",
-        removed: false,
-        selected: false,
-        selectable: true,
-        locked: false,
-        grabbable: true,
-        pannable: false,
-        classes: ""
-    },
-
-    {
-        data: {
-            id: "glyph31",
-            class: "macromolecule",
-            label: "actin",
-            parent: "glyph37",
-            stateVariables: [],
-            unitsOfInformation: [],
-            bbox: {
-                x: 1891.4159362399225,
-                y: 442.1244130185455,
-                w: 120,
-                h: 60
-            }
-        },
-        position: {
-            x: 2200.1726224623526,
-            y: 869.2208977784445
         },
         group: "nodes",
         removed: false,
@@ -204,8 +367,8 @@ export const elements = [
         data: {
             id: "glyph41",
             class: "process",
-            label: "",
-            parent: "glyph2",
+            label: "aaaaaaaaffffffff",
+            parent: "reaction2",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -233,7 +396,7 @@ export const elements = [
             id: "glyph21",
             class: "macromolecule",
             label: "nAChR",
-            parent: "glyph2",
+            parent: "reaction2",
             stateVariables: [
                 {
                     id: "glyph21a",
@@ -270,7 +433,7 @@ export const elements = [
             id: "glyph36",
             class: "complex",
             label: "",
-            parent: "glyph2",
+            parent: "reaction2",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -354,7 +517,7 @@ export const elements = [
             id: "glyph45",
             class: "association",
             label: "",
-            parent: "glyph2",
+            parent: "reaction2",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -382,7 +545,7 @@ export const elements = [
             id: "glyph27",
             class: "macromolecule",
             label: "myosin",
-            parent: "glyph2",
+            parent: "reaction2",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -410,7 +573,7 @@ export const elements = [
             id: "glyph25",
             class: "simple chemical",
             label: "ATP",
-            parent: "glyph2",
+            parent: "reaction2",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -438,7 +601,7 @@ export const elements = [
             id: "glyph26",
             class: "macromolecule",
             label: "actin",
-            parent: "glyph2",
+            parent: "reaction2",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -466,7 +629,7 @@ export const elements = [
             id: "glyph44",
             class: "dissociation",
             label: "",
-            parent: "glyph2",
+            parent: "reaction2",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -494,7 +657,7 @@ export const elements = [
             id: "glyph40",
             class: "simple chemical",
             label: "ADP",
-            parent: "glyph2",
+            parent: "reaction2",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -522,7 +685,7 @@ export const elements = [
             id: "glyph43",
             class: "process",
             label: "",
-            parent: "glyph2",
+            parent: "reaction2",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -550,8 +713,17 @@ export const elements = [
             id: "glyph33",
             class: "simple chemical",
             label: "Pi",
-            parent: "glyph2",
-            stateVariables: [],
+            parent: "reaction2",
+            stateVariables: [
+                {
+                    id: "glyphsad38a",
+                    class: "state variable",
+                    state: {
+                        variable: "",
+                        value: "relaxed"
+                    }
+                }
+            ],
             unitsOfInformation: [],
             bbox: {
                 x: 1657.0448245589985,
@@ -577,8 +749,8 @@ export const elements = [
         data: {
             id: "glyph38",
             class: "complex multimer",
-            label: "",
-            parent: "glyph2",
+            label: "qweqweqwe",
+            parent: "reaction2",
             stateVariables: [
                 {
                     id: "glyph38a",
@@ -642,7 +814,7 @@ export const elements = [
         data: {
             id: "glyph30",
             class: "macromolecule",
-            label: "actin",
+            label: "actinaaaaaa",
             parent: "glyph38",
             stateVariables: [],
             unitsOfInformation: [],
@@ -699,7 +871,7 @@ export const elements = [
             id: "glyph42",
             class: "association",
             label: "",
-            parent: "glyph2",
+            parent: "reaction2",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -727,7 +899,7 @@ export const elements = [
             id: "glyph22",
             class: "simple chemical",
             label: "Ca2+",
-            parent: "glyph2",
+            parent: "reaction2",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -755,7 +927,7 @@ export const elements = [
             id: "glyph24",
             class: "process",
             label: "",
-            parent: "glyph2",
+            parent: "reaction2",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -783,7 +955,7 @@ export const elements = [
             id: "glyph20",
             class: "macromolecule",
             label: "nAChR",
-            parent: "glyph2",
+            parent: "reaction2",
             stateVariables: [
                 {
                     id: "glyph20a",
@@ -820,7 +992,7 @@ export const elements = [
             id: "glyph16",
             class: "process",
             label: "",
-            parent: "glyph0",
+            parent: "reaction0",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -848,7 +1020,7 @@ export const elements = [
             id: "glyph47",
             class: "simple chemical",
             label: "acetyl CoA",
-            parent: "glyph0",
+            parent: "reaction0",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -876,7 +1048,7 @@ export const elements = [
             id: "glyph12",
             class: "simple chemical",
             label: "choline",
-            parent: "glyph0",
+            parent: "reaction0",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -904,7 +1076,7 @@ export const elements = [
             id: "glyph15",
             class: "process",
             label: "",
-            parent: "glyph0",
+            parent: "reaction0",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -932,7 +1104,7 @@ export const elements = [
             id: "glyph9",
             class: "macromolecule",
             label: "SNARE",
-            parent: "glyph0",
+            parent: "reaction0",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -960,7 +1132,7 @@ export const elements = [
             id: "glyph3",
             class: "macromolecule",
             label: "ChAT",
-            parent: "glyph0",
+            parent: "reaction0",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -988,7 +1160,7 @@ export const elements = [
             id: "glyph18",
             class: "process",
             label: "",
-            parent: "glyph0",
+            parent: "reaction0",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -1016,7 +1188,7 @@ export const elements = [
             id: "glyph4",
             class: "macromolecule",
             label: "vAChT",
-            parent: "glyph0",
+            parent: "reaction0",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -1044,7 +1216,7 @@ export const elements = [
             id: "glyph13",
             class: "simple chemical",
             label: "Ach",
-            parent: "glyph0",
+            parent: "reaction0",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -1072,7 +1244,7 @@ export const elements = [
             id: "glyph8",
             class: "macromolecule",
             label: "CHT1",
-            parent: "glyph0",
+            parent: "reaction0",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -1129,7 +1301,7 @@ export const elements = [
             id: "glyph5",
             class: "simple chemical",
             label: "choline",
-            parent: "glyph1",
+            parent: "reaction1",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -1157,7 +1329,7 @@ export const elements = [
             id: "glyph7",
             class: "simple chemical",
             label: "ACh",
-            parent: "glyph1",
+            parent: "reaction1",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -1185,7 +1357,7 @@ export const elements = [
             id: "glyph17",
             class: "process",
             label: "",
-            parent: "glyph1",
+            parent: "reaction1",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -1213,7 +1385,7 @@ export const elements = [
             id: "glyph11",
             class: "simple chemical",
             label: "acetate",
-            parent: "glyph1",
+            parent: "reaction1",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -1241,7 +1413,7 @@ export const elements = [
             id: "glyph19",
             class: "process",
             label: "",
-            parent: "glyph1",
+            parent: "reaction1",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -1269,7 +1441,7 @@ export const elements = [
             id: "glyph10",
             class: "macromolecule",
             label: "AChE",
-            parent: "glyph1",
+            parent: "reaction1",
             stateVariables: [],
             unitsOfInformation: [],
             bbox: {
@@ -1292,47 +1464,22 @@ export const elements = [
         pannable: false,
         classes: ""
     },
-    {
-        data: {
-            id: "glyph1",
-            class: "compartment",
-            label: "synaptic cleft",
-            stateVariables: [],
-            unitsOfInformation: [],
-            bbox: {
-                x: 770.0489105995644,
-                y: 603.9053834474291,
-                w: 254.08954881649527,
-                h: 304.8762412720447
-            }
-        },
-        position: {
-            x: 864.4457201088636,
-            y: 484.184708867897
-        },
-        group: "nodes",
-        removed: false,
-        selected: false,
-        selectable: true,
-        locked: false,
-        grabbable: true,
-        pannable: false,
-        classes: ""
-    },
+
+
+    // start nodes for reaction 1
+    // start nodes for reaction 2
+
     {
         data: {
             id: "glyph8-glyph15",
             class: "necessary stimulation",
             cardinality: 0,
+            label: "bnbnbn",
             source: "glyph8",
             target: "glyph15",
             bendPointPositions: [],
             portSource: "glyph8",
             portTarget: "glyph15"
-        },
-        position: {
-            x: 0,
-            y: 0
         },
         group: "edges",
         removed: false,
@@ -2212,10 +2359,10 @@ export const elements = [
             id: "glyph23-glyph41",
             class: "consumption",
             cardinality: 0,
-            source: "glyph23",
+            source: "reactant0",
             target: "glyph41",
             bendPointPositions: [],
-            portSource: "glyph23",
+            portSource: "reactant0",
             portTarget: "glyph41"
         },
         position: {
@@ -2231,4 +2378,37 @@ export const elements = [
         pannable: true,
         classes: ""
     }
-];
+
+
+    // remove
+    ,
+    {
+        data: {
+            id: "glyph32",
+            class: "phenotype",
+            label: "muscle contraction",
+            parent: "reaction2",
+            stateVariables: [],
+            unitsOfInformation: [],
+            bbox: {
+                x: 1976.8873538946682,
+                y: 651.7369383828263,
+                w: 160,
+                h: 60
+            }
+        },
+        position: {
+            x: 2197.7323146171566,
+            y: 1095.7604895957215
+        },
+        group: "nodes",
+        removed: false,
+        selected: false,
+        selectable: true,
+        locked: false,
+        grabbable: true,
+        pannable: false,
+        classes: ""
+    },
+
+*/

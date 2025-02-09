@@ -1,37 +1,56 @@
 export const layouts: Record<string, any> = {
     random: {
         name: "random",
+        ppadding: 50,
         animate: true
     },
     grid: {
         name: "grid",
+        ppadding: 50,
         animate: true
     },
     circle: {
         name: "circle",
+        ppadding: 50,
         animate: true
     },
     breadthfirst: {
         name: "breadthfirst",
+        ppadding: 50,
         animate: true
     },
     klay: {
         name: "klay",
         animate: true,
-        padding: 4,
-        nodeDimensionsIncludeLabels: true,
+        padding: 10,
+        nodeDimensionsIncludeLabels: false,
+        nodeSeparation: 200,
+        fit: true,
         klay: {
-            spacing: 40,
+            spacing: 100,
             mergeEdges: false
         }
     },
     fcose: {
         name: "fcose",
-        animate: true
+        animate: false,
+        padding: 200,
+        nodeSeparation: 200,
+        nodeDimensionsIncludeLabels: true,
+        fcose: {
+            spacing: 100,
+            mergeEdges: false
+        }
     },
     cose: {
         name: "cose",
-        animate: false
+        animate: false,
+        padding: 200,
+        fit: true,
+        cose: {
+            spacing: 100,
+            mergeEdges: false
+        }
     },
 
     cola: {

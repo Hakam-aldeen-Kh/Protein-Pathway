@@ -1,17 +1,14 @@
-import cytoscape from "cytoscape";
-import CytoscapeComponent from "react-cytoscapejs";
-import sbgnStylesheet from "cytoscape-sbgn-stylesheet";
 
-import { elements } from "./data";
+import { elements } from "./data5";
 import { layouts } from "./layouts";
 import setupCy from "./setupCy";
 import { useState } from "react";
+import Graph from "./Graph";
 
 setupCy();
 
 const PathwayResult = () => {
-  const cyStylesheet = sbgnStylesheet(cytoscape);
-  const [layout, setLayout] = useState(null);
+  const [layout, setLayout] = useState(layouts.fcose);
 
   const handleExport = () => {
     if (window.cy) {
@@ -27,10 +24,6 @@ const PathwayResult = () => {
     if (window.cy) {
       window.cy.zoom(window.cy.zoom() + 0.1);
     }
-
-    Object.keys(layouts).map((l) => (
-      console.log(l)
-    ))
   };
 
   const handleZoomOut = () => {
@@ -43,19 +36,7 @@ const PathwayResult = () => {
     <div className="w-full h-[calc(100vh-71px)] flex items-start justify-center gap-2 p-2 bg-gray-100 relative">
 
       <div className="flex-1 h-full bg-white rounded-lg shadow-lg flex items-center justify-center">
-        <CytoscapeComponent
-          zoom={0.5}
-          elements={elements}
-          style={{ width: "100%", height: "100%" }}
-          maxZoom={2}
-          minZoom={0.05}
-          layout={layout}
-          cy={(cy) => {
-            cy.style(cyStylesheet);
-            window.cy = cy;
-            cy.center();
-          }}
-        />
+        <Graph elements={elements} layout={layout} touch={true} />
       </div>
 
       <div className="w-[150px] space-y-2">

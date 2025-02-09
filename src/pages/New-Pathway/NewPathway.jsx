@@ -100,7 +100,7 @@ function NewPathway() {
   const handleSubmit = () => {
     console.log("basicInfoData : ", basicInfoData)
     console.log("reactions : ", reactions)
-    navigate("/pathway-result")
+    navigate("/preview/GPW-415820FQ-1")
 
   }
 
