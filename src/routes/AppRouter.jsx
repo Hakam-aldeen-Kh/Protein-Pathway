@@ -8,6 +8,7 @@ import Preview from "../pages/Preview/Preview";
 import ProtectedRoute from "../components/ProtectedRoute";
 import PathwayResult from "../pages/Pathway-Result/PathwayResult";
 import GlycanData from "../pages/Glycan-Data/GlycanData";
+import Review from "../pages/Review/Review";
 
 const AppRouter = () => {
   return (
@@ -62,6 +63,17 @@ const AppRouter = () => {
           <ProtectedRoute>
             <Layout>
               <Preview />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/review"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Review />
             </Layout>
           </ProtectedRoute>
         }

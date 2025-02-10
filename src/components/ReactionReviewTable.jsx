@@ -1,12 +1,10 @@
-import { useState } from "react";
-import EditModal from "./EditModal";
-import AddModal from "./AddModal";
+// import { useState } from "react";
+// import { Link } from "react-router";
+// import EditModal from "./EditModal";
 
-function ReactionTable() {
-  const [selectedReaction, setSelectedReaction] = useState(null);
-  const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [isAddModalOpen, setAddModalOpen] = useState(false);
-
+function ReactionReviewTable() {
+  // const [selectedReaction, setSelectedReaction] = useState(null);
+  // const [isModalOpen, setModalOpen] = useState(false);
 
   const reactionData = [
     {
@@ -27,40 +25,32 @@ function ReactionTable() {
     },
   ];
 
-  const handleEditClick = (reaction) => {
-    setSelectedReaction(reaction);
-    setEditModalOpen(true);
-  };
-
-  const handleAddReaction = () => {
-    setAddModalOpen(true);
-  };
+  // const handleEditClick = (reaction) => {
+  //   setSelectedReaction(reaction);
+  //   setModalOpen(true);
+  // };
 
   return (
     <div className="w-full mt-10">
-      <EditModal
-        isOpen={isEditModalOpen}
-        setIsOpen={setEditModalOpen}
+      {/* <EditModal
+        isOpen={isModalOpen}
+        setIsOpen={setModalOpen}
         data={selectedReaction}
-      />
-      <AddModal
-        isOpen={isAddModalOpen}
-        setIsOpen={setAddModalOpen}
-      />
+      /> */}
 
       <div className="flex flex-wrap gap-2.5 justify-center items-center w-full max-md:max-w-full mb-5">
         <h2 className="flex-1 shrink self-stretch my-auto text-2xl font-bold basis-0 text-neutral-900 max-md:max-w-full">
           Reaction Table
         </h2>
-        <div className="flex gap-4 items-center self-stretch my-auto text-sm font-semibold text-center text-white">
-          <button
-            onClick={() => handleAddReaction()}
+        {/* <div className="flex gap-4 items-center self-stretch my-auto text-sm font-semibold text-center text-white">
+          <Link
+            to="/new-pathway"
             className="flex gap-2 justify-center items-center self-stretch px-8 my-auto bg-[#57369E] hover:bg-[#00A7D3] transition-colors duration-500 rounded-sm min-h-[32px] max-md:px-5"
           >
             <img src="/images/icons/pluse.svg" />
             <span className="self-stretch my-auto">Add New Reaction</span>
-          </button>
-        </div>
+          </Link>
+        </div> */}
       </div>
 
       <div className="overflow-x-auto">
@@ -73,7 +63,6 @@ function ReactionTable() {
               <th className="p-3">Sugar Nucleotide</th>
               <th className="p-3">Product</th>
               <th className="p-3">Cell Location</th>
-              <th className="p-3">Actions</th>
             </tr>
           </thead>
 
@@ -113,17 +102,7 @@ function ReactionTable() {
 
                 <td className="px-4">{reaction.cellLocation}</td>
 
-                <td className="px-4 flex items-center h-full gap-2 -translate-y-[10px]">
-                  <button>
-                    <img src="/images/icons/add-square.svg" alt="add" />
-                  </button>
-                  <button onClick={() => handleEditClick(reaction)}>
-                    <img src="/images/icons/edit-square.svg" alt="Edit" />
-                  </button>
-                  <button>
-                    <img src="/images/icons/trash-square.svg" alt="Delete" />
-                  </button>
-                </td>
+
               </tr>
             ))}
           </tbody>
@@ -133,4 +112,4 @@ function ReactionTable() {
   );
 }
 
-export default ReactionTable;
+export default ReactionReviewTable;
