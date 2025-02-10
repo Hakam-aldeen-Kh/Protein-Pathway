@@ -7,14 +7,14 @@ const Home = () => {
       <div
         className="relative h-[600px] flex items-center px-8 md:px-16"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/hero.png')`,
+          backgroundImage: ` url('/images/hero.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
       >
         <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">GLYCAN PATHWAY PORTAL</h1>
-          <p className="text-lg mb-6 text-gray-200">
+          <h1 className="text-4xl md:text-5xl font-bold mb-10">GLYCAN PATHWAY PORTAL</h1>
+          <p className="text-3xl mb-10 text-gray-200">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
           <div className='flex items-center justify-start gap-4'>
@@ -29,8 +29,8 @@ const Home = () => {
       </div>
 
       {/* How It Works Section */}
-      <div className="py-16 px-8 md:px-16 ">
-        <h2 className="text-3xl font-black text-[1F1F1F] text-center mb-12">How It Works</h2>
+      <div className="py-20 px-8 md:px-16 ">
+        <h2 className="text-4xl font-black text-[#1F1F1F] text-center mb-12">How It Works</h2>
         <div className="grid md:grid-cols-3 gap-8 max-w-[1664px] mx-auto">
           {['Register', 'Input', 'Manage'].map((title, index) => (
             <div key={title} className="bg-[#3E81C81A] p-6 rounded-lg">
@@ -48,7 +48,7 @@ const Home = () => {
 
       {/* What We Do Section */}
       <div className="py-16 px-8 md:px-16">
-        <h2 className="text-3xl font-bold text-[#1F1F1F] text-center mb-12">What We Do</h2>
+        <h2 className="text-4xl font-bold text-[#1F1F1F] text-center mb-12">What We Do</h2>
         <div className="grid md:grid-cols-4 gap-8 max-w-[1664px] mx-auto">
           <FeatureCard
             icon={<img src={"/images/do1.png"} className="w-32 h-32 text-blue-500" />}
