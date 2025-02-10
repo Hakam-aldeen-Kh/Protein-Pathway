@@ -244,36 +244,36 @@ function NewPathway() {
 
   // controller
 
-  const addController = (reactionId) => {
-    setReactions((prev) =>
-      prev.map((reaction) =>
-        reaction.id === reactionId
-          ? {
-            ...reaction, controllers: [...reaction.controllers,
-            {
-              id: reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0,
-              cellType: "",
-              location: "",
-              controllerType: "",
-              actionType: "",
-              goOntology: "",
-              notGoOntology: "",
-              useNextReaction: false
-            }]
-          }
-          : reaction
-      )
-    );
+  // const addController = (reactionId) => {
+  //   setReactions((prev) =>
+  //     prev.map((reaction) =>
+  //       reaction.id === reactionId
+  //         ? {
+  //           ...reaction, controllers: [...reaction.controllers,
+  //           {
+  //             id: reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0,
+  //             cellType: "",
+  //             location: "",
+  //             controllerType: "",
+  //             actionType: "",
+  //             goOntology: "",
+  //             notGoOntology: "",
+  //             useNextReaction: false
+  //           }]
+  //         }
+  //         : reaction
+  //     )
+  //   );
 
-    setReactionsState((prev) =>
-      prev.map((reaction) =>
-        reaction.id === reactionId
-          ? { ...reaction, controllers: [...reaction.controllers, { id: reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0, state: true }] }
-          : reaction
-      )
-    );
+  //   setReactionsState((prev) =>
+  //     prev.map((reaction) =>
+  //       reaction.id === reactionId
+  //         ? { ...reaction, controllers: [...reaction.controllers, { id: reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0, state: true }] }
+  //         : reaction
+  //     )
+  //   );
 
-  };
+  // };
 
   const deleteController = (reactionId, controllerId) => {
     setReactions((prev) =>
@@ -804,9 +804,9 @@ function NewPathway() {
 
                         </div>
                       ))}
-                      <button onClick={() => addController(reaction.id)} className="flex items-center text-blue-600 hover:text-blue-700 mt-5">
+                      {/* <button onClick={() => addController(reaction.id)} className="flex items-center text-blue-600 hover:text-blue-700 mt-5">
                         <PlusIcon className="h-5 w-5 mr-1" /> Add New controller
-                      </button>
+                      </button> */}
                     </div>
                   }
 
