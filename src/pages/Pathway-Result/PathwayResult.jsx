@@ -1,5 +1,5 @@
 
-import { elements } from "./data5";
+import { elements } from "./data";
 import { layouts } from "./layouts";
 import setupCy from "./setupCy";
 import { useState } from "react";
@@ -8,7 +8,7 @@ import Graph from "./Graph";
 setupCy();
 
 const PathwayResult = () => {
-  const [layout, setLayout] = useState(layouts.fcose);
+  const [layout, setLayout] = useState(null);
 
   const handleExport = () => {
     if (window.cy) {
