@@ -7,6 +7,7 @@ import Login from "../pages/Login/Login";
 import Preview from "../pages/Preview/Preview";
 import ProtectedRoute from "../components/ProtectedRoute";
 import PathwayResult from "../pages/Pathway-Result/PathwayResult";
+import GlycanData from "../pages/Glycan-Data/GlycanData";
 
 const AppRouter = () => {
   return (
@@ -20,13 +21,20 @@ const AppRouter = () => {
         }
       />
       <Route
-        path="/pathway-data"
+        path="/protein-pathway-data"
         element={
-          <ProtectedRoute>
-            <Layout>
-              <PathwayData />
-            </Layout>
-          </ProtectedRoute>
+          <Layout>
+            <PathwayData />
+          </Layout>
+
+        }
+      />
+      <Route
+        path="/glycan-pathway-data"
+        element={
+          <Layout>
+            <GlycanData />
+          </Layout>
 
         }
       />

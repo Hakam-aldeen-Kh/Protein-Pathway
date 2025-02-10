@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 const SearchAndFilters = ({ onSearch, onFilterSelect, onAddPathway }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,6 +14,8 @@ const SearchAndFilters = ({ onSearch, onFilterSelect, onAddPathway }) => {
     setSelectedFilters(updatedFilters);
     onFilterSelect?.(updatedFilters);
   };
+  const location = useLocation();
+  const isGlycanPage = location.pathname === "/glycan-pathway-data";
 
   return (
     <div className="flex flex-wrap gap-10 items-center w-full text-sm">
@@ -66,13 +68,13 @@ const SearchAndFilters = ({ onSearch, onFilterSelect, onAddPathway }) => {
         </select>
       </div>
       {/* ➕ Add New Pathway Button */}
-      <Link
+      {!isGlycanPage && <Link
         to="/new-pathway"
         onClick={onAddPathway}
         className="flex gap-2 justify-center items-center px-8 py-1.5 bg-violet-900 text-white rounded-sm min-h-[32px] hover:bg-[#00A7D3] transition-colors duration-500"
       >
         Add New Pathway
-      </Link>
+      </Link>}
     </div>
   );
 };

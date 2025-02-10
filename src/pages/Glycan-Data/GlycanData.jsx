@@ -1,32 +1,27 @@
 import { useState } from "react";
 import HeroSection from "../../components/HeroSection";
 import Pagination from "../../components/Pagination";
-import PathwayTable from "../../components/PathwayTable";
 import PathwayTabs from "../../components/PathwayTabs";
 import SearchAndFilters from "../../components/SearchAndFilters";
+import GlycanPathwayTable from "../../components/GlycanPathwayTable";
 
 const samplePathways = Array(50)
   .fill()
   .map((_, index) => ({
     id: `GPW-415820FQ-${index + 1}`,
     title: `Pathway Title ${index + 1}`,
+    description: "Lorem ipsum dolor sit...",
     species: "Homo Sapiens",
-    category:
-      index % 3 === 0
-        ? "Notch Signaling"
-        : index % 3 === 1
-          ? "Metabolic"
-          : "Cell Cycle",
-    reactants: [`G04602LA-${index + 1}`, `G04602LB-${index + 1}`],
-    controller: `G04602LA-${index + 1}`,
-    products: [`G04602LC-${index + 1}`, `G04602LD-${index + 1}`],
+    involvedGlycan: [`G04602LA-${index + 1}`, `G04602LB-${index + 1}`],
+    involvedEnzymes: ["4-galactosyl-N-acetylglucosaminide 3-a-L-fucosyltransferase", "N-acetylglucosaminyl-diphospho-decaprenol L-rhamnosyltransferase", "peptidoglycan glycosyltransferase"],
     date: `${(index % 28) + 1}.${(index % 12) + 1}.202${index % 2 === 0 ? "4" : "5"
       }`,
+    relatedDisease: "Leukemia",
     owner: index % 2 === 0 ? "me" : "other",
     status: index % 3 === 0 ? "Active" : "Inactive",
   }));
 
-const PathwayData = () => {
+const GlycanData = () => {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
@@ -80,7 +75,7 @@ const PathwayData = () => {
   return (
     <div className="flex overflow-hidden flex-col justify-center bg-white">
       <div className="flex flex-col w-full max-md:max-w-full">
-        <HeroSection title="Protein Pathway Data" />
+        <HeroSection title="Glycan Synthetic Patway Data" />
         <div className="flex flex-col px-32 mt-10 w-full max-md:px-5 max-md:max-w-full">
           {isLoggedIn && <PathwayTabs activeTab={activeTab} onTabChange={setActiveTab} />}
           <div className="flex flex-col mt-2.5 w-full rounded-lg max-md:max-w-full">
@@ -89,7 +84,7 @@ const PathwayData = () => {
               onFilterSelect={handleFilterSelect}
               onAddPathway={() => console.log("Adding new pathway")}
             />
-            <PathwayTable pathways={displayedPathways} />
+            <GlycanPathwayTable pathways={displayedPathways} />
             <Pagination
               totalItems={filteredPathways.length}
               itemsPerPage={itemsPerPage}
@@ -102,4 +97,4 @@ const PathwayData = () => {
   );
 };
 
-export default PathwayData;
+export default GlycanData;

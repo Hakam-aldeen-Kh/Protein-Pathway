@@ -2,8 +2,8 @@ import { Link } from "react-router";
 
 function NavigationLinks() {
   const links = [
-    { text: "Protein Pathway", href: "/pathway-data" },
-    { text: "Glycan Synthetic Pathway", href: "/" },
+    { text: "Protein Pathway", href: "/protein-pathway-data" },
+    { text: "Glycan Synthetic Pathway", href: "/glycan-pathway-data" },
   ];
 
   return (
