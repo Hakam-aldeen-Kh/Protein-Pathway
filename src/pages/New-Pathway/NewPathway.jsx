@@ -100,7 +100,7 @@ function NewPathway() {
   const handleSubmit = () => {
     console.log("basicInfoData : ", basicInfoData)
     console.log("reactions : ", reactions)
-    navigate("/preview/GPW-415820FQ-1")
+    navigate("/review")
 
   }
 
@@ -345,10 +345,10 @@ function NewPathway() {
       <div className="w-full mx-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6 sticky top-0 bg-white px-2 py-5">
-            <h1 className="text-2xl font-bold">Add New Pathway</h1>
+            <h1 className="text-4xl font-black">Add New Pathway</h1>
             <div className="space-x-2">
-              <button className="px-4 py-2 text-gray-600 hover:text-gray-800" onClick={handleSubmit}>Cancel</button>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" onClick={handleSubmit}>
+              <button className="px-4 py-2 text-gray-600 hover:text-gray-800" onClick={() => navigate("/")}>Cancel</button>
+              <button className="px-4 py-2 bg-[#57369E] text-white rounded" onClick={handleSubmit}>
                 Review
               </button>
             </div>
@@ -373,7 +373,7 @@ function NewPathway() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
-                      Title <span className="text-red-500">*</span>
+                      <span className="text-red-500">*</span>Title
                     </label>
                     <input
                       type="text"
@@ -386,7 +386,7 @@ function NewPathway() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
-                      Description <span className="text-red-500">*</span>
+                      <span className="text-red-500">*</span> Description
                     </label>
                     <input
                       type="text"
@@ -472,7 +472,7 @@ function NewPathway() {
           {/* Reactions */}
           {reactions.map((reaction, reactionIndex) => (
             <div key={reaction.id} className="border rounded-lg mb-4">
-              <div className="bg-purple-50 rounded-t-lg px-4 py-3 flex justify-between items-center">
+              <div className="bg-[#DDD7EC] rounded-t-lg px-4 py-3 flex justify-between items-center">
                 <h2 className="font-medium">Reaction - {reaction.id}</h2>
                 <div className="flex items-center space-x-2">
                   <button onClick={() => deleteReaction(reaction.id)} className="p-1 hover:bg-purple-100 rounded">
@@ -484,21 +484,21 @@ function NewPathway() {
                 </div>
               </div>
               {reactionsState[reactionIndex].state && (
-                <div className="border-t p-4">
-                  <div className="flex">
-                    <button onClick={() => setActiveTap("reactants")} className={`px-4  py-2 text-gray-500 hover:text-gray-700 ${activeTap === "reactants" && "border-b-2 border-purple-500 font-medium"}`}>
+                <div className="border-t p-4 bg-[#DDD7EC]">
+                  <div className="flex space-x-1 ">
+                    <button onClick={() => setActiveTap("reactants")} className={`px-4  py-2 bg-white rounded-t-lg text-gray-500 hover:text-gray-700 ${activeTap === "reactants" && "border-b-2 border-purple-500 font-medium"}`}>
                       Reactants
                     </button>
-                    <button onClick={() => setActiveTap("controllers")} className={`px-4  py-2 text-gray-500 hover:text-gray-700 ${activeTap === "controllers" && "border-b-2 border-purple-500 font-medium"}`}>
+                    <button onClick={() => setActiveTap("controllers")} className={`px-4  py-2 bg-white rounded-t-lg text-gray-500 hover:text-gray-700 ${activeTap === "controllers" && "border-b-2 border-purple-500 font-medium"}`}>
                       Controllers
                     </button>
-                    <button onClick={() => setActiveTap("products")} className={`px-4  py-2 text-gray-500 hover:text-gray-700 ${activeTap === "products" && "border-b-2 border-purple-500 font-medium"}`}>
+                    <button onClick={() => setActiveTap("products")} className={`px-4  py-2 bg-white rounded-t-lg text-gray-500 hover:text-gray-700 ${activeTap === "products" && "border-b-2 border-purple-500 font-medium"}`}>
                       Products
                     </button>
                   </div>
 
                   {activeTap === "reactants" &&
-                    <div>
+                    <div className='bg-white rounded-lg pb-2 px-2 rounded-tl-none'>
                       {reaction.reactants.map((item, index) => (
                         <div key={item.id} className="p-4">
                           <div className="border rounded-lg mb-4">
@@ -653,7 +653,7 @@ function NewPathway() {
                   }
 
                   {activeTap === "controllers" &&
-                    <div>
+                    <div className='bg-white rounded-lg pb-2 px-2 rounded-tl-none' >
                       {reaction.controllers.map((item, index) => (
                         <div key={item.id} className="p-4">
                           <div className="border rounded-lg mb-4">
@@ -750,14 +750,20 @@ function NewPathway() {
                                       <label className="block text-sm font-medium text-gray-700">
                                         When your complex is in GO ontology complex.
                                       </label>
-                                      <input
-                                        type="text"
-                                        className="mt-1 border w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        value={item.goOntology}
-                                        onChange={(e) =>
-                                          handleChange(reaction.id, "controllers", index, "goOntology", e.target.value)
-                                        }
-                                      />
+                                      <div className=' space-x-2'>
+                                        <input
+                                          type="text"
+                                          className="mt-1 border w-[49%] rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                          value={item.goOntology}
+                                          onChange={(e) =>
+                                            handleChange(reaction.id, "controllers", index, "goOntology", e.target.value)
+                                          }
+                                        />
+                                        <input
+                                          type="text"
+                                          className="mt-1 border w-[49%] rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        />
+                                      </div>
                                     </div>
                                     <div>
                                       <label className="block text-sm font-medium text-gray-700">
@@ -811,7 +817,7 @@ function NewPathway() {
                   }
 
                   {activeTap === "products" &&
-                    <div>
+                    <div className='bg-white rounded-lg pb-2 px-2 rounded-tl-none'>
                       {reaction.products.map((item, index) => (
                         <div key={item.id} className="p-4">
                           <div className="border rounded-lg mb-4">

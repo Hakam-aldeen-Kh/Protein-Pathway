@@ -44,12 +44,12 @@ const Preview = () => {
               </h1>
               <div className="flex gap-5 items-center self-stretch my-auto text-sm font-semibold text-center text-violet-900">
                 <Link
-                  to="/pathway-data"
+                  to="/protein-pathway-data"
                   className="flex gap-2 justify-center items-center self-stretch px-4 py-2 my-auto rounded-sm border border-violet-900 hover:border-transparent border-solid min-h-[40px] hover:text-white hover:bg-[#00A7D3] transition-colors duration-500 "
                   onClick={() => {
                     Toast.fire({
-                      title: `<div class='flex justify-between items-center'><span>Pathway Added</span><button class="close-btn text-xl font-bold inline"><img src="/images/icons/close.svg" class="close-btn" /></button></div>`,
-                      html: `<p class="text-sm text-gray-600">Your new pathway was added successfully</p>`,
+                      title: `<div class='flex justify-between items-center'><span>Pathway Updated</span><button class="close-btn text-xl font-bold inline"><img src="/images/icons/close.svg" class="close-btn" /></button></div>`,
+                      html: `<p class="text-sm text-gray-600">Your pathway was updated successfully</p>`,
                     });
                   }}
                 >
