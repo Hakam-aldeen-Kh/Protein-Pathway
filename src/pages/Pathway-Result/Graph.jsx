@@ -60,7 +60,7 @@ const Graph = ({ elements, layout, touch = false }) => {
                     cy.boxSelectionEnabled(false); // Disable selection
                     cy.userPanningEnabled(false); // Disable graph panning
                     // cy.zoomingEnabled(false); // Disable zooming
-                    cy.zoom(0.23)
+                    cy.zoom(0.15)
                 }
                 cy.center();
 
