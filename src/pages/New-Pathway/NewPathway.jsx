@@ -633,79 +633,346 @@ function NewPathway() {
                                       }
                                     >
                                       <option value="">Select Reactant Type</option>
-                                      <option value="a1">A1</option>
-                                      <option value="a2">A2</option>
+                                      <option value="complex">Complex</option>
+                                      <option value="protein">Protein</option>
+                                      <option value="glycan">Glycan</option>
+                                      <option value="small_molecule">Small molecule</option>
+                                      <option value="dna">DNA</option>
                                     </select>
                                   </div>
 
-                                  <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700">
-                                        Glycan Text Type
-                                      </label>
-                                      <select
-                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        value={item.glycanTextType}
-                                        onChange={(e) =>
-                                          handleChange(reaction.id, "reactants", index, "glycanTextType", e.target.value)
-                                        }
-                                      >
-                                        <option value="">Select Glycan Text Type</option>
-                                        <option value="a1">A1</option>
-                                        <option value="a2">A2</option>
-                                      </select>
-                                    </div>
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700">
-                                        Glycan Text
-                                      </label>
-                                      <input
-                                        type="text"
-                                        className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        placeholder="Type Glycan Text"
-                                        value={item.glycanText}
-                                        onChange={(e) =>
-                                          handleChange(reaction.id, "reactants", index, "glycanText", e.target.value)
-                                        }
-                                      />
-                                    </div>
-                                  </div>
+                                  {item.reactantType === "complex" &&
+                                    <>
 
-                                  <div>
-                                    <span className="font-bold text-xs block py-4">
-                                      Binding Backbone Information
-                                    </span>
-                                    <div className="grid grid-cols-2 gap-4">
                                       <div>
-                                        <label className="block text-sm font-medium text-gray-700">
-                                          Binding Site Code
-                                        </label>
-                                        <input
-                                          type="text"
-                                          className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                          placeholder="Three letters code of binding site (e.g. ser, tyr...)"
-                                          value={item.bindingSiteCode}
-                                          onChange={(e) =>
-                                            handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
-                                          }
-                                        />
+                                        <span className="font-bold text-xs block py-4">
+                                          When you re complex is in GO ontology complex
+                                        </span>
+                                        <div className="grid grid-cols-2 gap-4">
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              Symbolic Name
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Symbolic Name (NF-KappaB p50/p65 complex)"
+                                            // value={item.glycanTextType}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "glycanTextType", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              Complex Symbol
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Complex Symbol"
+                                            // value={item.glycanText}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "glycanText", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                        </div>
                                       </div>
+
                                       <div>
-                                        <label className="block text-sm font-medium text-gray-700">
-                                          Number of Amino Acid Binding Site
-                                        </label>
-                                        <input
-                                          type="text"
-                                          className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                          placeholder="Type number of amino acid binding site (e.g. 123)"
-                                          value={item.aminoAcidBindingSite}
-                                          onChange={(e) =>
-                                            handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
-                                          }
-                                        />
+                                        <span className="font-bold text-xs block py-4">
+                                          When you re complex is NOT in GO ontology complex
+                                        </span>
+                                        <div className="grid grid-cols-2 gap-4">
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              Complex Name
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Type The Complex Name"
+                                            // value={item.bindingSiteCode}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              Complex Symbol
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Complex Symbol"
+                                            // value={item.aminoAcidBindingSite}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                        </div>
                                       </div>
-                                    </div>
-                                  </div>
+                                    </>
+                                  }
+
+                                  {item.reactantType === "protein" &&
+                                    <>
+                                      <div>
+                                        <span className="font-bold text-xs block py-4">
+                                          Protein Name
+                                        </span>
+                                        <div className="grid grid-cols-2 gap-4">
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              Symbolic Name
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Symbolic Name (NF-KappaB p50/p65 complex)"
+                                            // value={item.glycanTextType}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "glycanTextType", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              Protein Symbol
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Protein Symbol (e.g. RecA)"
+                                            // value={item.glycanText}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "glycanText", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <div>
+                                        <span className="font-bold text-xs block py-4">
+                                          Protein Modification
+                                        </span>
+                                        <div className="grid grid-cols-2 gap-4">
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              Modifying site
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Modifying site of amino acid (number)"
+                                            // value={item.bindingSiteCode}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              Modifying Type
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Modifying type (PSI-MOD, e.g. “sulfated residue”)"
+                                            // value={item.aminoAcidBindingSite}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </>
+                                  }
+
+                                  {item.reactantType === "glycan" &&
+                                    <>
+                                      <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700">
+                                            Glycan Text Type
+                                          </label>
+                                          <select
+                                            className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                          // value={item.glycanTextType}
+                                          // onChange={(e) =>
+                                          //   handleChange(reaction.id, "reactants", index, "glycanTextType", e.target.value)
+                                          // }
+                                          >
+                                            <option value="">Select Glycan Text Type</option>
+                                            <option value="Linear code">Linear code</option>
+                                            <option value="IUPAC Extended">IUPAC Extended</option>
+                                            <option value="IUPAC condensed">IUPAC condensed</option>
+                                            <option value="GlyTouCan ID">GlyTouCan ID</option>
+                                          </select>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700">
+                                            Glycan Text
+                                          </label>
+                                          <input
+                                            type="text"
+                                            className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                            placeholder="Type Glycan Text"
+                                          // value={item.glycanText}
+                                          // onChange={(e) =>
+                                          //   handleChange(reaction.id, "reactants", index, "glycanText", e.target.value)
+                                          // }
+                                          />
+                                        </div>
+                                      </div>
+
+                                      <div>
+                                        <span className="font-bold text-xs block py-4">
+                                          Binding Backbone Information
+                                        </span>
+                                        <div className="grid grid-cols-2 gap-4">
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              Binding Site Code
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Three letters code of binding site (e.g. ser, tyr...)"
+                                            // value={item.bindingSiteCode}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              Number of Amino Acid Binding Site
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Type number of amino acid binding site (e.g. 123)"
+                                            // value={item.aminoAcidBindingSite}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </>
+                                  }
+
+                                  {item.reactantType === "small_molecule" &&
+                                    <>
+                                      <div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              Small Molecule
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Small Molecule (e.g. ATP)"
+                                            // value={item.bindingSiteCode}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              Lipid
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Lipid name or LIPIDMAPS (e.g. Sphinganin-1-phosphocholine)"
+                                            // value={item.aminoAcidBindingSite}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </>
+                                  }
+
+                                  {item.reactantType === "dna" &&
+                                    <>
+                                      <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700">
+                                            Gene Name
+                                          </label>
+                                          <input
+                                            type="text"
+                                            className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                            placeholder="Gene Name"
+                                          // value={item.bindingSiteCode}
+                                          // onChange={(e) =>
+                                          //   handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
+                                          // }
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700">
+                                            Hromosom Number
+                                          </label>
+                                          <input
+                                            type="text"
+                                            className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                            placeholder="Hromosom Number"
+                                          // value={item.aminoAcidBindingSite}
+                                          // onChange={(e) =>
+                                          //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
+                                          // }
+                                          />
+                                        </div>
+                                      </div>
+
+                                      <div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              P (long arm) or Q (short arm)
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Name"
+                                            // value={item.bindingSiteCode}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                              Specific band location
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                              placeholder="Specific band location (number)"
+                                            // value={item.aminoAcidBindingSite}
+                                            // onChange={(e) =>
+                                            //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
+                                            // }
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </>
+                                  }
 
                                 </div>
                               }
@@ -1017,24 +1284,40 @@ function NewPathway() {
                                         }}
                                       />
                                       <label htmlFor={`useNextReaction-${reaction.id}-${index}`} className="text-sm font-medium text-gray-700">Use this product in the next reaction</label>
-
-
-                                      {item.useNextReaction &&
-                                        <div className='mt-5'>
-                                          <label className="block text-sm font-medium text-gray-700">Product Type</label>
-                                          <select
-                                            className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                            value={item.productType}
-                                            onChange={(e) => handleChange(reaction.id, "products", index, "productType", e.target.value)}
-                                          >
-                                            <option value="">Select Product Type</option>
-                                            <option value="a1">Ractant</option>
-                                            <option value="a2">Controller</option>
-                                          </select>
-                                        </div>
-                                      }
                                     </div>
                                   </div>
+
+                                  {item.useNextReaction &&
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700">Type</label>
+                                        <select
+                                          className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                          value={item.type}
+                                          onChange={(e) => handleChange(reaction.id, "products", index, "type", e.target.value)}
+                                        >
+                                          <option value="">Type</option>
+                                          <option value="reactant">Ractant</option>
+                                          <option value="controller">Controller</option>
+                                        </select>
+                                      </div>
+
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700">Targeted Reaction</label>
+                                        <select
+                                          disabled={!item.type}
+                                          className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        // value={item.productType}
+                                        // onChange={(e) => handleChange(reaction.id, "products", index, "productType", e.target.value)}
+                                        >
+                                          <option value="">Select reaction</option>
+                                          {reactions.map(item =>
+                                            <option key={item.id} value={item.id}>Reaction {item.id}</option>
+                                          )}
+                                        </select>
+                                      </div>
+                                    </div>
+                                  }
                                 </div>
                               }
                             </div>
