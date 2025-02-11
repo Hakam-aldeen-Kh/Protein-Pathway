@@ -1,11 +1,21 @@
 import { useState } from 'react';
 import { ChevronUpIcon, ChevronDownIcon, TrashIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router';
+import DeleteModal from '../../common/DeleteModal';
+import Modal from "react-modal";
 
 function NewPathway() {
   const navigate = useNavigate()
   const [isBasicInfoOpen, setIsBasicInfoOpen] = useState(true);
-  const [activeTap, setActiveTap] = useState("reactants");
+
+  const [modalData, setModalData] = useState({
+    isModalOpen: false,
+    closeModal: () => console.log("click"),
+    title: "",
+    handleDelete: () => console.log("click")
+  });
+
+  const [activeTabs, setActiveTabs] = useState({});
   const [reactions, setReactions] = useState([
     {
       id: 0,
@@ -51,6 +61,8 @@ function NewPathway() {
         ]
     }
   ]);
+
+  const closeModal = () => setModalData((prev) => ({ ...prev, isModalOpen: false }))
 
   const [reactionsState, setReactionsState] = useState(
     [
@@ -190,8 +202,15 @@ function NewPathway() {
   };
 
   const deleteReaction = (id) => {
-    setReactions((prev) => prev.filter((reaction) => reaction.id !== id));
-    setReactionsState((prev) => prev.filter((reaction) => reaction.id !== id));
+    setModalData({
+      isModalOpen: true,
+      closeModal,
+      title: "Reaction",
+      handleDelete: () => {
+        setReactions((prev) => prev.filter((reaction) => reaction.id !== id));
+        setReactionsState((prev) => prev.filter((reaction) => reaction.id !== id));
+      }
+    })
   };
 
   // reactants
@@ -226,70 +245,84 @@ function NewPathway() {
   };
 
   const deleteReactant = (reactionId, reactantId) => {
-    setReactions((prev) =>
-      prev.map((reaction) =>
-        reaction.id === reactionId
-          ? { ...reaction, reactants: reaction.reactants.filter((reactant) => reactant.id !== reactantId) }
-          : reaction
-      )
-    );
-    setReactionsState((prev) =>
-      prev.map((reaction) =>
-        reaction.id === reactionId
-          ? { ...reaction, reactants: reaction.reactants.filter((reactant) => reactant.id !== reactantId) }
-          : reaction
-      )
-    );
+    setModalData({
+      isModalOpen: true,
+      closeModal,
+      title: "Reactant",
+      handleDelete: () => {
+        setReactions((prev) =>
+          prev.map((reaction) =>
+            reaction.id === reactionId
+              ? { ...reaction, reactants: reaction.reactants.filter((reactant) => reactant.id !== reactantId) }
+              : reaction
+          )
+        );
+        setReactionsState((prev) =>
+          prev.map((reaction) =>
+            reaction.id === reactionId
+              ? { ...reaction, reactants: reaction.reactants.filter((reactant) => reactant.id !== reactantId) }
+              : reaction
+          )
+        );
+      }
+    })
   };
 
   // controller
 
-  // const addController = (reactionId) => {
-  //   setReactions((prev) =>
-  //     prev.map((reaction) =>
-  //       reaction.id === reactionId
-  //         ? {
-  //           ...reaction, controllers: [...reaction.controllers,
-  //           {
-  //             id: reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0,
-  //             cellType: "",
-  //             location: "",
-  //             controllerType: "",
-  //             actionType: "",
-  //             goOntology: "",
-  //             notGoOntology: "",
-  //             useNextReaction: false
-  //           }]
-  //         }
-  //         : reaction
-  //     )
-  //   );
-
-  //   setReactionsState((prev) =>
-  //     prev.map((reaction) =>
-  //       reaction.id === reactionId
-  //         ? { ...reaction, controllers: [...reaction.controllers, { id: reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0, state: true }] }
-  //         : reaction
-  //     )
-  //   );
-
-  // };
-
-  const deleteController = (reactionId, controllerId) => {
+  const addController = (reactionId) => {
     setReactions((prev) =>
       prev.map((reaction) =>
         reaction.id === reactionId
-          ? { ...reaction, controllers: reaction.controllers.filter((controller) => controller.id !== controllerId) }
+          ? {
+            ...reaction, controllers: [...reaction.controllers,
+            {
+              id: reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0,
+              cellType: "",
+              location: "",
+              controllerType: "",
+              actionType: "",
+              goOntology: "",
+              notGoOntology: "",
+              useNextReaction: false
+            }]
+          }
           : reaction
       )
     );
+
     setReactionsState((prev) =>
       prev.map((reaction) =>
         reaction.id === reactionId
-          ? { ...reaction, controllers: reaction.controllers.filter((controller) => controller.id !== controllerId) }
+          ? { ...reaction, controllers: [...reaction.controllers, { id: reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0, state: true }] }
           : reaction
       )
     );
+
+  };
+
+  const deleteController = (reactionId, controllerId) => {
+    setModalData({
+      isModalOpen: true,
+      closeModal,
+      title: "Contoller",
+      handleDelete: () => {
+        setReactions((prev) =>
+          prev.map((reaction) =>
+            reaction.id === reactionId
+              ? { ...reaction, controllers: reaction.controllers.filter((controller) => controller.id !== controllerId) }
+              : reaction
+          )
+        );
+        setReactionsState((prev) =>
+          prev.map((reaction) =>
+            reaction.id === reactionId
+              ? { ...reaction, controllers: reaction.controllers.filter((controller) => controller.id !== controllerId) }
+              : reaction
+          )
+        );
+      }
+    })
   };
 
   // products
@@ -324,20 +357,56 @@ function NewPathway() {
   };
 
   const deleteProduct = (reactionId, productId) => {
-    setReactions((prev) =>
-      prev.map((reaction) =>
-        reaction.id === reactionId
-          ? { ...reaction, products: reaction.products.filter((product) => product.id !== productId) }
-          : reaction
-      )
-    );
-    setReactionsState((prev) =>
-      prev.map((reaction) =>
-        reaction.id === reactionId
-          ? { ...reaction, products: reaction.products.filter((product) => product.id !== productId) }
-          : reaction
-      )
-    );
+    setModalData({
+      isModalOpen: true,
+      closeModal,
+      title: "Product",
+      handleDelete: () => {
+        setReactions((prev) =>
+          prev.map((reaction) =>
+            reaction.id === reactionId
+              ? { ...reaction, products: reaction.products.filter((product) => product.id !== productId) }
+              : reaction
+          )
+        );
+        setReactionsState((prev) =>
+          prev.map((reaction) =>
+            reaction.id === reactionId
+              ? { ...reaction, products: reaction.products.filter((product) => product.id !== productId) }
+              : reaction
+          )
+        );
+      }
+    })
+  };
+
+  const getActiveTab = (id) => activeTabs[id] || "reactants"; // Default to "reactants"
+
+  const handleTabChange = (id, tab) => {
+    setActiveTabs((prev) => ({
+      ...prev,
+      [id]: tab,
+    }));
+  };
+
+
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [pendingCheck, setPendingCheck] = useState(null);
+
+  const openModal = () => setModalIsOpen(true);
+  const closeCheckModal = () => setModalIsOpen(false);
+
+  const confirmChange = () => {
+    pendingCheck.change()
+    setModalIsOpen(false);
+  };
+
+  const handleCheckboxChange = (reactionId, field, index, key, value) => {
+    openModal();
+    setPendingCheck({
+      change: () => handleChange(reactionId, field, index, key, value),
+    });
   };
 
   return (
@@ -486,18 +555,18 @@ function NewPathway() {
               {reactionsState[reactionIndex].state && (
                 <div className="border-t p-4 bg-[#DDD7EC]">
                   <div className="flex space-x-1 ">
-                    <button onClick={() => setActiveTap("reactants")} className={`px-4  py-2 bg-white rounded-t-lg text-gray-500 hover:text-gray-700 ${activeTap === "reactants" && "border-b-2 border-purple-500 font-medium"}`}>
+                    <button onClick={() => handleTabChange(reaction.id, "reactants")} className={`px-4  py-2 bg-white rounded-t-lg text-gray-500 hover:text-gray-700 ${getActiveTab(reaction.id) === "reactants" && "border-b-2 border-purple-500 font-medium"}`}>
                       Reactants
                     </button>
-                    <button onClick={() => setActiveTap("controllers")} className={`px-4  py-2 bg-white rounded-t-lg text-gray-500 hover:text-gray-700 ${activeTap === "controllers" && "border-b-2 border-purple-500 font-medium"}`}>
+                    <button onClick={() => handleTabChange(reaction.id, "controllers")} className={`px-4  py-2 bg-white rounded-t-lg text-gray-500 hover:text-gray-700 ${getActiveTab(reaction.id) === "controllers" && "border-b-2 border-purple-500 font-medium"}`}>
                       Controllers
                     </button>
-                    <button onClick={() => setActiveTap("products")} className={`px-4  py-2 bg-white rounded-t-lg text-gray-500 hover:text-gray-700 ${activeTap === "products" && "border-b-2 border-purple-500 font-medium"}`}>
+                    <button onClick={() => handleTabChange(reaction.id, "products")} className={`px-4  py-2 bg-white rounded-t-lg text-gray-500 hover:text-gray-700 ${getActiveTab(reaction.id) === "products" && "border-b-2 border-purple-500 font-medium"}`}>
                       Products
                     </button>
                   </div>
 
-                  {activeTap === "reactants" &&
+                  {getActiveTab(reaction.id) === "reactants" &&
                     <div className='bg-white rounded-lg pb-2 px-2 rounded-tl-none'>
                       {reaction.reactants.map((item, index) => (
                         <div key={item.id} className="p-4">
@@ -652,14 +721,14 @@ function NewPathway() {
                     </div>
                   }
 
-                  {activeTap === "controllers" &&
+                  {getActiveTab(reaction.id) === "controllers" &&
                     <div className='bg-white rounded-lg pb-2 px-2 rounded-tl-none' >
                       {reaction.controllers.map((item, index) => (
                         <div key={item.id} className="p-4">
                           <div className="border rounded-lg mb-4">
                             <div className="">
                               <div className="flex p-4 border-b justify-between items-center">
-                                <span>controller {item.id}</span>
+                                <span>Controller {item.id}</span>
                                 <div className="flex items-center space-x-2">
                                   <button onClick={() => deleteController(reaction.id, item.id)} className="p-1 hover:bg-red-100 rounded">
                                     <TrashIcon className="h-5 w-5 text-gray-500" />
@@ -810,13 +879,13 @@ function NewPathway() {
 
                         </div>
                       ))}
-                      {/* <button onClick={() => addController(reaction.id)} className="flex items-center text-blue-600 hover:text-blue-700 mt-5">
+                      {reaction.controllers.length < 1 && <button onClick={() => addController(reaction.id)} className="flex items-center text-blue-600 hover:text-blue-700 mt-5">
                         <PlusIcon className="h-5 w-5 mr-1" /> Add New controller
-                      </button> */}
+                      </button>}
                     </div>
                   }
 
-                  {activeTap === "products" &&
+                  {getActiveTab(reaction.id) === "products" &&
                     <div className='bg-white rounded-lg pb-2 px-2 rounded-tl-none'>
                       {reaction.products.map((item, index) => (
                         <div key={item.id} className="p-4">
@@ -936,10 +1005,34 @@ function NewPathway() {
                                     <div className='space-x-3'>
                                       <input
                                         type="checkbox"
+                                        id={`useNextReaction-${reaction.id}-${index}`}
                                         checked={item.useNextReaction}
-                                        onChange={(e) => handleChange(reaction.id, "products", index, "useNextReaction", e.target.checked)}
+                                        onChange={(e) => {
+                                          if (item.useNextReaction) {
+                                            handleChange(reaction.id, "products", index, "useNextReaction", e.target.checked)
+                                          }
+                                          else {
+                                            handleCheckboxChange(reaction.id, "products", index, "useNextReaction", e.target.checked)
+                                          }
+                                        }}
                                       />
-                                      <label className="text-sm font-medium text-gray-700">Use this product in the next reaction</label>
+                                      <label htmlFor={`useNextReaction-${reaction.id}-${index}`} className="text-sm font-medium text-gray-700">Use this product in the next reaction</label>
+
+
+                                      {item.useNextReaction &&
+                                        <div className='mt-5'>
+                                          <label className="block text-sm font-medium text-gray-700">Product Type</label>
+                                          <select
+                                            className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                            value={item.productType}
+                                            onChange={(e) => handleChange(reaction.id, "products", index, "productType", e.target.value)}
+                                          >
+                                            <option value="">Select Product Type</option>
+                                            <option value="a1">Ractant</option>
+                                            <option value="a2">Controller</option>
+                                          </select>
+                                        </div>
+                                      }
                                     </div>
                                   </div>
                                 </div>
@@ -966,6 +1059,23 @@ function NewPathway() {
           </button>
         </div>
       </div>
+
+
+      <DeleteModal data={modalData} />
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeCheckModal}
+        contentLabel="Confirm Action"
+        className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto mt-20"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+      >
+        <h2 className="text-lg font-semibold mb-4">Use In Next Reaction</h2>
+        <p>Are you sure you want to use this Product - 01 in next Reaction?</p>
+        <div className="flex justify-end mt-4 space-x-2">
+          <button onClick={closeCheckModal} className="px-4 w-[48%] py-2 bg-gray-300 rounded">Cancel</button>
+          <button onClick={confirmChange} className="px-4 w-[48%] py-2 bg-[#57369E] text-white rounded">Confirm</button>
+        </div>
+      </Modal>
     </div>
   );
 }
