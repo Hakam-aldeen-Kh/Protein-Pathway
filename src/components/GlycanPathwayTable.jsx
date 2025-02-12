@@ -31,7 +31,7 @@ const TableCell = ({ content, isArray = false, link, id, title }) => (
 const GlycanPathwayTable = ({ pathways }) => {
   const columns = [
     { title: "Pathway ID", key: "id" },
-    { title: "Title", key: "title", link: true },
+    { title: "Title", key: "title" },
     { title: "Description", key: "description" },
     { title: "Species", key: "species" },
     { title: "Involved Glycan", key: "involvedGlycan", isArray: true },

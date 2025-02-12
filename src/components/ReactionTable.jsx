@@ -1,16 +1,26 @@
 import { useState } from "react";
 import EditModal from "./EditModal";
 import AddModal from "./AddModal";
+import DeleteModal from "../common/DeleteModal";
 
 function ReactionTable() {
   const [selectedReaction, setSelectedReaction] = useState(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
 
+  const [modalData, setModalData] = useState({
+    isModalOpen: false,
+    closeModal: () => console.log("click"),
+    title: "",
+    handleDelete: () => console.log("click")
+  });
 
-  const reactionData = [
+  const closeModal = () => setModalData((prev) => ({ ...prev, isModalOpen: false }))
+
+
+  const [reactionData, setReactions] = useState([
     {
-      rxnId: "1",
+      id: 1,
       reactant: { code: "G04602LA", image: "/images/gpr.png" },
       enzyme: "-",
       sugarNucleotide: "D-Glucose",
@@ -18,14 +28,46 @@ function ReactionTable() {
       cellLocation: "Cytosol",
     },
     {
-      rxnId: "2",
+      id: 2,
       reactant: { code: "G04602LA", image: "/images/gpr.png" },
       enzyme: "-",
       sugarNucleotide: "L-Fucose",
       product: { code: "G04602LA", image: "/images/gpr.png" },
       cellLocation: "Cytosol",
     },
-  ];
+  ])
+
+
+  // reactions
+  const addReaction = () => {
+
+    setReactions((prev) => [...prev,
+    {
+      id: prev[prev.length - 1]?.id + 1 || 0,
+      reactant: { code: "G04602LA", image: "/images/gpr.png" },
+      enzyme: "-",
+      sugarNucleotide: "L-Fucose",
+      product: { code: "G04602LA", image: "/images/gpr.png" },
+      cellLocation: "Cytosol",
+    }
+    ])
+
+  };
+
+  const deleteReaction = (id) => {
+    setModalData({
+      isModalOpen: true,
+      closeModal,
+      title: "Reaction",
+      handleDelete: () => {
+        setReactions((prev) => prev.filter((reaction) => reaction.id !== id));
+      }
+    })
+  };
+
+
+
+
 
   const handleEditClick = (reaction) => {
     setSelectedReaction(reaction);
@@ -42,10 +84,14 @@ function ReactionTable() {
         isOpen={isEditModalOpen}
         setIsOpen={setEditModalOpen}
         data={selectedReaction}
+        addReaction={() => console.log("edit reaction")}
+        title={"Edit Reaction"}
       />
       <AddModal
+        addReaction={addReaction}
         isOpen={isAddModalOpen}
         setIsOpen={setAddModalOpen}
+        title="Add New Reaction"
       />
 
       <div className="flex flex-wrap gap-2.5 justify-center items-center w-full max-md:max-w-full mb-5">
@@ -83,7 +129,7 @@ function ReactionTable() {
                 key={index}
                 className="border-b-[5px] border-white bg-[#F1F5F9] hover:bg-gray-100 rounded"
               >
-                <td className="px-4">{reaction.rxnId}</td>
+                <td className="px-4">{reaction.id}</td>
 
                 <td className="px-4 flex items-center gap-2 pb-1">
                   <img
@@ -120,7 +166,7 @@ function ReactionTable() {
                   <button onClick={() => handleEditClick(reaction)}>
                     <img src="/images/icons/edit-square.svg" alt="Edit" />
                   </button>
-                  <button>
+                  <button onClick={() => deleteReaction(reaction.id)}>
                     <img src="/images/icons/trash-square.svg" alt="Delete" />
                   </button>
                 </td>
@@ -129,6 +175,8 @@ function ReactionTable() {
           </tbody>
         </table>
       </div>
+      <DeleteModal data={modalData} />
+
     </div>
   );
 }

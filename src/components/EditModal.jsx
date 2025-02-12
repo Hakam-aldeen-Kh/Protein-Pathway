@@ -1,33 +1,36 @@
 import Modal from "react-modal";
-import InputField from "./InputField";
-import SelectField from "./SelectField";
-import Button from "./Button";
+// import InputField from "./InputField";
+// import SelectField from "./SelectField";
+// import Button from "./Button";
+import AddModal from "./AddModal";
 
 Modal.setAppElement("#root");
 
-const EditModal = ({ isOpen, setIsOpen, data }) => {
+const EditModal = ({ title, data, isOpen, setIsOpen, addReaction }) => {
   if (!data) return null;
 
-  const customStyles = {
-    overlay: {
-      backgroundColor: "rgba(0, 0, 0, 0.50)",
-    },
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      padding: "20px",
-      borderRadius: "8px",
-      width: "640px",
-      background: "white",
-    },
-  };
+  // const customStyles = {
+  //   overlay: {
+  //     backgroundColor: "rgba(0, 0, 0, 0.50)",
+  //   },
+  //   content: {
+  //     top: "50%",
+  //     left: "50%",
+  //     right: "auto",
+  //     bottom: "auto",
+  //     marginRight: "-50%",
+  //     transform: "translate(-50%, -50%)",
+  //     padding: "20px",
+  //     borderRadius: "8px",
+  //     width: "640px",
+  //     background: "white",
+  //   },
+  // };
 
   return (
-    <Modal
+    <>
+      <AddModal title={`${title} - ${data.id}`} data={data} isOpen={isOpen} setIsOpen={setIsOpen} addReaction={addReaction} />
+      {/* <Modal
       isOpen={isOpen}
       onRequestClose={() => setIsOpen(false)}
       style={customStyles}
@@ -43,7 +46,6 @@ const EditModal = ({ isOpen, setIsOpen, data }) => {
       <form className="flex flex-col space-y-5 bg-white rounded-lg">
         <InputField label="Reaction ID" value={data.rxnId} />
 
-        {/* Reactant Glycan Section */}
         <div className="grid grid-cols-2 gap-x-5">
           <SelectField
             label="Reactant Glycan"
@@ -53,7 +55,6 @@ const EditModal = ({ isOpen, setIsOpen, data }) => {
           <InputField value={data.reactant.code} label={""} />
         </div>
 
-        {/* Enzyme Section with Bold Title */}
         <h3 className="text-lg font-bold mt-4">Choose Enzyme</h3>
         <div className="flex items-center gap-x-5">
           <InputField label="EC Enzyme" placeholder="Type enzyme name" />
@@ -69,7 +70,6 @@ const EditModal = ({ isOpen, setIsOpen, data }) => {
 
         <InputField label="Sugar Nucleotide" value={data.sugarNucleotide} />
 
-        {/* Product Glycan Section */}
         <div className="grid grid-cols-2 gap-x-5">
           <SelectField
             label="Reactant Glycan"
@@ -81,7 +81,6 @@ const EditModal = ({ isOpen, setIsOpen, data }) => {
 
         <InputField label="Cellular Localization" value={data.cellLocation} />
 
-        {/* Buttons */}
         <div className="flex gap-5 justify-center mt-10">
           <Button variant="secondary" onClick={() => setIsOpen(false)}>
             Cancel
@@ -91,7 +90,8 @@ const EditModal = ({ isOpen, setIsOpen, data }) => {
           </Button>
         </div>
       </form>
-    </Modal>
+    </Modal> */}
+    </>
   );
 };
 
