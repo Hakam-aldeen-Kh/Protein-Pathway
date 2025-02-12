@@ -478,8 +478,7 @@ function NewPathway() {
                       className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     >
                       <option value="">Select Species</option>
-                      <option value="Human">Human</option>
-                      <option value="Mouse">Mouse</option>
+                      <option value="Homo spaiens">Homo spaiens</option>
                     </select>
                   </div>
                   <div>
@@ -491,8 +490,12 @@ function NewPathway() {
                       className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     >
                       <option value="">Select Category</option>
-                      <option value="Metabolic">Metabolic</option>
-                      <option value="Signaling">Signaling</option>
+                      <option value="classic metabolic pathway"> classic metabolic pathway</option>
+                      <option value="signaling pathway">signaling pathway</option>
+                      <option value="regulatory pathway">regulatory pathway</option>
+                      <option value="disease pathway">disease pathway</option>
+                      <option value="drug pathway">drug pathway</option>
+
                     </select>
                   </div>
                 </div>
@@ -507,7 +510,7 @@ function NewPathway() {
                       className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     >
                       <option value="">Select Tissue</option>
-                      <option value="Liver">Liver</option>
+                      <option value="Blood">Blood</option>
                       <option value="Heart">Heart</option>
                     </select>
                   </div>
@@ -521,8 +524,10 @@ function NewPathway() {
                         className="mt-1 w-[49%] rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                       >
                         <option value="">Type or Select Disease</option>
-                        <option value="Diabetes">Diabetes</option>
-                        <option value="Cancer">Cancer</option>
+                        <option value="Human">Human</option>
+                        <option value="Animal">Animal</option>
+                        <option value="Plant">Plant</option>
+
                       </select>
                       <input
                         type="text"
@@ -599,8 +604,8 @@ function NewPathway() {
                                         }
                                       >
                                         <option value="">Select Cell Type</option>
-                                        <option value="a1">A1</option>
-                                        <option value="a2">A2</option>
+                                        <option value="embryonic cell">embryonic cell</option>
+                                        <option value="prokaryotic cell">prokaryotic cell</option>
                                       </select>
                                     </div>
                                     <div>
@@ -615,8 +620,7 @@ function NewPathway() {
                                         }
                                       >
                                         <option value="">Select Location</option>
-                                        <option value="a1">A1</option>
-                                        <option value="a2">A2</option>
+                                        <option value="golgi">Golgi</option>
                                       </select>
                                     </div>
                                   </div>
@@ -925,12 +929,12 @@ function NewPathway() {
                                         </div>
                                         <div>
                                           <label className="block text-sm font-medium text-gray-700">
-                                            Hromosom Number
+                                            Chromosom Number
                                           </label>
                                           <input
                                             type="text"
                                             className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                            placeholder="Hromosom Number"
+                                            placeholder="Chromosom Number"
                                           // value={item.aminoAcidBindingSite}
                                           // onChange={(e) =>
                                           //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
@@ -1022,8 +1026,8 @@ function NewPathway() {
                                         }
                                       >
                                         <option value="">Select Cell Type</option>
-                                        <option value="a1">A1</option>
-                                        <option value="a2">A2</option>
+                                        <option value="embryonic cell">embryonic cell</option>
+                                        <option value="prokaryotic cell">prokaryotic cell</option>
                                       </select>
                                     </div>
 
@@ -1039,8 +1043,7 @@ function NewPathway() {
                                         }
                                       >
                                         <option value="">Select Location</option>
-                                        <option value="a1">A1</option>
-                                        <option value="a2">A2</option>
+                                        <option value="golgi">Golgi</option>
                                       </select>
                                     </div>
                                   </div>
@@ -1058,8 +1061,8 @@ function NewPathway() {
                                         }
                                       >
                                         <option value="">Select Controller Type</option>
-                                        <option value="a1">A1</option>
-                                        <option value="a2">A2</option>
+                                        <option value="protein">Protein</option>
+                                        <option value="enzyme">Enzyme</option>
                                       </select>
                                     </div>
 
@@ -1075,8 +1078,8 @@ function NewPathway() {
                                         }
                                       >
                                         <option value="">Select Action Type</option>
-                                        <option value="a1">A1</option>
-                                        <option value="a2">A2</option>
+                                        <option value="activation">Activation</option>
+                                        <option value="inhibition">Inhibition</option>
                                       </select>
                                     </div>
                                   </div>
@@ -1120,6 +1123,7 @@ function NewPathway() {
                                     <div className="space-x-3">
                                       <input
                                         type="checkbox"
+                                        id={`useNextReactionController-${reaction.id}-${index}`}
                                         checked={item.useNextReaction}
                                         onChange={(e) =>
                                           handleChange(
@@ -1131,7 +1135,7 @@ function NewPathway() {
                                           )
                                         }
                                       />
-                                      <label className="text-sm font-medium text-gray-700">
+                                      <label htmlFor={`useNextReactionController-${reaction.id}-${index}`} className="text-sm cursor-pointer font-medium text-gray-700">
                                         Use this Controller in the next reaction
                                       </label>
                                     </div>
@@ -1181,8 +1185,8 @@ function NewPathway() {
                                         onChange={(e) => handleChange(reaction.id, "products", index, "cellType", e.target.value)}
                                       >
                                         <option value="">Select Cell Type</option>
-                                        <option value="a1">A1</option>
-                                        <option value="a2">A2</option>
+                                        <option value="embryonic cell">embryonic cell</option>
+                                        <option value="prokaryotic cell">prokaryotic cell</option>
                                       </select>
                                     </div>
                                     <div>
@@ -1193,8 +1197,7 @@ function NewPathway() {
                                         onChange={(e) => handleChange(reaction.id, "products", index, "location", e.target.value)}
                                       >
                                         <option value="">Select Location</option>
-                                        <option value="a1">A1</option>
-                                        <option value="a2">A2</option>
+                                        <option value="golgi">Golgi</option>
                                       </select>
                                     </div>
                                   </div>
@@ -1207,8 +1210,8 @@ function NewPathway() {
                                       onChange={(e) => handleChange(reaction.id, "products", index, "productType", e.target.value)}
                                     >
                                       <option value="">Select Product Type</option>
-                                      <option value="a1">A1</option>
-                                      <option value="a2">A2</option>
+                                      <option value="protein">Protein</option>
+                                      <option value="complex">Complex</option>
                                     </select>
                                   </div>
 
@@ -1283,7 +1286,7 @@ function NewPathway() {
                                           }
                                         }}
                                       />
-                                      <label htmlFor={`useNextReaction-${reaction.id}-${index}`} className="text-sm font-medium text-gray-700">Use this product in the next reaction</label>
+                                      <label htmlFor={`useNextReaction-${reaction.id}-${index}`} className="text-sm cursor-pointer font-medium text-gray-700">Use this product in the next reaction</label>
                                     </div>
                                   </div>
 
