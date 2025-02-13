@@ -2,6 +2,7 @@ import { useState } from "react";
 import EditModal from "./EditModal";
 import AddModal from "./AddModal";
 import DeleteModal from "../common/DeleteModal";
+import DetailsModal from "./DetailsModal";
 
 function ReactionTable() {
   const [selectedReaction, setSelectedReaction] = useState(null);
@@ -16,6 +17,8 @@ function ReactionTable() {
   });
 
   const closeModal = () => setModalData((prev) => ({ ...prev, isModalOpen: false }))
+
+
 
 
   const [reactionData, setReactions] = useState([
@@ -37,6 +40,24 @@ function ReactionTable() {
     },
   ])
 
+  const [detailsModal, setDetailsModal] = useState({
+    isModalOpen: false,
+    closeModal: () => console.log("click"),
+    imagesSrc: "",
+    code: "",
+  });
+
+  const closeDetailsModal = () => setDetailsModal((prev) => ({ ...prev, isModalOpen: false }))
+
+  const handleShowDetails = (id, type) => {
+    const rowData = reactionData.find(item => item.id === id)
+    setDetailsModal({
+      isModalOpen: true,
+      closeModal: closeDetailsModal,
+      imagesSrc: rowData[type].image,
+      code: rowData[type].code,
+    })
+  }
 
   // reactions
   const addReaction = () => {
@@ -131,7 +152,7 @@ function ReactionTable() {
               >
                 <td className="px-4">{reaction.id}</td>
 
-                <td className="px-4 flex items-center gap-2 pb-1">
+                <td className="px-4 flex items-center gap-2 pb-1" onClick={() => handleShowDetails(reaction.id, "reactant")}>
                   <img
                     src={reaction.reactant.image}
                     alt={reaction.reactant.code}
@@ -146,7 +167,7 @@ function ReactionTable() {
 
                 <td className="px-4">{reaction.sugarNucleotide}</td>
 
-                <td className="px-4 flex items-center gap-2 pt-[5px]">
+                <td className="px-4 flex items-center gap-2 pt-[5px]" onClick={() => handleShowDetails(reaction.id, "product")}>
                   <img
                     src={reaction.product.image}
                     alt={reaction.product.code}
@@ -176,7 +197,7 @@ function ReactionTable() {
         </table>
       </div>
       <DeleteModal data={modalData} />
-
+      <DetailsModal data={detailsModal} />
     </div>
   );
 }

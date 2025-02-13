@@ -733,7 +733,7 @@ function NewPathway() {
                                             <label className="block text-sm font-medium text-gray-700">
                                               Symbolic Name
                                             </label>
-                                            <input
+                                            <select
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Symbolic Name (NF-KappaB p50/p65 complex)"
@@ -741,7 +741,10 @@ function NewPathway() {
                                             // onChange={(e) =>
                                             //   handleChange(reaction.id, "reactants", index, "glycanTextType", e.target.value)
                                             // }
-                                            />
+                                            >
+                                              <option value="">Select Symbolic Name</option>
+                                              <option value="NF-KappaB p50/p65 complex">NF-KappaB p50/p65 complex</option>
+                                            </select>
                                           </div>
                                           <div>
                                             <label className="block text-sm font-medium text-gray-700">
@@ -783,7 +786,7 @@ function NewPathway() {
                                             <label className="block text-sm font-medium text-gray-700">
                                               Modifying Type
                                             </label>
-                                            <input
+                                            <select
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Modifying type (PSI-MOD, e.g. “sulfated residue”)"
@@ -791,7 +794,10 @@ function NewPathway() {
                                             // onChange={(e) =>
                                             //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
                                             // }
-                                            />
+                                            >
+                                              <option value="">Select Modifying Type</option>
+                                              <option value="sulfated residue">sulfated residue</option>
+                                            </select>
                                           </div>
                                         </div>
                                       </div>
@@ -881,29 +887,32 @@ function NewPathway() {
                                             <label className="block text-sm font-medium text-gray-700">
                                               Small Molecule
                                             </label>
-                                            <input
-                                              type="text"
+                                            <select
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                              placeholder="Small Molecule (e.g. ATP)"
                                             // value={item.bindingSiteCode}
                                             // onChange={(e) =>
                                             //   handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
                                             // }
-                                            />
+                                            >
+                                              <option value="">Select Small Molecule</option>
+                                              <option value="ATP">ATP</option>
+                                            </select>
                                           </div>
                                           <div>
                                             <label className="block text-sm font-medium text-gray-700">
                                               Lipid
                                             </label>
-                                            <input
-                                              type="text"
+                                            <select
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Lipid name or LIPIDMAPS (e.g. Sphinganin-1-phosphocholine)"
                                             // value={item.aminoAcidBindingSite}
                                             // onChange={(e) =>
                                             //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
                                             // }
-                                            />
+                                            >
+                                              <option value="">Select Lipid name or LIPIDMAPS</option>
+                                              <option value="Sphinganin-1-phosphocholine">Sphinganin-1-phosphocholine</option>
+                                            </select>
                                           </div>
                                         </div>
                                       </div>
