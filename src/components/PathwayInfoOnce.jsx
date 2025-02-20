@@ -4,7 +4,7 @@ import Graph from "../pages/Pathway-Result/Graph";
 import { layouts } from "../pages/Pathway-Result/layouts";
 import { convertToCytoscapeFormat } from "../utils/algo";
 
-function PathwayInfo({ pathway }) {
+function PathwayInfoOnce({ pathway, id }) {
   const navigate = useNavigate()
   const pathwayData = [
     { label: "Species", value: pathway?.species || "no value" },
@@ -57,14 +57,14 @@ function PathwayInfo({ pathway }) {
             <div className="w-full h-full object-contain cursor-pointer z-0 flex-1 shrink aspect-[2.87] basis-0 min-w-[240px] max-md:max-w-full relative"
             // onClick={() => navigate("/pathway-result")}
             >
-              <Graph elements={convertToCytoscapeFormat(pathway.reactions)} layout={layouts.klay} touch={false} />
+              <Graph elements={pathway.reactionsA || convertToCytoscapeFormat(pathway.reactions)} layout={layouts.klay} touch={false} />
             </div>
 
             <div className="flex absolute top-2 right-2 z-0 gap-2.5 items-center self-start">
               <button
                 className="flex gap-2 justify-center items-center self-stretch px-0.5 my-auto w-6 h-6 rounded bg-neutral-900 bg-opacity-50 min-h-[24px]"
                 aria-label="Action 1"
-                onClick={() => navigate("/pathway-result")}
+                onClick={() => navigate(`/pathway-result/${id}`)}
               >
                 <img src="/images/icons/btn-search-light.svg" />
               </button>
@@ -83,4 +83,4 @@ function PathwayInfo({ pathway }) {
   );
 }
 
-export default PathwayInfo;
+export default PathwayInfoOnce;

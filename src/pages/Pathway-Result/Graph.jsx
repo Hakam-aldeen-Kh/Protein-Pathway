@@ -1,7 +1,6 @@
 import cytoscape from "cytoscape";
 import CytoscapeComponent from "react-cytoscapejs";
 import sbgnStylesheet from "cytoscape-sbgn-stylesheet";
-// import { useEffect } from "react";
 
 const Graph = ({ elements, layout, touch = false }) => {
     const cyStylesheet = sbgnStylesheet(cytoscape);
@@ -37,15 +36,18 @@ const Graph = ({ elements, layout, touch = false }) => {
     //     }
     // ]
     // useEffect(() => {
-    //     elements.nodes.forEach((node) => {
+    //     console.log(elements)
+    //     elements.forEach((node) => {
     //         node.data.labelLength = node.data.label.length;
     //         // node.data.shape = node.data.label.length > 8 ? "ellipse" : "oval";
     //     });
     // }, [elements]);
 
+
     return (
         <CytoscapeComponent
             elements={CytoscapeComponent.normalizeElements(elements)}
+            // CytoscapeComponent.normalizeElements()
             style={{ width: "100%", height: "100%" }}
             maxZoom={2}
             minZoom={0.05}

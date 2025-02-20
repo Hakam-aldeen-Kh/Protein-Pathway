@@ -1,5 +1,4 @@
 export const elements = {
-
     nodes: [
         // reactions
         {
@@ -80,11 +79,30 @@ export const elements = {
             classes: ""
         },
 
+        // controller
         {
             data: {
                 id: "n3",
-                class: "simple chemical",
-                label: "reactant - 3",
+                class: "process",
+                parent: "r1",
+                stateVariables: [],
+                unitsOfInformation: [],
+            },
+
+            group: "nodes",
+            removed: false,
+            selected: false,
+            selectable: true,
+            locked: false,
+            grabbable: true,
+            pannable: false,
+            classes: ""
+        },
+        {
+            data: {
+                id: "n100",
+                class: "macromolecule",
+                label: "controller_1",
                 parent: "r1",
                 stateVariables: [],
                 unitsOfInformation: [],
@@ -388,3 +406,65 @@ export const elements = {
 
     ]
 }
+
+
+
+// [
+//     {
+//       "id": 0,
+//       "reactants": [
+//         {
+//           "id": 0,
+//           "name": "reactant_0.0"
+//         },
+//         {
+//           "id": 1,
+//           "name": "reactant_0.1"
+//         }
+//       ],
+//       "controllers": [
+//         {
+//           "id": 0,
+//           "name": "controller_0.0"
+//         }
+//       ],
+//       "products": [
+//         {
+//           "id": 0,
+//           "name": "product_0.0"
+//         },
+//         {
+//           "id": 1,
+//           "name": "product_0.1",
+//           "useNextReaction": "true",
+//           "type": "reactant",
+//           "targetedReaction": "1"
+//         }
+//       ]
+//     },
+//     {
+//       "id": 1,
+//       "reactants": [
+//         {
+//           "id": 0,
+//           "name": "product_0.1"
+//         },
+//         {
+//           "id": 1,
+//           "name": "reactant_1.1"
+//         }
+//       ],
+//       "controllers": [
+//         {
+//           "id": 0,
+//           "name": "controller_1.0"
+//         }
+//       ],
+//       "products": [
+//         {
+//           "id": 0,
+//           "name": "product_1.0"
+//         }
+//       ]
+//     }
+//   ]

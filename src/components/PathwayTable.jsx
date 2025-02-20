@@ -35,7 +35,7 @@ const PathwayTable = ({ pathways }) => {
     { title: "Species", key: "species" },
     { title: "Pathway Category", key: "category" },
     { title: "Reactants", key: "reactants", isArray: true },
-    { title: "Controller", key: "controller" },
+    { title: "Controller", key: "controller", isArray: true },
     { title: "Products", key: "products", isArray: true },
     { title: "Record Date", key: "date" },
   ];

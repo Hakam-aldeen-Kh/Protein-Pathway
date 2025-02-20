@@ -1,12 +1,40 @@
 import { useState } from 'react';
 import { ChevronUpIcon, ChevronDownIcon, TrashIcon, PlusIcon } from '@heroicons/react/24/outline';
-import { useNavigate } from 'react-router';
+import { useNavigate, useOutletContext } from 'react-router';
 import DeleteModal from '../../common/DeleteModal';
 import Modal from "react-modal";
 
 function NewPathway() {
+
+  const { pathwayData, setPathwayData, reactionsState, setReactionsState, cancle } = useOutletContext();
+
   const navigate = useNavigate()
+
+  // const [reactions, setReactions] = useState([
+  //   {
+  //     id: 0,
+  //     reactants: [{ id: 0, name: `reactant_0.0` }],
+  //     controllers: [{ id: 0, name: `controller_0.0` }],
+  //     products: [{ id: 0, name: `product_0.0` }],
+  //   }
+  // ]);
+
+
+  // const [reactionsState, setReactionsState] = useState(
+  //   [
+  //     {
+  //       id: 0,
+  //       state: true,
+  //       reactants: [{ id: 0, state: true }],
+  //       controllers: [{ id: 0, state: true }],
+  //       products: [{ id: 0, state: true }]
+  //     }
+  //   ]
+  // );
+
   const [isBasicInfoOpen, setIsBasicInfoOpen] = useState(true);
+
+
 
   const [modalData, setModalData] = useState({
     isModalOpen: false,
@@ -16,102 +44,58 @@ function NewPathway() {
   });
 
   const [activeTabs, setActiveTabs] = useState({});
-  const [reactions, setReactions] = useState([
-    {
-      id: 0,
-      reactants:
-        [
-          {
-            id: 0,
-            cellType: "",
-            location: "",
-            reactantType: "",
-            glycanTextType: "",
-            glycanText: "",
-            bindingSiteCode: "",
-            aminoAcidBindingSite: ""
-          }
-        ],
-      controllers:
-        [
-          {
-            id: 0,
-            cellType: "",
-            location: "",
-            controllerType: "",
-            actionType: "",
-            goOntology: "",
-            notGoOntology: "",
-            useNextReaction: false
-          }
-        ],
-      products:
-        [
-          {
-            id: 0,
-            cellType: "",
-            location: "",
-            productType: "",
-            bindingSiteCode: "",
-            proteinSymbol: "",
-            startingSite: "",
-            endingSite: "",
-            useNextReaction: false
-          }
-        ]
-    }
-  ]);
 
   const closeModal = () => setModalData((prev) => ({ ...prev, isModalOpen: false }))
 
-  const [reactionsState, setReactionsState] = useState(
-    [
-      {
-        id: 0,
-        state: true,
-        reactants: [{ id: 0, state: true }],
-        controllers: [{ id: 0, state: true }],
-        products: [{ id: 0, state: true }]
-      }
-    ]
-  );
 
-  const [basicInfoData, setBasicInfoData] = useState({
-    title: "",
-    description: "",
-    species: "",
-    category: "",
-    tissue: "",
-    disease: "",
-    diseaseInput: ""
-  });
-
-  const handleChangeBasicInfo = (e) => {
+  const handleChangePathwayData = (e) => {
     const { name, value } = e.target;
-    setBasicInfoData({
-      ...basicInfoData,
+    setPathwayData({
+      ...pathwayData,
       [name]: value,
     });
-  };
+  }
 
-  const handleChange = (reactionId, type, index, field, value) => {
-    setReactions((prevReactions) =>
-      prevReactions.map((reaction) =>
+  // const handleChange = (reactionId, type, index, field, value) => {
+  //   setReactions((prevReactions) =>
+  //     prevReactions.map((reaction) =>
+  //       reaction.id === reactionId
+  //         ? {
+  //           ...reaction,
+  //           [type]: reaction[type].map((item, i) =>
+  //             i === index ? { ...item, [field]: value } : item
+  //           ),
+  //         }
+  //         : reaction
+  //     )
+  //   );
+  // };
+
+  const handleChangeData = (reactionId, type, index, e) => {
+    const { name, value, checked } = e.target;
+
+    setPathwayData((prevPathwayData) => ({
+      ...prevPathwayData,
+      reactions: prevPathwayData.reactions.map((reaction) =>
         reaction.id === reactionId
           ? {
             ...reaction,
             [type]: reaction[type].map((item, i) =>
-              i === index ? { ...item, [field]: value } : item
+              i === index ? { ...item, [name]: value || checked } : item
             ),
           }
           : reaction
-      )
-    );
-  };
+      ),
+    }));
+  }
 
   const handleSubmit = () => {
-    console.log("basicInfoData : ", basicInfoData)
-    console.log("reactions : ", reactions)
+
+    console.log("pathwayData : ", pathwayData)
+
+    // localStorage.setItem('pathwayData', JSON.stringify({ ...pathwayData, reactions: reactions }));
+    // setPathwayData({ ...pathwayData, reactions: reactions })
+
     navigate("/review")
 
   }
@@ -153,51 +137,33 @@ function NewPathway() {
     }
     ]);
 
-    setReactions((prev) => [...prev,
-    {
-      id: prev[prev.length - 1]?.id + 1 || 0,
-      reactants:
-        [
-          {
-            id: 0,
-            cellType: "",
-            location: "",
-            reactantType: "",
-            glycanTextType: "",
-            glycanText: "",
-            bindingSiteCode: "",
-            aminoAcidBindingSite: ""
-          }
-        ],
-      controllers:
-        [
-          {
-            id: 0,
-            cellType: "",
-            location: "",
-            controllerType: "",
-            actionType: "",
-            goOntology: "",
-            notGoOntology: "",
-            useNextReaction: false
-          }
-        ],
-      products:
-        [
-          {
-            id: 0,
-            cellType: "",
-            location: "",
-            productType: "",
-            bindingSiteCode: "",
-            proteinSymbol: "",
-            startingSite: "",
-            endingSite: "",
-            useNextReaction: false
-          }
-        ]
-    }
-    ])
+    // setReactions((prev) => [...prev,
+    // {
+    //   id: prev[prev.length - 1]?.id + 1 || 0,
+    //   reactants: [{ id: 0, name: `reactant_${prev[prev.length - 1]?.id + 1 || 0}.0` }],
+    //   controllers: [{ id: 0, name: `controller_${prev[prev.length - 1]?.id + 1 || 0}.0` }],
+    //   products: [{ id: 0, name: `product_${prev[prev.length - 1]?.id + 1 || 0}.0` }],
+    // }
+    // ])
+
+    setPathwayData((prevPathwayData) => ({
+      ...prevPathwayData,
+      reactions: [...prevPathwayData.reactions, {
+        id: prevPathwayData.reactions[prevPathwayData.reactions.length - 1]?.id + 1 || 0,
+        reactants: [{
+          id: 0,
+          name: `reactant_${prevPathwayData.reactions[prevPathwayData.reactions.length - 1]?.id + 1 || 0}.0`
+        }],
+        controllers: [{
+          id: 0,
+          name: `controller_${prevPathwayData.reactions[prevPathwayData.reactions.length - 1]?.id + 1 || 0}.0`
+        }],
+        products: [{
+          id: 0,
+          name: `product_${prevPathwayData.reactions[prevPathwayData.reactions.length - 1]?.id + 1 || 0}.0`
+        }]
+      }]
+    }));
 
   };
 
@@ -207,7 +173,11 @@ function NewPathway() {
       closeModal,
       title: "Reaction",
       handleDelete: () => {
-        setReactions((prev) => prev.filter((reaction) => reaction.id !== id));
+        // setReactions((prev) => prev.filter((reaction) => reaction.id !== id));
+        setPathwayData((prevPathwayData) => ({
+          ...prevPathwayData,
+          reactions: prevPathwayData.reactions.filter((reaction) => reaction.id !== id)
+        }));
         setReactionsState((prev) => prev.filter((reaction) => reaction.id !== id));
       }
     })
@@ -215,26 +185,40 @@ function NewPathway() {
 
   // reactants
   const addReactant = (reactionId) => {
-    setReactions((prev) =>
-      prev.map((reaction) =>
+    // setReactions((prev) =>
+    //   prev.map((reaction) =>
+    //     reaction.id === reactionId
+    //       ? {
+    //         ...reaction, reactants: [...reaction.reactants,
+    //         {
+    //           id: reaction.reactants[reaction.reactants.length - 1]?.id + 1 || 0,
+    //           name: `reactant_${reactionId}.${reaction.reactants[reaction.reactants.length - 1]?.id + 1 || 0}`
+    //         }
+    //         ]
+    //       }
+    //       : reaction
+    //   )
+    // );
+
+    setPathwayData((prevPathwayData) => ({
+      ...prevPathwayData,
+      reactions: prevPathwayData.reactions.map((reaction) =>
         reaction.id === reactionId
           ? {
-            ...reaction, reactants: [...reaction.reactants,
-            {
-              id: reaction.reactants[reaction.reactants.length - 1]?.id + 1 || 0,
-              cellType: "",
-              location: "",
-              reactantType: "",
-              glycanTextType: "",
-              glycanText: "",
-              bindingSiteCode: "",
-              aminoAcidBindingSite: ""
-            }
+            ...reaction,
+            reactants: [
+              ...reaction.reactants,
+              {
+                id: reaction.reactants[reaction.reactants.length - 1]?.id + 1 || 0,
+                name: `reactant_${reactionId}.${reaction.reactants[reaction.reactants.length - 1]?.id + 1 || 0}`
+              }
             ]
           }
           : reaction
       )
-    );
+    }));
+
+
     setReactionsState((prev) =>
       prev.map((reaction) =>
         reaction.id === reactionId
@@ -250,12 +234,27 @@ function NewPathway() {
       closeModal,
       title: "Reactant",
       handleDelete: () => {
-        setReactions((prev) =>
-          prev.map((reaction) =>
-            reaction.id === reactionId
-              ? { ...reaction, reactants: reaction.reactants.filter((reactant) => reactant.id !== reactantId) }
-              : reaction
-          )
+        // setReactions((prev) =>
+        //   prev.map((reaction) =>
+        //     reaction.id === reactionId
+        //       ? { ...reaction, reactants: reaction.reactants.filter((reactant) => reactant.id !== reactantId) }
+        //       : reaction
+        //   )
+        // );
+        setPathwayData((prevPathwayData) => (
+          {
+            ...prevPathwayData,
+            reactions: prevPathwayData.reactions.map((reaction) =>
+              reaction.id === reactionId
+                ? {
+                  ...reaction,
+                  reactants: reaction.reactants.filter((reactant) => reactant.id !== reactantId)
+                }
+                : reaction
+            )
+          }
+        )
+
         );
         setReactionsState((prev) =>
           prev.map((reaction) =>
@@ -271,26 +270,40 @@ function NewPathway() {
   // controller
 
   const addController = (reactionId) => {
-    setReactions((prev) =>
-      prev.map((reaction) =>
-        reaction.id === reactionId
-          ? {
-            ...reaction, controllers: [...reaction.controllers,
-            {
-              id: reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0,
-              cellType: "",
-              location: "",
-              controllerType: "",
-              actionType: "",
-              goOntology: "",
-              notGoOntology: "",
-              useNextReaction: false
-            }]
-          }
-          : reaction
-      )
+    // setReactions((prev) =>
+    //   prev.map((reaction) =>
+    //     reaction.id === reactionId
+    //       ? {
+    //         ...reaction, controllers: [...reaction.controllers,
+    //         {
+    //           id: reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0,
+    //           name: `controller_${reactionId}.${reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0}`
+    //         }]
+    //       }
+    //       : reaction
+    //   )
+    // );
+    setPathwayData((prevPathwayData) =>
+    (
+      {
+        ...prevPathwayData,
+        reactions: prevPathwayData.reactions.map((reaction) =>
+          reaction.id === reactionId
+            ? {
+              ...reaction,
+              controllers: [
+                ...reaction.controllers,
+                {
+                  id: reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0,
+                  name: `controller_${reactionId}.${reaction.controllers[reaction.controllers.length - 1]?.id + 1 || 0}`
+                }
+              ]
+            }
+            : reaction
+        )
+      }
+    )
     );
-
     setReactionsState((prev) =>
       prev.map((reaction) =>
         reaction.id === reactionId
@@ -307,12 +320,27 @@ function NewPathway() {
       closeModal,
       title: "Contoller",
       handleDelete: () => {
-        setReactions((prev) =>
-          prev.map((reaction) =>
-            reaction.id === reactionId
-              ? { ...reaction, controllers: reaction.controllers.filter((controller) => controller.id !== controllerId) }
-              : reaction
-          )
+        // setReactions((prev) =>
+        //   prev.map((reaction) =>
+        //     reaction.id === reactionId
+        //       ? { ...reaction, controllers: reaction.controllers.filter((controller) => controller.id !== controllerId) }
+        //       : reaction
+        //   )
+        // );
+        setPathwayData((prevPathwayData) =>
+        (
+          {
+            ...prevPathwayData,
+            reactions: prevPathwayData.reactions.map((reaction) =>
+              reaction.id === reactionId
+                ? {
+                  ...reaction,
+                  controllers: reaction.controllers.filter((controller) => controller.id !== controllerId)
+                }
+                : reaction
+            )
+          }
+        )
         );
         setReactionsState((prev) =>
           prev.map((reaction) =>
@@ -328,24 +356,38 @@ function NewPathway() {
   // products
 
   const addProduct = (reactionId) => {
-    setReactions((prev) =>
-      prev.map((reaction) =>
-        reaction.id === reactionId
-          ? {
-            ...reaction, products: [...reaction.products, {
-              id: reaction.products[reaction.products.length - 1]?.id + 1 || 0,
-              cellType: "",
-              location: "",
-              productType: "",
-              bindingSiteCode: "",
-              proteinSymbol: "",
-              startingSite: "",
-              endingSite: "",
-              useNextReaction: false
-            }]
-          }
-          : reaction
-      )
+    // setReactions((prev) =>
+    //   prev.map((reaction) =>
+    //     reaction.id === reactionId
+    //       ? {
+    //         ...reaction, products: [...reaction.products, {
+    //           id: reaction.products[reaction.products.length - 1]?.id + 1 || 0,
+    //           name: `product_${reactionId}.${reaction.products[reaction.products.length - 1]?.id + 1 || 0}`
+    //         }]
+    //       }
+    //       : reaction
+    //   )
+    // );
+    setPathwayData((prevPathwayData) =>
+    (
+      {
+        ...prevPathwayData,
+        reactions: prevPathwayData.reactions.map((reaction) =>
+          reaction.id === reactionId
+            ? {
+              ...reaction,
+              products: [
+                ...reaction.products,
+                {
+                  id: reaction.products[reaction.products.length - 1]?.id + 1 || 0,
+                  name: `product_${reactionId}.${reaction.products[reaction.products.length - 1]?.id + 1 || 0}`
+                }
+              ]
+            }
+            : reaction
+        )
+      }
+    )
     );
     setReactionsState((prev) =>
       prev.map((reaction) =>
@@ -362,12 +404,27 @@ function NewPathway() {
       closeModal,
       title: "Product",
       handleDelete: () => {
-        setReactions((prev) =>
-          prev.map((reaction) =>
-            reaction.id === reactionId
-              ? { ...reaction, products: reaction.products.filter((product) => product.id !== productId) }
-              : reaction
-          )
+        // setReactions((prev) =>
+        //   prev.map((reaction) =>
+        //     reaction.id === reactionId
+        //       ? { ...reaction, products: reaction.products.filter((product) => product.id !== productId) }
+        //       : reaction
+        //   )
+        // );
+        setPathwayData((prevPathwayData) =>
+        (
+          {
+            ...prevPathwayData,
+            reactions: prevPathwayData.reactions.map((reaction) =>
+              reaction.id === reactionId
+                ? {
+                  ...reaction,
+                  products: reaction.products.filter((product) => product.id !== productId)
+                }
+                : reaction
+            )
+          }
+        )
         );
         setReactionsState((prev) =>
           prev.map((reaction) =>
@@ -402,10 +459,10 @@ function NewPathway() {
     setModalIsOpen(false);
   };
 
-  const handleCheckboxChange = (reactionId, field, index, key, value) => {
+  const handleCheckboxChange = (reactionId, field, index, e) => {
     openModal();
     setPendingCheck({
-      change: () => handleChange(reactionId, field, index, key, value),
+      change: () => handleChangeData(reactionId, field, index, e),
     });
   };
 
@@ -416,7 +473,10 @@ function NewPathway() {
           <div className="flex justify-between items-center mb-6 sticky top-0 bg-white px-2 py-5">
             <h1 className="text-4xl font-black">Add New Pathway</h1>
             <div className="space-x-2">
-              <button className="px-4 py-2 text-gray-600 hover:text-gray-800" onClick={() => navigate("/")}>Cancel</button>
+              <button className="px-4 py-2 text-gray-600 hover:text-gray-800" onClick={() => {
+                cancle()
+                navigate("/")
+              }}>Cancel</button>
               <button className="px-4 py-2 bg-[#57369E] text-white rounded" onClick={handleSubmit}>
                 Review
               </button>
@@ -447,8 +507,8 @@ function NewPathway() {
                     <input
                       type="text"
                       name="title"
-                      value={basicInfoData.title}
-                      onChange={handleChangeBasicInfo}
+                      value={pathwayData?.title || ""}
+                      onChange={handleChangePathwayData}
                       className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                       placeholder="Add Title"
                     />
@@ -460,8 +520,8 @@ function NewPathway() {
                     <input
                       type="text"
                       name="description"
-                      value={basicInfoData.description}
-                      onChange={handleChangeBasicInfo}
+                      value={pathwayData?.description || ""}
+                      onChange={handleChangePathwayData}
                       className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                       placeholder="Add Description"
                     />
@@ -473,8 +533,8 @@ function NewPathway() {
                     <label className="block text-sm font-medium text-gray-700">Species</label>
                     <select
                       name="species"
-                      value={basicInfoData.species}
-                      onChange={handleChangeBasicInfo}
+                      value={pathwayData?.species || ""}
+                      onChange={handleChangePathwayData}
                       className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     >
                       <option value="">Select Species</option>
@@ -485,8 +545,8 @@ function NewPathway() {
                     <label className="block text-sm font-medium text-gray-700">Pathway Category</label>
                     <select
                       name="category"
-                      value={basicInfoData.category}
-                      onChange={handleChangeBasicInfo}
+                      value={pathwayData?.category || ""}
+                      onChange={handleChangePathwayData}
                       className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     >
                       <option value="">Select Category</option>
@@ -505,8 +565,8 @@ function NewPathway() {
                     <label className="block text-sm font-medium text-gray-700">Tissue</label>
                     <select
                       name="tissue"
-                      value={basicInfoData.tissue}
-                      onChange={handleChangeBasicInfo}
+                      value={pathwayData?.tissue || ""}
+                      onChange={handleChangePathwayData}
                       className="mt-1 block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     >
                       <option value="">Select Tissue</option>
@@ -518,9 +578,9 @@ function NewPathway() {
                     <label className="block text-sm font-medium text-gray-700">Related Disease</label>
                     <div className="space-x-1">
                       <select
-                        name="disease"
-                        value={basicInfoData.disease}
-                        onChange={handleChangeBasicInfo}
+                        name="relatedDisease"
+                        value={pathwayData?.relatedDisease || ""}
+                        onChange={handleChangePathwayData}
                         className="mt-1 w-[49%] rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                       >
                         <option value="">Type or Select Disease</option>
@@ -532,8 +592,8 @@ function NewPathway() {
                       <input
                         type="text"
                         name="diseaseInput"
-                        value={basicInfoData.diseaseInput}
-                        onChange={handleChangeBasicInfo}
+                        value={pathwayData?.diseaseInput || ""}
+                        onChange={handleChangePathwayData}
                         className="mt-1 w-[49%] rounded-md border p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                       />
                     </div>
@@ -544,7 +604,7 @@ function NewPathway() {
           </div>
 
           {/* Reactions */}
-          {reactions.map((reaction, reactionIndex) => (
+          {pathwayData?.reactions?.map((reaction, reactionIndex) => (
             <div key={reaction.id} className="border rounded-lg mb-4">
               <div className="bg-[#DDD7EC] rounded-t-lg px-4 py-3 flex justify-between items-center">
                 <h2 className="font-medium">Reaction - {reaction.id}</h2>
@@ -598,9 +658,10 @@ function NewPathway() {
                                       </label>
                                       <select
                                         className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        value={item.cellType}
+                                        value={item?.cellType || ""}
+                                        name='cellType'
                                         onChange={(e) =>
-                                          handleChange(reaction.id, "reactants", index, "cellType", e.target.value)
+                                          handleChangeData(reaction.id, "reactants", index, e)
                                         }
                                       >
                                         <option value="">Select Cell Type</option>
@@ -614,9 +675,10 @@ function NewPathway() {
                                       </label>
                                       <select
                                         className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        value={item.location}
+                                        value={item?.cellularLocation || ""}
+                                        name='cellularLocation'
                                         onChange={(e) =>
-                                          handleChange(reaction.id, "reactants", index, "location", e.target.value)
+                                          handleChangeData(reaction.id, "reactants", index, e)
                                         }
                                       >
                                         <option value="">Select Location</option>
@@ -631,9 +693,10 @@ function NewPathway() {
                                     </label>
                                     <select
                                       className="mt-1 border block w-1/2 rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                      value={item.reactantType}
+                                      value={item?.reactantType || ""}
+                                      name='reactantType'
                                       onChange={(e) =>
-                                        handleChange(reaction.id, "reactants", index, "reactantType", e.target.value)
+                                        handleChangeData(reaction.id, "reactants", index, e)
                                       }
                                     >
                                       <option value="">Select Reactant Type</option>
@@ -661,10 +724,11 @@ function NewPathway() {
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Symbolic Name (NF-KappaB p50/p65 complex)"
-                                            // value={item.glycanTextType}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "glycanTextType", e.target.value)
-                                            // }
+                                              value={item?.complexSymbolicName || ""}
+                                              name='complexSymbolicName'
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             />
                                           </div>
                                           <div>
@@ -675,10 +739,11 @@ function NewPathway() {
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Complex Symbol"
-                                            // value={item.glycanText}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "glycanText", e.target.value)
-                                            // }
+                                              value={item?.complexSymbolGo || ""}
+                                              name='complexSymbolGo'
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             />
                                           </div>
                                         </div>
@@ -697,10 +762,11 @@ function NewPathway() {
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Type The Complex Name"
-                                            // value={item.bindingSiteCode}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
-                                            // }
+                                              value={item?.complexName || ""}
+                                              name='complexName'
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             />
                                           </div>
                                           <div>
@@ -711,10 +777,11 @@ function NewPathway() {
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Complex Symbol"
-                                            // value={item.aminoAcidBindingSite}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
-                                            // }
+                                              name='complexSymbolNotInGo'
+                                              value={item?.complexSymbolNotInGo || ""}
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             />
                                           </div>
                                         </div>
@@ -737,10 +804,11 @@ function NewPathway() {
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Symbolic Name (NF-KappaB p50/p65 complex)"
-                                            // value={item.glycanTextType}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "glycanTextType", e.target.value)
-                                            // }
+                                              value={item?.proteinSymbolicName || ""}
+                                              name='proteinSymbolicName'
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             >
                                               <option value="">Select Symbolic Name</option>
                                               <option value="NF-KappaB p50/p65 complex">NF-KappaB p50/p65 complex</option>
@@ -754,10 +822,11 @@ function NewPathway() {
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Protein Symbol (e.g. RecA)"
-                                            // value={item.glycanText}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "glycanText", e.target.value)
-                                            // }
+                                              value={item?.proteinSymbol || ""}
+                                              name='proteinSymbol'
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             />
                                           </div>
                                         </div>
@@ -776,10 +845,11 @@ function NewPathway() {
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Modifying site of amino acid (number)"
-                                            // value={item.bindingSiteCode}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
-                                            // }
+                                              value={item?.modifyingSite || ""}
+                                              name='modifyingSite'
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             />
                                           </div>
                                           <div>
@@ -790,10 +860,11 @@ function NewPathway() {
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Modifying type (PSI-MOD, e.g. “sulfated residue”)"
-                                            // value={item.aminoAcidBindingSite}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
-                                            // }
+                                              value={item?.modifyingType || ""}
+                                              name='modifyingType'
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             >
                                               <option value="">Select Modifying Type</option>
                                               <option value="sulfated residue">sulfated residue</option>
@@ -813,10 +884,11 @@ function NewPathway() {
                                           </label>
                                           <select
                                             className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                          // value={item.glycanTextType}
-                                          // onChange={(e) =>
-                                          //   handleChange(reaction.id, "reactants", index, "glycanTextType", e.target.value)
-                                          // }
+                                            value={item?.glycanTextType || ""}
+                                            name='glycanTextType'
+                                            onChange={(e) =>
+                                              handleChangeData(reaction.id, "reactants", index, e)
+                                            }
                                           >
                                             <option value="">Select Glycan Text Type</option>
                                             <option value="Linear code">Linear code</option>
@@ -833,10 +905,11 @@ function NewPathway() {
                                             type="text"
                                             className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                             placeholder="Type Glycan Text"
-                                          // value={item.glycanText}
-                                          // onChange={(e) =>
-                                          //   handleChange(reaction.id, "reactants", index, "glycanText", e.target.value)
-                                          // }
+                                            value={item?.glycanText || ""}
+                                            name='glycanText'
+                                            onChange={(e) =>
+                                              handleChangeData(reaction.id, "reactants", index, e)
+                                            }
                                           />
                                         </div>
                                       </div>
@@ -854,10 +927,11 @@ function NewPathway() {
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Three letters code of binding site (e.g. ser, tyr...)"
-                                            // value={item.bindingSiteCode}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
-                                            // }
+                                              value={item?.bindingSiteCode || ""}
+                                              name='bindingSiteCode'
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             />
                                           </div>
                                           <div>
@@ -868,10 +942,11 @@ function NewPathway() {
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Type number of amino acid binding site (e.g. 123)"
-                                            // value={item.aminoAcidBindingSite}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
-                                            // }
+                                              value={item?.aminoAcidBindingSite || ""}
+                                              name='aminoAcidBindingSite'
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             />
                                           </div>
                                         </div>
@@ -889,10 +964,11 @@ function NewPathway() {
                                             </label>
                                             <select
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                            // value={item.bindingSiteCode}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
-                                            // }
+                                              value={item?.smallMolecule || ""}
+                                              name='smallMolecule'
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             >
                                               <option value="">Select Small Molecule</option>
                                               <option value="ATP">ATP</option>
@@ -905,10 +981,11 @@ function NewPathway() {
                                             <select
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Lipid name or LIPIDMAPS (e.g. Sphinganin-1-phosphocholine)"
-                                            // value={item.aminoAcidBindingSite}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
-                                            // }
+                                              value={item?.lipid || ""}
+                                              name='lipid'
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             >
                                               <option value="">Select Lipid name or LIPIDMAPS</option>
                                               <option value="Sphinganin-1-phosphocholine">Sphinganin-1-phosphocholine</option>
@@ -930,10 +1007,11 @@ function NewPathway() {
                                             type="text"
                                             className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                             placeholder="Gene Name"
-                                          // value={item.bindingSiteCode}
-                                          // onChange={(e) =>
-                                          //   handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
-                                          // }
+                                            value={item?.geneName || ""}
+                                            name='geneName'
+                                            onChange={(e) =>
+                                              handleChangeData(reaction.id, "reactants", index, e)
+                                            }
                                           />
                                         </div>
                                         <div>
@@ -944,10 +1022,11 @@ function NewPathway() {
                                             type="text"
                                             className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                             placeholder="Chromosom Number"
-                                          // value={item.aminoAcidBindingSite}
-                                          // onChange={(e) =>
-                                          //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
-                                          // }
+                                            value={item?.chromosomNumber || ""}
+                                            name='chromosomNumber'
+                                            onChange={(e) =>
+                                              handleChangeData(reaction.id, "reactants", index, e)
+                                            }
                                           />
                                         </div>
                                       </div>
@@ -962,10 +1041,11 @@ function NewPathway() {
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Name"
-                                            // value={item.bindingSiteCode}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "bindingSiteCode", e.target.value)
-                                            // }
+                                              name='pORq'
+                                              value={item?.pORq || ""}
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             />
                                           </div>
                                           <div>
@@ -976,10 +1056,11 @@ function NewPathway() {
                                               type="text"
                                               className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                               placeholder="Specific band location (number)"
-                                            // value={item.aminoAcidBindingSite}
-                                            // onChange={(e) =>
-                                            //   handleChange(reaction.id, "reactants", index, "aminoAcidBindingSite", e.target.value)
-                                            // }
+                                              value={item?.specificBandLocation || ""}
+                                              name='specificBandLocation'
+                                              onChange={(e) =>
+                                                handleChangeData(reaction.id, "reactants", index, e)
+                                              }
                                             />
                                           </div>
                                         </div>
@@ -1029,9 +1110,10 @@ function NewPathway() {
                                       </label>
                                       <select
                                         className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        value={item.cellType}
+                                        value={item?.cellType || ""}
+                                        name='cellType'
                                         onChange={(e) =>
-                                          handleChange(reaction.id, "controllers", index, "cellType", e.target.value)
+                                          handleChangeData(reaction.id, "controllers", index, e)
                                         }
                                       >
                                         <option value="">Select Cell Type</option>
@@ -1046,9 +1128,10 @@ function NewPathway() {
                                       </label>
                                       <select
                                         className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        value={item.location}
+                                        value={item?.cellularLocation || ""}
+                                        name='cellularLocation'
                                         onChange={(e) =>
-                                          handleChange(reaction.id, "controllers", index, "location", e.target.value)
+                                          handleChangeData(reaction.id, "controllers", index, e)
                                         }
                                       >
                                         <option value="">Select Location</option>
@@ -1064,9 +1147,10 @@ function NewPathway() {
                                       </label>
                                       <select
                                         className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        value={item.controllerType}
+                                        value={item?.controllerType || ""}
+                                        name='controllerType'
                                         onChange={(e) =>
-                                          handleChange(reaction.id, "controllers", index, "controllerType", e.target.value)
+                                          handleChangeData(reaction.id, "controllers", index, e)
                                         }
                                       >
                                         <option value="">Select Controller Type</option>
@@ -1081,9 +1165,10 @@ function NewPathway() {
                                       </label>
                                       <select
                                         className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        value={item.actionType}
+                                        value={item?.actionType || ""}
+                                        name='actionType'
                                         onChange={(e) =>
-                                          handleChange(reaction.id, "controllers", index, "actionType", e.target.value)
+                                          handleChangeData(reaction.id, "controllers", index, e)
                                         }
                                       >
                                         <option value="">Select Action Type</option>
@@ -1102,14 +1187,20 @@ function NewPathway() {
                                         <input
                                           type="text"
                                           className="mt-1 border w-[49%] rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                          value={item.goOntology}
+                                          value={item?.goOntology || ""}
+                                          name='goOntology'
                                           onChange={(e) =>
-                                            handleChange(reaction.id, "controllers", index, "goOntology", e.target.value)
+                                            handleChangeData(reaction.id, "controllers", index, e)
                                           }
                                         />
                                         <input
                                           type="text"
                                           className="mt-1 border w-[49%] rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                          value={item?.goOntologyValue || ""}
+                                          name='goOntologyValue'
+                                          onChange={(e) =>
+                                            handleChangeData(reaction.id, "controllers", index, e)
+                                          }
                                         />
                                       </div>
                                     </div>
@@ -1120,9 +1211,10 @@ function NewPathway() {
                                       <input
                                         type="text"
                                         className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        value={item.notGoOntology}
+                                        value={item?.notGoOntology || ""}
+                                        name='notGoOntology'
                                         onChange={(e) =>
-                                          handleChange(reaction.id, "controllers", index, "notGoOntology", e.target.value)
+                                          handleChangeData(reaction.id, "controllers", index, e)
                                         }
                                       />
                                     </div>
@@ -1133,14 +1225,14 @@ function NewPathway() {
                                       <input
                                         type="checkbox"
                                         id={`useNextReactionController-${reaction.id}-${index}`}
-                                        checked={item.useNextReaction}
+                                        checked={item?.useNextReaction || false}
+                                        name='useNextReaction'
                                         onChange={(e) =>
-                                          handleChange(
+                                          handleChangeData(
                                             reaction.id,
                                             "controllers",
                                             index,
-                                            "useNextReaction",
-                                            e.target.checked
+                                            e
                                           )
                                         }
                                       />
@@ -1190,8 +1282,9 @@ function NewPathway() {
                                       <label className="block text-sm font-medium text-gray-700">Cell Type</label>
                                       <select
                                         className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        value={item.cellType}
-                                        onChange={(e) => handleChange(reaction.id, "products", index, "cellType", e.target.value)}
+                                        value={item?.cellType || ""}
+                                        name='cellType'
+                                        onChange={(e) => handleChangeData(reaction.id, "products", index, e)}
                                       >
                                         <option value="">Select Cell Type</option>
                                         <option value="embryonic cell">embryonic cell</option>
@@ -1202,8 +1295,9 @@ function NewPathway() {
                                       <label className="block text-sm font-medium text-gray-700">Cellular Location</label>
                                       <select
                                         className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        value={item.location}
-                                        onChange={(e) => handleChange(reaction.id, "products", index, "location", e.target.value)}
+                                        value={item?.cellularLocation || ""}
+                                        name='cellularLocation'
+                                        onChange={(e) => handleChangeData(reaction.id, "products", index, e)}
                                       >
                                         <option value="">Select Location</option>
                                         <option value="golgi">Golgi</option>
@@ -1215,8 +1309,9 @@ function NewPathway() {
                                     <label className="block text-sm font-medium text-gray-700">Product Type</label>
                                     <select
                                       className="mt-1 border block w-1/2 rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                      value={item.productType}
-                                      onChange={(e) => handleChange(reaction.id, "products", index, "productType", e.target.value)}
+                                      value={item?.productType || ""}
+                                      name='productType'
+                                      onChange={(e) => handleChangeData(reaction.id, "products", index, e)}
                                     >
                                       <option value="">Select Product Type</option>
                                       <option value="protein">Protein</option>
@@ -1236,8 +1331,9 @@ function NewPathway() {
                                           type="text"
                                           className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                           placeholder="Three letters code of binding site (e.g. ser, tyr...)"
-                                          value={item.bindingSiteCode}
-                                          onChange={(e) => handleChange(reaction.id, "products", index, "bindingSiteCode", e.target.value)}
+                                          value={item?.bindingSiteCode || ""}
+                                          name='bindingSiteCode'
+                                          onChange={(e) => handleChangeData(reaction.id, "products", index, e)}
                                         />
                                       </div>
                                       <div>
@@ -1246,8 +1342,9 @@ function NewPathway() {
                                           type="text"
                                           className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                           placeholder="Type protein symbol"
-                                          value={item.proteinSymbol}
-                                          onChange={(e) => handleChange(reaction.id, "products", index, "proteinSymbol", e.target.value)}
+                                          value={item?.proteinSymbol || ""}
+                                          name='proteinSymbol'
+                                          onChange={(e) => handleChangeData(reaction.id, "products", index, e)}
                                         />
                                       </div>
                                     </div>
@@ -1263,8 +1360,8 @@ function NewPathway() {
                                           type="text"
                                           className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                           placeholder="Starting site"
-                                          value={item.startingSite}
-                                          onChange={(e) => handleChange(reaction.id, "products", index, "startingSite", e.target.value)}
+                                          value={item?.startingSite || ""}
+                                          onChange={(e) => handleChangeData(reaction.id, "products", index, e)}
                                         />
                                       </div>
                                       <div>
@@ -1273,8 +1370,9 @@ function NewPathway() {
                                           type="text"
                                           className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                           placeholder="Ending site"
-                                          value={item.endingSite}
-                                          onChange={(e) => handleChange(reaction.id, "products", index, "endingSite", e.target.value)}
+                                          value={item?.endingSite || ""}
+                                          name='endingSite'
+                                          onChange={(e) => handleChangeData(reaction.id, "products", index, e)}
                                         />
                                       </div>
                                     </div>
@@ -1285,13 +1383,14 @@ function NewPathway() {
                                       <input
                                         type="checkbox"
                                         id={`useNextReaction-${reaction.id}-${index}`}
-                                        checked={item.useNextReaction}
+                                        checked={item?.useNextReaction || false}
+                                        name='useNextReaction'
                                         onChange={(e) => {
                                           if (item.useNextReaction) {
-                                            handleChange(reaction.id, "products", index, "useNextReaction", e.target.checked)
+                                            handleChangeData(reaction.id, "products", index, e)
                                           }
                                           else {
-                                            handleCheckboxChange(reaction.id, "products", index, "useNextReaction", e.target.checked)
+                                            handleCheckboxChange(reaction.id, "products", index, e)
                                           }
                                         }}
                                       />
@@ -1305,8 +1404,9 @@ function NewPathway() {
                                         <label className="block text-sm font-medium text-gray-700">Type</label>
                                         <select
                                           className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                          value={item.type}
-                                          onChange={(e) => handleChange(reaction.id, "products", index, "type", e.target.value)}
+                                          value={item?.type || ""}
+                                          name='type'
+                                          onChange={(e) => handleChangeData(reaction.id, "products", index, e)}
                                         >
                                           <option value="">Type</option>
                                           <option value="reactant">Ractant</option>
@@ -1319,11 +1419,12 @@ function NewPathway() {
                                         <select
                                           disabled={!item.type}
                                           className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        // value={item.productType}
-                                        // onChange={(e) => handleChange(reaction.id, "products", index, "productType", e.target.value)}
+                                          value={item?.targetedReaction || ""}
+                                          name='targetedReaction'
+                                          onChange={(e) => handleChangeData(reaction.id, "products", index, e)}
                                         >
                                           <option value="">Select reaction</option>
-                                          {reactions.map(item =>
+                                          {pathwayData?.reactions?.map(item =>
                                             <option key={item.id} value={item.id}>Reaction {item.id}</option>
                                           )}
                                         </select>
