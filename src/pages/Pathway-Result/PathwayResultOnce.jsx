@@ -5,13 +5,16 @@ import setupCy from "./setupCy";
 import { useState } from "react";
 import Graph from "./Graph";
 import { convertToCytoscapeFormat } from "../../utils/algo";
-import { useOutletContext } from "react-router";
+import { useOutletContext, useParams } from "react-router";
+import samplePathways from "../../data/simpleData";
 
 setupCy();
 
-const PathwayResult = () => {
-  const { pathwayData } = useOutletContext();
-
+const PathwayResultOnce = () => {
+  const { myPathwayData } = useOutletContext();
+  const { id } = useParams();
+  const pathway1 = samplePathways.find((p) => p.id === id)
+  const pathway2 = myPathwayData?.find((p) => p.id == id);
   const [layout, setLayout] = useState(layouts.klay);
 
   const handleExport = () => {
@@ -40,7 +43,7 @@ const PathwayResult = () => {
     <div className="w-full h-[calc(100vh-71px)] flex items-start justify-center gap-2 p-2 bg-gray-100 relative">
 
       <div className="flex-1 h-full bg-white rounded-lg shadow-lg flex items-center justify-center">
-        <Graph elements={convertToCytoscapeFormat(pathwayData.reactions)} layout={layout} touch={true} />
+        <Graph elements={pathway1?.reactionsA || convertToCytoscapeFormat(pathway2?.reactions)} layout={layout} touch={true} />
       </div>
 
       <div className="w-[150px] space-y-2">
@@ -84,4 +87,4 @@ const PathwayResult = () => {
   );
 };
 
-export default PathwayResult;
+export default PathwayResultOnce;

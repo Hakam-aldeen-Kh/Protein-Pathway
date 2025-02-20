@@ -2,7 +2,7 @@
 // import { Link } from "react-router";
 // import EditModal from "./EditModal";
 
-function ReactionReviewTable() {
+function ReactionReviewTable({ reactions }) {
   // const [selectedReaction, setSelectedReaction] = useState(null);
   // const [isModalOpen, setModalOpen] = useState(false);
 

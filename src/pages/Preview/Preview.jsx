@@ -1,19 +1,23 @@
-import { Link, useParams } from "react-router";
-import PathwayInfo from "../../components/PathwayInfo";
+import { Link, useOutletContext, useParams } from "react-router";
 import ReactionTable from "../../components/ReactionTable";
 import Swal from "sweetalert2";
 import samplePathways from "../../data/simpleData";
 import "../../styles/global.css";
+import PathwayInfoOnce from "../../components/PathwayInfoOnce";
 
 const Preview = () => {
+  const { myPathwayData } = useOutletContext();
   const { id } = useParams();
-  const pathway = samplePathways.find((p) => p.id === id);
+  const pathway1 = samplePathways.find((p) => p.id === id)
+  const pathway2 = myPathwayData?.find((p) => p.id == id);
 
-  if (!pathway) {
+
+  if (!pathway1 && !pathway2) {
     return (
       <p className="text-center text-red-500 text-xl">Pathway not found</p>
     );
   }
+
 
   const Toast = Swal.mixin({
     toast: true,
@@ -40,7 +44,7 @@ const Preview = () => {
           <div className="flex flex-col flex-1 shrink w-full basis-0 min-w-[240px] max-md:max-w-full">
             <div className="flex flex-wrap gap-10 justify-between items-center w-full max-md:max-w-full">
               <h1 className="self-stretch my-auto text-4xl font-bold text-neutral-900">
-                O2 Antigen
+                {pathway1?.title || pathway2?.title || "no value"}
               </h1>
               <div className="flex gap-5 items-center self-stretch my-auto text-sm font-semibold text-center text-violet-900">
                 <Link
@@ -59,19 +63,12 @@ const Preview = () => {
               </div>
             </div>
             <p className="flex-1 shrink gap-10 mt-5 w-full text-xl text-zinc-600 max-md:max-w-full">
-              Description text, Lorem ipsum dolor sit amet, consectetur
-              adipiscing elit. Duis at tincidunt ex. Vivamus varius nulla eget
-              nisl interdum sollicitudin eget at turpis. Integer ut interdum
-              velit, sed maximus turpis. Maecenas ornare massa et pharetra
-              suscipit. Sed ultrices, lacus <br />
-              eu vestibulum rhoncus, risus quam lacinia dui, iaculis molestie
-              leo dui non nulla. Phasellus neque dolor, molestie ut hendrerit
-              id, aliquet a sapien.{" "}
+              {pathway1?.description || pathway2?.description || "no value"}
             </p>
           </div>
         </div>
-        <PathwayInfo pathway={pathway} />
-        <ReactionTable reactions={pathway.reactants} />
+        <PathwayInfoOnce pathway={pathway1 || pathway2} id={id} />
+        <ReactionTable reactions={pathway1?.reactants} />
       </div>
     </div>
   );

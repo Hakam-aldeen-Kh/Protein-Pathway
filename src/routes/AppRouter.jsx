@@ -9,6 +9,8 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import PathwayResult from "../pages/Pathway-Result/PathwayResult";
 import GlycanData from "../pages/Glycan-Data/GlycanData";
 import Review from "../pages/Review/Review";
+import PathewayData from "../components/PathewayData";
+import PathwayResultOnce from "../pages/Pathway-Result/PathwayResultOnce";
 
 const AppRouter = () => {
   return (
@@ -21,15 +23,7 @@ const AppRouter = () => {
           </Layout>
         }
       />
-      <Route
-        path="/protein-pathway-data"
-        element={
-          <Layout>
-            <PathwayData />
-          </Layout>
 
-        }
-      />
       <Route
         path="/glycan-pathway-data"
         element={
@@ -39,16 +33,75 @@ const AppRouter = () => {
 
         }
       />
-      <Route
-        path="/new-pathway"
-        element={
-          <ProtectedRoute>
+
+      <Route element={<PathewayData />}>
+        <Route
+          path="/new-pathway"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <NewPathway />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/review"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Review />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/pathway-result"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <PathwayResult />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/pathway-result/:id"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <PathwayResultOnce />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/preview/:id"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Preview />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/protein-pathway-data"
+          element={
             <Layout>
-              <NewPathway />
+              <PathwayData />
             </Layout>
-          </ProtectedRoute>
-        }
-      />
+          }
+        />
+
+      </Route>
+
+
+
       <Route
         path="/login"
         element={
@@ -57,38 +110,11 @@ const AppRouter = () => {
           </Layout>
         }
       />
-      <Route
-        path="/preview/:id"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Preview />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
 
-      <Route
-        path="/review"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Review />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
 
-      <Route
-        path="/pathway-result"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <PathwayResult />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
+
+
+
     </Routes>
   );
 };
