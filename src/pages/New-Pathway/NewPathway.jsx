@@ -10,28 +10,6 @@ function NewPathway() {
 
   const navigate = useNavigate()
 
-  // const [reactions, setReactions] = useState([
-  //   {
-  //     id: 0,
-  //     reactants: [{ id: 0, name: `reactant_0.0` }],
-  //     controllers: [{ id: 0, name: `controller_0.0` }],
-  //     products: [{ id: 0, name: `product_0.0` }],
-  //   }
-  // ]);
-
-
-  // const [reactionsState, setReactionsState] = useState(
-  //   [
-  //     {
-  //       id: 0,
-  //       state: true,
-  //       reactants: [{ id: 0, state: true }],
-  //       controllers: [{ id: 0, state: true }],
-  //       products: [{ id: 0, state: true }]
-  //     }
-  //   ]
-  // );
-
   const [isBasicInfoOpen, setIsBasicInfoOpen] = useState(true);
 
 
@@ -56,22 +34,7 @@ function NewPathway() {
     });
   }
 
-  // const handleChange = (reactionId, type, index, field, value) => {
-  //   setReactions((prevReactions) =>
-  //     prevReactions.map((reaction) =>
-  //       reaction.id === reactionId
-  //         ? {
-  //           ...reaction,
-  //           [type]: reaction[type].map((item, i) =>
-  //             i === index ? { ...item, [field]: value } : item
-  //           ),
-  //         }
-  //         : reaction
-  //     )
-  //   );
-  // };
-
-  const handleChangeData = (reactionId, type, index, e) => {
+  const handleChangeData = (reactionId, type, index, e, v) => {
     const { name, value, checked } = e.target;
 
     setPathwayData((prevPathwayData) => ({
@@ -81,7 +44,7 @@ function NewPathway() {
           ? {
             ...reaction,
             [type]: reaction[type].map((item, i) =>
-              i === index ? { ...item, [name]: value || checked } : item
+              i === index ? { ...item, [name]: value === "on" ? v ? v : checked : value } : item
             ),
           }
           : reaction
@@ -136,15 +99,6 @@ function NewPathway() {
       products: [{ id: 0, state: true }]
     }
     ]);
-
-    // setReactions((prev) => [...prev,
-    // {
-    //   id: prev[prev.length - 1]?.id + 1 || 0,
-    //   reactants: [{ id: 0, name: `reactant_${prev[prev.length - 1]?.id + 1 || 0}.0` }],
-    //   controllers: [{ id: 0, name: `controller_${prev[prev.length - 1]?.id + 1 || 0}.0` }],
-    //   products: [{ id: 0, name: `product_${prev[prev.length - 1]?.id + 1 || 0}.0` }],
-    // }
-    // ])
 
     setPathwayData((prevPathwayData) => ({
       ...prevPathwayData,
@@ -449,7 +403,9 @@ function NewPathway() {
 
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [pendingCheck, setPendingCheck] = useState(null);
+  const [pendingCheck, setPendingCheck] = useState({
+    change: () => console.log("change")
+  });
 
   const openModal = () => setModalIsOpen(true);
   const closeCheckModal = () => setModalIsOpen(false);
@@ -459,10 +415,14 @@ function NewPathway() {
     setModalIsOpen(false);
   };
 
-  const handleCheckboxChange = (reactionId, field, index, e) => {
+  const handleCheckboxChange = (reactionId, field, index, e, v) => {
     openModal();
     setPendingCheck({
-      change: () => handleChangeData(reactionId, field, index, e),
+      change: () => {
+        handleChangeData(reactionId, field, index, e, v)
+        handleChangeData(reactionId, field, index, { target: { value: `controller_${reactionId + 1}.0`, name: "controller" } })
+        addReaction()
+      },
     });
   };
 
@@ -682,6 +642,7 @@ function NewPathway() {
                                         }
                                       >
                                         <option value="">Select Location</option>
+                                        <option value="cytocol">Cytosol</option>
                                         <option value="golgi">Golgi</option>
                                       </select>
                                     </div>
@@ -1135,6 +1096,7 @@ function NewPathway() {
                                         }
                                       >
                                         <option value="">Select Location</option>
+                                        <option value="cytocol">Cytosol</option>
                                         <option value="golgi">Golgi</option>
                                       </select>
                                     </div>
@@ -1300,6 +1262,7 @@ function NewPathway() {
                                         onChange={(e) => handleChangeData(reaction.id, "products", index, e)}
                                       >
                                         <option value="">Select Location</option>
+                                        <option value="cytocol">Cytosol</option>
                                         <option value="golgi">Golgi</option>
                                       </select>
                                     </div>
@@ -1360,6 +1323,7 @@ function NewPathway() {
                                           type="text"
                                           className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                           placeholder="Starting site"
+                                          name='startingSite'
                                           value={item?.startingSite || ""}
                                           onChange={(e) => handleChangeData(reaction.id, "products", index, e)}
                                         />
@@ -1382,19 +1346,19 @@ function NewPathway() {
                                     <div className='space-x-3'>
                                       <input
                                         type="checkbox"
-                                        id={`useNextReaction-${reaction.id}-${index}`}
+                                        id={`useNextReaction1-${reaction.id}-${index}`}
                                         checked={item?.useNextReaction || false}
                                         name='useNextReaction'
                                         onChange={(e) => {
-                                          if (item.useNextReaction) {
+                                          if (item?.useNextReaction) {
                                             handleChangeData(reaction.id, "products", index, e)
                                           }
                                           else {
-                                            handleCheckboxChange(reaction.id, "products", index, e)
+                                            handleCheckboxChange(reaction.id, "products", index, e, e.target.checked)
                                           }
                                         }}
                                       />
-                                      <label htmlFor={`useNextReaction-${reaction.id}-${index}`} className="text-sm cursor-pointer font-medium text-gray-700">Use this product in the next reaction</label>
+                                      <label htmlFor={`useNextReaction1-${reaction.id}-${index}`} className="text-sm cursor-pointer font-medium text-gray-700">Use this product in the next reaction</label>
                                     </div>
                                   </div>
 
@@ -1406,11 +1370,16 @@ function NewPathway() {
                                           className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                           value={item?.type || ""}
                                           name='type'
-                                          onChange={(e) => handleChangeData(reaction.id, "products", index, e)}
+                                          onChange={(e) => {
+                                            handleChangeData(reaction.id, "products", index, e)
+                                            handleChangeData(reaction.id + 1, "reactants", 0, { target: { value: false, name: "isProduct" } })
+                                            handleChangeData(reaction.id + 1, "controllers", 0, { target: { value: false, name: "isProduct" } })
+                                            handleChangeData(reaction.id + 1, e.target.value, 0, { target: { value: true, name: "isProduct" } })
+                                          }}
                                         >
                                           <option value="">Type</option>
-                                          <option value="reactant">Ractant</option>
-                                          <option value="controller">Controller</option>
+                                          <option value="reactants">Ractant</option>
+                                          <option value="controllers">Controller</option>
                                         </select>
                                       </div>
 
