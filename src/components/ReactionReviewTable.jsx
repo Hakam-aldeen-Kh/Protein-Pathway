@@ -6,24 +6,16 @@ function ReactionReviewTable({ reactions }) {
   // const [selectedReaction, setSelectedReaction] = useState(null);
   // const [isModalOpen, setModalOpen] = useState(false);
 
-  const reactionData = [
+  const reactionData = reactions.map(item => (
     {
-      rxnId: "1",
-      reactant: { code: "G04602LA", image: "/images/gpr.png" },
+      rxnId: item.id,
+      reactants: item.reactants.map(reactant => ({ code: reactant.name, image: "/images/gpr.png" })),
       enzyme: "-",
       sugarNucleotide: "D-Glucose",
-      product: { code: "G04602LA", image: "/images/gpr.png" },
-      cellLocation: "Cytosol",
-    },
-    {
-      rxnId: "2",
-      reactant: { code: "G04602LA", image: "/images/gpr.png" },
-      enzyme: "-",
-      sugarNucleotide: "L-Fucose",
-      product: { code: "G04602LA", image: "/images/gpr.png" },
-      cellLocation: "Cytosol",
-    },
-  ];
+      products: item.products.map(reactant => ({ code: reactant.name, image: "/images/gpr.png" })),
+      cellularLocation: item.reactants[0].cellularLocation || "Cytosol",
+    }
+  ))
 
   // const handleEditClick = (reaction) => {
   //   setSelectedReaction(reaction);
@@ -74,33 +66,40 @@ function ReactionReviewTable({ reactions }) {
               >
                 <td className="px-4">{reaction.rxnId}</td>
 
-                <td className="px-4 flex items-center gap-2 pb-1">
-                  <img
-                    src={reaction.reactant.image}
-                    alt={reaction.reactant.code}
-                    className="w-[60px] h-[36px] object-contain"
-                  />
-                  <span className="text-violet-900 hover:text-violet-600 cursor-pointer">
-                    {reaction.reactant.code}
-                  </span>
+                <td className="flex flex-col items-start gap-2 pt-[5px]">
+                  {reaction.reactants.map(item =>
+                    <div key={item.id} className="px-4 flex items-center gap-2 pt-[5px]">
+                      <img
+                        src={item.image}
+                        alt={item.code}
+                        className="w-[60px] h-[36px] object-contain"
+                      />
+                      <span className="text-violet-900 hover:text-violet-600 cursor-pointer">
+                        {item.code}
+                      </span>
+                    </div>
+                  )}
                 </td>
-
                 <td className="px-4">{reaction.enzyme}</td>
 
                 <td className="px-4">{reaction.sugarNucleotide}</td>
 
-                <td className="px-4 flex items-center gap-2 pt-[5px]">
-                  <img
-                    src={reaction.product.image}
-                    alt={reaction.product.code}
-                    className="w-[60px] h-[36px] object-contain"
-                  />
-                  <span className="text-violet-900 hover:text-violet-600 cursor-pointer">
-                    {reaction.product.code}
-                  </span>
+                <td className="lex flex-col items-start gap-2 pt-[5px]">
+                  {reaction.products.map(item =>
+                    <div key={item.id} className="px-4 flex items-center gap-2 pt-[5px]">
+                      <img
+                        src={item.image}
+                        alt={item.code}
+                        className="w-[60px] h-[36px] object-contain"
+                      />
+                      <span className="text-violet-900 hover:text-violet-600 cursor-pointer">
+                        {item.code}
+                      </span>
+                    </div>
+                  )}
                 </td>
 
-                <td className="px-4">{reaction.cellLocation}</td>
+                <td className="px-4">{reaction.cellularLocation}</td>
 
 
               </tr>

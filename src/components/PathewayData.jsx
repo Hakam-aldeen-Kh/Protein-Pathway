@@ -51,7 +51,28 @@ const PathewayData = () => {
     const clearPathwayData = () => {
         localStorage.removeItem('pathwayData');
         localStorage.removeItem('reactionsState');
+        setPathwayData({
+            id: Date.now(),
+            recordDate: `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`,
+            reactions: [
+                {
+                    id: 0,
+                    reactants: [{ id: 0, name: `reactant_0.0` }],
+                    controllers: [{ id: 0, name: `controller_0.0` }],
+                    products: [{ id: 0, name: `product_0.0` }],
+                }
+            ]
+        })
 
+        setReactionsState([
+            {
+                id: 0,
+                state: true,
+                reactants: [{ id: 0, state: true }],
+                controllers: [{ id: 0, state: true }],
+                products: [{ id: 0, state: true }]
+            }
+        ])
         setMyPathwayData([...myPathwayData, pathwayData])
         localStorage.setItem('myPathwayData', JSON.stringify([...myPathwayData, pathwayData]));
 
@@ -61,7 +82,28 @@ const PathewayData = () => {
     const cancle = () => {
         localStorage.removeItem('pathwayData');
         localStorage.removeItem('reactionsState');
+        setPathwayData({
+            id: Date.now(),
+            recordDate: `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`,
+            reactions: [
+                {
+                    id: 0,
+                    reactants: [{ id: 0, name: `reactant_0.0` }],
+                    controllers: [{ id: 0, name: `controller_0.0` }],
+                    products: [{ id: 0, name: `product_0.0` }],
+                }
+            ]
+        })
 
+        setReactionsState([
+            {
+                id: 0,
+                state: true,
+                reactants: [{ id: 0, state: true }],
+                controllers: [{ id: 0, state: true }],
+                products: [{ id: 0, state: true }]
+            }
+        ])
 
     }
 
