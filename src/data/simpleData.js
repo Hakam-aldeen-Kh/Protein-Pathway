@@ -18,7 +18,26 @@ const samplePathways = Array(50)
       }`,
     owner: index % 2 === 0 ? "me" : "other",
     status: index % 3 === 0 ? "Active" : "Inactive",
-    reactionsA: elements
+    reactionsA: elements,
+    reactions: [
+      {
+        id: `${index + 1}`,
+        reactants: [{ name: "G04602LA", image: "/images/gpr.png" }],
+        enzyme: "-",
+        sugarNucleotide: "L-Fucose",
+        products: [{ name: "G04602LA", image: "/images/gpr.png" }],
+        cellLocation: "Cytosol",
+      },
+      {
+        id: `${index + 1}`,
+        reactants: [{ name: "G04602LA", image: "/images/gpr.png" }],
+        enzyme: "-",
+        sugarNucleotide: "L-Fucose",
+        products: [{ name: "G04602LA", image: "/images/gpr.png" }],
+        cellLocation: "Cytosol",
+      }
+    ],
+    isEdit: false
   }));
 
 export default samplePathways;

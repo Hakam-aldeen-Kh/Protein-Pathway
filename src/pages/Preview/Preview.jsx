@@ -47,7 +47,7 @@ const Preview = () => {
                 {pathway1?.title || pathway2?.title || "no value"}
               </h1>
               <div className="flex gap-5 items-center self-stretch my-auto text-sm font-semibold text-center text-violet-900">
-                <Link
+                {!pathway1 && <Link
                   to="/protein-pathway-data"
                   className="flex gap-2 justify-center items-center self-stretch px-4 py-2 my-auto rounded-sm border border-violet-900 hover:border-transparent border-solid min-h-[40px] hover:text-white hover:bg-[#00A7D3] transition-colors duration-500 "
                   onClick={() => {
@@ -59,7 +59,7 @@ const Preview = () => {
                 >
                   <span className="self-stretch my-auto">Register RDF</span>
                   <img src="/images/icons/document-upload.svg" />
-                </Link>
+                </Link>}
               </div>
             </div>
             <p className="flex-1 shrink gap-10 mt-5 w-full text-xl text-zinc-600 max-md:max-w-full">
@@ -68,7 +68,7 @@ const Preview = () => {
           </div>
         </div>
         <PathwayInfoOnce pathway={pathway1 || pathway2} id={id} />
-        <ReactionTable reactions={pathway1?.reactants} />
+        <ReactionTable reactions={pathway1?.reactions || pathway2?.reactions} isEdit={!pathway1} />
       </div>
     </div>
   );

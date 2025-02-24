@@ -9,8 +9,6 @@ const Review = () => {
   const { pathwayData, clearPathwayData } = useOutletContext();
 
 
-
-
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
