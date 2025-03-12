@@ -1,3 +1,4 @@
+import LoginInput from "../../components/LoginInput";
 import { useLogin } from "../../hooks/useLogin";
 
 const Login = () => {
@@ -33,59 +34,28 @@ const Login = () => {
             onSubmit={handleSubmit}
             className="space-y-5 px-[24px] py-[40px]"
           >
-            <div>
-              <span className="text-red-500">*</span>
-              <label className="inline-block text-sm font-medium text-gray-700 mb-1">
-                Username
-              </label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                className="w-full px-3 py-2 focus:outline-none border border-black border-1"
-                placeholder="Enter Your Username"
-                required
-              />
-            </div>
+            <LoginInput
+              label="Username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+            />
 
-            <div>
-              <span className="text-red-500 mr-[2px]">*</span>
-              <label className="inline-block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 focus:outline-none border border-black border-1"
-                  placeholder="Enter Your Password"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-                >
-                  <img
-                    alt="show/hide password"
-                    src={
-                      showPassword
-                        ? "/src/assets/svg/hidde-eye.svg"
-                        : "/src/assets/svg/show-eye.svg"
-                    }
-                  />
-                </button>
-              </div>
-            </div>
+            <LoginInput
+              label="Password"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              showPassword={showPassword}
+              togglePassword={() => setShowPassword(!showPassword)}
+            />
 
             <div className="w-full flex items-end">
               <button
                 type="submit"
                 disabled={!activeButton}
-                className={`px-8 py-[10px] ml-auto rounded-sm text-white rounded-mdtransition-colors ${
+                className={`px-8 py-[10px] ml-auto rounded-sm text-white rounded-mdtransition-colors font-semibold transition-all ${
                   activeButton === true
                     ? "bg-[#57369E] hover:bg-[#00A7D3]"
                     : "bg-[#BBBBBB]"
