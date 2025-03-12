@@ -1,25 +1,34 @@
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate()
+  const [activeButton, setActiveButton] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: '',
-    password: ''
+    username: "",
+    password: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
+  // Use useEffect to detect autofill changes
+  useEffect(() => {
+    if (formData.username.length > 0 && formData.password.length > 0) {
+      setActiveButton(true);
+    } else {
+      setActiveButton(false);
+    }
+  }, [formData]); // Runs whenever formData changes
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
     if (formData.username === "admin" && formData.password === "admin") {
       localStorage.setItem("isLoggedIn", "true");
       navigate("/"); // Redirect to home or dashboard
@@ -28,39 +37,49 @@ const Login = () => {
     }
   };
 
-
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: "linear-gradient(90deg, rgba(87, 54, 158, 0.2) 0%, rgba(0, 167, 211, 0.2) 100%)" }}>
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{
+        background:
+          "linear-gradient(90deg, rgba(87, 54, 158, 0.2) 0%, rgba(0, 167, 211, 0.2) 100%)",
+      }}
+    >
       <div className="w-full max-w-[1200px] flex items-center justify-between">
         {/* Logo Section */}
         <div className="hidden lg:flex items-center space-x-4 flex-1">
-          <img src="/Logo.svg" className='w-3/4 h-[231px]' alt="Company Logo" />
+          <img src="/Logo.svg" className="w-3/4 h-[231px]" alt="Company Logo" />
         </div>
 
         {/* Login Form */}
-        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-          <h2 className="text-xl font-semibold mb-6">Sign In</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="bg-white rounded-lg border border-[#BBBBBB] min-w-[45%] max-w-md">
+          <h2 className="text-xl font-bold px-[24px] py-[16px] border-b-2">
+            Sign In
+          </h2>
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-5 px-[24px] py-[40px]"
+          >
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <span className="text-red-500">*</span>
+              <label className="inline-block text-sm font-medium text-gray-700 mb-1">
                 Username
-                <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="Enter your username"
+                className="w-full px-3 py-2 focus:outline-none border border-black border-1"
+                placeholder="Enter Your Username"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <span className="text-red-500 mr-[2px]">*</span>
+              <label className="inline-block text-sm font-medium text-gray-700 mb-1">
                 Password
-                <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -68,8 +87,8 @@ const Login = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  placeholder="Enter your password"
+                  className="w-full px-3 py-2 focus:outline-none border border-black border-1"
+                  placeholder="Enter Your Password"
                   required
                 />
                 <button
@@ -77,27 +96,39 @@ const Login = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
                 >
-                  {showPassword ? "Hide" : "Show"}
+                  <img
+                    alt="show/hide password"
+                    src={
+                      showPassword
+                        ? "/src/assets/svg/hidde-eye.svg"
+                        : "/src/assets/svg/show-eye.svg"
+                    }
+                  />
                 </button>
               </div>
             </div>
 
-            <div className='w-full flex items-end'>
+            <div className="w-full flex items-end">
               <button
                 type="submit"
-                className="px-5 ml-auto bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                disabled={!activeButton}
+                className={`px-8 py-[10px] ml-auto rounded-sm text-white rounded-mdtransition-colors ${
+                  activeButton === true
+                    ? "bg-[#57369E] hover:bg-[#00A7D3]"
+                    : "bg-[#BBBBBB]"
+                }`}
               >
                 Log In
               </button>
             </div>
 
             <div className="flex items-center justify-between text-sm">
-              <a href="#" className="text-purple-600 hover:text-purple-700">
+              <a href="#" className="text-[#57369E] hover:text-[#00A7D3]">
                 Forgot Password?
               </a>
-              <div className="text-gray-600">
-                Need an account?{' '}
-                <a href="#" className="text-purple-600 hover:text-purple-700">
+              <div className="text-black">
+                Need an account?{" "}
+                <a href="#" className="text-[#57369E] hover:text-[#00A7D3]">
                   Register here
                 </a>
               </div>
