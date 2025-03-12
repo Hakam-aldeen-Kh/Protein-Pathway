@@ -15,3 +15,24 @@
     overflow-y: auto;
     position: relative;
 }
+
+.select-container {
+    position: relative;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.select-container::after {
+    content: '▼';
+    font-size: 13px;
+    position: absolute;
+    right: 10px;
+    top: 55%;
+    transform: translateY(-50%);
+    color: gray;
+    pointer-events: none;
+}
