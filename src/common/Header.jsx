@@ -9,7 +9,7 @@ function Header() {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const location = useLocation();
   const isLoginPage = location.pathname === "/login"; // Check if on login page
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <header className="flex flex-col px-5 py-3 bg-white">
@@ -27,16 +27,25 @@ function Header() {
           </div>
           <div className="flex gap-10">
             <LanguageSelector />
-            {isLoggedIn ? <img src="/images/profile.png" className="w-10 h-10 rounded-full" /> : !isLoginPage && <AuthButtons />}
-            {isLoggedIn && <button
-              onClick={() => {
-                localStorage.clear();
-                navigate("/login")
-              }}
-              className="px-5 ml-auto bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-            >
-              Log out
-            </button>}
+            {isLoggedIn ? (
+              <img
+                src="/images/profile.png"
+                className="w-10 h-10 rounded-full"
+              />
+            ) : (
+              !isLoginPage && <AuthButtons />
+            )}
+            {isLoggedIn && (
+              <button
+                onClick={() => {
+                  localStorage.clear();
+                  navigate("/login");
+                }}
+                className="px-8 py-[10px] ml-auto rounded-sm text-white rounded-mdtransition-colors font-semibold transition-all bg-[#57369E] hover:bg-[#00A7D3]"
+              >
+                Log out
+              </button>
+            )}
           </div>
         </nav>
       </div>
