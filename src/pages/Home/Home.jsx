@@ -1,13 +1,25 @@
 import { Link } from "react-router";
+import FeatureCard from "../../components/FeatureCard";
+
+const linksTitle = [
+  {
+    title: "Protein Pathways",
+    href: "/new-pathway",
+  },
+  {
+    title: "Glycan Synthetic Pathways",
+    href: "/",
+  },
+];
 
 const Home = () => {
   return (
-    <div className="min-h-screen  text-white">
+    <div className="min-h-screen text-white">
       {/* Hero Section */}
       <div
         className="relative h-[600px] flex items-center px-8 md:px-16"
         style={{
-          backgroundImage: ` url('/images/hero.png')`,
+          backgroundImage: "url('/images/hero.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -21,18 +33,15 @@ const Home = () => {
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
           <div className="flex items-center justify-start gap-4">
-            <Link
-              to={"/new-pathway"}
-              className="bg-[#00A7D3] hover:bg-[#1e8cab] w-[333px] text-center text-white px-6 py-2 rounded-sm transition-colors"
-            >
-              Add Protein Pathway
-            </Link>
-            <Link
-              to={"/"}
-              className="bg-[#00A7D3] hover:bg-[#1e8cab] w-[333px] text-center text-white px-6 py-2 rounded-sm transition-colors"
-            >
-              Add Glycan Synthetic Pathway
-            </Link>
+            {linksTitle.map((link, i) => (
+              <Link
+                key={i}
+                to={link.href}
+                className="bg-[#00A7D3] hover:bg-[#1e8cab] w-[333px] text-center text-white px-6 py-2 rounded-sm transition-colors"
+              >
+                {link.title}
+              </Link>
+            ))}
           </div>
         </div>
       </div>
@@ -50,24 +59,14 @@ const Home = () => {
                 {title}
               </h3>
               <ul className="space-y-2 text-[#484848]">
-                <li className="flex gap-x-1">
-                  <span className="w-6 h-6 bg-[#FEFEFE] flex items-center justify-center rounded">
-                    1
-                  </span>
-                  <span>Step 1 instructions </span>
-                </li>
-                <li className="flex gap-x-1">
-                  <span className="w-6 h-6 bg-[#FEFEFE] flex items-center justify-center rounded">
-                    2
-                  </span>
-                  <span>Step 2 instructions </span>
-                </li>
-                <li className="flex gap-x-1">
-                  <span className="w-6 h-6 bg-[#FEFEFE] flex items-center justify-center rounded">
-                    3
-                  </span>
-                  <span>Step 3 instructions </span>
-                </li>
+                {[1, 2, 3].map((step) => (
+                  <li key={step} className="flex gap-x-1">
+                    <span className="w-6 h-6 bg-[#FEFEFE] flex items-center justify-center rounded">
+                      {step}
+                    </span>
+                    <span>Step {step} instructions</span>
+                  </li>
+                ))}
               </ul>
             </div>
           ))}
@@ -80,46 +79,19 @@ const Home = () => {
           What We Do
         </h2>
         <div className="grid md:grid-cols-4 gap-8 max-w-[1664px] mx-auto">
-          <FeatureCard
-            icon={
-              <img
-                src={"/images/do1.png"}
-                className="w-32 h-32 text-blue-500"
-              />
-            }
-            title="Service Title"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          />
-          <FeatureCard
-            icon={
-              <img
-                src={"/images/do2.png"}
-                className="w-32 h-32 text-blue-500"
-              />
-            }
-            title="Service Title"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          />
-          <FeatureCard
-            icon={
-              <img
-                src={"/images/do3.png"}
-                className="w-32 h-32 text-blue-500"
-              />
-            }
-            title="Service Title"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          />
-          <FeatureCard
-            icon={
-              <img
-                src={"/images/do4.png"}
-                className="w-32 h-32 text-blue-500"
-              />
-            }
-            title="Service Title"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          />
+          {[1, 2, 3, 4].map((num) => (
+            <FeatureCard
+              key={num}
+              icon={
+                <img
+                  src={`/images/do${num}.png`}
+                  className="w-32 h-32 text-blue-500"
+                />
+              }
+              title="Service Title"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            />
+          ))}
         </div>
       </div>
     </div>
@@ -127,13 +99,3 @@ const Home = () => {
 };
 
 export default Home;
-
-function FeatureCard({ icon, title, description }) {
-  return (
-    <div className="p-6 rounded-lg text-center">
-      <div className="flex justify-center mb-4">{icon}</div>
-      <h3 className="text-xl text-[#1F1F1F] font-black mb-2">{title}</h3>
-      <p className="text-[#484848] text-sm">{description}</p>
-    </div>
-  );
-}
