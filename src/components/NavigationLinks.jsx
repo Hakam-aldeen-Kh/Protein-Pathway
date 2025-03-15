@@ -12,7 +12,7 @@ function NavigationLinks() {
         <Link
           key={index}
           to={link.href}
-          className="self-stretch my-auto min-h-[24px]"
+          className="relative self-stretch my-auto min-h-[24px] after:content-[''] after:absolute after:left-1/2 after:-bottom-[5px] after:w-0 after:h-[1.8px] after:bg-[#57369E] after:transition-all after:duration-500 hover:after:left-0 hover:after:w-full"
         >
           {link.text}
         </Link>
