@@ -53,7 +53,7 @@ const Review = () => {
 
                 <div className="flex gap-5 items-center self-stretch my-auto text-sm font-semibold text-center text-white bg-[#57369E]">
                   <Link
-                    to="/protein-pathway-data"
+                    to="/protein-pathway-data?tab=my"
                     className="flex gap-2 justify-center items-center self-stretch px-4 py-2 my-auto rounded-sm border border-[#57369E] hover:border-transparent border-solid min-h-[40px] hover:text-white hover:bg-[#00A7D3] transition-colors duration-500 "
                     onClick={() => {
                       clearPathwayData()
