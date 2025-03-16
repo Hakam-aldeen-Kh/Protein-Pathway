@@ -1,6 +1,4 @@
-const PathwayTabs = ({ activeTab, onTabChange }) => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-
+const PathwayTabs = ({ activeTab, onTabChange, loginState }) => {
   return (
     <div className="flex flex-col w-full border-b border-solid border-b-zinc-500">
       <div className="flex gap-2">
@@ -15,7 +13,7 @@ const PathwayTabs = ({ activeTab, onTabChange }) => {
           All Pathways
         </button>
 
-        {isLoggedIn && (
+        {loginState && (
           <button
             className={`px-4 py-2 text-sm rounded ${
               activeTab === "my"
