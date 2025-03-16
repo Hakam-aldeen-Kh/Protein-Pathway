@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HeroSection from "../../components/HeroSection";
 import Pagination from "../../components/Pagination";
 import PathwayTable from "../../components/PathwayTable";
 import PathwayTabs from "../../components/PathwayTabs";
 import SearchAndFilters from "../../components/SearchAndFilters";
-import { useOutletContext, useSearchParams } from "react-router";
+import { useNavigate, useOutletContext, useSearchParams } from "react-router";
 
 const PathwayData = () => {
   const { myPathwayData } = useOutletContext();
@@ -52,6 +52,7 @@ const PathwayData = () => {
   ];
 
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     category: "",
@@ -63,6 +64,13 @@ const PathwayData = () => {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  useEffect(() => {
+    if (initialTab === "my" && !isLoggedIn) {
+      navigate("/login", { replace: true });
+      setActiveTab("all");
+    }
+  }, [initialTab, isLoggedIn, navigate]);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -113,9 +121,7 @@ const PathwayData = () => {
       <div className="flex flex-col w-full max-md:max-w-full">
         <HeroSection title="Protein Pathway Data" />
         <div className="flex flex-col px-32 mt-10 w-full max-md:px-5 max-md:max-w-full">
-          {isLoggedIn && (
-            <PathwayTabs activeTab={activeTab} onTabChange={handleTabChange} />
-          )}
+          <PathwayTabs activeTab={activeTab} onTabChange={handleTabChange} />
           <div className="flex flex-col mt-2.5 w-full rounded-lg max-md:max-w-full">
             <SearchAndFilters
               onSearch={handleSearch}
