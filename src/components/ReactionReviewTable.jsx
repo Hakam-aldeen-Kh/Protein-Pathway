@@ -66,9 +66,10 @@ function ReactionReviewTable({ reactions }) {
               >
                 <td className="px-4">{reaction.rxnId}</td>
 
+
                 <td className="flex flex-col items-start gap-2 pt-[5px]">
-                  {reaction.reactants.map(item =>
-                    <div key={item.id} className="px-4 flex items-center gap-2 pt-[5px]">
+                  {reaction.reactants.map((item, index) =>
+                    <div key={index} className="px-4 flex items-center gap-2 pt-[5px]">
                       <img
                         src={item.image}
                         alt={item.code}
@@ -85,8 +86,8 @@ function ReactionReviewTable({ reactions }) {
                 <td className="px-4">{reaction.sugarNucleotide}</td>
 
                 <td className="lex flex-col items-start gap-2 pt-[5px]">
-                  {reaction.products.map(item =>
-                    <div key={item.id} className="px-4 flex items-center gap-2 pt-[5px]">
+                  {reaction.products.map((item, index) =>
+                    <div key={index} className="px-4 flex items-center gap-2 pt-[5px]">
                       <img
                         src={item.image}
                         alt={item.code}

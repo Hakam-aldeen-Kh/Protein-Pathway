@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronUpIcon, ChevronDownIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 const Accordion = ({ title, children, className = "", deleteFn = null, variant }) => {
-    const [open, setOpen] = useState(true);
-    const handleToggle = () => setOpen(prev => !prev);
+
+    const storageKey = `${title} Accordion`;
+    const storedState = localStorage.getItem(storageKey);
+
+    const [open, setOpen] = useState(storedState ? parseInt(storedState) : 1);
+
+    const handleToggle = () => setOpen(prev => (prev === 0 ? 1 : 0));
+
+    useEffect(() => {
+        localStorage.setItem(storageKey, open);
+    }, [open, storageKey]);
 
     return (
         <div className={className}>
@@ -18,7 +27,7 @@ const Accordion = ({ title, children, className = "", deleteFn = null, variant }
                     </button>
                 </div>
             </div>
-            {open && children}
+            {open === 1 && children}
         </div>
     )
 };

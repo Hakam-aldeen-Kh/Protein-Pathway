@@ -7,9 +7,7 @@ import SmallMolecule from "./reactant-type/SmallMolecule";
 
 const ReactantForm = ({ handleChangeData, reaction, reactantData, reactantIndex }) => {
 
-    const handleChange = (e) => {
-        handleChangeData(reaction.id, "reactants", reactantIndex, e)
-    }
+    const handleChange = (e) => handleChangeData(reaction.id, "reactants", reactantIndex, e)
 
     return (
         <div className="space-y-4 p-4">
