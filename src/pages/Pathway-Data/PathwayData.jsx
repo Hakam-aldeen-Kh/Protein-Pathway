@@ -42,6 +42,7 @@ const PathwayData = () => {
               onPageChange={setCurrentPage}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
+              filteredPathways={filteredPathways.length}
             />
           </div>
         </div>

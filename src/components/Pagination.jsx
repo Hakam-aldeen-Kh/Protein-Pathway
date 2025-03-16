@@ -4,6 +4,7 @@ const Pagination = ({
   onPageChange,
   currentPage,
   setCurrentPage,
+  filteredPathways,
 }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -13,8 +14,14 @@ const Pagination = ({
     onPageChange?.(page);
   };
 
-  const startItem = (currentPage - 1) * itemsPerPage + 1;
-  const endItem = Math.min(startItem + itemsPerPage - 1, totalItems);
+  console.log(filteredPathways);
+
+  const startItem =
+    (filteredPathways ?? 0) > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0;
+  const endItem =
+    (filteredPathways ?? 0) > 0
+      ? Math.min(startItem + itemsPerPage - 1, totalItems)
+      : 0;
 
   return (
     <div className="flex overflow-hidden flex-wrap gap-10 justify-between items-center px-3 py-2 mt-2.5 w-full text-xs bg-white rounded-lg">
