@@ -24,7 +24,7 @@ const PathwayTable = ({ pathways }) => {
               content={row[key]}
               isArray={isArray}
               link={link}
-              id={row.id} // Pass the pathway id for linking
+              id={row.id}
             />
           ))}
         </div>
