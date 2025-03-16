@@ -12,7 +12,7 @@ function AuthButtons() {
         <Link
           key={index}
           to={button.href}
-          className="flex gap-2 justify-center items-center self-stretch px-4 py-2.5 my-auto text-center bg-violet-900 rounded-sm min-h-[40px] text-sm font-semibold text-white whitespace-nowrap"
+          className="px-8 py-[10px] ml-auto rounded-sm text-white rounded-mdtransition-colors font-semibold transition-all bg-[#57369E] hover:bg-[#00A7D3]"
         >
           <span className="gap-1 self-stretch my-auto">{button.text}</span>
         </Link>
