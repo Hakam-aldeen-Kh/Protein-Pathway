@@ -1,4 +1,4 @@
-const data = {
+export const data = {
     title: "",
     description: "",
     species: "",
@@ -18,29 +18,29 @@ const data = {
                         cellularLocation: "",
                         reactantType: "",
 
-                        // complex
+                        //if reactantType is complex
                         complexSymbolicName: "",
                         complexSymbolGo: "",
                         complexName: "",
                         complexSymbolNotInGo: "",
 
-                        // protein
+                        //if reactantType is protein
                         proteinSymbolicName: "",
                         proteinSymbol: "",
                         modifyingSite: "",
                         modifyingType: "",
 
-                        // glycan
+                        //if reactantType is glycan
                         glycanTextType: "",
                         glycanText: "",
                         bindingSiteCode: "",
                         aminoAcidBindingSite: "",
 
-                        // small molecule
+                        //if reactantType is small_molecule
                         smallMolecule: "",
                         lipid: "",
 
-                        // DNA
+                        //if reactantType is dna
                         geneName: "",
                         chromosomNumber: "",
                         pORq: "",
@@ -72,7 +72,7 @@ const data = {
                         proteinSymbol: "",
                         startingSite: "",
                         endingSite: "",
-                        useNextReaction: false,
+                        useNextReaction: true,
                         type: "",
                         targetedReaction: ""
                     }

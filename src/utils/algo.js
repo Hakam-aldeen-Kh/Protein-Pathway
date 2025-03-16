@@ -1,7 +1,6 @@
 
 export function convertToCytoscapeFormat(reactions) {
     const elements = [];
-    console.log(reactions)
     const filterReaction = filterIsProductModern(reactions)
 
     filterReaction.forEach((reaction, rIndex) => {
