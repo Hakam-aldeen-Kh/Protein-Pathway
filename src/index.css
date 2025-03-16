@@ -27,7 +27,7 @@ select {
 }
 
 .select-container::after {
-    content: '▼';
+    content: url('/images/icons/arrow-down-white.svg');
     font-size: 13px;
     position: absolute;
     right: 10px;
