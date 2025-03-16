@@ -114,5 +114,6 @@ export const usePathwayData = () => {
     itemsPerPage,
     activeTab,
     isLoggedIn,
+    currentPage,
   };
 };

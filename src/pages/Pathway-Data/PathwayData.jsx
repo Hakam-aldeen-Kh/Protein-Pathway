@@ -11,6 +11,7 @@ const PathwayData = () => {
     handleSearch,
     handleFilterSelect,
     setCurrentPage,
+    currentPage,
     displayedPathways,
     filteredPathways,
     itemsPerPage,
@@ -39,6 +40,8 @@ const PathwayData = () => {
               totalItems={filteredPathways.length}
               itemsPerPage={itemsPerPage}
               onPageChange={setCurrentPage}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
             />
           </div>
         </div>

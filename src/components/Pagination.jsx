@@ -1,7 +1,10 @@
-import { useState } from "react";
-
-const Pagination = ({ totalItems = 120, itemsPerPage = 10, onPageChange }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+const Pagination = ({
+  totalItems = 120,
+  itemsPerPage = 10,
+  onPageChange,
+  currentPage,
+  setCurrentPage,
+}) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handlePageChange = (page) => {
