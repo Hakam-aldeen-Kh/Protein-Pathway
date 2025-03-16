@@ -1,25 +1,16 @@
-import { useState } from "react";
-import { useLocation } from "react-router";
 import SearchInput from "./SearchInput";
 import FilterSelect from "./FilterSelect";
 import AddPathwayButton from "./AddPathwayButton";
+import { useSearchAndFilter } from "../hooks/useSearchAndFilter";
 
 const SearchAndFilters = ({ onSearch, onFilterSelect, onAddPathway }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedFilters, setSelectedFilters] = useState({
-    category: "",
-    date: "",
-    status: "",
-  });
-
-  const location = useLocation();
-  const isGlycanPage = location.pathname === "/glycan-pathway-data";
-
-  const handleFilterChange = (filterType, value) => {
-    const updatedFilters = { ...selectedFilters, [filterType]: value };
-    setSelectedFilters(updatedFilters);
-    onFilterSelect?.(updatedFilters);
-  };
+  const {
+    searchTerm,
+    setSearchTerm,
+    selectedFilters,
+    handleFilterChange,
+    isGlycanPage,
+  } = useSearchAndFilter(onFilterSelect);
 
   return (
     <div className="flex flex-wrap gap-10 items-center w-full text-sm">
