@@ -1,28 +1,22 @@
-const PathwayTabs = ({ activeTab, onTabChange }) => {
+import PathwayTabButton from "./PathwayTabButton";
+
+const PathwayTabs = ({ activeTab, onTabChange, loginState }) => {
   return (
     <div className="flex flex-col w-full border-b border-solid border-b-zinc-500">
       <div className="flex gap-2">
-        <button
-          className={`px-4 py-2 text-sm rounded ${
-            activeTab === "all"
-              ? "bg-[#F1F5F9] text-black"
-              : "bg-[#F3F3F3] text-[#484848] scale-[0.9]"
-          }`}
+        <PathwayTabButton
+          isActive={activeTab === "all"}
+          label="All Pathways"
           onClick={() => onTabChange("all")}
-        >
-          All Pathways
-        </button>
+        />
 
-        <button
-          className={`px-4 py-2 text-sm rounded ${
-            activeTab === "my"
-              ? "bg-[#F1F5F9] text-black"
-              : "bg-[#F3F3F3] text-[#484848] scale-[0.9]"
-          }`}
-          onClick={() => onTabChange("my")}
-        >
-          My Pathways
-        </button>
+        {loginState && (
+          <PathwayTabButton
+            isActive={activeTab === "my"}
+            label="My Pathways"
+            onClick={() => onTabChange("my")}
+          />
+        )}
       </div>
     </div>
   );
