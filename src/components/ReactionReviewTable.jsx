@@ -1,10 +1,5 @@
-// import { useState } from "react";
-// import { Link } from "react-router";
-// import EditModal from "./EditModal";
 
-function ReactionReviewTable({ reactions }) {
-  // const [selectedReaction, setSelectedReaction] = useState(null);
-  // const [isModalOpen, setModalOpen] = useState(false);
+const ReactionReviewTable = ({ reactions }) => {
 
   const reactionData = reactions.map(item => (
     {
@@ -17,32 +12,13 @@ function ReactionReviewTable({ reactions }) {
     }
   ))
 
-  // const handleEditClick = (reaction) => {
-  //   setSelectedReaction(reaction);
-  //   setModalOpen(true);
-  // };
-
   return (
     <div className="w-full mt-10">
-      {/* <EditModal
-        isOpen={isModalOpen}
-        setIsOpen={setModalOpen}
-        data={selectedReaction}
-      /> */}
 
       <div className="flex flex-wrap gap-2.5 justify-center items-center w-full max-md:max-w-full mb-5">
         <h2 className="flex-1 shrink self-stretch my-auto text-2xl font-bold basis-0 text-neutral-900 max-md:max-w-full">
           Reaction Table
         </h2>
-        {/* <div className="flex gap-4 items-center self-stretch my-auto text-sm font-semibold text-center text-white">
-          <Link
-            to="/new-pathway"
-            className="flex gap-2 justify-center items-center self-stretch px-8 my-auto bg-[#57369E] hover:bg-[#00A7D3] transition-colors duration-500 rounded-sm min-h-[32px] max-md:px-5"
-          >
-            <img src="/images/icons/pluse.svg" />
-            <span className="self-stretch my-auto">Add New Reaction</span>
-          </Link>
-        </div> */}
       </div>
 
       <div className="overflow-x-auto">
@@ -60,13 +36,10 @@ function ReactionReviewTable({ reactions }) {
 
           <tbody>
             {reactionData.map((reaction, index) => (
-              <tr
-                key={index}
-                className="border-b-[5px] border-white bg-[#F1F5F9] hover:bg-gray-100 rounded"
-              >
+              <tr key={index} className="border-b-[5px] border-white bg-[#F1F5F9] hover:bg-gray-100 rounded" >
+
                 <td className="px-4">{reaction.rxnId}</td>
-
-
+                {/* reactants */}
                 <td className="flex flex-col items-start gap-2 pt-[5px]">
                   {reaction.reactants.map((item, index) =>
                     <div key={index} className="px-4 flex items-center gap-2 pt-[5px]">
@@ -81,10 +54,10 @@ function ReactionReviewTable({ reactions }) {
                     </div>
                   )}
                 </td>
+
                 <td className="px-4">{reaction.enzyme}</td>
-
                 <td className="px-4">{reaction.sugarNucleotide}</td>
-
+                {/* products */}
                 <td className="lex flex-col items-start gap-2 pt-[5px]">
                   {reaction.products.map((item, index) =>
                     <div key={index} className="px-4 flex items-center gap-2 pt-[5px]">
@@ -101,7 +74,6 @@ function ReactionReviewTable({ reactions }) {
                 </td>
 
                 <td className="px-4">{reaction.cellularLocation}</td>
-
 
               </tr>
             ))}

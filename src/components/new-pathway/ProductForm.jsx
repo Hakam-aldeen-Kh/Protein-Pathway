@@ -15,9 +15,19 @@ const ProductForm = ({ handleChangeData, reaction, productData, productIndex, ha
 
     const handleUseInNextReaction = (e) => {
         handleChangeData(reaction.id, "products", productIndex, e)
+
         handleChangeData(reaction.id + 1, "reactants", 0, { target: { value: false, name: "isProduct" } })
         handleChangeData(reaction.id + 1, "controllers", 0, { target: { value: false, name: "isProduct" } })
-        handleChangeData(reaction.id + 1, e.target.value, 0, { target: { value: true, name: "isProduct" } })
+
+        handleChangeData(reaction.id + 1, "reactants", 0, { target: { value: "", name: "reference" } })
+        handleChangeData(reaction.id + 1, "controllers", 0, { target: { value: "", name: "reference" } })
+
+        if (e.target.value) {
+            handleChangeData(reaction.id + 1, e.target.value, 0, { target: { value: true, name: "isProduct" } });
+            handleChangeData(reaction.id + 1, e.target.value, 0, { target: { value: "(Product -01 of Reaction 1)", name: "reference" } })
+        }
+
+
     }
 
 

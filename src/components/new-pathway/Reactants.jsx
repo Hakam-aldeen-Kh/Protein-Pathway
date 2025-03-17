@@ -55,7 +55,7 @@ const Reactants = ({ reaction, handleChangeData, setModalData }) => {
   return (
     <div className='bg-white rounded-lg pb-2 rounded-tl-none p-5'>
       {reaction.reactants.map((item, index) => (
-        <Accordion key={index} className='border rounded-lg mb-10' variant="gray" deleteFn={() => deleteReactant(reaction.id, item.id)} title={`Reactant - ${reaction.id}.${item.id}`}>
+        <Accordion key={index} className='border rounded-lg mb-10' reference={item.reference} variant="gray" deleteFn={() => deleteReactant(reaction.id, item.id)} title={`Reactant - ${reaction.id}.${item.id}`}>
           <ReactantForm handleChangeData={handleChangeData} reaction={reaction} reactantData={item} reactantIndex={index} />
         </Accordion>
       ))}
