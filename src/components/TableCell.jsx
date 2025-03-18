@@ -1,7 +1,11 @@
 import { Link } from "react-router";
 
-const TableCell = ({ content, isArray = false, link, id }) => (
-  <div className="p-3 flex items-center justify-start bg-slate-100 border-b-[5px] border-white h-full">
+const TableCell = ({ content, isArray = false, link, id, title }) => (
+  <div
+    className={`${
+      title === "involvedEnzymes" && "col-span-2"
+    } p-3 flex items-start justify-start bg-slate-100 border-b-[5px] border-white h-full`}
+  >
     {isArray && Array.isArray(content) ? (
       <div className="flex flex-wrap gap-2">
         {content.map((item, index) => (

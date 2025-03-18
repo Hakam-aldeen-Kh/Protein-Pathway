@@ -23,12 +23,14 @@ const SearchAndFilters = ({ onSearch, onFilterSelect, onAddPathway }) => {
           }}
         />
 
-        <FilterSelect
-          label="Category"
-          options={["Notch Signaling", "Metabolic", "Cell Cycle"]}
-          value={selectedFilters.category}
-          onChange={(value) => handleFilterChange("category", value)}
-        />
+        {!isGlycanPage && (
+          <FilterSelect
+            label="Category"
+            options={["Notch Signaling", "Metabolic", "Cell Cycle"]}
+            value={selectedFilters.category}
+            onChange={(value) => handleFilterChange("category", value)}
+          />
+        )}
 
         <FilterSelect
           label="Date"
