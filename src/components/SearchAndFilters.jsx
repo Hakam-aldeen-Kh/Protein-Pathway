@@ -47,7 +47,11 @@ const SearchAndFilters = ({ onSearch, onFilterSelect, onAddPathway }) => {
         />
       </div>
 
-      {!isGlycanPage && <AddPathwayButton onAddPathway={onAddPathway} />}
+      {!isGlycanPage && (
+        <div>
+          <AddPathwayButton onAddPathway={onAddPathway} />
+        </div>
+      )}
     </div>
   );
 };

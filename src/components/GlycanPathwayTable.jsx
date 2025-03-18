@@ -25,7 +25,8 @@ const GlycanPathwayTable = ({ pathways }) => {
               title={key}
               isArray={isArray}
               link={link}
-              id={row.id} // Pass the pathway id for linking
+              id={row.id}
+              dataType="glycan"
             />
           ))}
         </div>

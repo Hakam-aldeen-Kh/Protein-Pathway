@@ -5,7 +5,7 @@ const AddPathwayButton = ({ onAddPathway }) => {
     <Link
       to="/new-pathway"
       onClick={onAddPathway}
-      className="flex gap-2 justify-center items-center px-8 py-1.5 bg-violet-900 text-white rounded-sm min-h-[32px] hover:bg-[#00A7D3] transition-colors duration-500"
+      className="flex w-full gap-2 justify-center items-center px-8 py-1.5 bg-violet-900 text-white rounded-sm min-h-[32px] hover:bg-[#00A7D3] transition-colors duration-500"
     >
       Add New Pathway
     </Link>

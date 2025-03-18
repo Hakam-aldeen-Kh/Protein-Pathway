@@ -4,6 +4,7 @@ import PathwayTabs from "../../components/PathwayTabs";
 import SearchAndFilters from "../../components/SearchAndFilters";
 import GlycanPathwayTable from "../../components/GlycanPathwayTable";
 import { useGlycaanData } from "../../hooks/useGlycanData";
+import NotFoundData from "../../components/NotFoundData";
 
 const GlycanData = () => {
   const {
@@ -33,15 +34,23 @@ const GlycanData = () => {
               onFilterSelect={handleFilterSelect}
               onAddPathway={() => console.log("Adding new pathway")}
             />
-            <GlycanPathwayTable pathways={displayedPathways} />
-            <Pagination
-              totalItems={filteredPathways.length}
-              itemsPerPage={itemsPerPage}
-              onPageChange={setCurrentPage}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              filteredPathways={filteredPathways.length}
-            />
+            {filteredPathways.length > 0 ? (
+              <>
+                <GlycanPathwayTable pathways={displayedPathways} />
+                <Pagination
+                  totalItems={filteredPathways.length}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={setCurrentPage}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  filteredPathways={filteredPathways.length}
+                />
+              </>
+            ) : (
+              <div className="flex flex-col justify-center items-center my-16 max-w-[400px] mx-auto space-y-5">
+                <NotFoundData />
+              </div>
+            )}
           </div>
         </div>
       </div>
