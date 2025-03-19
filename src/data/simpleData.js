@@ -1,4 +1,4 @@
-import { elements } from "../pages/Pathway-Result/data"
+import { elements } from "./cytoscapeData"
 const samplePathways = Array(50)
   .fill()
   .map((_, index) => ({

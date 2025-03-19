@@ -1,4 +1,4 @@
-export const layouts: Record<string, any> = {
+export const layouts = {
     random: {
         name: "random",
         ppadding: 50,

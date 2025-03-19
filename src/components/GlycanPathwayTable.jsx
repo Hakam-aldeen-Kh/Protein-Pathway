@@ -1,6 +1,6 @@
 import TableHeader from "./TableHeader";
 import TableCell from "./TableCell";
-import { columns } from "../context/columnsTableDataGlycan";
+import { columns } from "../data/columnsTableDataGlycan";
 
 const GlycanPathwayTable = ({ pathways }) => {
   return (

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import Graph from "../pages/Pathway-Result/Graph";
 // import { elements } from "../pages/Pathway-Result/data5";
 import { layouts } from "../pages/Pathway-Result/layouts";
-import { convertToCytoscapeFormat } from "../utils/algo";
+import { reactionsDataToCytoscapeFormat } from "../utils/reactionsDataToCytoscapeFormat";
 
 function PathwayInfoOnce({ pathway, id }) {
   const navigate = useNavigate()
@@ -25,7 +25,7 @@ function PathwayInfoOnce({ pathway, id }) {
   };
 
   return (
-    <div className="flex flex-col mt-16 w-full max-md:mt-10 max-md:max-w-full">
+    <div className="flex flex-col w-full max-md:max-w-full">
       <div className="flex flex-col w-full max-md:max-w-full">
         <h2 className="text-2xl font-bold text-neutral-900">Pathway Info</h2>
         <div className="flex flex-wrap gap-5 mt-2 w-full max-md:max-w-full">
@@ -44,26 +44,14 @@ function PathwayInfoOnce({ pathway, id }) {
               </div>
             ))}
           </div>
-          <div className="flex relative flex-1 shrink gap-5 min-h-96 h-full basis-0 min-w-[240px] max-md:max-w-full mt-5">
-            {/* result */}
-
-            {/* <img
-              loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/0330d223f5f1457b89c89c318411efd1/c43c12f2d8304c2e6307605fb11adc1b200b5b801beef0b5303bf22b07d85ca2?apiKey=c30e22be1ed44b2a93fb0b9e3e65ed74&"
-              alt="Pathway diagram"
-              onClick={() => navigate("/pathway-result")}
-              className="object-contain cursor-pointer z-0 flex-1 shrink w-full aspect-[2.87] basis-0 min-w-[240px] max-md:max-w-full relative"
-            /> */}
-            <div className="w-full h-full object-contain cursor-pointer z-0 flex-1 shrink aspect-[2.87] basis-0 min-w-[240px] max-md:max-w-full relative"
-            // onClick={() => navigate("/pathway-result")}
-            >
-              <Graph elements={pathway.reactionsA || convertToCytoscapeFormat(pathway.reactions)} layout={layouts.klay} touch={false} />
+          <div className="flex relative flex-1 shrink gap-5 min-h-[280px] rounded h-full basis-0 min-w-[240px] max-md:max-w-full mt-5 border">
+            <div className="w-full h-full object-contain cursor-pointer z-0 flex-1 shrink aspect-[2.87] basis-0 min-w-[240px] max-md:max-w-full relative">
+              <Graph elements={pathway.reactionsA || reactionsDataToCytoscapeFormat(pathway.reactions)} layout={layouts.klay} touch={false} />
             </div>
 
             <div className="flex absolute top-2 right-2 z-0 gap-2.5 items-center self-start">
               <button
                 className="flex gap-2 justify-center items-center self-stretch px-0.5 my-auto w-6 h-6 rounded bg-neutral-900 bg-opacity-50 min-h-[24px]"
-                aria-label="Action 1"
                 onClick={() => navigate(`/pathway-result/${id}`)}
               >
                 <img src="/images/icons/btn-search-light.svg" />

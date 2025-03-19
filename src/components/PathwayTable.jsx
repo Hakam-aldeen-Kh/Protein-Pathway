@@ -1,6 +1,6 @@
 import TableCell from "./TableCell";
 import TableHeader from "./TableHeader";
-import { columns } from "../context/columnsTableDataPathway";
+import { columns } from "../data/columnsTableDataPathway";
 
 const PathwayTable = ({ pathways }) => {
   return (
