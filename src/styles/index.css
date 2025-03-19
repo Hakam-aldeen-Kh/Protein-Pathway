@@ -20,7 +20,7 @@
     position: relative;
 }
 
-select {
+.select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;

@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useNavigate, useOutletContext } from 'react-router';
+
+// components
+import { TabItem, Tabs } from '../../common/Tabs';
 import DeleteModal from '../../common/DeleteModal';
-import BasicInfoForm from '../../components/new-pathway/BasicInfoForm';
+import Products from '../../components/new-pathway/Products';
 import Accordion from '../../components/new-pathway/Accordion';
 import Reactants from '../../components/new-pathway/Reactants';
 import Controllers from '../../components/new-pathway/Controllers';
-import Products from '../../components/new-pathway/Products';
-import { TabItem, Tabs } from '../../common/Tabs';
+import BasicInfoForm from '../../components/new-pathway/BasicInfoForm';
+
 
 function NewPathway() {
 
@@ -121,13 +124,13 @@ function NewPathway() {
 
               <Tabs index={index}>
                 <TabItem label="Reactants">
-                  <Reactants reaction={reaction} handleChangeData={handleChangeData} setModalData={setModalData} />
+                  <Reactants reaction={reaction} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setModalData={setModalData} />
                 </TabItem>
                 <TabItem label="Controllers">
-                  <Controllers reaction={reaction} handleChangeData={handleChangeData} setModalData={setModalData} />
+                  <Controllers reaction={reaction} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setModalData={setModalData} />
                 </TabItem>
                 <TabItem label="Products">
-                  <Products reaction={reaction} handleChangeData={handleChangeData} setModalData={setModalData} addReaction={addReaction} />
+                  <Products reaction={reaction} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setModalData={setModalData} addReaction={addReaction} />
                 </TabItem>
               </Tabs>
 

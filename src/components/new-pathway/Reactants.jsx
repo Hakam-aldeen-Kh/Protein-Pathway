@@ -1,11 +1,8 @@
 import { PlusIcon } from "lucide-react";
 import Accordion from "./Accordion";
 import ReactantForm from "./ReactantForm";
-import { useOutletContext } from "react-router";
 
-const Reactants = ({ reaction, handleChangeData, setModalData }) => {
-
-  const { setPathwayData } = useOutletContext();
+const Reactants = ({ reaction, handleChangeData, setModalData, setPathwayData }) => {
 
   const closeModal = () => setModalData((prev) => ({ ...prev, isModalOpen: false }))
 

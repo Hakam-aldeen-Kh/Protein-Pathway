@@ -1,6 +1,6 @@
 import { useState } from "react";
 import EditModal from "./EditModal";
-import AddModal from "./AddModal";
+import AddReactionModal from "./AddReactionModal";
 import DeleteModal from "../common/DeleteModal";
 import DetailsModal from "./DetailsModal";
 
@@ -17,8 +17,6 @@ function ReactionTable({ reactions, isEdit }) {
   });
 
   const closeModal = () => setModalData((prev) => ({ ...prev, isModalOpen: false }))
-
-
 
 
   const [reactionData, setReactions] = useState(reactions.map(item => (
@@ -78,11 +76,9 @@ function ReactionTable({ reactions, isEdit }) {
   };
 
 
-
-
-
   const handleEditClick = (reaction) => {
     setSelectedReaction(reaction);
+    console.log(reaction)
     setEditModalOpen(true);
   };
 
@@ -99,7 +95,7 @@ function ReactionTable({ reactions, isEdit }) {
         addReaction={() => console.log("edit reaction")}
         title={"Edit Reaction"}
       />
-      <AddModal
+      <AddReactionModal
         addReaction={addReaction}
         isOpen={isAddModalOpen}
         setIsOpen={setAddModalOpen}

@@ -1,13 +1,11 @@
-import { useOutletContext } from "react-router";
 import Accordion from "./Accordion";
 import { PlusIcon } from "lucide-react";
 import ProductForm from "./ProductForm";
 import Modal from "react-modal";
 import { useState } from "react";
 
-const Products = ({ reaction, handleChangeData, setModalData, addReaction }) => {
+const Products = ({ reaction, handleChangeData, setModalData, addReaction, setPathwayData }) => {
 
-  const { setPathwayData } = useOutletContext();
 
   const closeModal = () => setModalData((prev) => ({ ...prev, isModalOpen: false }))
 
@@ -86,11 +84,10 @@ const Products = ({ reaction, handleChangeData, setModalData, addReaction }) => 
   return (
     <div className='bg-white rounded-lg pb-2 rounded-tl-none p-5'>
       {reaction.products.map((item, index) => (
-        <>
-          <Accordion key={index} className='border rounded-lg mb-10' variant="gray" deleteFn={() => deleteProduct(reaction.id, item.id)} title={`Product - ${reaction.id}.${item.id}`}>
+        <div key={index}>
+          <Accordion className='border rounded-lg mb-10' variant="gray" deleteFn={() => deleteProduct(reaction.id, item.id)} title={`Product - ${reaction.id}.${item.id}`}>
             <ProductForm handleChangeData={handleChangeData} reaction={reaction} productData={item} productIndex={index} handleCheckboxChange={handleCheckboxChange} />
           </Accordion>
-
           <Modal
             isOpen={modalIsOpen}
             onRequestClose={closeCheckModal}
@@ -106,7 +103,7 @@ const Products = ({ reaction, handleChangeData, setModalData, addReaction }) => 
             </div>
 
           </Modal>
-        </>
+        </div>
       ))}
       <button onClick={() => addProduct(reaction.id)} className="flex items-center text-blue-600 hover:text-blue-700 mt-5">
         <PlusIcon className="h-5 w-5 mr-1" /> Add New Products

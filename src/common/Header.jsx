@@ -16,7 +16,7 @@ function Header() {
       <div className="flex justify-between lg:space-x-[40px] items-center w-full">
         {/* Logo */}
         <Link to="/" className="w-[150px] md:w-[200px]">
-          <img src="/Logo.svg" alt="Company Logo" />
+          <img src="/images/Logo.svg" alt="Company Logo" />
         </Link>
 
         {/* Desktop Menu */}

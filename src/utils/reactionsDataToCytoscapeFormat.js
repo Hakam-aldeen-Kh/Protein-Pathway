@@ -1,5 +1,5 @@
 
-export function convertToCytoscapeFormat(reactions) {
+export function reactionsDataToCytoscapeFormat(reactions) {
     const elements = [];
     const filterReaction = filterIsProductModern(reactions)
 
@@ -85,7 +85,7 @@ export function convertToCytoscapeFormat(reactions) {
     return elements;
 }
 
-export function createChemicalNode(id, chemical, parent, classType) {
+function createChemicalNode(id, chemical, parent, classType) {
     return {
         data: {
             id,
@@ -106,7 +106,7 @@ export function createChemicalNode(id, chemical, parent, classType) {
     };
 }
 
-export function createEdge(id, source, target, type) {
+function createEdge(id, source, target, type) {
     return {
         data: {
             id,

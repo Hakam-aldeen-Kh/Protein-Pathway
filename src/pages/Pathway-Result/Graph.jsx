@@ -3,46 +3,8 @@ import CytoscapeComponent from "react-cytoscapejs";
 import sbgnStylesheet from "cytoscape-sbgn-stylesheet";
 
 const Graph = ({ elements, layout, touch = false }) => {
-    const cyStylesheet = sbgnStylesheet(cytoscape);
-    // const stylesheet = [
-    //     {
-    //         selector: 'node',
-    //         style: {
-    //             "label": "data(label)",
-    //             "font-size": "12px",
-    //             // "text-valign": "center",
-    //             // "text-halign": "center",
-    //             "shape": "oval",
-    //             "width": "mapData(labelLength, 1, 20, 50, 150)",
-    //             "height": "40px",
-    //             "padding": "5px",
-    //         },
-    //     },
-    //     {
-    //         selector: 'edge',
-    //         style: {
-    //             width: 2,
-    //             "label": "data(label)",
-    //             "text-margin-y": -10,
-    //             "font-size": "10px",
-    //             "text-halign": "center",
-    //             "text-valign": "top",
-    //             // "target-arrow-shape": "triangle",
-    //             // "line-color": "green",
-    //             // "target-arrow-color": "red",
-    //             // "target-arrow-size": 60,
-    //             // "curve-style": "bezier"
-    //         }
-    //     }
-    // ]
-    // useEffect(() => {
-    //     console.log(elements)
-    //     elements.forEach((node) => {
-    //         node.data.labelLength = node.data.label.length;
-    //         // node.data.shape = node.data.label.length > 8 ? "ellipse" : "oval";
-    //     });
-    // }, [elements]);
 
+    const cyStylesheet = sbgnStylesheet(cytoscape);
 
     return (
         <CytoscapeComponent
@@ -72,3 +34,48 @@ const Graph = ({ elements, layout, touch = false }) => {
 };
 
 export default Graph;
+
+
+
+
+
+
+
+// const stylesheet = [
+//     {
+//         selector: 'node',
+//         style: {
+//             "label": "data(label)",
+//             "font-size": "12px",
+//             // "text-valign": "center",
+//             // "text-halign": "center",
+//             "shape": "oval",
+//             "width": "mapData(labelLength, 1, 20, 50, 150)",
+//             "height": "40px",
+//             "padding": "5px",
+//         },
+//     },
+//     {
+//         selector: 'edge',
+//         style: {
+//             width: 2,
+//             "label": "data(label)",
+//             "text-margin-y": -10,
+//             "font-size": "10px",
+//             "text-halign": "center",
+//             "text-valign": "top",
+//             // "target-arrow-shape": "triangle",
+//             // "line-color": "green",
+//             // "target-arrow-color": "red",
+//             // "target-arrow-size": 60,
+//             // "curve-style": "bezier"
+//         }
+//     }
+// ]
+// useEffect(() => {
+//     console.log(elements)
+//     elements.forEach((node) => {
+//         node.data.labelLength = node.data.label.length;
+//         // node.data.shape = node.data.label.length > 8 ? "ellipse" : "oval";
+//     });
+// }, [elements]);

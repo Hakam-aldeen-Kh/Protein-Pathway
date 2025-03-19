@@ -36,7 +36,7 @@ const FormElement = ({
                             name={name}
                             value={value || ""}
                             onChange={handleChange}
-                            className="mt-1 outline-none block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
+                            className="select mt-1 outline-none block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
                         >
                             <option value="">{placeholder}</option>
                             {children}

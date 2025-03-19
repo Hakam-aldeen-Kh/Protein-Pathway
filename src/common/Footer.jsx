@@ -1,5 +1,5 @@
-import footerData from "../context/footer.json";
-import universities from "../context/universities.json";
+import footerData from "../data/footer.json";
+import universities from "../data/universities.json";
 
 // components
 import ToTopButton from "../components/ToTopButton";

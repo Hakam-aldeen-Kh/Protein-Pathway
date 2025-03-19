@@ -1,17 +1,23 @@
-
-// import { elements } from "./data6";
-import { layouts } from "./layouts";
-import setupCy from "./setupCy";
 import { useState } from "react";
-import Graph from "./Graph";
-import { convertToCytoscapeFormat } from "../../utils/algo";
-import { useOutletContext } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
 
+// components
+import { layouts } from "./layouts";
+import Graph from "./Graph";
+import Button from "../../components/pathway-result/Button";
+
+import setupCy from "./setupCy";
+import { reactionsDataToCytoscapeFormat } from "../../utils/reactionsDataToCytoscapeFormat";
+
+// Cytoscape setup
 setupCy();
 
-const PathwayResult = () => {
-  const { pathwayData } = useOutletContext();
 
+const PathwayResult = () => {
+
+  const navigate = useNavigate()
+
+  const { pathwayData } = useOutletContext();
   const [layout, setLayout] = useState(layouts.klay);
 
   const handleExport = () => {
@@ -36,38 +42,30 @@ const PathwayResult = () => {
     }
   };
 
+  const handleGoBack = () => {
+    navigate("/review")
+  };
+
+
+
+
   return (
     <div className="w-full h-[calc(100vh-71px)] flex items-start justify-center gap-2 p-2 bg-gray-100 relative">
 
       <div className="flex-1 h-full bg-white rounded-lg shadow-lg flex items-center justify-center">
-        <Graph elements={convertToCytoscapeFormat(pathwayData.reactions)} layout={layout} touch={true} />
+        <Graph elements={reactionsDataToCytoscapeFormat(pathwayData.reactions)} layout={layout} touch={true} />
       </div>
 
       <div className="w-[150px] space-y-2">
-        <button
-          onClick={handleExport}
-          className=" w-full bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600"
-        >
-          Export as PNG
-        </button>
-        <button
-          onClick={handleZoomIn}
-          className="bg-green-500 w-full text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600"
-        >
-          Zoom In
-        </button>
-        <button
-          onClick={handleZoomOut}
-          className="bg-red-500 w-full text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600"
-        >
-          Zoom Out
-        </button>
+        <Button onClick={handleGoBack} variant="purple" label="Back" />
+        <Button onClick={handleExport} variant="blue" label="Export as PNG" />
+        <Button onClick={handleZoomIn} variant="green" label="Zoom In" />
+        <Button onClick={handleZoomOut} variant="red" label="Zoom Out" />
+
 
         <select
           className="bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onChange={(e) => {
-            setLayout({ ...layouts[e.target.value] });
-          }}
+          onChange={(e) => setLayout({ ...layouts[e.target.value] })}
         >
           <option value={"klay"}>
             Select layout

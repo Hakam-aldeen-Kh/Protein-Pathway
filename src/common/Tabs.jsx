@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export function Tabs({ children, index }) {
+export function Tabs({ children, index = 0 }) {
 
     // Generate a unique key for each reaction's active tab
     const storageKey = `activeTab-${index}`;
