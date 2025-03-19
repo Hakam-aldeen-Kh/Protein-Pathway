@@ -33,8 +33,8 @@ const LoginInput = ({
               alt="show/hide password"
               src={
                 showPassword
-                  ? "/src/assets/svg/hidde-eye.svg"
-                  : "/src/assets/svg/show-eye.svg"
+                  ? "/images/icons/hidde-eye.svg"
+                  : "/images/icons/show-eye.svg"
               }
             />
           </button>

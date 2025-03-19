@@ -1,4 +1,6 @@
+import AddPathwayButton from "../../components/AddPathwayButton";
 import HeroSection from "../../components/HeroSection";
+import NotFoundData from "../../components/NotFoundData";
 import Pagination from "../../components/Pagination";
 import PathwayTable from "../../components/PathwayTable";
 import PathwayTabs from "../../components/PathwayTabs";
@@ -35,15 +37,24 @@ const PathwayData = () => {
               onFilterSelect={handleFilterSelect}
               onAddPathway={() => console.log("Adding new pathway")}
             />
-            <PathwayTable pathways={displayedPathways} />
-            <Pagination
-              totalItems={filteredPathways.length}
-              itemsPerPage={itemsPerPage}
-              onPageChange={setCurrentPage}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              filteredPathways={filteredPathways.length}
-            />
+            {filteredPathways.length > 0 ? (
+              <>
+                <PathwayTable pathways={displayedPathways} />
+                <Pagination
+                  totalItems={filteredPathways.length}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={setCurrentPage}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  filteredPathways={filteredPathways.length}
+                />
+              </>
+            ) : (
+              <div className="flex flex-col justify-center items-center my-16 max-w-[400px] mx-auto space-y-5">
+                <NotFoundData />
+                <AddPathwayButton />
+              </div>
+            )}
           </div>
         </div>
       </div>

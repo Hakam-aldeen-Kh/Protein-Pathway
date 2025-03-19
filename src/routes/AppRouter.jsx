@@ -11,6 +11,7 @@ import GlycanData from "../pages/Glycan-Data/GlycanData";
 import Review from "../pages/Review/Review";
 import PathewayData from "../components/PathewayData";
 import PathwayResultOnce from "../pages/Pathway-Result/PathwayResultOnce";
+import NotFound from "../pages/404/NotFound";
 
 const AppRouter = () => {
   return (
@@ -25,12 +26,20 @@ const AppRouter = () => {
       />
 
       <Route
+        path="/*"
+        element={
+          <Layout>
+            <NotFound />
+          </Layout>
+        }
+      />
+
+      <Route
         path="/glycan-pathway-data"
         element={
           <Layout>
             <GlycanData />
           </Layout>
-
         }
       />
 
@@ -97,10 +106,7 @@ const AppRouter = () => {
             </Layout>
           }
         />
-
       </Route>
-
-
 
       <Route
         path="/login"
@@ -110,11 +116,6 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
-
-
-
-
     </Routes>
   );
 };
