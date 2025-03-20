@@ -2,7 +2,7 @@ import AddPathwayButton from "../../common/AddPathwayButton";
 import HeroSection from "../../common/HeroSection";
 import NotFoundData from "../../common/NotFoundData";
 import Pagination from "../../common/Pagination";
-import PathwayTable from "../../components/PathwayTable";
+import PathwayTable from "../../common/pathway-table/PathwayTable";
 import PathwayTabs from "../../common/PathwayTabs";
 import SearchAndFilters from "../../common/SearchAndFilters";
 import { usePathwayData } from "../../hooks/usePathwayData";
