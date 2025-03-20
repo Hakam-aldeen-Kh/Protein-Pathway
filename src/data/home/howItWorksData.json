@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "title": "Register",
+    "steps": [
+      "Create an account with your details.",
+      "Verify your email address.",
+      "Set up your profile."
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Input",
+    "steps": [
+      "Enter your data into the system.",
+      "Upload any required files.",
+      "Review your submission."
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Manage",
+    "steps": [
+      "Track your progress.",
+      "Update information as needed.",
+      "Export your results."
+    ]
+  }
+]

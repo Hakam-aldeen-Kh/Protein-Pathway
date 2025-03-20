@@ -1,14 +1,13 @@
-import HeroSection from "../../components/HeroSection";
-import Pagination from "../../components/Pagination";
-import PathwayTabs from "../../components/PathwayTabs";
-import SearchAndFilters from "../../components/SearchAndFilters";
-import GlycanPathwayTable from "../../components/GlycanPathwayTable";
+import HeroSection from "../../common/HeroSection";
+import PathwayTabs from "../../common/pathway-table/PathwayTabs";
+import GlycanPathwayTable from "./components/GlycanPathwayTable";
 import { useGlycaanData } from "../../hooks/useGlycanData";
-import NotFoundData from "../../components/NotFoundData";
+import NotFoundData from "../../common/NotFoundData";
+import Pagination from "../../common/pagination/Pagination";
+import SearchAndFilters from "../../common/search-and-filter/SearchAndFilters";
 
 const GlycanData = () => {
   const {
-    isLoggedIn,
     filteredPathways,
     activeTab,
     currentPage,
@@ -25,9 +24,7 @@ const GlycanData = () => {
       <div className="flex flex-col w-full max-md:max-w-full">
         <HeroSection title="Glycan Synthetic Patway Data" />
         <div className="flex flex-col px-32 mt-10 w-full max-md:px-5 max-md:max-w-full">
-          {isLoggedIn && (
-            <PathwayTabs activeTab={activeTab} onTabChange={setActiveTab} />
-          )}
+          <PathwayTabs activeTab={activeTab} onTabChange={setActiveTab} />
           <div className="flex flex-col mt-2.5 w-full rounded-lg max-md:max-w-full">
             <SearchAndFilters
               onSearch={handleSearch}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "icon": "/images/home/WhatWeDo1.png",
+    "title": "Service One",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  },
+  {
+    "id": 2,
+    "icon": "/images/home/WhatWeDo2.png",
+    "title": "Service Two",
+    "description": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  },
+  {
+    "id": 3,
+    "icon": "/images/home/WhatWeDo3.png",
+    "title": "Service Three",
+    "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+  },
+  {
+    "id": 4,
+    "icon": "/images/home/WhatWeDo4.png",
+    "title": "Service Four",
+    "description": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  }
+]
