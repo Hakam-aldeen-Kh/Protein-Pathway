@@ -1,6 +1,6 @@
-import TableCell from "./TableCell";
-import TableHeader from "./TableHeader";
-import { columns } from "../../data/columnsTableDataPathway";
+import TableCell from "../../../common/pathway-table/TableCell";
+import TableHeader from "../../../common/pathway-table/TableHeader";
+import { columns } from "../../../data/columnsTableDataPathway";
 
 const PathwayTable = ({ pathways }) => {
   return (

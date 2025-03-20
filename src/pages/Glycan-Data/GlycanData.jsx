@@ -1,10 +1,10 @@
 import HeroSection from "../../common/HeroSection";
-import Pagination from "../../common/Pagination";
-import PathwayTabs from "../../common/PathwayTabs";
-import SearchAndFilters from "../../common/SearchAndFilters";
-import GlycanPathwayTable from "../../components/GlycanPathwayTable";
+import PathwayTabs from "../../common/pathway-table/PathwayTabs";
+import GlycanPathwayTable from "./components/GlycanPathwayTable";
 import { useGlycaanData } from "../../hooks/useGlycanData";
 import NotFoundData from "../../common/NotFoundData";
+import Pagination from "../../common/pagination/Pagination";
+import SearchAndFilters from "../../common/search-and-filter/SearchAndFilters";
 
 const GlycanData = () => {
   const {

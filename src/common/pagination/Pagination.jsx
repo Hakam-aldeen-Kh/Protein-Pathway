@@ -1,6 +1,6 @@
-import CurrentRangeDisplay from "./pagination/CurrentRangeDisplay";
-import PaginationButton from "./pagination//PaginationController";
-import PaginationNumbers from "./pagination//PaginationNumbers";
+import CurrentRangeDisplay from "./CurrentRangeDisplay";
+import PaginationButton from "./PaginationController";
+import PaginationNumbers from "./PaginationNumbers";
 
 const Pagination = ({
   totalItems = 120,

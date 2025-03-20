@@ -1,6 +1,6 @@
-import TableHeader from "../common/pathway-table/TableHeader";
-import TableCell from "../common/pathway-table/TableCell";
-import { columns } from "../data/columnsTableDataGlycan";
+import TableHeader from "../../../common/pathway-table/TableHeader";
+import TableCell from "../../../common/pathway-table/TableCell";
+import { columns } from "../../../data/columnsTableDataGlycan";
 
 const GlycanPathwayTable = ({ pathways }) => {
   return (
