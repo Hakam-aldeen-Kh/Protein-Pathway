@@ -1,5 +1,5 @@
-import SearchInput from "./SearchInput";
-import FilterSelect from "./FilterSelect";
+import SearchInput from "./search-and-filter/SearchInput";
+import FilterSelect from "./search-and-filter/FilterSelect";
 import AddPathwayButton from "./AddPathwayButton";
 import { useSearchAndFilter } from "../hooks/useSearchAndFilter";
 
