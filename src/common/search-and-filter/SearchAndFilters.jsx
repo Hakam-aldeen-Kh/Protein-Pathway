@@ -1,7 +1,7 @@
 import SearchInput from "./SearchInput";
 import FilterSelect from "./FilterSelect";
-import AddPathwayButton from "./AddPathwayButton";
-import { useSearchAndFilter } from "../hooks/useSearchAndFilter";
+import AddPathwayButton from "../AddPathwayButton";
+import { useSearchAndFilter } from "../../hooks/useSearchAndFilter";
 
 const SearchAndFilters = ({ onSearch, onFilterSelect, onAddPathway }) => {
   const {

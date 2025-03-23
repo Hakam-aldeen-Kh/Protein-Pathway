@@ -1,4 +1,5 @@
-import FeatureCard from "../../../components/FeatureCard";
+import FeatureCard from "../components/FeatureCard";
+import whatWeDoData from "../../../data/home/whatWeDoData.json";
 
 const WhatWeDo = () => {
   return (
@@ -7,18 +8,18 @@ const WhatWeDo = () => {
         What We Do
       </h2>
       <div className="grid md:grid-cols-4 gap-8 max-w-[1664px] mx-auto">
-        {[1, 2, 3, 4].map((num) => (
+        {whatWeDoData.map((item) => (
           <FeatureCard
-            key={num}
+            key={item.id}
             icon={
               <img
-                src={`/images/do${num}.png`}
+                src={item.icon}
                 className="w-32 h-32 text-blue-500"
-                alt={`Service ${num}`}
+                alt={item.title}
               />
             }
-            title="Service Title"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            title={item.title}
+            description={item.description}
           />
         ))}
       </div>

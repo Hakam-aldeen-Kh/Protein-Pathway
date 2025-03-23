@@ -1,4 +1,4 @@
-import LoginInput from "../../components/LoginInput";
+import LoginInput from "./components/LoginInput";
 import { useLogin } from "../../hooks/useLogin";
 
 const Login = () => {

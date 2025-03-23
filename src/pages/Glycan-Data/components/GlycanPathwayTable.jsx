@@ -1,8 +1,8 @@
-import TableCell from "./TableCell";
-import TableHeader from "./TableHeader";
-import { columns } from "../data/columnsTableDataPathway";
+import TableHeader from "../../../common/pathway-table/TableHeader";
+import TableCell from "../../../common/pathway-table/TableCell";
+import { columns } from "../../../data/columnsTableDataGlycan";
 
-const PathwayTable = ({ pathways }) => {
+const GlycanPathwayTable = ({ pathways }) => {
   return (
     <div className="w-full overflow-x-auto">
       {/* Table Header */}
@@ -16,15 +16,17 @@ const PathwayTable = ({ pathways }) => {
       {pathways.map((row, rowIndex) => (
         <div
           key={rowIndex}
-          className="grid grid-cols-8 text-xs text-neutral-900"
+          className="grid grid-cols-9 text-xs text-neutral-900"
         >
           {columns.map(({ key, isArray, link }, colIndex) => (
             <TableCell
               key={`${rowIndex}-${colIndex}`}
               content={row[key]}
+              title={key}
               isArray={isArray}
               link={link}
               id={row.id}
+              dataType="glycan"
             />
           ))}
         </div>
@@ -33,4 +35,4 @@ const PathwayTable = ({ pathways }) => {
   );
 };
 
-export default PathwayTable;
+export default GlycanPathwayTable;

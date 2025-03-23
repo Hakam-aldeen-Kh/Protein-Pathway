@@ -1,10 +1,10 @@
-import AddPathwayButton from "../../components/AddPathwayButton";
-import HeroSection from "../../components/HeroSection";
-import NotFoundData from "../../components/NotFoundData";
-import Pagination from "../../components/Pagination";
-import PathwayTable from "../../components/PathwayTable";
-import PathwayTabs from "../../components/PathwayTabs";
-import SearchAndFilters from "../../components/SearchAndFilters";
+import AddPathwayButton from "../../common/AddPathwayButton";
+import HeroSection from "../../common/HeroSection";
+import NotFoundData from "../../common/NotFoundData";
+import Pagination from "../../common/pagination/Pagination";
+import PathwayTable from "./components/PathwayTable";
+import PathwayTabs from "../../common/pathway-table/PathwayTabs";
+import SearchAndFilters from "../../common/search-and-filter/SearchAndFilters";
 import { usePathwayData } from "../../hooks/usePathwayData";
 
 const PathwayData = () => {
