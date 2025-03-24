@@ -1,10 +1,10 @@
 import { PlusIcon } from "lucide-react";
-import Accordion from "./Accordion";
+import Accordion from "../../../Accordion";
 import ControllerForm from "./ControllerForm";
 
-const Controllers = ({ reaction, handleChangeData, setModalData, setPathwayData }) => {
+const Controllers = ({ reaction, handleChangeData, setDeleteModalData, setPathwayData }) => {
 
-    const closeModal = () => setModalData((prev) => ({ ...prev, isModalOpen: false }))
+    const closeModal = () => setDeleteModalData((prev) => ({ ...prev, isModalOpen: false }))
 
     const addController = (reactionId) => {
         setPathwayData((prevPathwayData) =>
@@ -29,7 +29,7 @@ const Controllers = ({ reaction, handleChangeData, setModalData, setPathwayData 
     };
 
     const deleteController = (reactionId, controllerId) => {
-        setModalData({
+        setDeleteModalData({
             isModalOpen: true,
             closeModal,
             title: "Contoller",

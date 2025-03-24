@@ -1,10 +1,10 @@
 import { PlusIcon } from "lucide-react";
-import Accordion from "./Accordion";
+import Accordion from "../../../Accordion";
 import ReactantForm from "./ReactantForm";
 
-const Reactants = ({ reaction, handleChangeData, setModalData, setPathwayData }) => {
+const Reactants = ({ reaction, handleChangeData, setDeleteModalData, setPathwayData }) => {
 
-  const closeModal = () => setModalData((prev) => ({ ...prev, isModalOpen: false }))
+  const closeModal = () => setDeleteModalData((prev) => ({ ...prev, isModalOpen: false }))
 
   const addReactant = (reactionId) => {
     setPathwayData((prevPathwayData) => ({
@@ -27,7 +27,7 @@ const Reactants = ({ reaction, handleChangeData, setModalData, setPathwayData })
   };
 
   const deleteReactant = (reactionId, reactantId) => {
-    setModalData({
+    setDeleteModalData({
       isModalOpen: true,
       closeModal,
       title: "Reactant",

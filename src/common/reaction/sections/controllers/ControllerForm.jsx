@@ -1,8 +1,8 @@
-import FormElement from "./FormElement";
+import FormElement from "../../../../components/new-pathway/FormElement";
 
 const ControllerForm = ({ handleChangeData, reaction, controllerData, controllerIndex }) => {
 
-    const handleChange = (e) => handleChangeData(reaction.id, "controllers", controllerIndex, e)
+    const handleChange = (e) => handleChangeData(e, reaction.id, "controllers", controllerIndex)
 
     return (
         <div className="space-y-4 p-4">

@@ -1,8 +1,8 @@
-import FormElement from "./FormElement";
+import FormElement from "../../../../components/new-pathway/FormElement";
 
 const ProductForm = ({ handleChangeData, reaction, productData, productIndex, handleCheckboxChange }) => {
 
-    const handleChange = (e) => handleChangeData(reaction.id, "products", productIndex, e)
+    const handleChange = (e) => handleChangeData(e, reaction.id, "products", productIndex)
 
     const handleChangeWithConfirm = (e) => {
         if (productData?.useNextReaction) {
@@ -14,17 +14,17 @@ const ProductForm = ({ handleChangeData, reaction, productData, productIndex, ha
     }
 
     const handleUseInNextReaction = (e) => {
-        handleChangeData(reaction.id, "products", productIndex, e)
+        handleChangeData(e, reaction.id, "products", productIndex)
 
-        handleChangeData(reaction.id + 1, "reactants", 0, { target: { value: false, name: "isProduct" } })
-        handleChangeData(reaction.id + 1, "controllers", 0, { target: { value: false, name: "isProduct" } })
+        handleChangeData({ target: { value: false, name: "isProduct" } }, reaction.id + 1, "reactants", 0)
+        handleChangeData({ target: { value: false, name: "isProduct" } }, reaction.id + 1, "controllers", 0)
 
-        handleChangeData(reaction.id + 1, "reactants", 0, { target: { value: "", name: "reference" } })
-        handleChangeData(reaction.id + 1, "controllers", 0, { target: { value: "", name: "reference" } })
+        handleChangeData({ target: { value: "", name: "reference" } }, reaction.id + 1, "reactants", 0)
+        handleChangeData({ target: { value: "", name: "reference" } }, reaction.id + 1, "controllers", 0)
 
         if (e.target.value) {
-            handleChangeData(reaction.id + 1, e.target.value, 0, { target: { value: true, name: "isProduct" } });
-            handleChangeData(reaction.id + 1, e.target.value, 0, { target: { value: "(Product -01 of Reaction 1)", name: "reference" } })
+            handleChangeData({ target: { value: true, name: "isProduct" } }, reaction.id + 1, e.target.value, 0);
+            handleChangeData({ target: { value: "(Product -01 of Reaction 1)", name: "reference" } }, reaction.id + 1, e.target.value, 0)
         }
 
 

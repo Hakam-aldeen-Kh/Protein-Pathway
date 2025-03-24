@@ -1,13 +1,13 @@
-import Accordion from "./Accordion";
+import Accordion from "../../../Accordion";
 import { PlusIcon } from "lucide-react";
 import ProductForm from "./ProductForm";
 import Modal from "react-modal";
 import { useState } from "react";
 
-const Products = ({ reaction, handleChangeData, setModalData, addReaction, setPathwayData }) => {
+const Products = ({ reaction, handleChangeData, setDeleteModalData, addReaction, setPathwayData }) => {
 
 
-  const closeModal = () => setModalData((prev) => ({ ...prev, isModalOpen: false }))
+  const closeModal = () => setDeleteModalData((prev) => ({ ...prev, isModalOpen: false }))
 
   const addProduct = (reactionId) => {
     setPathwayData((prevPathwayData) =>
@@ -33,7 +33,7 @@ const Products = ({ reaction, handleChangeData, setModalData, addReaction, setPa
   };
 
   const deleteProduct = (reactionId, productId) => {
-    setModalData({
+    setDeleteModalData({
       isModalOpen: true,
       closeModal,
       title: "Product",
@@ -70,12 +70,12 @@ const Products = ({ reaction, handleChangeData, setModalData, addReaction, setPa
     setModalIsOpen(false);
   };
 
-  const handleCheckboxChange = (reactionId, field, index, e, v) => {
+  const handleCheckboxChange = (reactionId, field, index, e, checked) => {
     openModal();
     setPendingCheck({
       change: () => {
-        handleChangeData(reactionId, field, index, e, v)
-        handleChangeData(reactionId, field, index, { target: { value: `controller_${reactionId + 1}.0`, name: "controller" } })
+        handleChangeData(e, reactionId, field, index, checked)
+        handleChangeData({ target: { value: `controller_${reactionId + 1}.0`, name: "controller" } }, reactionId, field, index)
         addReaction()
       },
     });
@@ -91,6 +91,7 @@ const Products = ({ reaction, handleChangeData, setModalData, addReaction, setPa
           <Modal
             isOpen={modalIsOpen}
             onRequestClose={closeCheckModal}
+            ariaHideApp={false}
             contentLabel="Confirm Action"
             className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto mt-20"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20"

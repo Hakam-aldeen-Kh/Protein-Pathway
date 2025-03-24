@@ -1,5 +1,5 @@
-import Accordion from "./Accordion";
-import FormElement from "./FormElement";
+import Accordion from "../../../common/Accordion";
+import FormElement from "../../../components/new-pathway/FormElement";
 
 const BasicInfoForm = ({ data, handleChange }) => {
 

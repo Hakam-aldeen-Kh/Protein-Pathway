@@ -2,64 +2,56 @@ import { useState } from 'react';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useNavigate, useOutletContext } from 'react-router';
 
-// components
-import { TabItem, Tabs } from '../../common/Tabs';
+import BasicInfoForm from './sections/BasicInfoForm';
+import Accordion from '../../common/Accordion';
 import DeleteModal from '../../common/DeleteModal';
-import Products from '../../components/new-pathway/Products';
-import Accordion from '../../components/new-pathway/Accordion';
-import Reactants from '../../components/new-pathway/Reactants';
-import Controllers from '../../components/new-pathway/Controllers';
-import BasicInfoForm from '../../components/new-pathway/BasicInfoForm';
+import Reaction from '../../common/reaction/Reaction';
 
 
-function NewPathway() {
+const NewPathway = () => {
 
   const { pathwayData, setPathwayData, cancle } = useOutletContext();
 
   const navigate = useNavigate()
 
-  const [modalData, setModalData] = useState({
+  const [deleteModalData, setDeleteModalData] = useState({
     isModalOpen: false,
     closeModal: () => console.log("click"),
     title: "",
     handleDelete: () => console.log("click")
   });
 
-  const closeModal = () => setModalData((prev) => ({ ...prev, isModalOpen: false }))
-
-
-  const handleChangePathwayData = (e) => {
-    const { name, value } = e.target;
-    setPathwayData({
-      ...pathwayData,
-      [name]: value,
-    });
-  }
-
-  const handleChangeData = (reactionId, type, index, e, v) => {
+  const handleChange = (e, reactionId = null, type = null, index = null, v = null) => {
     const { name, value, checked } = e.target;
 
-    setPathwayData((prevPathwayData) => ({
-      ...prevPathwayData,
-      reactions: prevPathwayData.reactions.map((reaction) =>
-        reaction.id === reactionId
-          ? {
-            ...reaction,
-            [type]: reaction[type].map((item, i) =>
-              i === index ? { ...item, [name]: value === "on" ? v ? v : checked : value } : item
-            ),
-          }
-          : reaction
-      ),
-    }));
-  }
+    setPathwayData((prevPathwayData) => {
+      if (reactionId === null) {
+        return { ...prevPathwayData, [name]: value };
+      }
+
+      return {
+        ...prevPathwayData,
+        reactions: prevPathwayData.reactions.map((reaction) =>
+          reaction.id === reactionId
+            ? {
+              ...reaction,
+              [type]: reaction[type].map((item, i) =>
+                i === index ? { ...item, [name]: value === "on" ? v ? v : checked : value } : item
+              ),
+            }
+            : reaction
+        ),
+      };
+
+
+    });
+  };
 
   const handleSubmit = () => {
     console.log("pathwayData : ", pathwayData)
     navigate("/review")
   }
 
-  // reactions
   const addReaction = () => {
     setPathwayData((prevPathwayData) => ({
       ...prevPathwayData,
@@ -83,10 +75,10 @@ function NewPathway() {
   };
 
   const deleteReaction = (id) => {
-    setModalData({
+    setDeleteModalData({
       isModalOpen: true,
-      closeModal,
       title: "Reaction",
+      closeModal: () => setDeleteModalData((prev) => ({ ...prev, isModalOpen: false })),
       handleDelete: () => {
         setPathwayData((prevPathwayData) => ({
           ...prevPathwayData,
@@ -95,7 +87,6 @@ function NewPathway() {
       }
     })
   };
-
 
   const handelCancelPathway = () => {
     cancle()
@@ -116,24 +107,19 @@ function NewPathway() {
           </div>
 
           {/* Pathway Basic Information */}
-          <BasicInfoForm data={pathwayData} handleChange={handleChangePathwayData} />
+          <BasicInfoForm data={pathwayData} handleChange={handleChange} />
 
           {/* Reactions */}
           {pathwayData?.reactions?.map((reaction, index) => (
             <Accordion key={reaction.id} title={`Reaction - ${reaction.id}`} className='border bg-[#DDD7EC] rounded-lg mb-4' deleteFn={() => deleteReaction(reaction.id)}>
-
-              <Tabs index={index}>
-                <TabItem label="Reactants">
-                  <Reactants reaction={reaction} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setModalData={setModalData} />
-                </TabItem>
-                <TabItem label="Controllers">
-                  <Controllers reaction={reaction} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setModalData={setModalData} />
-                </TabItem>
-                <TabItem label="Products">
-                  <Products reaction={reaction} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setModalData={setModalData} addReaction={addReaction} />
-                </TabItem>
-              </Tabs>
-
+              <Reaction
+                reactionIndex={index}
+                reactionData={reaction}
+                setPathwayData={setPathwayData}
+                handleChangeData={handleChange}
+                setDeleteModalData={setDeleteModalData}
+                addReaction={addReaction}
+              />
             </Accordion>
           ))}
 
@@ -146,7 +132,7 @@ function NewPathway() {
       </div>
 
 
-      <DeleteModal data={modalData} />
+      <DeleteModal data={deleteModalData} />
 
     </div>
   );

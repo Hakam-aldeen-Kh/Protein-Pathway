@@ -37,6 +37,13 @@ const PathewayData = () => {
         cancle()
     }
 
+    const edit = (data) => {
+        console.log("edit", data);
+        setMyPathwayData(data)
+        localStorage.setItem('myPathwayData', JSON.stringify(data));
+        cancle()
+    }
+
     const cancle = () => {
         const keysToKeep = ["isLoggedIn", "myPathwayData"];
 
@@ -63,7 +70,7 @@ const PathewayData = () => {
     }
 
     return (
-        <Outlet context={{ pathwayData, setPathwayData, cancle, save, myPathwayData, setMyPathwayData }} />
+        <Outlet context={{ pathwayData, setPathwayData, cancle, save, edit, myPathwayData, setMyPathwayData }} />
     );
 };
 
