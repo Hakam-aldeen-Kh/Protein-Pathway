@@ -1,6 +1,7 @@
 import { useState } from "react";
+
 import ReactionModal from "./ReactionModal";
-import DeleteModal from "../common/DeleteModal";
+import DeleteModal from "../../../common/DeleteModal";
 import DetailsModal from "./DetailsModal";
 import ReactionTableRow from "./ReactionTableRow";
 
@@ -35,7 +36,8 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
     })
   }
 
-  // reactions
+
+  // reactios
   const addReaction = () => {
     console.log("add reaction");
     // setReactions((prev) => [...prev,
@@ -77,6 +79,9 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
         isOpen={isAddModalOpen}
         setIsOpen={setAddModalOpen}
         title="Add New Reaction"
+        data={reactions[0]}
+        handleChangeData={""}
+        setEditPathwayData={""}
       />
 
       <div className="flex flex-wrap gap-2.5 justify-center items-center w-full max-md:max-w-full mb-5">

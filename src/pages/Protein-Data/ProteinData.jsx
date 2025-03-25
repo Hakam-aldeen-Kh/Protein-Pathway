@@ -7,7 +7,7 @@ import PathwayTabs from "../../common/pathway-table/PathwayTabs";
 import SearchAndFilters from "../../common/search-and-filter/SearchAndFilters";
 import { usePathwayData } from "../../hooks/usePathwayData";
 
-const PathwayData = () => {
+const ProteinData = () => {
   const {
     handleTabChange,
     handleSearch,
@@ -62,4 +62,4 @@ const PathwayData = () => {
   );
 };
 
-export default PathwayData;
+export default ProteinData;

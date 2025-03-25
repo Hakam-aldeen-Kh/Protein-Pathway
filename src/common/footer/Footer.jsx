@@ -1,8 +1,8 @@
-import footerData from "../data/footer.json";
-import universities from "../data/universities.json";
+import footerData from "../../data/footer.json";
+import universities from "../../data/universities.json";
 
 // components
-import ToTopButton from "../components/ToTopButton";
+import ToTopButton from "./components/ToTopButton";
 
 const Footer = () => {
   return (

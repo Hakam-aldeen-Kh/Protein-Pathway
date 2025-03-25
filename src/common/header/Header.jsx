@@ -1,9 +1,11 @@
-import LanguageSelector from "../components/LanguageSelector";
-import AuthButtons from "../components/AuthButtons";
-import NavigationLinks from "../components/NavigationLinks";
-import SearchBox from "../components/SearchBox";
 import { Link } from "react-router";
 import { useLocation, useNavigate } from "react-router";
+
+import LanguageSelector from "./components/LanguageSelector";
+import AuthButtons from "./components/AuthButtons";
+import NavigationLinks from "./components/NavigationLinks";
+import SearchBox from "./components/SearchBox";
+
 
 function Header() {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";

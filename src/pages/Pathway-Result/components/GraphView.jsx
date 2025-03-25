@@ -1,23 +1,22 @@
 import { useState } from "react";
-import { useNavigate, useOutletContext } from "react-router";
+import { useNavigate } from "react-router";
 
 // components
 import { layouts } from "./layouts";
-import Graph from "./Graph";
-import Button from "../../components/pathway-result/Button";
+import Graph from "../../../common/Graph";
+import Button from "./Button";
 
 import setupCy from "./setupCy";
-import { reactionsDataToCytoscapeFormat } from "../../utils/reactionsDataToCytoscapeFormat";
+import { reactionsDataToCytoscapeFormat } from "../../../utils/reactionsDataToCytoscapeFormat";
 
 // Cytoscape setup
 setupCy();
 
 
-const PathwayResult = () => {
+const GraphView = ({ pathwayData }) => {
 
   const navigate = useNavigate()
 
-  const { pathwayData } = useOutletContext();
   const [layout, setLayout] = useState(layouts.klay);
 
   const handleExport = () => {
@@ -48,12 +47,11 @@ const PathwayResult = () => {
 
 
 
-
   return (
     <div className="w-full h-[calc(100vh-71px)] flex items-start justify-center gap-2 p-2 bg-gray-100 relative">
 
       <div className="flex-1 h-full bg-white rounded-lg shadow-lg flex items-center justify-center">
-        <Graph elements={reactionsDataToCytoscapeFormat(pathwayData.reactions)} layout={layout} touch={true} />
+        <Graph elements={pathwayData.reactionsA || reactionsDataToCytoscapeFormat(pathwayData.reactions)} layout={layout} touch={true} />
       </div>
 
       <div className="w-[150px] space-y-2">
@@ -82,4 +80,4 @@ const PathwayResult = () => {
   );
 };
 
-export default PathwayResult;
+export default GraphView;

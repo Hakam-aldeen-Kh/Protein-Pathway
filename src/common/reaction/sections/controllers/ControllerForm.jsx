@@ -1,4 +1,4 @@
-import FormElement from "../../../../components/new-pathway/FormElement";
+import FormElement from "../../components/FormElement";
 
 const ControllerForm = ({ handleChangeData, reaction, controllerData, controllerIndex }) => {
 

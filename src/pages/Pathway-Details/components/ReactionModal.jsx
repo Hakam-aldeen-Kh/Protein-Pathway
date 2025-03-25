@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Modal from "react-modal";
 import Button from "./Button";
-import DeleteModal from "../common/DeleteModal";
-import Reaction from "../common/reaction/Reaction";
+import DeleteModal from "../../../common/DeleteModal";
+import Reaction from "../../../common/reaction/Reaction";
 
 
 const ReactionModal = ({ isOpen, setIsOpen, addReaction, data, reactionIndex, title, handleChangeData, setEditPathwayData }) => {

@@ -38,7 +38,6 @@ const PathewayData = () => {
     }
 
     const edit = (data) => {
-        console.log("edit", data);
         setMyPathwayData(data)
         localStorage.setItem('myPathwayData', JSON.stringify(data));
         cancle()

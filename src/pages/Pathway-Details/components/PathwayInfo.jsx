@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router";
 
-import Graph from "../pages/Pathway-Result/Graph";
-import { layouts } from "../pages/Pathway-Result/layouts";
+import Graph from "../../../common/Graph";
+import { layouts } from "../../Pathway-Result/components/layouts";
 
-import { reactionsDataToCytoscapeFormat } from "../utils/reactionsDataToCytoscapeFormat";
+import { reactionsDataToCytoscapeFormat } from "../../../utils/reactionsDataToCytoscapeFormat";
 
 
 const PathwayInfo = ({ pathway, id }) => {

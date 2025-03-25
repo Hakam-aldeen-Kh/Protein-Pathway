@@ -9,7 +9,7 @@ export const useGetPathwayById = (id) => {
 
     const saveEditingPathway = (newData, id) => {
         const newPathways = myPathwayData.map(pathway =>
-            pathway.id == id ? newData : pathway
+            Number(pathway.id) === Number(id) ? newData : pathway
         )
         edit(newPathways)
     }

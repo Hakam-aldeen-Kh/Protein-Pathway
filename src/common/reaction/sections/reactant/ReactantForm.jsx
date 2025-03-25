@@ -1,4 +1,4 @@
-import FormElement from "../../../../components/new-pathway/FormElement";
+import FormElement from "../../components/FormElement";
 import Complex from "./reactant-type/Complex";
 import Dna from "./reactant-type/Dna";
 import Glycan from "./reactant-type/Glycan";

@@ -1,4 +1,4 @@
-import FormElement from "../../../../components/new-pathway/FormElement";
+import FormElement from "../../components/FormElement";
 
 const ProductForm = ({ handleChangeData, reaction, productData, productIndex, handleCheckboxChange }) => {
 

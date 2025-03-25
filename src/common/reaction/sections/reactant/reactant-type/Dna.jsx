@@ -1,4 +1,4 @@
-import FormElement from "../../../../../components/new-pathway/FormElement";
+import FormElement from "../../../components/FormElement";
 
 const Dna = ({ reactantData, handleChange }) => {
   return (

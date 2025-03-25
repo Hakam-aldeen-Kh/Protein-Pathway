@@ -18,6 +18,7 @@ const DetailsModal = ({ data }) => {
             onRequestClose={data.closeModal}
             className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto mt-20"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+            ariaHideApp={false}
         >
             <div className="flex justify-end items-center pb-5 gap-4">
                 <button onClick={handleDownloadImge} className="bg-slate-400">
