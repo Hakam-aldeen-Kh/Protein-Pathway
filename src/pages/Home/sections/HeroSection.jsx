@@ -1,15 +1,7 @@
 import { Link } from "react-router";
 
-const linksTitle = [
-  {
-    title: "Protein Pathways",
-    href: "/new-pathway",
-  },
-  {
-    title: "Glycan Synthetic Pathways",
-    href: "/",
-  },
-];
+import heroLinks from "../../../data/home/heroLinks.json"
+
 
 const HeroSection = () => {
   return (
@@ -30,9 +22,9 @@ const HeroSection = () => {
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </p>
         <div className="flex items-center justify-start gap-4">
-          {linksTitle.map((link, i) => (
+          {heroLinks.map(link => (
             <Link
-              key={i}
+              key={link.id}
               to={link.href}
               className="bg-[#00A7D3] hover:bg-[#1e8cab] w-[333px] text-center text-white px-6 py-2 rounded-sm transition-colors"
             >

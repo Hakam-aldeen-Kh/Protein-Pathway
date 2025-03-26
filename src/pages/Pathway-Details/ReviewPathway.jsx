@@ -5,16 +5,19 @@ import PathwayDetails from "./components/PathwayDetails";
 
 
 const ReviewPathway = () => {
-    const { pathwayData, save } = useOutletContext();
+    const { pathwayData, saveAfterCreation } = useOutletContext();
 
     const handleSave = () => {
         ShowToast("Pathway Added", "Your new pathway was added successfully")
-        save()
+        saveAfterCreation()
     }
 
     return (
         <div className="flex flex-col px-32 py-[40px] max-md:px-5">
-            <PathwayDetails pathway={pathwayData} handleSave={handleSave} />
+            <PathwayDetails
+                pathway={pathwayData}
+                handleSave={handleSave}
+                pageState={"review"} />
         </div>
     )
 };

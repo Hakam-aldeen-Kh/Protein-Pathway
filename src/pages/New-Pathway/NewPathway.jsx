@@ -10,7 +10,7 @@ import Reaction from '../../common/reaction/Reaction';
 
 const NewPathway = () => {
 
-  const { pathwayData, setPathwayData, cancle } = useOutletContext();
+  const { pathwayData, setPathwayData, cancleCreation } = useOutletContext();
 
   const navigate = useNavigate()
 
@@ -89,7 +89,7 @@ const NewPathway = () => {
   };
 
   const handelCancelPathway = () => {
-    cancle()
+    cancleCreation()
     navigate("/")
   }
 

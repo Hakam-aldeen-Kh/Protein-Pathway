@@ -1,8 +1,9 @@
 import { Route, Routes } from "react-router";
-import Layout from "./Layout";
+
+import Layout from "../layout/Layout";
 
 import ProtectedRoute from "./ProtectedRoute";
-import PathewayData from "./PathewayData";
+import PathewayContext from "./PathewayContext";
 
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
@@ -20,6 +21,8 @@ import PathwayResultAfterCreation from "../pages/Pathway-Result/PathwayResultAft
 const AppRouter = () => {
   return (
     <Routes>
+
+      {/* Public Routes */}
       <Route
         path="/"
         element={
@@ -47,7 +50,17 @@ const AppRouter = () => {
         }
       />
 
-      <Route element={<PathewayData />}>
+      <Route
+        path="/login"
+        element={
+          <Layout>
+            <Login />
+          </Layout>
+        }
+      />
+
+      {/* Protected Routes */}
+      <Route element={<PathewayContext />}>
         <Route
           path="/new-pathway"
           element={
@@ -112,14 +125,6 @@ const AppRouter = () => {
         />
       </Route>
 
-      <Route
-        path="/login"
-        element={
-          <Layout>
-            <Login />
-          </Layout>
-        }
-      />
     </Routes>
   );
 };

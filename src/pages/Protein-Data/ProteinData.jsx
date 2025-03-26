@@ -1,10 +1,11 @@
-import AddPathwayButton from "../../common/AddPathwayButton";
 import HeroSection from "../../common/HeroSection";
 import NotFoundData from "../../common/NotFoundData";
-import Pagination from "../../common/pagination/Pagination";
 import PathwayTable from "./components/PathwayTable";
+import Pagination from "../../common/pagination/Pagination";
+import AddPathwayButton from "../../common/AddPathwayButton";
 import PathwayTabs from "../../common/pathway-table/PathwayTabs";
 import SearchAndFilters from "../../common/search-and-filter/SearchAndFilters";
+
 import { usePathwayData } from "../../hooks/usePathwayData";
 
 const ProteinData = () => {
@@ -28,8 +29,8 @@ const ProteinData = () => {
         <div className="flex flex-col px-32 mt-10 w-full max-md:px-5 max-md:max-w-full">
           <PathwayTabs
             activeTab={activeTab}
-            onTabChange={handleTabChange}
             loginState={isLoggedIn}
+            onTabChange={handleTabChange}
           />
           <div className="flex flex-col mt-2.5 w-full rounded-lg max-md:max-w-full">
             <SearchAndFilters
@@ -41,11 +42,11 @@ const ProteinData = () => {
               <>
                 <PathwayTable pathways={displayedPathways} />
                 <Pagination
-                  totalItems={filteredPathways.length}
                   itemsPerPage={itemsPerPage}
                   onPageChange={setCurrentPage}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
+                  totalItems={filteredPathways.length}
                   filteredPathways={filteredPathways.length}
                 />
               </>

@@ -2,15 +2,16 @@ import { useState } from "react";
 import { useParams } from "react-router";
 
 import PathwayDetails from "./components/PathwayDetails";
-import { useGetPathwayById } from "../../services/pathway";
+import { usePathwayDataById } from "../../hooks/usePathwayDataById";
 import NotFound from "../404/NotFound";
+import { ShowToast } from "../../common/ToastNotification";
 
 
 const PreviewPathway = () => {
 
     const { id } = useParams();
 
-    const { pathwayData, isEdit, saveEditingPathway } = useGetPathwayById(id)
+    const { pathwayData, isEdit, saveEditingPathway } = usePathwayDataById(id)
 
     const [pathwayClone, setPathwayClone] = useState(pathwayData)
 
@@ -46,6 +47,11 @@ const PreviewPathway = () => {
         });
     };
 
+    const handleSaveAfterEdit = () => {
+        ShowToast("Pathway Updated", "Your pathway was updated successfully")
+        saveEditingPathway(pathwayClone, id)
+    }
+
 
     return (
         <div className="flex flex-col px-32 py-[40px] max-md:px-5">
@@ -53,9 +59,10 @@ const PreviewPathway = () => {
                 pathway={pathwayClone}
                 isEdit={isEdit}
                 id={id}
+                pageState={"preview"}
                 setPathwayClone={setPathwayClone}
-                saveEditingPathway={saveEditingPathway}
-                handleChangeData={handleChangeClone}
+                handleSave={handleSaveAfterEdit}
+                handleChangeClone={handleChangeClone}
             />
         </div>
     )

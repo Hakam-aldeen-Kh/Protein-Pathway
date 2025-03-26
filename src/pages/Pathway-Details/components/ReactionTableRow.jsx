@@ -1,7 +1,8 @@
 import { useState } from "react";
-import EditModal from "./EditModal";
+import ReactionModal from "./ReactionModal";
 
 const ReactionTableRow = ({ reactionIndex, reaction, isEdit, handleChangeData, setEditPathwayData, deleteReaction, handleShowDetails }) => {
+
     const [isEditModalOpen, setEditModalOpen] = useState(false);
 
     return (
@@ -57,16 +58,14 @@ const ReactionTableRow = ({ reactionIndex, reaction, isEdit, handleChangeData, s
                 </td>}
             </tr>
 
-
-            <EditModal
-                isOpen={isEditModalOpen}
-                setIsOpen={setEditModalOpen}
+            <ReactionModal
+                title={`Edit Reaction - ${reaction.id}`}
+                setEditPathwayData={setEditPathwayData}
                 handleChangeData={handleChangeData}
                 data={reaction}
-                reactionIndex={reactionIndex}
-                setEditPathwayData={setEditPathwayData}
+                isOpen={isEditModalOpen}
+                setIsOpen={setEditModalOpen}
                 addReaction={() => console.log("edit reaction")}
-                title={"Edit Reaction"}
             />
         </>
     )

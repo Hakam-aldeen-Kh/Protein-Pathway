@@ -5,7 +5,6 @@ import sbgnStylesheet from "cytoscape-sbgn-stylesheet";
 const Graph = ({ elements, layout, touch = false }) => {
 
     const cyStylesheet = sbgnStylesheet(cytoscape);
-
     return (
         <CytoscapeComponent
             elements={CytoscapeComponent.normalizeElements(elements)}

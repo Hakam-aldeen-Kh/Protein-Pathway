@@ -16,12 +16,15 @@ const ProductForm = ({ handleChangeData, reaction, productData, productIndex, ha
     const handleUseInNextReaction = (e) => {
         handleChangeData(e, reaction.id, "products", productIndex)
 
+        // reset isProduct property in reactant and controller  
         handleChangeData({ target: { value: false, name: "isProduct" } }, reaction.id + 1, "reactants", 0)
         handleChangeData({ target: { value: false, name: "isProduct" } }, reaction.id + 1, "controllers", 0)
 
+        // reset reference property in reactant and controller  
         handleChangeData({ target: { value: "", name: "reference" } }, reaction.id + 1, "reactants", 0)
         handleChangeData({ target: { value: "", name: "reference" } }, reaction.id + 1, "controllers", 0)
 
+        //change reference and isProduct property in reactant or controller  
         if (e.target.value) {
             handleChangeData({ target: { value: true, name: "isProduct" } }, reaction.id + 1, e.target.value, 0);
             handleChangeData({ target: { value: "(Product -01 of Reaction 1)", name: "reference" } }, reaction.id + 1, e.target.value, 0)
