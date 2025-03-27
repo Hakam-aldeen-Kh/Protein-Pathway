@@ -1,21 +1,28 @@
 import { Route, Routes } from "react-router";
-import Layout from "../common/Layout";
+
+import Layout from "../layout/Layout";
+
+import ProtectedRoute from "./ProtectedRoute";
+import PathewayContext from "./PathewayContext";
+
 import Home from "../pages/Home/Home";
-import PathwayData from "../pages/Pathway-Data/PathwayData";
-import NewPathway from "../pages/New-Pathway/NewPathway";
 import Login from "../pages/Login/Login";
-import Preview from "../pages/Preview/Preview";
-import ProtectedRoute from "../components/ProtectedRoute";
-import PathwayResult from "../pages/Pathway-Result/PathwayResult";
-import GlycanData from "../pages/Glycan-Data/GlycanData";
-import Review from "../pages/Review/Review";
-import PathewayData from "../components/PathewayData";
-import PathwayResultOnce from "../pages/Pathway-Result/PathwayResultOnce";
+
 import NotFound from "../pages/404/NotFound";
+import NewPathway from "../pages/New-Pathway/NewPathway";
+import GlycanData from "../pages/Glycan-Data/GlycanData";
+import ProteinData from "../pages/Protein-Data/ProteinData";
+import ReviewPathway from "../pages/Pathway-Details/ReviewPathway";
+import PreviewPathway from "../pages/Pathway-Details/PreviewPathway";
+import PathwayResultForPreview from "../pages/Pathway-Result/PathwayResultForPreview";
+import PathwayResultAfterCreation from "../pages/Pathway-Result/PathwayResultAfterCreation";
+
 
 const AppRouter = () => {
   return (
     <Routes>
+
+      {/* Public Routes */}
       <Route
         path="/"
         element={
@@ -43,7 +50,17 @@ const AppRouter = () => {
         }
       />
 
-      <Route element={<PathewayData />}>
+      <Route
+        path="/login"
+        element={
+          <Layout>
+            <Login />
+          </Layout>
+        }
+      />
+
+      {/* Protected Routes */}
+      <Route element={<PathewayContext />}>
         <Route
           path="/new-pathway"
           element={
@@ -59,7 +76,7 @@ const AppRouter = () => {
           element={
             <ProtectedRoute>
               <Layout>
-                <Review />
+                <ReviewPathway />
               </Layout>
             </ProtectedRoute>
           }
@@ -70,7 +87,7 @@ const AppRouter = () => {
           element={
             <ProtectedRoute>
               <Layout>
-                <PathwayResult />
+                <PathwayResultAfterCreation />
               </Layout>
             </ProtectedRoute>
           }
@@ -81,7 +98,7 @@ const AppRouter = () => {
           element={
             <ProtectedRoute>
               <Layout>
-                <PathwayResultOnce />
+                <PathwayResultForPreview />
               </Layout>
             </ProtectedRoute>
           }
@@ -92,7 +109,7 @@ const AppRouter = () => {
           element={
             <ProtectedRoute>
               <Layout>
-                <Preview />
+                <PreviewPathway />
               </Layout>
             </ProtectedRoute>
           }
@@ -102,20 +119,12 @@ const AppRouter = () => {
           path="/protein-pathway-data"
           element={
             <Layout>
-              <PathwayData />
+              <ProteinData />
             </Layout>
           }
         />
       </Route>
 
-      <Route
-        path="/login"
-        element={
-          <Layout>
-            <Login />
-          </Layout>
-        }
-      />
     </Routes>
   );
 };

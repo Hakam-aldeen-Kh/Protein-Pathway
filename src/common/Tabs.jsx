@@ -2,14 +2,11 @@ import { useEffect, useState } from 'react';
 
 export function Tabs({ children, index = 0 }) {
 
-    // Generate a unique key for each reaction's active tab
     const storageKey = `activeTab-${index}`;
 
-    // Retrieve active tab from localStorage or default to 0
     const storedTab = localStorage.getItem(storageKey);
     const [activeTab, setActiveTab] = useState(storedTab ? parseInt(storedTab) : 0);
 
-    // Update localStorage whenever the active tab changes
     useEffect(() => {
         localStorage.setItem(storageKey, activeTab);
     }, [activeTab, storageKey]);

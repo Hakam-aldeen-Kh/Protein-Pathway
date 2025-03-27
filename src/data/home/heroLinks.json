@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1",
+    "title": "Protein Pathways",
+    "href": "/new-pathway"
+  },
+  {
+    "id": "2",
+    "title": "Glycan Synthetic Pathways",
+    "href": "/"
+  }
+]
