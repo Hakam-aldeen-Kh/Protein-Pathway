@@ -29,7 +29,7 @@ const PathwayInfo = ({ pathway, id }) => {
 
   const handleGoToPathwayResult = () => {
     if (id) {
-      navigate(`/pathway-result/${id}`)
+      navigate(`/pathway-result/${id}`, { state: { data: pathway } })
     }
     else {
       navigate("/pathway-result")

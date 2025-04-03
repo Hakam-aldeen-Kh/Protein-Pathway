@@ -5,7 +5,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
     const toDeletedFromElements = []
     // console.log(reactions)
 
-    reactions.forEach((reaction, reactionIndex) => {
+    reactions.forEach((reaction) => {
         const reactionController = reaction.controllers[0]
 
         // create node for each controller with edge form reactant to controller inside parent node
@@ -53,7 +53,9 @@ export function reactionsDataToCytoscapeFormat(reactions) {
             // is this product useNextReaction and type is reactants:
             // edge form this product to controller in next reaction and 
             // delete reactant which is product in next reaction
-            const targetReaction = reactions[reactionIndex + 1]
+            const targetReaction = reactions.find(item => item.id === product.targetReactionId)
+            // const targetReaction = reactions[reactionIndex + 1]
+
 
             if (product.useNextReaction && product.type === "reactants" && targetReaction) {
 
