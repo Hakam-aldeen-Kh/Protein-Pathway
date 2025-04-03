@@ -4,6 +4,7 @@ import Reactants from "./sections/reactant/Reactants";
 import { TabItem, Tabs } from "../Tabs";
 
 const Reaction = ({
+    reactions,
     reactionIndex,
     reactionData,
     setPathwayData,
@@ -15,10 +16,10 @@ const Reaction = ({
     return (
         <Tabs index={reactionIndex}>
             <TabItem label="Reactants">
-                <Reactants reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} />
+                <Reactants reactions={reactions} reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} />
             </TabItem>
             <TabItem label="Controllers">
-                <Controllers reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} />
+                <Controllers reactions={reactions} reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} />
             </TabItem>
             <TabItem label="Products">
                 <Products reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} addReaction={addReaction} />

@@ -29,7 +29,7 @@ const PathwayInfo = ({ pathway, id }) => {
 
   const handleGoToPathwayResult = () => {
     if (id) {
-      navigate(`/pathway-result/${id}`)
+      navigate(`/pathway-result/${id}`, { state: { data: pathway } })
     }
     else {
       navigate("/pathway-result")
@@ -59,7 +59,7 @@ const PathwayInfo = ({ pathway, id }) => {
           </div>
 
           <div className="flex relative flex-1 shrink gap-5 min-h-[280px] rounded h-full basis-0 min-w-[240px] max-md:max-w-full mt-5 border">
-            <div className="w-full h-full object-contain cursor-pointer z-0 flex-1 shrink aspect-[2.87] basis-0 min-w-[240px] max-md:max-w-full relative">
+            <div className="w-full  object-contain cursor-pointer z-0 flex-1 shrink p-1 basis-0 min-w-[240px] max-md:max-w-full relative">
               <Graph elements={pathway.reactionsA || reactionsDataToCytoscapeFormat(pathway.reactions)} layout={layouts.klay} touch={false} />
             </div>
 

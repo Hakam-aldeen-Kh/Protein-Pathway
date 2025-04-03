@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ReactionModal from "./ReactionModal";
 
-const ReactionTableRow = ({ reactionIndex, reaction, isEdit, handleChangeData, setEditPathwayData, deleteReaction, handleShowDetails }) => {
+const ReactionTableRow = ({ reactions, reactionIndex, reaction, isEdit, handleChangeData, setEditPathwayData, deleteReaction, handleShowDetails }) => {
 
     const [isEditModalOpen, setEditModalOpen] = useState(false);
 
@@ -59,6 +59,7 @@ const ReactionTableRow = ({ reactionIndex, reaction, isEdit, handleChangeData, s
             </tr>
 
             <ReactionModal
+                reactions={reactions}
                 title={`Edit Reaction - ${reaction.id}`}
                 setEditPathwayData={setEditPathwayData}
                 handleChangeData={handleChangeData}

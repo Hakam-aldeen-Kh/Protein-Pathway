@@ -15,19 +15,28 @@ const ProductForm = ({ handleChangeData, reaction, productData, productIndex, ha
 
     const handleUseInNextReaction = (e) => {
         handleChangeData(e, reaction.id, "products", productIndex)
+        const targetReactionId = productData.targetReactionId
 
         // reset isProduct property in reactant and controller  
-        handleChangeData({ target: { value: false, name: "isProduct" } }, reaction.id + 1, "reactants", 0)
-        handleChangeData({ target: { value: false, name: "isProduct" } }, reaction.id + 1, "controllers", 0)
+        handleChangeData({ target: { value: false, name: "isProduct" } }, targetReactionId, "reactants", 0)
+        handleChangeData({ target: { value: false, name: "isProduct" } }, targetReactionId, "controllers", 0)
 
         // reset reference property in reactant and controller  
-        handleChangeData({ target: { value: "", name: "reference" } }, reaction.id + 1, "reactants", 0)
-        handleChangeData({ target: { value: "", name: "reference" } }, reaction.id + 1, "controllers", 0)
+        handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "reactants", 0)
+        handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "controllers", 0)
 
+        // reset fromReaction property in reactant and controller  
+        handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "reactants", 0)
+        handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "controllers", 0)
+        handleChangeData({ target: { value: "", name: "fromProduct" } }, targetReactionId, "reactants", 0)
+        handleChangeData({ target: { value: "", name: "fromProduct" } }, targetReactionId, "controllers", 0)
         //change reference and isProduct property in reactant or controller  
         if (e.target.value) {
-            handleChangeData({ target: { value: true, name: "isProduct" } }, reaction.id + 1, e.target.value, 0);
-            handleChangeData({ target: { value: "(Product -01 of Reaction 1)", name: "reference" } }, reaction.id + 1, e.target.value, 0)
+            handleChangeData({ target: { value: true, name: "isProduct" } }, targetReactionId, e.target.value, 0);
+            handleChangeData({ target: { value: `(Product - ${reaction.id}.${productData.id} of Reaction ${reaction.id})`, name: "reference" } }, targetReactionId, e.target.value, 0)
+            handleChangeData({ target: { value: reaction.id, name: "fromReaction" } }, targetReactionId, e.target.value, 0)
+            handleChangeData({ target: { value: productData.id, name: "fromProduct" } }, targetReactionId, e.target.value, 0)
+
         }
 
 
@@ -85,6 +94,15 @@ const ProductForm = ({ handleChangeData, reaction, productData, productIndex, ha
                         <option value="controllers">Controller</option>
                     </FormElement>
 
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Targeted Reaction</label>
+                        <input
+                            disabled
+                            className="mt-1 border block w-full rounded-md p-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            value={`Reaction - ${productData?.targetReactionId}`}
+                        />
+                    </div>
+
                     {/* <div>
                         <label className="block text-sm font-medium text-gray-700">Targeted Reaction</label>
                         <select
@@ -100,6 +118,8 @@ const ProductForm = ({ handleChangeData, reaction, productData, productIndex, ha
                             )}
                         </select>
                     </div> */}
+
+
                 </div>
             }
         </div>

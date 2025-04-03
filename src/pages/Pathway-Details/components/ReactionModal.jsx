@@ -5,7 +5,7 @@ import DeleteModal from "../../../common/DeleteModal";
 import Reaction from "../../../common/reaction/Reaction";
 
 
-const ReactionModal = ({ isOpen, setIsOpen, addReaction, data, reactionIndex, title, handleChangeData, setEditPathwayData }) => {
+const ReactionModal = ({ isOpen, setIsOpen, addReaction, reactions, data, reactionIndex, title, handleChangeData, setEditPathwayData }) => {
 
   const customStyles = {
     overlay: {
@@ -58,6 +58,7 @@ const ReactionModal = ({ isOpen, setIsOpen, addReaction, data, reactionIndex, ti
       </div>
 
       <Reaction
+        reactions={reactions}
         reactionIndex={reactionIndex}
         reactionData={data}
         setPathwayData={setEditPathwayData}
