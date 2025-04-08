@@ -75,8 +75,10 @@ const Products = ({ reaction, handleChangeData, setDeleteModalData, addReaction,
     setPendingCheck({
       change: () => {
         handleChangeData(e, reactionId, field, index, checked)
-        handleChangeData({ target: { value: `controller_${reactionId + 1}.0`, name: "controller" } }, reactionId, field, index)
-        addReaction()
+        // handleChangeData({ target: { value: `controller_${reactionId + 1}.0`, name: "controller" } }, reactionId, field, index)
+        const targetReactionId = addReaction()
+        handleChangeData({ target: { value: targetReactionId, name: "targetReactionId" } }, reactionId, field, index)
+
       },
     });
   };

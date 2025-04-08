@@ -52,26 +52,26 @@ const NewPathway = () => {
     navigate("/review")
   }
 
-  const addReaction = () => {
-    setPathwayData((prevPathwayData) => ({
-      ...prevPathwayData,
-      reactions: [...prevPathwayData.reactions, {
-        id: prevPathwayData.reactions[prevPathwayData.reactions.length - 1]?.id + 1 || 0,
-        reactants: [{
-          id: 0,
-          name: `reactant_${prevPathwayData.reactions[prevPathwayData.reactions.length - 1]?.id + 1 || 0}.0`
-        }],
-        controllers: [{
-          id: 0,
-          name: `controller_${prevPathwayData.reactions[prevPathwayData.reactions.length - 1]?.id + 1 || 0}.0`
-        }],
-        products: [{
-          id: 0,
-          name: `product_${prevPathwayData.reactions[prevPathwayData.reactions.length - 1]?.id + 1 || 0}.0`
-        }]
-      }]
-    }));
 
+  const addReaction = () => {
+    let reactionId = pathwayData.reactions[pathwayData.reactions.length - 1]?.id + 1 || 0
+
+    setPathwayData((prevPathwayData) => {
+      return {
+        ...prevPathwayData,
+        reactions: [
+          ...prevPathwayData.reactions,
+          {
+            id: reactionId,
+            reactants: [{ id: 0, name: `reactant_${reactionId}.0` }],
+            controllers: [{ id: 0, name: `controller_${reactionId}.0` }],
+            products: [{ id: 0, name: `product_${reactionId}.0` }]
+          }
+        ]
+      };
+    });
+
+    return reactionId;
   };
 
   const deleteReaction = (id) => {
@@ -113,6 +113,7 @@ const NewPathway = () => {
           {pathwayData?.reactions?.map((reaction, index) => (
             <Accordion key={reaction.id} title={`Reaction - ${reaction.id}`} className='border bg-[#DDD7EC] rounded-lg mb-4' deleteFn={() => deleteReaction(reaction.id)}>
               <Reaction
+                reactions={pathwayData?.reactions}
                 reactionIndex={index}
                 reactionData={reaction}
                 setPathwayData={setPathwayData}

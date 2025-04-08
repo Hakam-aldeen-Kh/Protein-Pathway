@@ -61,6 +61,7 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
   return (
     <div className="w-full mt-10">
       <ReactionModal
+        reactions={reactions}
         addReaction={addReaction}
         isOpen={isAddModalOpen}
         setIsOpen={setAddModalOpen}
@@ -102,6 +103,7 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
           <tbody>
             {reactions.map((reaction, reactionIndex) => (
               <ReactionTableRow
+                reactions={reactions}
                 key={reactionIndex}
                 reactionIndex={reactionIndex}
                 reaction={reaction}
