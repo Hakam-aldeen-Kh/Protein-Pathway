@@ -1,15 +1,27 @@
+import { useState } from "react";
 import AuthInput from "../../common/auth/AuthInput";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "../../validation/loginSchema";
 import { useLogin } from "../../hooks/useLogin";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
-    showPassword,
-    setShowPassword,
-    activeButton,
-    formData,
-    handleChange,
+    register,
     handleSubmit,
-  } = useLogin();
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "onChange",
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const { handleSubmit: loginSubmit } = useLogin();
 
   return (
     <div
@@ -35,22 +47,22 @@ const Login = () => {
             Sign In
           </h2>
           <form
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(loginSubmit)}
             className="space-y-5 px-[24px] py-[40px]"
           >
             <AuthInput
               label="Username"
               name="username"
-              value={formData.username}
-              onChange={handleChange}
+              register={register}
+              error={errors.username?.message}
             />
 
             <AuthInput
               label="Password"
               type="password"
               name="password"
-              value={formData.password}
-              onChange={handleChange}
+              register={register}
+              error={errors.password?.message}
               showPassword={showPassword}
               togglePassword={() => setShowPassword(!showPassword)}
             />
@@ -58,11 +70,9 @@ const Login = () => {
             <div className="w-full flex items-end">
               <button
                 type="submit"
-                disabled={!activeButton}
-                className={`px-8 py-[10px] ml-auto rounded-sm text-white rounded-mdtransition-colors font-semibold transition-all ${
-                  activeButton === true
-                    ? "bg-[#57369E] hover:bg-[#00A7D3]"
-                    : "bg-[#BBBBBB]"
+                disabled={!isValid}
+                className={`px-8 py-[10px] ml-auto rounded-sm text-white font-semibold transition-all ${
+                  isValid ? "bg-[#57369E] hover:bg-[#00A7D3]" : "bg-[#BBBBBB]"
                 }`}
               >
                 Log In
