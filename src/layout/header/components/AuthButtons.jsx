@@ -3,7 +3,7 @@ import { Link } from "react-router";
 function AuthButtons() {
   const buttons = [
     { text: "Login", href: "/login" },
-    { text: "Register", href: "/login" },
+    { text: "Register", href: "/register" },
   ];
 
   return (

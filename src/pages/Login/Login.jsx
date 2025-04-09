@@ -70,7 +70,7 @@ const Login = () => {
               </a>
               <div className="text-black">
                 Need an account?{" "}
-                <a href="#" className="text-[#57369E] hover:text-[#00A7D3]">
+                <a href="/register" className="text-[#57369E] hover:text-[#00A7D3]">
                   Register here
                 </a>
               </div>

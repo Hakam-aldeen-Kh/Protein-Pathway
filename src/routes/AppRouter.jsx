@@ -16,6 +16,7 @@ import ReviewPathway from "../pages/Pathway-Details/ReviewPathway";
 import PreviewPathway from "../pages/Pathway-Details/PreviewPathway";
 import PathwayResultForPreview from "../pages/Pathway-Result/PathwayResultForPreview";
 import PathwayResultAfterCreation from "../pages/Pathway-Result/PathwayResultAfterCreation";
+import Register from "../pages/Register/Register";
 
 
 const AppRouter = () => {
@@ -55,6 +56,15 @@ const AppRouter = () => {
         element={
           <Layout>
             <Login />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/register"
+        element={
+          <Layout>
+            <Register />
           </Layout>
         }
       />
