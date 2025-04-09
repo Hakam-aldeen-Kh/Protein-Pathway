@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AuthInput from "../../common/auth/AuthInput";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +15,6 @@ const Register = () => {
     register,
     handleSubmit,
     watch,
-    trigger,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -31,26 +30,24 @@ const Register = () => {
 
   const formValues = watch();
 
-  // Trigger validation for Step 1 fields on initial load
-  useEffect(() => {
-    trigger(["email", "firstName", "lastName"]);
-  }, [trigger]);
-
-  // Enable "Next" button based on form validity and privacy agreement
   const isNextButtonEnabled = () => {
     const { email, firstName, lastName } = formValues;
-    // Check if all fields are filled
     const allFieldsFilled =
       email.length > 0 && firstName.length > 0 && lastName.length > 0;
-    // Check if there are no errors for Step 1 fields
     const isStep1Valid = !errors.firstName && !errors.lastName && !errors.email;
     return allFieldsFilled && isStep1Valid && agreePrivacy;
   };
 
-  const handleNextClick = async (e) => {
+  const isSubmitButtonEnabled = () => {
+    const { password, confirmPassword } = formValues;
+    const allFieldsFilled = password.length > 0 && confirmPassword.length > 0;
+    const isStep2Valid = !errors.password && !errors.confirmPassword;
+    return allFieldsFilled && isStep2Valid;
+  };
+
+  const handleNextClick = (e) => {
     e.preventDefault();
-    const isStep1Valid = await trigger(["email", "firstName", "lastName"]);
-    if (isStep1Valid && agreePrivacy) {
+    if (isNextButtonEnabled()) {
       setStep(2);
       setShowPassword(true);
     }
@@ -61,8 +58,9 @@ const Register = () => {
     setShowPassword(false);
   };
 
-  const handleFinalSubmit = () => {
-    navigate("/conform-email");
+  const handleFinalSubmit = (data) => {
+    console.log("Form submitted with:", data);
+    navigate("/confirm-email");
   };
 
   return (
@@ -222,7 +220,12 @@ const Register = () => {
                   </button>
                   <button
                     type="submit"
-                    className="px-8 py-[10px] rounded-sm text-white bg-[#57369E] hover:bg-[#00A7D3] font-semibold transition-all"
+                    disabled={!isSubmitButtonEnabled()}
+                    className={`px-8 py-[10px] rounded-sm text-white font-semibold transition-all ${
+                      isSubmitButtonEnabled()
+                        ? "bg-[#57369E] hover:bg-[#00A7D3]"
+                        : "bg-[#BBBBBB]"
+                    }`}
                   >
                     Submit
                   </button>
