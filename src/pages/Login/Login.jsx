@@ -1,4 +1,4 @@
-import LoginInput from "./components/LoginInput";
+import AuthInput from "../../common/auth/AuthInput";
 import { useLogin } from "../../hooks/useLogin";
 
 const Login = () => {
@@ -22,7 +22,11 @@ const Login = () => {
       <div className="w-full max-w-[1200px] flex items-center justify-between">
         {/* Logo Section */}
         <div className="hidden lg:flex items-center space-x-4 flex-1">
-          <img src="/images/Logo.svg" className="w-3/4 h-[231px]" alt="Company Logo" />
+          <img
+            src="/images/Logo.svg"
+            className="w-3/4 h-[231px]"
+            alt="Company Logo"
+          />
         </div>
 
         {/* Login Form */}
@@ -34,14 +38,14 @@ const Login = () => {
             onSubmit={handleSubmit}
             className="space-y-5 px-[24px] py-[40px]"
           >
-            <LoginInput
+            <AuthInput
               label="Username"
               name="username"
               value={formData.username}
               onChange={handleChange}
             />
 
-            <LoginInput
+            <AuthInput
               label="Password"
               type="password"
               name="password"
@@ -55,10 +59,11 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={!activeButton}
-                className={`px-8 py-[10px] ml-auto rounded-sm text-white rounded-mdtransition-colors font-semibold transition-all ${activeButton === true
-                  ? "bg-[#57369E] hover:bg-[#00A7D3]"
-                  : "bg-[#BBBBBB]"
-                  }`}
+                className={`px-8 py-[10px] ml-auto rounded-sm text-white rounded-mdtransition-colors font-semibold transition-all ${
+                  activeButton === true
+                    ? "bg-[#57369E] hover:bg-[#00A7D3]"
+                    : "bg-[#BBBBBB]"
+                }`}
               >
                 Log In
               </button>
@@ -70,7 +75,10 @@ const Login = () => {
               </a>
               <div className="text-black">
                 Need an account?{" "}
-                <a href="/register" className="text-[#57369E] hover:text-[#00A7D3]">
+                <a
+                  href="/register"
+                  className="text-[#57369E] hover:text-[#00A7D3]"
+                >
                   Register here
                 </a>
               </div>

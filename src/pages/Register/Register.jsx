@@ -1,66 +1,68 @@
 import { useEffect, useState } from "react";
-import { useLogin } from "../../hooks/useLogin";
-import LoginInput from "../Login/components/LoginInput";
+import AuthInput from "../../common/auth/AuthInput";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signupSchema } from "../../validation/registerSchema";
+import { useNavigate } from "react-router";
 
 const Register = () => {
-  const [step, setStep] = useState(1); // Step 1: Initial fields, Step 2: Password fields
-  const [activeNextButton, setActiveNextButton] = useState(false);
+  const navigate = useNavigate();
+  const [step, setStep] = useState(1);
   const [agreePrivacy, setAgreePrivacy] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-    password: "",
-    confirmPassword: "",
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    trigger,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      email: "",
+      firstName: "",
+      lastName: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
 
-  // Enable/disable Next button based on Step 1 fields
+  const formValues = watch();
+
+  // Trigger validation for Step 1 fields on initial load
   useEffect(() => {
-    if (
-      formData.email.length > 0 &&
-      formData.firstName.length > 0 &&
-      formData.lastName.length > 0 &&
-      agreePrivacy
-    ) {
-      setActiveNextButton(true);
-    } else {
-      setActiveNextButton(false);
-    }
-  }, [formData, agreePrivacy]);
+    trigger(["email", "firstName", "lastName"]);
+  }, [trigger]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  // Enable "Next" button based on form validity and privacy agreement
+  const isNextButtonEnabled = () => {
+    const { email, firstName, lastName } = formValues;
+    // Check if all fields are filled
+    const allFieldsFilled =
+      email.length > 0 && firstName.length > 0 && lastName.length > 0;
+    // Check if there are no errors for Step 1 fields
+    const isStep1Valid = !errors.firstName && !errors.lastName && !errors.email;
+    return allFieldsFilled && isStep1Valid && agreePrivacy;
   };
 
-  const { handleSubmit } = useLogin();
-
-  // Move to Step 2 and show password
-  const handleNextClick = (e) => {
+  const handleNextClick = async (e) => {
     e.preventDefault();
-    setStep(2); // Move to password step
-    setShowPassword(true); // Optional: Show password (can remove if not needed)
+    const isStep1Valid = await trigger(["email", "firstName", "lastName"]);
+    if (isStep1Valid && agreePrivacy) {
+      setStep(2);
+      setShowPassword(true);
+    }
   };
 
-  // Go back to Step 1
   const handleBackClick = () => {
     setStep(1);
-    setShowPassword(false); // Optional: Hide password again
+    setShowPassword(false);
   };
 
-  // Handle final form submission
-  const handleFinalSubmit = (e) => {
-    e.preventDefault();
-    // Add password validation here if needed
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-    handleSubmit(e); // Call the original submit handler
+  const handleFinalSubmit = () => {
+    navigate("/conform-email");
   };
 
   return (
@@ -72,7 +74,6 @@ const Register = () => {
       }}
     >
       <div className="w-full max-w-[1200px] flex items-center justify-between">
-        {/* Logo Section */}
         <div className="hidden lg:flex items-center space-x-4 flex-1">
           <img
             src="/images/Logo.svg"
@@ -81,40 +82,40 @@ const Register = () => {
           />
         </div>
 
-        {/* Register Form */}
         <div className="bg-white rounded-lg border border-[#BBBBBB] min-w-[45%] max-w-md">
           <h2 className="text-xl font-bold px-[24px] py-[16px] border-b-2">
             Register
           </h2>
 
           <form
-            onSubmit={step === 1 ? handleNextClick : handleFinalSubmit}
+            onSubmit={
+              step === 1 ? handleNextClick : handleSubmit(handleFinalSubmit)
+            }
             className="space-y-5 px-[24px] py-[40px]"
           >
-            {/* Step 1: Initial Fields */}
             {step === 1 && (
               <>
                 <div className="grid grid-cols-2 gap-5">
-                  <LoginInput
+                  <AuthInput
                     label="First Name"
                     name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
+                    register={register}
+                    error={errors.firstName?.message}
                   />
-                  <LoginInput
+                  <AuthInput
                     label="Last Name"
                     name="lastName"
-                    value={formData.lastName}
-                    onChange={handleChange}
+                    register={register}
+                    error={errors.lastName?.message}
                   />
                 </div>
 
-                <LoginInput
+                <AuthInput
                   label="Email"
                   type="email"
                   name="email"
-                  value={formData.email}
-                  onChange={handleChange}
+                  register={register}
+                  error={errors.email?.message}
                 />
 
                 <div className="flex items-center gap-2 text-[14px]">
@@ -139,9 +140,9 @@ const Register = () => {
                 <div className="w-full flex items-end">
                   <button
                     type="submit"
-                    disabled={!activeNextButton}
-                    className={`px-8 py-[10px] ml-auto rounded-sm text-white rounded-md transition-colors font-semibold transition-all ${
-                      activeNextButton
+                    disabled={!isNextButtonEnabled()}
+                    className={`px-8 py-[10px] ml-auto rounded-sm text-white font-semibold transition-all ${
+                      isNextButtonEnabled()
                         ? "bg-[#57369E] hover:bg-[#00A7D3]"
                         : "bg-[#BBBBBB]"
                     }`}
@@ -164,31 +165,30 @@ const Register = () => {
               </>
             )}
 
-            {/* Step 2: Password Fields */}
             {step === 2 && (
               <>
-                <LoginInput
+                <AuthInput
                   label="Password"
                   type="password"
                   name="password"
-                  value={formData.password}
-                  onChange={handleChange}
+                  placeholder="Enter Your Password"
+                  register={register}
+                  error={errors.password?.message}
                   showPassword={showPassword}
                   togglePassword={() => setShowPassword(!showPassword)}
                 />
 
-                <LoginInput
+                <AuthInput
                   label="Confirm Password"
                   type="password"
                   name="confirmPassword"
-                  value={formData.confirmPassword}
                   placeholder="Re Enter Your Password"
-                  onChange={handleChange}
+                  register={register}
+                  error={errors.confirmPassword?.message}
                   showPassword={showPassword}
                   togglePassword={() => setShowPassword(!showPassword)}
                 />
 
-                {/* Password Requirements */}
                 <ul className="pl-5 text-sm text-gray-600">
                   <li className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-gray-600" />
@@ -212,7 +212,6 @@ const Register = () => {
                   </li>
                 </ul>
 
-                {/* Back and Submit Buttons */}
                 <div className="grid grid-cols-2 mt-6">
                   <button
                     type="button"
