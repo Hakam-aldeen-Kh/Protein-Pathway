@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AuthInput from "../../common/auth/AuthInput";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +10,21 @@ const Register = () => {
   const [step, setStep] = useState(1);
   const [agreePrivacy, setAgreePrivacy] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [validation, setValidation] = useState({
+    length: false,
+    lowerCase: false,
+    upperCase: false,
+    specialCharacter: false,
+    oneNumber: false,
+  });
+
+  const validationCases = [
+    "At least 8 characters",
+    "At least 1 lowercase letter",
+    "At least 1 uppercase letter",
+    "At least 1 special character",
+    "At least 1 number",
+  ];
 
   const {
     register,
@@ -29,6 +44,18 @@ const Register = () => {
   });
 
   const formValues = watch();
+
+  // Add useEffect to validate password in real-time
+  useEffect(() => {
+    const password = formValues.password || "";
+    setValidation({
+      length: password.length >= 8,
+      lowerCase: /[a-z]/.test(password),
+      upperCase: /[A-Z]/.test(password),
+      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+      oneNumber: /[0-9]/.test(password),
+    });
+  }, [formValues.password]);
 
   const isNextButtonEnabled = () => {
     const { email, firstName, lastName } = formValues;
@@ -187,27 +214,28 @@ const Register = () => {
                   togglePassword={() => setShowPassword(!showPassword)}
                 />
 
-                <ul className="pl-5 text-sm text-gray-600">
-                  <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-gray-600" />
-                    At least 8 characters
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-gray-600" />
-                    At least 1 uppercase letter
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-gray-600" />
-                    At least 1 lowercase letter
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-gray-600" />
-                    At least 1 special character
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-gray-600" />
-                    At least 1 number
-                  </li>
+                <ul className="pl-5 text-sm">
+                  {validationCases.map((oneCase, index) => {
+                    const validationKeys = Object.keys(validation);
+                    const isValid = validation[validationKeys[index]];
+                    return (
+                      <li
+                        key={index}
+                        className={`flex items-center gap-2 ${
+                          isValid ? "text-green-600" : "text-gray-600"
+                        }`}
+                      >
+                        {isValid ? (
+                          <span className="w-4 h-4 flex items-center justify-center">
+                            &#10003;
+                          </span>
+                        ) : (
+                          <span className="w-2 h-2 rounded-full bg-gray-600 mt-1" />
+                        )}
+                        {oneCase}
+                      </li>
+                    );
+                  })}
                 </ul>
 
                 <div className="grid grid-cols-2 mt-6">
