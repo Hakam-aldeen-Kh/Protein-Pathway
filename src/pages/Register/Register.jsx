@@ -172,14 +172,14 @@ const Register = () => {
                   <button
                     type="button"
                     onClick={handleBackClick}
-                    className="text-[#57369E] hover:text-[#00A7D3] font-semibold"
+                    className="text-[#57369E] hover:text-[#00A7D3] font-semibold transition-all duration-200"
                   >
                     Back
                   </button>
                   <button
                     type="submit"
                     disabled={!isSubmitButtonEnabled()}
-                    className={`px-8 py-[10px] rounded-sm text-white font-semibold transition-all ${
+                    className={`px-8 py-[10px] rounded-sm text-white font-semibold transition-all duration-200 ${
                       isSubmitButtonEnabled()
                         ? "bg-[#57369E] hover:bg-[#00A7D3]"
                         : "bg-[#BBBBBB]"
