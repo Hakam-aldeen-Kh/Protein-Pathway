@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import profileData from "../../data/profile/profile.json";
 import { useState } from "react";
 import DeleteAccountModal from "./components/DeleteAccountModal";
@@ -13,6 +13,8 @@ const Profile = () => {
     deleteAccountModal: false,
     logOutModal: false,
   });
+
+  const navigate = useNavigate();
 
   const handleOpenDeleteModal = () => {
     setModalIsOpen((prev) => ({
@@ -44,13 +46,16 @@ const Profile = () => {
 
   const handleDelete = () => {
     // Add deletion logic here
-    console.log("Account deletion triggered");
+    localStorage.clear();
+    navigate("/login");
     handleCloseDeleteModal();
   };
 
   const handleLogOut = () => {
     // Add logout logic here
-    console.log("User logged out");
+    localStorage.clear();
+    navigate("/login");
+    handleCloseLogoutModal();
   };
 
   return (
