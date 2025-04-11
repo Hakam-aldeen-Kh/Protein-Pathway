@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 
-const DeleteAccountModal = ({ isOpen, closeModal, handleLogout }) => {
+const DeleteAccountModal = ({ isOpen, closeModal, handleOnclick }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -21,7 +21,7 @@ const DeleteAccountModal = ({ isOpen, closeModal, handleLogout }) => {
           Cancel
         </button>
         <button
-          onClick={handleLogout}
+          onClick={handleOnclick}
           className="px-8 py-[10px] rounded-sm text-white font-semibold transition-all duration-200 bg-[#57369E] hover:bg-[#00A7D3]"
         >
           Confirm

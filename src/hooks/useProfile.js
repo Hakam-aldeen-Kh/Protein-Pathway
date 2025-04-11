@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 // Modal types
 export const MODAL_TYPES = {
   DELETE_ACCOUNT: "deleteAccount",
+  CHANGE_PASSWORD: "changePassword",
   LOGOUT: "logout",
 };
 
@@ -30,17 +31,18 @@ export const useProfile = () => {
     toggleModal(MODAL_TYPES.DELETE_ACCOUNT);
   };
 
-  // Placeholder password reset logic
-  const handleResetPassword = () => {
-    console.log("Password reset initiated");
+  // Placeholder password change logic
+  const handleChangePassword = () => {
+    console.log("Password changed");
+    toggleModal(MODAL_TYPES.CHANGE_PASSWORD);
     // Example: navigate("/reset-password");
   };
 
   return {
     activeModal,
     handleLogout,
+    handleChangePassword,
     handleDeleteAccount,
-    handleResetPassword,
     toggleModal,
   };
 };

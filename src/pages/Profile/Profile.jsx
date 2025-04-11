@@ -6,6 +6,7 @@ import DeleteAccountModal from "./components/DeleteAccountModal";
 import LogoutModal from "./components/LogoutModal";
 import ProfileHeader from "./components/ProfileHeader";
 import { MODAL_TYPES, useProfile } from "../../hooks/useProfile";
+import ChangePasswordModal from "./components/ChangePasswordModal";
 
 // Set app element for accessibility (should ideally be in index.js)
 Modal.setAppElement("#root");
@@ -14,8 +15,8 @@ const Profile = () => {
   const {
     activeModal,
     handleLogout,
+    handleChangePassword,
     handleDeleteAccount,
-    handleResetPassword,
     toggleModal,
   } = useProfile();
 
@@ -25,18 +26,23 @@ const Profile = () => {
       <ProfileInfo profileData={profileData} />
       <ProfileActions
         onLogout={() => toggleModal(MODAL_TYPES.LOGOUT)}
-        onResetPassword={handleResetPassword}
+        onResetPassword={() => toggleModal(MODAL_TYPES.CHANGE_PASSWORD)}
         onDeleteAccount={() => toggleModal(MODAL_TYPES.DELETE_ACCOUNT)}
-      />
-      <DeleteAccountModal
-        isOpen={activeModal === MODAL_TYPES.DELETE_ACCOUNT}
-        closeModal={() => toggleModal(MODAL_TYPES.DELETE_ACCOUNT)}
-        handleDelete={handleDeleteAccount}
       />
       <LogoutModal
         isOpen={activeModal === MODAL_TYPES.LOGOUT}
         closeModal={() => toggleModal(MODAL_TYPES.LOGOUT)}
-        handleLogout={handleLogout}
+        handleOnclick={handleLogout}
+      />
+      <ChangePasswordModal
+        isOpen={activeModal === MODAL_TYPES.CHANGE_PASSWORD}
+        closeModal={() => toggleModal(MODAL_TYPES.CHANGE_PASSWORD)}
+        handleChange={handleChangePassword}
+      />
+      <DeleteAccountModal
+        isOpen={activeModal === MODAL_TYPES.DELETE_ACCOUNT}
+        closeModal={() => toggleModal(MODAL_TYPES.DELETE_ACCOUNT)}
+        handleOnclick={handleDeleteAccount}
       />
     </div>
   );
