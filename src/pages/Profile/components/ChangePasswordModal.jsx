@@ -27,7 +27,7 @@ const ChangePasswordModal = ({ isOpen, closeModal }) => {
       isOpen={isOpen}
       onRequestClose={handleClose} // Reset on overlay click
       ariaHideApp={false}
-      className="bg-white rounded-lg border border-[#BBBBBB] min-w-[45%] max-w-md mx-auto my-10"
+      className="bg-white rounded-lg border border-[#BBBBBB] min-w-[35%] max-w-md mx-auto my-10"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     >
       <h2 className="text-xl font-bold px-6 py-4 border-b-2">
@@ -65,13 +65,11 @@ const ChangePasswordModal = ({ isOpen, closeModal }) => {
               <li
                 key={index}
                 className={`flex items-center gap-2 ${
-                  isValid ? "text-green-600" : "text-gray-600"
+                  isValid ? "text-[#409C43]" : "text-gray-600"
                 }`}
               >
                 {isValid ? (
-                  <span className="w-4 h-4 flex items-center justify-center">
-                    ✓
-                  </span>
+                  <img src="/images/icons/check-password.svg" alt="check" />
                 ) : (
                   <span className="w-2 h-2 rounded-full bg-gray-600 mt-1" />
                 )}

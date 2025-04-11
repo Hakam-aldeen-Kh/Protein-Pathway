@@ -156,9 +156,10 @@ const Register = () => {
                         }`}
                       >
                         {isValid ? (
-                          <span className="w-4 h-4 flex items-center justify-center">
-                            &#10003;
-                          </span>
+                          <img
+                            src="/images/icons/check-password.svg"
+                            alt="check"
+                          />
                         ) : (
                           <span className="w-2 h-2 rounded-full bg-gray-600 mt-1" />
                         )}
