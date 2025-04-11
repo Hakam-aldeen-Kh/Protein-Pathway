@@ -5,7 +5,7 @@ import LanguageSelector from "./components/LanguageSelector";
 import AuthButtons from "./components/AuthButtons";
 import NavigationLinks from "./components/NavigationLinks";
 import SearchBox from "./components/SearchBox";
-
+import profileData from "../../data/profile/profile.json"
 
 function Header() {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -30,10 +30,12 @@ function Header() {
           <div className="flex gap-10">
             <LanguageSelector />
             {isLoggedIn ? (
-              <img
-                src="/images/profile.png"
-                className="w-10 h-10 rounded-full"
-              />
+              <Link to={'/profile'}>
+                <img
+                  src={profileData.imageSrc}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              </Link>
             ) : (
               !isLoginPage && <AuthButtons />
             )}

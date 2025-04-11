@@ -95,7 +95,7 @@ const Products = ({ reaction, handleChangeData, setDeleteModalData, addReaction,
             onRequestClose={closeCheckModal}
             ariaHideApp={false}
             contentLabel="Confirm Action"
-            className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto mt-20"
+            className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20"
           >
             <h2 className="text-lg font-semibold mb-4">Use In Next Reaction</h2>
