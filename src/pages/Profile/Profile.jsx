@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import profileData from "../../data/profile/profile.json";
 import { useState } from "react";
 import DeleteAccountModal from "./components/DeleteAccountModal";
+import LogoutModal from "./components/LogoutModal";
 import Modal from "react-modal";
 
 // Set the app element for accessibility
@@ -24,6 +25,20 @@ const Profile = () => {
     setModalIsOpen((prev) => ({
       ...prev,
       deleteAccountModal: false,
+    }));
+  };
+
+  const handleOpenLogoutModal = () => {
+    setModalIsOpen((prev) => ({
+      ...prev,
+      logOutModal: true,
+    }));
+  };
+
+  const handleCloseLogoutModal = () => {
+    setModalIsOpen((prev) => ({
+      ...prev,
+      logOutModal: false,
     }));
   };
 
@@ -134,7 +149,7 @@ const Profile = () => {
         <div className="text-[#57369E] text-[14px] space-y-5 w-fit">
           <button
             className="flex items-center space-x-1 group"
-            onClick={handleLogOut}
+            onClick={handleOpenLogoutModal}
           >
             <img
               src="/images/icons/logout.svg"
@@ -174,6 +189,11 @@ const Profile = () => {
         isOpen={modalIsOpen.deleteAccountModal}
         closeModal={handleCloseDeleteModal}
         handleDelete={handleDelete}
+      />
+      <LogoutModal
+        isOpen={modalIsOpen.logOutModal}
+        closeModal={handleCloseLogoutModal}
+        handleDelete={handleLogOut}
       />
     </div>
   );
