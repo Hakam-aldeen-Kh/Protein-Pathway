@@ -16,7 +16,7 @@ const SocialLinks = ({ links }) => {
           const iconSrc = iconMap[link.title];
           if (!iconSrc) {
             return (
-              <div key={index} className="w-full mt-2">
+              <div key={index} className="w-full mt-5">
                 <a
                   href={link.url}
                   className="text-xl text-[#111118] hover:underline"

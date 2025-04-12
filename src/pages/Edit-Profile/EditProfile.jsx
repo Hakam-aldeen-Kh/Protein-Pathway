@@ -89,7 +89,7 @@ const EditProfile = () => {
   const maxLinksReached = fields.length >= linkTypes.length;
 
   return (
-    <div className="w-[85%] mx-auto my-10 p-5 border border-[#BBBBBB] rounded-lg">
+    <div className="w-[85%] mx-auto my-10 p-5 border border-[#878787] rounded-lg">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-16">
         <EditProfileHeader />
         <div className="space-y-5">
@@ -135,7 +135,7 @@ const EditProfile = () => {
             <div className="flex flex-col items-start">
               <label
                 htmlFor="phoneNumber"
-                className="text-sm font-normal text-[#484848] opacity-80 mb-1"
+                className="text-sm font-normal text-[#111118] opacity-80 mb-1"
               >
                 Phone Number
               </label>
@@ -151,7 +151,7 @@ const EditProfile = () => {
                     }}
                     id="phoneNumber"
                     placeholder="Enter phone number"
-                    className={`w-full px-3 border-[#BBBBBB] border rounded-sm min-h-[40px] focus:outline-none ${
+                    className={`w-full px-3 border-[#878787] border rounded-sm min-h-[40px] focus:outline-none ${
                       errors.phoneNumber ? "border-red-500" : "border-[#878787]"
                     }`}
                     international
@@ -189,7 +189,7 @@ const EditProfile = () => {
                 <div className="flex flex-col">
                   <label
                     htmlFor={`links.${index}.title`}
-                    className="text-sm font-normal text-[#484848] opacity-80 mb-1"
+                    className="text-sm font-normal text-[#111118] opacity-80 mb-1"
                   >
                     Link Type
                   </label>
@@ -232,7 +232,7 @@ const EditProfile = () => {
                 <div className="flex flex-col">
                   <label
                     htmlFor={`links.${index}.url`}
-                    className="text-sm font-normal text-[#484848] opacity-80 mb-1"
+                    className="text-sm font-normal text-[#111118] opacity-80 mb-1"
                   >
                     Link URL
                   </label>

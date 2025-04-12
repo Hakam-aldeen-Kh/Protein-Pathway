@@ -14,7 +14,7 @@ const TextareaField = ({
         <div className="flex items-center mb-1">
           <label
             htmlFor={id}
-            className="text-sm font-normal text-[#484848] opacity-80"
+            className="text-sm font-normal text-[#111118] opacity-80"
           >
             {label}
           </label>
@@ -27,7 +27,7 @@ const TextareaField = ({
           defaultValue={register ? undefined : value}
           onChange={register ? undefined : onChange}
           placeholder={placeholder || (label ? `Enter Your ${label}` : "")}
-          className={`w-full px-3 py-2 border-[1px] border-[#BBBBBB] min-h-[100px] focus:outline-none resize-y rounded-sm`}
+          className={`w-full px-3 py-2 border-[1px] border-[#878787] min-h-[100px] focus:outline-none resize-y rounded-sm`}
         />
       </div>
     </div>

@@ -12,7 +12,7 @@ const InputField = ({
   className = "",
   isRequired = false,
 }) => {
-  const id = name || label?.toLowerCase().replace(/\s+/g, "-") || "input"
+  const id = name || label?.toLowerCase().replace(/\s+/g, "-") || "input";
 
   return (
     <div className={`flex flex-col w-full text-sm text-[#111118] ${className}`}>
@@ -21,7 +21,7 @@ const InputField = ({
           {isRequired && <span className="text-red-500 mr-1">*</span>}
           <label
             htmlFor={id}
-            className={`text-sm font-normal opacity-80 ${isRequired ? "text-[#111118]" : "text-[#484848]"}`}
+            className={`text-sm font-normal opacity-80 text-[#111118]`}
           >
             {label}
           </label>
@@ -36,9 +36,9 @@ const InputField = ({
           onChange={register ? undefined : onChange}
           placeholder={placeholder || (label ? `Enter Your ${label}` : "")}
           required={isRequired}
-          className={`w-full px-3 py-2 border min-h-[40px] focus:outline-none rounded-sm ${
+          className={`w-full px-3 py-2 border min-h-[40px] focus:outline-none rounded-sm border-[#878787] ${
             error ? "border-red-500" : ""
-          } ${isRequired ? "border-[#878787]" : "border-[#BBBBBB]"}`}
+          } `}
         />
         {type === "password" && togglePassword && (
           <button

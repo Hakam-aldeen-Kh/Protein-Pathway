@@ -25,7 +25,7 @@ const ProfileInfo = ({ profileData }) => (
           className="w-8"
           alt="Education icon"
         />
-        <p>{profileData?.degree + " " + profileData?.school || "N/A"}</p>
+        <p>{profileData?.degree + " - " + profileData?.school || "N/A"}</p>
       </div>
       {/* Email */}
       <div className="flex items-center space-x-2 text-xl text-[#111118]">
