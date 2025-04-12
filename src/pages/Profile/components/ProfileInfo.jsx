@@ -11,7 +11,9 @@ const ProfileInfo = ({ profileData }) => (
     <div className="col-span-2 bg-[#F1F5F9] p-5 rounded-lg space-y-5">
       {/* Name and Description */}
       <div className="space-y-2">
-        <h3 className="text-4xl font-bold">{profileData?.name || "N/A"}</h3>
+        <h3 className="text-4xl font-bold">
+          {profileData?.firstName + " " + profileData?.lastName || "N/A"}
+        </h3>
         <p className="text-xl text-[#626262]">
           {profileData?.description || "No description available"}
         </p>
