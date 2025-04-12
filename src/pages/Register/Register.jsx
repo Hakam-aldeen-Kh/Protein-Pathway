@@ -173,7 +173,7 @@ const Register = () => {
                   <button
                     type="button"
                     onClick={handleBackClick}
-                    className="text-[#57369E] hover:text-[#00A7D3] font-semibold transition-all duration-200"
+                    className="px-8 py-[10px] text-[#57369E] hover:text-[#00A7D3] font-semibold transition-all duration-200"
                   >
                     Back
                   </button>
