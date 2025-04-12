@@ -15,7 +15,7 @@ const ProfileInfo = ({ profileData }) => (
           {profileData?.firstName + " " + profileData?.lastName || "N/A"}
         </h3>
         <p className="text-xl text-[#626262]">
-          {profileData?.description || "No description available"}
+          {profileData?.biography || "No biography available"}
         </p>
       </div>
       {/* Education */}
@@ -25,7 +25,7 @@ const ProfileInfo = ({ profileData }) => (
           className="w-8"
           alt="Education icon"
         />
-        <p>{profileData?.education || "N/A"}</p>
+        <p>{profileData?.degree + " " + profileData?.school || "N/A"}</p>
       </div>
       {/* Email */}
       <div className="flex items-center space-x-2 text-xl text-[#111118]">
@@ -43,7 +43,7 @@ const ProfileInfo = ({ profileData }) => (
           className="w-8"
           alt="Phone icon"
         />
-        <p>{profileData?.phone || "N/A"}</p>
+        <p>{profileData?.phoneNumber || "N/A"}</p>
       </div>
       {/* Social Links */}
       <SocialLinks
