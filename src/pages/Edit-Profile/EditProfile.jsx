@@ -1,7 +1,7 @@
 import { useState } from "react";
 import EditProfileHeader from "./components/EditProfileHeader";
 import ProfileImageUploader from "./components/ProfileImageUploader";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 import profileData from "../../data/profile/profile.json";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { editProfileSchema } from "../../validation/editProfileSchema";
@@ -34,6 +34,7 @@ const EditProfile = () => {
     reset,
     control,
     formState: { errors },
+    watch,
   } = useForm({
     mode: "onBlur",
     resolver: zodResolver(editProfileSchema),
@@ -45,7 +46,14 @@ const EditProfile = () => {
       phoneNumber: normalizePhoneNumber(profileData.phoneNumber) || "",
       degree: profileData.degree || "",
       school: profileData.school || "",
+      links: profileData.links || [],
     },
+  });
+
+  // Use useFieldArray to manage dynamic links
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "links",
   });
 
   const onSubmit = (data) => {
@@ -59,6 +67,26 @@ const EditProfile = () => {
     );
     navigate("/profile");
   };
+
+  // Available link types
+  const linkTypes = ["X", "Linkedin", "Website", "GitHub"];
+
+  // Watch the links field to get current values
+  const currentLinks = watch("links") || [];
+
+  // Filter available link types for each dropdown
+  const getAvailableLinkTypes = (currentIndex) => {
+    const otherLinks = currentLinks.filter(
+      (_, index) => index !== currentIndex
+    );
+    const otherUsedTypes = otherLinks
+      .map((link) => link.title)
+      .filter((title) => title);
+    return linkTypes.filter((type) => !otherUsedTypes.includes(type));
+  };
+
+  // Check if the maximum number of links is reached
+  const maxLinksReached = fields.length >= linkTypes.length;
 
   return (
     <div className="w-[85%] mx-auto my-10 p-5 border border-[#BBBBBB] rounded-lg">
@@ -152,6 +180,104 @@ const EditProfile = () => {
               register={register}
               error={errors.school?.message}
             />
+          </div>
+          {/* Links */}
+          <div className="space-y-5">
+            {fields.map((field, index) => (
+              <div key={field.id} className="grid grid-cols-2 gap-x-5">
+                {/* Link Type */}
+                <div className="flex flex-col">
+                  <label
+                    htmlFor={`links.${index}.title`}
+                    className="text-sm font-normal text-[#484848] opacity-80 mb-1"
+                  >
+                    Link Type
+                  </label>
+                  <div className="flex flex-row gap-x-1">
+                    <select
+                      {...register(`links.${index}.title`)}
+                      id={`links.${index}.title`}
+                      className={`w-[95%] px-3 py-2 border min-h-[40px] focus:outline-none rounded-sm ${
+                        errors.links?.[index]?.title
+                          ? "border-red-500"
+                          : "border-[#878787]"
+                      }`}
+                    >
+                      <option value="">Select a link type</option>
+                      {getAvailableLinkTypes(index).map((type) => (
+                        <option key={type} value={type}>
+                          {type}
+                        </option>
+                      ))}
+                    </select>
+                    {/* Remove button */}
+                    <div
+                      className="px-3 py-2 border min-h-[40px] bg-[#57369E] cursor-pointer rounded-sm hover:bg-[#00A7D3] transition-all duration-200"
+                      onClick={() => remove(index)}
+                    >
+                      <img
+                        src="/images/icons/trash.svg"
+                        className="w-[24px] h-[24px]"
+                      />
+                    </div>
+                  </div>
+
+                  {errors.links?.[index]?.title && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.links[index].title.message}
+                    </p>
+                  )}
+                </div>
+                {/* Link URL */}
+                <div className="flex flex-col">
+                  <label
+                    htmlFor={`links.${index}.url`}
+                    className="text-sm font-normal text-[#484848] opacity-80 mb-1"
+                  >
+                    Link URL
+                  </label>
+                  <input
+                    {...register(`links.${index}.url`)}
+                    id={`links.${index}.url`}
+                    placeholder="Enter URL"
+                    className={`w-full px-3 py-2 border min-h-[40px] focus:outline-none rounded-sm ${
+                      errors.links?.[index]?.url
+                        ? "border-red-500"
+                        : "border-[#878787]"
+                    }`}
+                  />
+                  {errors.links?.[index]?.url && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.links[index].url.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+            {/* Add a Link Button */}
+            {!maxLinksReached && (
+              <div>
+                <button
+                  type="button"
+                  onClick={() => append({ title: "", url: "" })}
+                  className="space-x-1 flex items-center"
+                  disabled={maxLinksReached}
+                >
+                  <img
+                    src="/images/icons/add.svg"
+                    alt="add-icon"
+                    className={maxLinksReached ? "opacity-50" : ""}
+                  />
+                  <span
+                    className={`text-[14px] ${
+                      maxLinksReached ? "text-gray-400" : "text-[#57369E]"
+                    }`}
+                  >
+                    Add a Link
+                  </span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </form>

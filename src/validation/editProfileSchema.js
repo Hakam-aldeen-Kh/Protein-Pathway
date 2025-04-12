@@ -1,4 +1,5 @@
 import { z } from "zod";
+const validLinkTypes = ["X", "Linkedin", "Website", "GitHub"];
 
 export const editProfileSchema = z
   .object({
@@ -52,5 +53,21 @@ export const editProfileSchema = z
       ),
     degree: z.string().optional(),
     school: z.string().optional(),
+    links: z
+      .array(
+        z.object({
+          title: z
+            .string()
+            .min(1, "Link type is required")
+            .refine((val) => validLinkTypes.includes(val), {
+              message: "Invalid link type",
+            }),
+          url: z
+            .string()
+            .min(1, "Link URL is required")
+            .url("Must be a valid URL (e.g., https://example.com)"),
+        })
+      )
+      .optional(),
   })
   .passthrough();

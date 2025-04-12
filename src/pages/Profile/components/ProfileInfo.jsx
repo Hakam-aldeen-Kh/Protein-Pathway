@@ -46,10 +46,7 @@ const ProfileInfo = ({ profileData }) => (
         <p>{profileData?.phoneNumber || "N/A"}</p>
       </div>
       {/* Social Links */}
-      <SocialLinks
-        linkedin={profileData?.linkedin}
-        xAccount={profileData?.x_account}
-      />
+      <SocialLinks links={profileData?.links} />
       {/* Website */}
       {profileData?.website && (
         <div>

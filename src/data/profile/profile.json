@@ -8,7 +8,18 @@
   "degree": "Master of Biology",
   "email": "johandou@email.com",
   "phoneNumber": "+971 555 555 555",
-  "website": "https://www.johandou.blog.com",
-  "linkedin": "https://www.linkedin.com/in/johandou",
-  "x_account": "https://www.x.com/johandou"
+  "links": [
+    {
+      "title": "X",
+      "url": "https://www.x.com/johandou"
+    },
+    {
+      "title": "Linkedin",
+      "url": "https://www.linkedin.com/in/johandou"
+    },
+    {
+      "title": "Website",
+      "url": "https://www.johandou.blog.com"
+    }
+  ]
 }
