@@ -11,12 +11,12 @@ const EditProfileHeader = () => {
         >
           Cancel
         </Link>
-        <Link
-          to="/profile"
+        <button
+          type="submit"
           className="py-3 px-4 rounded-sm text-white font-semibold transition-all duration-200 bg-[#57369E] hover:bg-[#00A7D3]"
         >
           Save
-        </Link>
+        </button>
       </div>
     </div>
   );
