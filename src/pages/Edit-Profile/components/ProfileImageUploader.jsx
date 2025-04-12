@@ -22,9 +22,9 @@ const ProfileImageUploader = ({ selectedImage, onChangeImage }) => {
         <div className="w-[160px]">
           <p className="text-[14px] text-[#484848] mb-1">Your Photo</p>
           <div
-            className={`w-full h-[160px] border-[2px] border-[#BBBBBB] border-dashed rounded-sm flex items-center justify-center cursor-pointer ${
+            className={`w-full h-[160px] border-[2px] border-[#BBBBBB] border-dashed rounded-sm flex items-center justify-center ${
               isDragging ? "bg-gray-100" : ""
-            }`}
+            } ${imageList.length > 0 ? "cursor-default" : "cursor-pointer"}`}
             onClick={imageList.length === 0 ? onImageUpload : undefined}
             {...(imageList.length === 0 ? dragProps : {})}
           >
@@ -67,7 +67,9 @@ const ProfileImageUploader = ({ selectedImage, onChangeImage }) => {
             disabled={imageList.length <= 0}
             onClick={() => onImageRemove(0)}
             className={`mt-2 w-full px-4 py-2 text-white rounded-sm transition-all duration-200 ${
-              imageList.length > 0 ? "bg-[#57369E] hover:bg-[#00A7D3]" : "bg-[#BBBBBB] cursor-not-allowed"
+              imageList.length > 0
+                ? "bg-[#57369E] hover:bg-[#00A7D3]"
+                : "bg-[#BBBBBB] cursor-not-allowed"
             }`}
           >
             Remove
