@@ -62,15 +62,16 @@ const ProfileImageUploader = ({ selectedImage, onChangeImage }) => {
               {errors.maxNumber && <p>Only one image allowed</p>}
             </div>
           )}
-          {imageList.length > 0 && (
-            <button
-              type="button"
-              onClick={() => onImageRemove(0)}
-              className="mt-2 w-full px-4 py-2 text-white rounded-sm transition-all duration-200 bg-[#57369E] hover:bg-[#00A7D3]"
-            >
-              Remove
-            </button>
-          )}
+          <button
+            type="button"
+            disabled={imageList.length <= 0}
+            onClick={() => onImageRemove(0)}
+            className={`mt-2 w-full px-4 py-2 text-white rounded-sm transition-all duration-200 ${
+              imageList.length > 0 ? "bg-[#57369E] hover:bg-[#00A7D3]" : "bg-[#BBBBBB] cursor-not-allowed"
+            }`}
+          >
+            Remove
+          </button>
         </div>
       )}
     </ImageUploading>
