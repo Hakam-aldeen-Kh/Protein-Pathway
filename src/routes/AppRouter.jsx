@@ -18,6 +18,7 @@ import PathwayResultForPreview from "../pages/Pathway-Result/PathwayResultForPre
 import PathwayResultAfterCreation from "../pages/Pathway-Result/PathwayResultAfterCreation";
 import Register from "../pages/Register/Register";
 import Profile from "../pages/Profile/Profile";
+import EditProfile from "../pages/Edit-Profile/EditProfile";
 
 const AppRouter = () => {
   return (
@@ -64,6 +65,15 @@ const AppRouter = () => {
         element={
           <Layout>
             <Register />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/protein-pathway-data"
+        element={
+          <Layout>
+            <ProteinData />
           </Layout>
         }
       />
@@ -136,11 +146,13 @@ const AppRouter = () => {
         />
 
         <Route
-          path="/protein-pathway-data"
+          path="/profile/edit"
           element={
-            <Layout>
-              <ProteinData />
-            </Layout>
+            <ProtectedRoute>
+              <Layout>
+                <EditProfile />
+              </Layout>
+            </ProtectedRoute>
           }
         />
       </Route>

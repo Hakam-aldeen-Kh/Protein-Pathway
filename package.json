@@ -24,6 +24,7 @@
     "react-cytoscapejs": "^2.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.55.0",
+    "react-images-uploading": "^3.1.7",
     "react-modal": "^3.16.3",
     "react-router": "^7.1.5",
     "sweetalert2": "^11.15.10",
