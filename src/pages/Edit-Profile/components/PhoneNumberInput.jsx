@@ -23,7 +23,7 @@ const PhoneNumberInput = ({ control, errors }) => {
             }}
             id="phoneNumber"
             placeholder="Enter phone number"
-            className={`w-full px-3 border-[#878787] border rounded-sm min-h-[40px] focus:outline-none ${
+            className={`w-full px-3 py-2 border-[#878787] border rounded-sm min-h-[40px] focus:outline-none ${
               errors.phoneNumber ? "border-red-500" : "border-[#878787]"
             }`}
             international
