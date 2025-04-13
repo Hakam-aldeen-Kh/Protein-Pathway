@@ -19,6 +19,7 @@ import PathwayResultAfterCreation from "../pages/Pathway-Result/PathwayResultAft
 import Register from "../pages/Register/Register";
 import Profile from "../pages/Profile/Profile";
 import EditProfile from "../pages/Edit-Profile/EditProfile";
+import EmailInputPage from "../pages/Forgot-Passwrod/pages/EmailInputPage";
 
 const AppRouter = () => {
   return (
@@ -74,6 +75,15 @@ const AppRouter = () => {
         element={
           <Layout>
             <ProteinData />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/reset-password"
+        element={
+          <Layout>
+            <EmailInputPage />
           </Layout>
         }
       />

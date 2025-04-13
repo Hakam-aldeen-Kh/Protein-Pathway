@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../../validation/loginSchema";
 import { useLogin } from "../../hooks/useLogin";
+import { Link } from "react-router";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -80,17 +81,20 @@ const Login = () => {
             </div>
 
             <div className="flex items-center justify-between text-sm">
-              <a href="#" className="text-[#57369E] hover:text-[#00A7D3]">
+              <Link
+                to="/reset-password"
+                className="text-[#57369E] hover:text-[#00A7D3]"
+              >
                 Forgot Password?
-              </a>
+              </Link>
               <div className="text-black">
                 Need an account?{" "}
-                <a
-                  href="/register"
+                <Link
+                  to="/register"
                   className="text-[#57369E] hover:text-[#00A7D3]"
                 >
                   Register here
-                </a>
+                </Link>
               </div>
             </div>
           </form>

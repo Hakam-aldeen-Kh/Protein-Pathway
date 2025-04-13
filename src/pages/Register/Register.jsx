@@ -169,7 +169,7 @@ const Register = () => {
                   })}
                 </ul>
 
-                <div className="grid grid-cols-2 mt-6">
+                <div className="grid grid-cols-2 mt-6 gap-x-5">
                   <button
                     type="button"
                     onClick={handleBackClick}

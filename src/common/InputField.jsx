@@ -4,7 +4,6 @@ const InputField = ({
   name,
   register,
   value,
-  onChange,
   placeholder,
   error,
   showPassword,
@@ -33,7 +32,6 @@ const InputField = ({
           type={type === "password" && showPassword ? "text" : type}
           {...(register ? register(name) : {})}
           defaultValue={register ? undefined : value}
-          onChange={register ? undefined : onChange}
           placeholder={placeholder || (label ? `Enter Your ${label}` : "")}
           required={isRequired}
           className={`w-full px-3 py-2 border min-h-[40px] focus:outline-none rounded-sm border-[#878787] ${
