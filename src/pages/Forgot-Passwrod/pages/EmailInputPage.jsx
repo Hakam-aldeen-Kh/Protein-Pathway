@@ -25,7 +25,7 @@ const EmailInputPage = () => {
 
   const handleEmailSubmit = (data) => {
     console.log(data);
-    navigate("/confirm-email");
+    navigate("/reset-password/confirmation");
   };
 
   return (
