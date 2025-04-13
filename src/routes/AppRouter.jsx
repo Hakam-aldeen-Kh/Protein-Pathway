@@ -21,6 +21,7 @@ import Profile from "../pages/Profile/Profile";
 import EditProfile from "../pages/Edit-Profile/EditProfile";
 import EmailInputPage from "../pages/Forgot-Passwrod/pages/EmailInputPage";
 import ConfirmationPage from "../pages/Forgot-Passwrod/pages/ConfirmationPage";
+import ResetPasswordPage from "../pages/Forgot-Passwrod/pages/ResetPasswordPage";
 
 const AppRouter = () => {
   return (
@@ -94,6 +95,15 @@ const AppRouter = () => {
         element={
           <Layout>
             <ConfirmationPage />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/reset-password/reset"
+        element={
+          <Layout>
+            <ResetPasswordPage />
           </Layout>
         }
       />

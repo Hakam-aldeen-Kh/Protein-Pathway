@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import AuthInput from "../../common/auth/AuthInput";
 import { useRegister } from "../../hooks/useRegister";
 
@@ -109,12 +110,12 @@ const Register = () => {
                 <div className="flex items-center justify-end text-sm">
                   <div className="text-black">
                     Already have an account?{" "}
-                    <a
-                      href="/login"
+                    <Link
+                      to="/login"
                       className="text-[#57369E] hover:text-[#00A7D3]"
                     >
                       Sign In
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </>
