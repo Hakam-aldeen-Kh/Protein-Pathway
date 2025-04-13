@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import AuthInput from "../../common/auth/AuthInput";
+import InputField from "../../common/InputField";
 import { useRegister } from "../../hooks/useRegister";
 
 const Register = () => {
@@ -52,13 +52,13 @@ const Register = () => {
             {step === 1 && (
               <>
                 <div className="grid grid-cols-2 gap-5">
-                  <AuthInput
+                  <InputField
                     label="First Name"
                     name="firstName"
                     register={register}
                     error={errors.firstName?.message}
                   />
-                  <AuthInput
+                  <InputField
                     label="Last Name"
                     name="lastName"
                     register={register}
@@ -66,7 +66,7 @@ const Register = () => {
                   />
                 </div>
 
-                <AuthInput
+                <InputField
                   label="Email"
                   type="email"
                   name="email"
@@ -123,7 +123,7 @@ const Register = () => {
 
             {step === 2 && (
               <>
-                <AuthInput
+                <InputField
                   label="Password"
                   type="password"
                   name="password"
@@ -134,7 +134,7 @@ const Register = () => {
                   togglePassword={() => setShowPassword(!showPassword)}
                 />
 
-                <AuthInput
+                <InputField
                   label="Confirm Password"
                   type="password"
                   name="confirmPassword"

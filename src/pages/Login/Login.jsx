@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AuthInput from "../../common/auth/AuthInput";
+import InputField from "../../common/InputField";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../../validation/loginSchema";
@@ -51,14 +51,14 @@ const Login = () => {
             onSubmit={handleSubmit(loginSubmit)}
             className="space-y-5 px-[24px] py-[40px]"
           >
-            <AuthInput
+            <InputField
               label="Username"
               name="username"
               register={register}
               error={errors.username?.message}
             />
 
-            <AuthInput
+            <InputField
               label="Password"
               type="password"
               name="password"

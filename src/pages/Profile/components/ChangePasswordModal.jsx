@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import AuthInput from "../../../common/auth/AuthInput";
+import InputField from "../../../common/InputField";
 import { useChangePassword } from "../../../hooks/useChangePassword";
 
 const ChangePasswordModal = ({ isOpen, closeModal }) => {
@@ -37,7 +37,7 @@ const ChangePasswordModal = ({ isOpen, closeModal }) => {
         onSubmit={handleSubmit(handleFinalSubmit)}
         className="space-y-5 px-6 py-10"
       >
-        <AuthInput
+        <InputField
           label="Current Password"
           type="password"
           name="currentPassword"
@@ -47,7 +47,7 @@ const ChangePasswordModal = ({ isOpen, closeModal }) => {
           showPassword={showPassword}
           togglePassword={() => setShowPassword(!showPassword)}
         />
-        <AuthInput
+        <InputField
           label="New Password"
           type="password"
           name="newPassword"
@@ -78,7 +78,7 @@ const ChangePasswordModal = ({ isOpen, closeModal }) => {
             );
           })}
         </ul>
-        <AuthInput
+        <InputField
           label="Confirm New Password"
           type="password"
           name="confirmNewPassword"
