@@ -1,10 +1,9 @@
 import { useState } from "react";
 import Accordion from "../../../common/Accordion";
 import FormElement from "../../../common/reaction/components/FormElement";
-import DiseaseSelect from "./DiseaseSelect";
 
 const BasicInfoForm = ({ data, handleChange }) => {
-  const [diseaseType, setDiseaseType] = useState(null);
+  const [diseaseType, setDiseaseType] = useState(data.relatedDisease);
 
   const handleDiseaseTypeChange = (e) => {
     const { value } = e.target;
@@ -92,7 +91,15 @@ const BasicInfoForm = ({ data, handleChange }) => {
               <option value="Animal">Animal</option>
               <option value="Plant">Plant</option>
             </FormElement>
-            <DiseaseSelect diseaseType={diseaseType} />
+
+            <FormElement
+              label=""
+              type="diseaseSelect"
+              name="diseaseInput"
+              value={data?.diseaseInput}
+              handleChange={handleChange}
+              diseaseType={diseaseType}
+            />
           </div>
         </div>
       </div>

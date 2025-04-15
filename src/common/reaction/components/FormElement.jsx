@@ -1,3 +1,5 @@
+import DiseaseSelect from "../../../pages/New-Pathway/sections/DiseaseSelect";
+
 const FormElement = ({
   isRequired = false,
   type = "input",
@@ -8,7 +10,7 @@ const FormElement = ({
   placeholder = "",
   id = "",
   children,
-  // relatedInput = null,
+  diseaseType,
 }) => {
   return (
     <div>
@@ -28,6 +30,7 @@ const FormElement = ({
             className="mt-1 outline-none block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
           />
         )}
+
         {type === "select" && (
           <div className="select-container w-full flex-1">
             <select
@@ -61,16 +64,14 @@ const FormElement = ({
           </div>
         )}
 
-        {/* {relatedInput && (
-          // <input
-          //   type="text"
-          //   name={relatedInput.name}
-          //   value={relatedInput.value || ""}
-          //   onChange={handleChange}
-          //   className="mt-1 outline-none block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
-          // />
-          // <DiseaseSelect />
-        )} */}
+        {type === "diseaseSelect" && (
+          <DiseaseSelect
+            name={name}
+            value={value}
+            onChange={handleChange}
+            diseaseType={diseaseType}
+          />
+        )}
       </div>
     </div>
   );
