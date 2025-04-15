@@ -8,7 +8,7 @@ const FormElement = ({
   placeholder = "",
   id = "",
   children,
-  relatedInput = null,
+  // relatedInput = null,
 }) => {
   return (
     <div>
@@ -35,7 +35,7 @@ const FormElement = ({
               name={name}
               value={value || ""}
               onChange={handleChange}
-              className="select mt-1 outline-none block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
+              className="select h-[40px] mt-1 outline-none block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
             >
               <option value="">{placeholder}</option>
               {children}
@@ -61,15 +61,16 @@ const FormElement = ({
           </div>
         )}
 
-        {relatedInput && (
-          <input
-            type="text"
-            name={relatedInput.name}
-            value={relatedInput.value || ""}
-            onChange={handleChange}
-            className="mt-1 outline-none block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
-          />
-        )}
+        {/* {relatedInput && (
+          // <input
+          //   type="text"
+          //   name={relatedInput.name}
+          //   value={relatedInput.value || ""}
+          //   onChange={handleChange}
+          //   className="mt-1 outline-none block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
+          // />
+          // <DiseaseSelect />
+        )} */}
       </div>
     </div>
   );

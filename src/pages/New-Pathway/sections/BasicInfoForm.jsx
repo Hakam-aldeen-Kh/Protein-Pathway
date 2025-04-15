@@ -1,6 +1,6 @@
 import Accordion from "../../../common/Accordion";
 import FormElement from "../../../common/reaction/components/FormElement";
-
+import DiseaseSelect from "./DiseaseSelect";
 const BasicInfoForm = ({ data, handleChange }) => {
   return (
     <Accordion
@@ -75,20 +75,23 @@ const BasicInfoForm = ({ data, handleChange }) => {
             <option value="Blood">Blood</option>
             <option value="Heart">Heart</option>
           </FormElement>
-          <FormElement
-            isRequired={false}
-            type="select"
-            label={"Related Disease"}
-            name="relatedDisease"
-            value={data?.relatedDisease}
-            handleChange={handleChange}
-            placeholder="Type or Select Disease"
-            relatedInput={{ name: "diseaseInput", value: data?.diseaseInput }}
-          >
-            <option value="Human">Human</option>
-            <option value="Animal">Animal</option>
-            <option value="Plant">Plant</option>
-          </FormElement>
+          <div className="grid grid-cols-2 gap-2 items-end max-h-[40px]">
+            <FormElement
+              isRequired={false}
+              type="select"
+              label={"Related Disease"}
+              name="relatedDisease"
+              value={data?.relatedDisease}
+              handleChange={handleChange}
+              placeholder="Type or Select Disease"
+              relatedInput={{ name: "diseaseInput", value: data?.diseaseInput }}
+            >
+              <option value="Human">Human</option>
+              <option value="Animal">Animal</option>
+              <option value="Plant">Plant</option>
+            </FormElement>
+            <DiseaseSelect />
+          </div>
         </div>
       </div>
     </Accordion>
