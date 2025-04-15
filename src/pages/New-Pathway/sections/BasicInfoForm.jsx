@@ -1,28 +1,38 @@
+import { useState } from "react";
 import Accordion from "../../../common/Accordion";
 import FormElement from "../../../common/reaction/components/FormElement";
 import DiseaseSelect from "./DiseaseSelect";
+
 const BasicInfoForm = ({ data, handleChange }) => {
+  const [diseaseType, setDiseaseType] = useState(null);
+
+  const handleDiseaseTypeChange = (e) => {
+    const { value } = e.target;
+    setDiseaseType(value);
+    handleChange(e);
+  };
+
   return (
     <Accordion
       variant="gray"
       title={"Pathway Basic Information"}
-      className=" border rounded-lg"
+      className="border rounded-lg"
     >
       <div className="p-4 space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <FormElement
-            isRequired={true}
+            isRequired
             type="input"
-            label={"Title"}
+            label="Title"
             name="title"
             value={data?.title}
             handleChange={handleChange}
             placeholder="Add Title"
           />
           <FormElement
-            isRequired={true}
+            isRequired
             type="input"
-            label={"Description"}
+            label="Description"
             name="description"
             value={data?.description}
             handleChange={handleChange}
@@ -32,27 +42,22 @@ const BasicInfoForm = ({ data, handleChange }) => {
 
         <div className="grid grid-cols-2 gap-4">
           <FormElement
-            isRequired={false}
             type="select"
-            label={"Species"}
+            label="Species"
             name="species"
             value={data?.species}
             handleChange={handleChange}
-            placeholder="Select Species"
           >
             <option value="Homo spaiens">Homo spaiens</option>
           </FormElement>
           <FormElement
-            isRequired={false}
             type="select"
-            label={"Pathway Category"}
+            label="Pathway Category"
             name="category"
             value={data?.category}
             handleChange={handleChange}
-            placeholder="Select Category"
           >
             <option value="classic metabolic pathway">
-              {" "}
               classic metabolic pathway
             </option>
             <option value="signaling pathway">signaling pathway</option>
@@ -64,33 +69,30 @@ const BasicInfoForm = ({ data, handleChange }) => {
 
         <div className="grid grid-cols-2 gap-4">
           <FormElement
-            isRequired={false}
             type="select"
-            label={"Tissue"}
+            label="Tissue"
             name="tissue"
             value={data?.tissue}
             handleChange={handleChange}
-            placeholder="Select Tissue"
           >
             <option value="Blood">Blood</option>
             <option value="Heart">Heart</option>
           </FormElement>
-          <div className="grid grid-cols-2 gap-2 items-end max-h-[40px]">
+
+          <div className="grid grid-cols-2 gap-2 items-end">
             <FormElement
-              isRequired={false}
               type="select"
-              label={"Related Disease"}
+              label="Related Disease"
               name="relatedDisease"
               value={data?.relatedDisease}
-              handleChange={handleChange}
-              placeholder="Type or Select Disease"
-              relatedInput={{ name: "diseaseInput", value: data?.diseaseInput }}
+              handleChange={handleDiseaseTypeChange}
+              placeholder="Select a Type"
             >
               <option value="Human">Human</option>
               <option value="Animal">Animal</option>
               <option value="Plant">Plant</option>
             </FormElement>
-            <DiseaseSelect />
+            <DiseaseSelect diseaseType={diseaseType} />
           </div>
         </div>
       </div>
