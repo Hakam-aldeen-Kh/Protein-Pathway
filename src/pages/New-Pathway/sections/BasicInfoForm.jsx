@@ -94,11 +94,11 @@ const BasicInfoForm = ({ data, handleChange }) => {
 
             <FormElement
               label=""
-              type="diseaseSelect"
+              type="itemType"
               name="diseaseInput"
               value={data?.diseaseInput}
               handleChange={handleChange}
-              diseaseType={diseaseType}
+              itemType={diseaseType}
             />
           </div>
         </div>
