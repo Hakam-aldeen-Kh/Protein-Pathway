@@ -16,7 +16,7 @@ const DetailsModal = ({ data }) => {
         <Modal
             isOpen={data.isModalOpen}
             onRequestClose={data.closeModal}
-            className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto mt-20"
+            className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
             ariaHideApp={false}
         >

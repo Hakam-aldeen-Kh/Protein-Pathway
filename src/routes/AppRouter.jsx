@@ -16,12 +16,16 @@ import ReviewPathway from "../pages/Pathway-Details/ReviewPathway";
 import PreviewPathway from "../pages/Pathway-Details/PreviewPathway";
 import PathwayResultForPreview from "../pages/Pathway-Result/PathwayResultForPreview";
 import PathwayResultAfterCreation from "../pages/Pathway-Result/PathwayResultAfterCreation";
-
+import Register from "../pages/Register/Register";
+import Profile from "../pages/Profile/Profile";
+import EditProfile from "../pages/Edit-Profile/EditProfile";
+import EmailInputPage from "../pages/Forgot-Passwrod/pages/EmailInputPage";
+import ConfirmationPage from "../pages/Forgot-Passwrod/pages/ConfirmationPage";
+import ResetPasswordPage from "../pages/Forgot-Passwrod/pages/ResetPasswordPage";
 
 const AppRouter = () => {
   return (
     <Routes>
-
       {/* Public Routes */}
       <Route
         path="/"
@@ -55,6 +59,51 @@ const AppRouter = () => {
         element={
           <Layout>
             <Login />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/register"
+        element={
+          <Layout>
+            <Register />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/protein-pathway-data"
+        element={
+          <Layout>
+            <ProteinData />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/reset-password"
+        element={
+          <Layout>
+            <EmailInputPage />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/reset-password/confirmation"
+        element={
+          <Layout>
+            <ConfirmationPage />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/reset-password/reset"
+        element={
+          <Layout>
+            <ResetPasswordPage />
           </Layout>
         }
       />
@@ -116,15 +165,27 @@ const AppRouter = () => {
         />
 
         <Route
-          path="/protein-pathway-data"
+          path="/profile"
           element={
-            <Layout>
-              <ProteinData />
-            </Layout>
+            <ProtectedRoute>
+              <Layout>
+                <Profile />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile/edit"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <EditProfile />
+              </Layout>
+            </ProtectedRoute>
           }
         />
       </Route>
-
     </Routes>
   );
 };

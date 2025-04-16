@@ -5,7 +5,7 @@ function DeleteModal({ data }) {
         <Modal
             isOpen={data.isModalOpen}
             onRequestClose={data.closeModal}
-            className="bg-white p-5 rounded shadow-lg w-[500px] mx-auto mt-40"
+            className="bg-white p-5 rounded shadow-lg w-[500px] mx-auto"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 "
             shouldCloseOnOverlayClick={data.closeModal}
             ariaHideApp={false}
