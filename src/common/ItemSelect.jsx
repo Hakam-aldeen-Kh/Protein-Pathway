@@ -19,6 +19,7 @@ const API_ENDPOINTS = {
     "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Plant_Disease",
   CellType:
     "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/CellTypeOnto",
+  Lipid: "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/LipidMap",
 };
 
 // Define name properties for each endpoint type
@@ -27,6 +28,7 @@ const NAME_PROPERTIES = {
   Animal: "Disease_name",
   Plant: "Disease_name",
   CellType: "cType_name",
+  Lipid: "backbone_name",
 };
 
 // Define ID properties for each endpoint type (if needed)

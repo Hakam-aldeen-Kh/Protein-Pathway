@@ -70,6 +70,7 @@ const FormElement = ({
             value={value}
             onChange={handleChange}
             itemType={itemType}
+            placeholder={placeholder}
           />
         )}
       </div>
