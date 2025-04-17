@@ -1,4 +1,4 @@
-import DiseaseSelect from "../../../pages/New-Pathway/sections/DiseaseSelect";
+import ItemSelect from "../../ItemSelect";
 
 const FormElement = ({
   isRequired = false,
@@ -10,7 +10,7 @@ const FormElement = ({
   placeholder = "",
   id = "",
   children,
-  diseaseType,
+  itemType,
 }) => {
   return (
     <div>
@@ -64,12 +64,13 @@ const FormElement = ({
           </div>
         )}
 
-        {type === "diseaseSelect" && (
-          <DiseaseSelect
+        {type === "itemType" && (
+          <ItemSelect
             name={name}
             value={value}
             onChange={handleChange}
-            diseaseType={diseaseType}
+            itemType={itemType}
+            placeholder={placeholder}
           />
         )}
       </div>

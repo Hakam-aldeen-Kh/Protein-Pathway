@@ -17,35 +17,60 @@ const API_ENDPOINTS = {
     "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Animal_Disease",
   Plant:
     "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Plant_Disease",
+  CellType:
+    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/CellTypeOnto",
+  Lipid: "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/LipidMap",
 };
+
+// Define name properties for each endpoint type
+const NAME_PROPERTIES = {
+  Human: "Disease_name",
+  Animal: "Disease_name",
+  Plant: "Disease_name",
+  CellType: "cType_name",
+  Lipid: "backbone_name",
+};
+
+// Define ID properties for each endpoint type (if needed)
+// const ID_PROPERTIES = {
+//   Human: "Disease_id",
+//   Animal: "Disease_id",
+//   Plant: "Disease_id",
+//   CellType: "cType_id",
+// };
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-const DiseaseSelect = ({ diseaseType, value, onChange, name }) => {
+const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
   const [query, setQuery] = useState("");
-  const [selectedDisease, setSelectedDisease] = useState(value || null);
-  const [prevDiseaseType, setPrevDiseaseType] = useState(diseaseType);
+  const [selectedItem, setSelectedItem] = useState(value || null);
+  const [prevItemType, setPrevItemType] = useState(itemType);
+
+  // console.log(itemType)
+
+  // Get the appropriate name property based on itemType
+  const nameProperty = itemType ? NAME_PROPERTIES[itemType] : null;
 
   const {
-    data: diseases = [],
+    data: items = [],
     isLoading,
     error,
-  } = useSWR(diseaseType ? API_ENDPOINTS[diseaseType] : null, fetcher, {
+  } = useSWR(itemType ? API_ENDPOINTS[itemType] : null, fetcher, {
     revalidateOnFocus: false,
     dedupingInterval: 86400000, // 24h
   });
 
-  // Consolidated effect to handle both diseaseType changes and value synchronization
+  // Consolidated effect to handle both itemType changes and value synchronization
   useEffect(() => {
-    // When diseaseType changes (including initial load)
-    if (prevDiseaseType !== diseaseType) {
+    // When itemType changes (including initial load)
+    if (prevItemType !== itemType) {
       setQuery("");
-      setPrevDiseaseType(diseaseType);
+      setPrevItemType(itemType);
 
       // Only clear selection when changing from one valid type to another
       // or when explicitly setting to empty
-      if ((prevDiseaseType && diseaseType) || diseaseType === "") {
-        setSelectedDisease(null);
+      if ((prevItemType && itemType) || itemType === "") {
+        setSelectedItem(null);
 
         // Notify parent only when we're changing from a valid selection
         if (value && onChange) {
@@ -59,37 +84,45 @@ const DiseaseSelect = ({ diseaseType, value, onChange, name }) => {
       }
     }
     // Handle external value changes
-    else if (JSON.stringify(value) !== JSON.stringify(selectedDisease)) {
-      setSelectedDisease(value);
+    else if (JSON.stringify(value) !== JSON.stringify(selectedItem)) {
+      setSelectedItem(value);
     }
-  }, [diseaseType, prevDiseaseType, value, selectedDisease, onChange, name]);
+  }, [itemType, prevItemType, value, selectedItem, onChange, name]);
+
+  // Helper function to get the name value safely
+  const getItemName = (item) => {
+    if (!item || !nameProperty) return "";
+    return item[nameProperty] || "";
+  };
 
   // Filter the entire dataset first, then slice for display
-  const filteredDiseases =
+  const filteredItems =
     query === ""
-      ? diseases.slice(0, 200) // Just show first 200 when no search query
-      : diseases
-          .filter((item) =>
-            item.Disease_name?.toLowerCase().includes(query.toLowerCase())
-          )
+      ? items.slice(0, 200) // Just show first 200 when no search query
+      : items
+          .filter((item) => {
+            const itemName = getItemName(item);
+            return itemName.toLowerCase().includes(query.toLowerCase());
+          })
           .slice(0, 200); // Limit displayed results to first 200 matches
 
   const totalMatchCount =
     query === ""
-      ? diseases.length
-      : diseases.filter((item) =>
-          item.Disease_name?.toLowerCase().includes(query.toLowerCase())
-        ).length;
+      ? items.length
+      : items.filter((item) => {
+          const itemName = getItemName(item);
+          return itemName.toLowerCase().includes(query.toLowerCase());
+        }).length;
 
   const hasMoreResults = totalMatchCount > 200;
 
-  const isDisabled = !diseaseType || isLoading || error;
+  const isDisabled = !itemType || isLoading || error;
 
   const getPlaceholderText = () => {
-    if (!diseaseType) return "Please select category";
+    if (!itemType) return "Please select category";
     if (isLoading) return "Loading...";
     if (error) return `Error: ${error.message}`;
-    return "Search for a disease...";
+    return placeholder || `Search for a ${itemType.toLowerCase()}...`;
   };
 
   const handleClearSearch = (e) => {
@@ -99,7 +132,7 @@ const DiseaseSelect = ({ diseaseType, value, onChange, name }) => {
 
   const handleClearSelection = (e) => {
     e.stopPropagation(); // Prevent triggering other click handlers
-    setSelectedDisease(null);
+    setSelectedItem(null);
     if (onChange) {
       onChange({
         target: {
@@ -119,10 +152,10 @@ const DiseaseSelect = ({ diseaseType, value, onChange, name }) => {
         </div>
 
         <Combobox
-          value={selectedDisease}
+          value={selectedItem}
           name={name}
           onChange={(val) => {
-            setSelectedDisease(val);
+            setSelectedItem(val);
             if (onChange) {
               onChange({
                 target: {
@@ -136,8 +169,8 @@ const DiseaseSelect = ({ diseaseType, value, onChange, name }) => {
         >
           <div className="flex w-full">
             <ComboboxInput
-              aria-label="Disease"
-              displayValue={(item) => item?.Disease_name || ""}
+              aria-label={itemType || "Item"}
+              displayValue={(item) => getItemName(item)}
               onChange={(e) => setQuery(e.target.value)}
               className={`h-[40px] mt-1 block w-full rounded-md border ${
                 error ? "border-red-300" : "border-gray-300"
@@ -152,7 +185,7 @@ const DiseaseSelect = ({ diseaseType, value, onChange, name }) => {
           {/* Clear and Dropdown Icons */}
           <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
             {/* Clear selection button - show when there's a selection */}
-            {selectedDisease && (
+            {selectedItem && (
               <button
                 type="button"
                 onClick={handleClearSelection}
@@ -164,7 +197,7 @@ const DiseaseSelect = ({ diseaseType, value, onChange, name }) => {
             )}
 
             {/* Clear search button - show when there's a search query but no selection */}
-            {query && !selectedDisease && (
+            {query && !selectedItem && (
               <button
                 type="button"
                 onClick={handleClearSearch}
@@ -182,12 +215,12 @@ const DiseaseSelect = ({ diseaseType, value, onChange, name }) => {
 
           <ComboboxOptions className="absolute z-10 mt-1 w-full max-h-60 overflow-auto rounded-md border border-gray-200 bg-white shadow-lg">
             <div className="py-1">
-              {filteredDiseases.length === 0 ? (
-                <div className="p-3 text-gray-500">No diseases found</div>
+              {filteredItems.length === 0 ? (
+                <div className="p-3 text-gray-500">No items found</div>
               ) : (
-                filteredDiseases.map((item, idx) => (
+                filteredItems.map((item, idx) => (
                   <ComboboxOption
-                    key={`${item.Disease_name}-${idx}`}
+                    key={`${getItemName(item)}-${idx}`}
                     value={item}
                     as="div" // Explicitly use div instead of default button
                   >
@@ -206,7 +239,7 @@ const DiseaseSelect = ({ diseaseType, value, onChange, name }) => {
                               : "opacity-0 group-hover:opacity-100 text-white"
                           }`}
                         />
-                        <span className="truncate">{item.Disease_name}</span>
+                        <span className="truncate">{getItemName(item)}</span>
                       </div>
                     )}
                   </ComboboxOption>
@@ -227,4 +260,4 @@ const DiseaseSelect = ({ diseaseType, value, onChange, name }) => {
   );
 };
 
-export default DiseaseSelect;
+export default ItemSelect;
