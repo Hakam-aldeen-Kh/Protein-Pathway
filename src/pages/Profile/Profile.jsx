@@ -2,7 +2,7 @@ import Modal from "react-modal";
 import profileData from "../../data/profile/profile.json";
 import ProfileInfo from "./components/ProfileInfo";
 import ProfileActions from "./components/ProfileActions";
-import DeleteAccountModal from "./components/DeleteAccountModal";
+// import DeleteAccountModal from "./components/DeleteAccountModal";
 import LogoutModal from "./components/LogoutModal";
 import ProfileHeader from "./components/ProfileHeader";
 import { MODAL_TYPES, useProfile } from "../../hooks/useProfile";
@@ -16,7 +16,7 @@ const Profile = () => {
     activeModal,
     handleLogout,
     handleChangePassword,
-    handleDeleteAccount,
+    // handleDeleteAccount,
     toggleModal,
   } = useProfile();
 
@@ -39,11 +39,11 @@ const Profile = () => {
         closeModal={() => toggleModal(MODAL_TYPES.CHANGE_PASSWORD)}
         handleChange={handleChangePassword}
       />
-      <DeleteAccountModal
+      {/* <DeleteAccountModal
         isOpen={activeModal === MODAL_TYPES.DELETE_ACCOUNT}
         closeModal={() => toggleModal(MODAL_TYPES.DELETE_ACCOUNT)}
         handleOnclick={handleDeleteAccount}
-      />
+      /> */}
     </div>
   );
 };
