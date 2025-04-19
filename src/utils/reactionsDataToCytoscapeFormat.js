@@ -11,24 +11,24 @@ export function reactionsDataToCytoscapeFormat(reactions) {
         // create node for each controller with edge form reactant to controller inside parent node
 
         //  // controller parent
-        if (reactionController.cellularLocation && !isFindElement(elements, reactionController.cellularLocation)) {
-            elements.push(createChemicalNode(reactionController.cellularLocation, reactionController.cellularLocation, "", "complex"));
+        if (reactionController.cellularLocation?.cell_localization_name && !isFindElement(elements, reactionController.cellularLocation?.cell_localization_name)) {
+            elements.push(createChemicalNode(reactionController.cellularLocation?.cell_localization_name, reactionController.cellularLocation?.cell_localization_name, "", "complex"));
         }
 
         // controller shape
-        elements.push(createChemicalNode(`${reactionController.name}-process`, "", reactionController.cellularLocation, "process"));
-        elements.push(createChemicalNode(reactionController.name, reactionController.name, reactionController.cellularLocation, "macromolecule"));
+        elements.push(createChemicalNode(`${reactionController.name}-process`, "", reactionController.cellularLocation?.cell_localization_name, "process"));
+        elements.push(createChemicalNode(reactionController.name, reactionController.name, reactionController.cellularLocation?.cell_localization_name, "macromolecule"));
         elements.push(createEdge(`e-${reactionController.name}-${reactionController.name}-process`, reactionController.name, `${reactionController.name}-process`, "stimulation"));
 
 
         // create node for each reactant with edge form reactant to controller inside parent node
         reaction.reactants.forEach((reactant) => {
             // // parent node
-            if (reactant.cellularLocation && !isFindElement(elements, reactant.cellularLocation)) {
-                elements.push(createChemicalNode(reactant.cellularLocation, reactant.cellularLocation, "", "complex"));
+            if (reactant.cellularLocation?.cell_localization_name && !isFindElement(elements, reactant.cellularLocation?.cell_localization_name)) {
+                elements.push(createChemicalNode(reactant.cellularLocation?.cell_localization_name, reactant.cellularLocation?.cell_localization_name, "", "complex"));
             }
             // // reactant node
-            elements.push(createChemicalNode(reactant.name, reactant.name, reactant.cellularLocation, "simple chemical"));
+            elements.push(createChemicalNode(reactant.name, reactant.name, reactant.cellularLocation?.cell_localization_name, "simple chemical"));
 
             // // edge to controller
             elements.push(createEdge(`e-${reactant.name}-${reactionController.name}-process`, reactant.name, `${reactionController.name}-process`));
@@ -40,11 +40,11 @@ export function reactionsDataToCytoscapeFormat(reactions) {
         // create node for each product with edge form product to controller inside parent node
         reaction.products.forEach((product) => {
             // // parent node
-            if (product.cellularLocation && !isFindElement(elements, product.cellularLocation)) {
-                elements.push(createChemicalNode(product.cellularLocation, product.cellularLocation, "", "complex"));
+            if (product.cellularLocation?.cell_localization_name && !isFindElement(elements, product.cellularLocation?.cell_localization_name)) {
+                elements.push(createChemicalNode(product.cellularLocation?.cell_localization_name, product.cellularLocation?.cell_localization_name, "", "complex"));
             }
             // // product node
-            elements.push(createChemicalNode(product.name, product.name, product.cellularLocation, product.useNextReaction && product.type === "controllers" ? "macromolecule" : "simple chemical"));
+            elements.push(createChemicalNode(product.name, product.name, product.cellularLocation?.cell_localization_name, product.useNextReaction && product.type === "controllers" ? "macromolecule" : "simple chemical"));
 
             // // edge to controller
             elements.push(createEdge(`e-${product.name}-${reactionController.name}-process`, `${reactionController.name}-process`, product.name));
