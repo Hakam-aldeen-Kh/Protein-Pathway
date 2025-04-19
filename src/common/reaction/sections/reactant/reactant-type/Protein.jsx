@@ -1,6 +1,31 @@
+import { useState } from "react";
 import FormElement from "../../../components/FormElement";
+import ProteinSearchTable from "./ProteinSearchTable";
 
 const Protein = ({ reactantData, handleChange }) => {
+  const [isOpen, setOpenTablePagination] = useState(false);
+
+  // Callback to handle protein selection
+  const handleProteinSelect = ({ proteinName, proteinId }) => {
+    // Update proteinSymbolicName (text input in Protein Search)
+    handleChange({
+      target: {
+        name: "proteinSymbolicName",
+        value: proteinName,
+      },
+    });
+
+    // Update reactant_protein_uniprot_id (hidden input)
+    handleChange({
+      target: {
+        name: "reactant_protein_uniprot_id",
+        value: proteinId,
+      },
+    });
+
+    setOpenTablePagination(false); // Close the modal after selection
+  };
+
   return (
     <>
       <div>
@@ -8,23 +33,24 @@ const Protein = ({ reactantData, handleChange }) => {
         <div className="grid grid-cols-2 gap-4">
           <FormElement
             isRequired={false}
-            type="select"
-            label={"Symbolic Name"}
+            type="paginationTable"
+            label="Protein Search"
             name="proteinSymbolicName"
-            value={reactantData?.proteinSymbolicName}
+            value={reactantData?.proteinSymbolicName || ""}
             handleChange={handleChange}
-            placeholder="Select Symbolic Name"
-          >
-            <option value="NF-KappaB p50/p65 complex">
-              NF-KappaB p50/p65 complex
-            </option>
-          </FormElement>
+            placeholder="Symbolic Name (NF-kappaB p50/p65 complex)"
+            paginationTable
+            customStyle="flex items-end gap-x-2 flex-1"
+            setOpenTablePagination={setOpenTablePagination}
+            reactantData={reactantData}
+          />
+
           <FormElement
             isRequired={false}
             type="input"
-            label={"Protein Symbol"}
+            label="Protein Symbol"
             name="proteinSymbol"
-            value={reactantData?.proteinSymbol}
+            value={reactantData?.proteinSymbol || ""}
             handleChange={handleChange}
             placeholder="Protein Symbol (e.g. RecA)"
           />
@@ -39,9 +65,9 @@ const Protein = ({ reactantData, handleChange }) => {
           <FormElement
             isRequired={false}
             type="input"
-            label={"Modifying site"}
+            label="Modifying site"
             name="modifyingSite"
-            value={reactantData?.modifyingSite}
+            value={reactantData?.modifyingSite || ""}
             handleChange={handleChange}
             placeholder="Modifying site of amino acid (number)"
           />
@@ -50,14 +76,21 @@ const Protein = ({ reactantData, handleChange }) => {
             isRequired={false}
             type="itemType"
             itemType="ProteinModOntology"
-            label={"Modifying Type"}
+            label="Modifying Type"
             name="modifyingType"
-            value={reactantData?.modifyingType}
+            value={reactantData?.modifyingType || ""}
             handleChange={handleChange}
             placeholder="Select Modifying Type"
           />
         </div>
       </div>
+
+      <ProteinSearchTable
+        isOpen={isOpen}
+        setOpenTablePagination={setOpenTablePagination}
+        onProteinSelect={handleProteinSelect}
+        reactantData={reactantData} // Pass reactantData
+      />
     </>
   );
 };
