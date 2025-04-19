@@ -20,6 +20,13 @@ const API_ENDPOINTS = {
   CellType:
     "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/CellTypeOnto",
   Lipid: "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/LipidMap",
+  GoProteinComplex:
+    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/GO_complex",
+  ProteinModOntology:
+    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/proteinModificationOntology",
+  Tissue: "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Tissue_Onto",
+  Cellular:
+    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/GO_Cell_Location",
 };
 
 // Define name properties for each endpoint type
@@ -29,6 +36,10 @@ const NAME_PROPERTIES = {
   Plant: "Disease_name",
   CellType: "cType_name",
   Lipid: "backbone_name",
+  GoProteinComplex: "go_complex_name",
+  ProteinModOntology: "PMOD_name",
+  Tissue: "text",
+  Cellular: "cell_localization_name",
 };
 
 // Define ID properties for each endpoint type (if needed)

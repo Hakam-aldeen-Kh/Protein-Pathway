@@ -12,7 +12,7 @@ const ControllerForm = ({ handleChangeData, reaction, controllerData, controller
                     <option value="prokaryotic cell">prokaryotic cell</option>
                 </FormElement>
 
-                <FormElement isRequired={false} type="select" label={"Cellular Location"} name="cellularLocation" value={controllerData?.cellularLocation} handleChange={handleChange} placeholder="Select Location" >
+                <FormElement isRequired={false} type="select" label={"Cellular Location"} name="cellularLocation" value={controllerData?.cellularLocation?.cell_localization_name} handleChange={handleChange} placeholder="Select Location" >
                     <option value="cytocol">Cytosol</option>
                     <option value="golgi">Golgi</option>
                 </FormElement>

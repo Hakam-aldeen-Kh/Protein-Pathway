@@ -40,7 +40,7 @@ const ReactantForm = ({
           itemType="CellType"
         />
 
-        <FormElement
+        {/* <FormElement
           isRequired={false}
           type="select"
           label={" Cellular Location"}
@@ -51,7 +51,18 @@ const ReactantForm = ({
         >
           <option value="cytocol">Cytosol</option>
           <option value="golgi">Golgi</option>
-        </FormElement>
+        </FormElement> */}
+
+        <FormElement
+          isRequired={false}
+          type="itemType"
+          label={" Cellular Location"}
+          name="cellularLocation"
+          value={reactantData?.cellularLocation}
+          handleChange={handleChange}
+          placeholder="Select Location"
+          itemType="Cellular"
+        />
       </div>
 
       <div className="grid grid-cols-2 gap-4">

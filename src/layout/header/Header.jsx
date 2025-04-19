@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 
 import LanguageSelector from "./components/LanguageSelector";
 import AuthButtons from "./components/AuthButtons";
@@ -11,7 +11,6 @@ function Header() {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const location = useLocation();
   const isLoginPage = location.pathname === "/login"; // Check if on login page
-  const navigate = useNavigate();
 
   return (
     <header className="flex flex-col px-5 py-3 bg-white">
@@ -38,17 +37,6 @@ function Header() {
               </Link>
             ) : (
               !isLoginPage && <AuthButtons />
-            )}
-            {isLoggedIn && (
-              <button
-                onClick={() => {
-                  localStorage.clear();
-                  navigate("/login");
-                }}
-                className="px-8 py-[10px] ml-auto rounded-sm text-white rounded-mdtransition-colors font-semibold transition-all bg-[#57369E] hover:bg-[#00A7D3]"
-              >
-                Log out
-              </button>
             )}
           </div>
         </nav>

@@ -67,7 +67,7 @@ const BasicInfoForm = ({ data, handleChange }) => {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <FormElement
+          {/* <FormElement
             type="select"
             label="Tissue"
             name="tissue"
@@ -76,7 +76,16 @@ const BasicInfoForm = ({ data, handleChange }) => {
           >
             <option value="Blood">Blood</option>
             <option value="Heart">Heart</option>
-          </FormElement>
+          </FormElement> */}
+
+          <FormElement
+            type="itemType"
+            label="Tissue"
+            name="tissue"
+            itemType="Tissue"
+            value={data?.tissue}
+            handleChange={handleChange}
+          />
 
           <div className="grid grid-cols-2 gap-2 items-end">
             <FormElement
