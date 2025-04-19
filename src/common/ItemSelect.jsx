@@ -24,6 +24,7 @@ const API_ENDPOINTS = {
     "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/GO_complex",
   ProteinModOntology:
     "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/proteinModificationOntology",
+  Tissue: "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Tissue_Onto",
 };
 
 // Define name properties for each endpoint type
@@ -35,6 +36,7 @@ const NAME_PROPERTIES = {
   Lipid: "backbone_name",
   GoProteinComplex: "go_complex_name",
   ProteinModOntology: "PMOD_name",
+  Tissue: "text",
 };
 
 // Define ID properties for each endpoint type (if needed)
