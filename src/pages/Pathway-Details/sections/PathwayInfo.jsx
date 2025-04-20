@@ -14,7 +14,7 @@ const PathwayInfo = ({ pathway, id }) => {
     { label: "Pathway Category:", value: pathway?.category || "no value" },
     { label: "Tissue:", value: pathway?.tissue?.text || "no value" },
     { label: "Related Disease:", value: pathway?.relatedDisease || "no value" },
-    { label: "Record Date:", value: pathway.recordDate },
+    { label: "Record Date:", value: pathway?.recordDate },
   ];
 
   const handleExport = () => {
