@@ -27,14 +27,17 @@ export const useChangePassword = (closeModal) => {
     watch,
     reset,
     formState: { errors },
+    clearErrors,
+    trigger,
   } = useForm({
-    mode: "onChange",
+    mode: "all",
     resolver: zodResolver(changePasswordSchema),
     defaultValues: {
       currentPassword: "",
       newPassword: "",
       confirmNewPassword: "",
     },
+    reValidateMode: "onChange",
   });
 
   const formValues = watch();
@@ -51,17 +54,37 @@ export const useChangePassword = (closeModal) => {
     });
   }, [formValues.newPassword]);
 
+  // Reset validation errors when either password field changes
+  useEffect(() => {
+    // Clear password-related errors any time either field changes
+    if (formValues.newPassword || formValues.confirmNewPassword) {
+      clearErrors(["newPassword", "confirmNewPassword"]);
+
+      // Re-trigger validation with a small delay to ensure state is updated
+      setTimeout(() => {
+        trigger(["newPassword", "confirmNewPassword"]);
+      }, 10);
+    }
+  }, [
+    formValues.newPassword,
+    formValues.confirmNewPassword,
+    clearErrors,
+    trigger,
+  ]);
+
   // Enable submit button only if form is valid
   const isSubmitButtonEnabled = () => {
     const { currentPassword, newPassword, confirmNewPassword } = formValues;
     const allFieldsFilled =
-      currentPassword.length > 0 &&
-      newPassword.length > 0 &&
-      confirmNewPassword.length > 0;
+      currentPassword?.length > 0 &&
+      newPassword?.length > 0 &&
+      confirmNewPassword?.length > 0;
+    const passwordsMatch = newPassword === confirmNewPassword;
     const isFormValid =
       !errors.currentPassword &&
       !errors.newPassword &&
-      !errors.confirmNewPassword;
+      !errors.confirmNewPassword &&
+      passwordsMatch;
     return allFieldsFilled && isFormValid;
   };
 

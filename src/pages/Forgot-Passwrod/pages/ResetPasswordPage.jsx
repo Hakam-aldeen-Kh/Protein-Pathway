@@ -1,61 +1,23 @@
-import { useForm } from "react-hook-form";
 import InputField from "../../../common/InputField";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { resetPasswordSchema } from "../../../validation/resetPasswordSchema";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
+import { useResetPassword } from "../../../hooks/useResetPassword";
 
 const ResetPasswordPage = () => {
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [validation, setValidation] = useState({
-    length: false,
-    lowerCase: false,
-    upperCase: false,
-    specialCharacter: false,
-    oneNumber: false,
-  });
-
-  const validationCases = [
-    "At least 8 characters",
-    "At least 1 lowercase letter",
-    "At least 1 uppercase letter",
-    "At least 1 special character",
-    "At least 1 number",
-  ];
-
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors, isValid },
-  } = useForm({
-    mode: "onChange",
-    resolver: zodResolver(resetPasswordSchema),
-    defaultValues: {
-      password: "",
-      confirmPassword: "",
-    },
-  });
+    errors,
+    isValid,
+    showPassword,
+    validation,
+    validationCases,
+    passwordsMatch,
+    handleResetPasswordSubmit,
+    togglePasswordVisibility,
+  } = useResetPassword();
 
-  const formValues = watch();
-
-  // Add useEffect to validate password in real-time
-  useEffect(() => {
-    const password = formValues.password || "";
-    setValidation({
-      length: password.length >= 8,
-      lowerCase: /[a-z]/.test(password),
-      upperCase: /[A-Z]/.test(password),
-      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-      oneNumber: /[0-9]/.test(password),
-    });
-  }, [formValues.password]);
-
-  const handleResetPasswordSubmit = (data) => {
-    console.log(data);
-    navigate("/login");
-  };
+  // Calculate if submit should be enabled
+  const submitEnabled = isValid && passwordsMatch;
 
   return (
     <div
@@ -92,7 +54,7 @@ const ResetPasswordPage = () => {
                 register={register}
                 error={errors.password?.message}
                 showPassword={showPassword}
-                togglePassword={() => setShowPassword(!showPassword)}
+                togglePassword={togglePasswordVisibility}
               />
 
               <InputField
@@ -103,7 +65,7 @@ const ResetPasswordPage = () => {
                 register={register}
                 error={errors.confirmPassword?.message}
                 showPassword={showPassword}
-                togglePassword={() => setShowPassword(!showPassword)}
+                togglePassword={togglePasswordVisibility}
               />
 
               <ul className="pl-5 text-sm">
@@ -140,10 +102,10 @@ const ResetPasswordPage = () => {
                 </Link>
                 <button
                   type="submit"
-                  disabled={!isValid}
+                  disabled={!submitEnabled}
                   className={`px-8 py-[10px] rounded-sm text-white font-semibold transition-all duration-200 
                     ${
-                      isValid
+                      submitEnabled
                         ? "bg-[#57369E] hover:bg-[#00A7D3]"
                         : "bg-[#BBBBBB]"
                     }`}

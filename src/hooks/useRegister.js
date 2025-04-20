@@ -30,8 +30,10 @@ export const useRegister = () => {
     handleSubmit,
     watch,
     formState: { errors },
+    clearErrors,
+    trigger,
   } = useForm({
-    mode: "onChange",
+    mode: "all",
     resolver: zodResolver(signupSchema),
     defaultValues: {
       email: "",
@@ -40,6 +42,7 @@ export const useRegister = () => {
       password: "",
       confirmPassword: "",
     },
+    reValidateMode: "onChange",
   });
 
   const formValues = watch();
@@ -56,6 +59,19 @@ export const useRegister = () => {
     });
   }, [formValues.password]);
 
+  // Reset validation errors when either password field changes
+  useEffect(() => {
+    // Clear password-related errors any time either field changes
+    if (formValues.password || formValues.confirmPassword) {
+      clearErrors(["password", "confirmPassword"]);
+
+      // Re-trigger validation with a small delay to ensure state is updated
+      setTimeout(() => {
+        trigger(["password", "confirmPassword"]);
+      }, 10);
+    }
+  }, [formValues.password, formValues.confirmPassword, clearErrors, trigger]);
+
   const isNextButtonEnabled = () => {
     const { email, firstName, lastName } = formValues;
     const allFieldsFilled =
@@ -66,8 +82,10 @@ export const useRegister = () => {
 
   const isSubmitButtonEnabled = () => {
     const { password, confirmPassword } = formValues;
-    const allFieldsFilled = password.length > 0 && confirmPassword.length > 0;
-    const isStep2Valid = !errors.password && !errors.confirmPassword;
+    const allFieldsFilled = password?.length > 0 && confirmPassword?.length > 0;
+    const passwordsMatch = password === confirmPassword;
+    const isStep2Valid =
+      !errors.password && !errors.confirmPassword && passwordsMatch;
     return allFieldsFilled && isStep2Valid;
   };
 
