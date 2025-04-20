@@ -7,7 +7,7 @@ const PathwayTable = ({ pathways }) => {
   return (
     <div className="w-full overflow-x-auto">
       {/* Table Header */}
-      <div className="grid grid-cols-8 text-xs font-semibold">
+      <div className="grid grid-cols-5 text-xs font-semibold">
         {columns.map(({ title }, index) => (
           <TableHeader key={index} title={title} />
         ))}
@@ -17,7 +17,7 @@ const PathwayTable = ({ pathways }) => {
       {pathways.map((row, rowIndex) => (
         <div
           key={rowIndex}
-          className="grid grid-cols-8 text-xs text-neutral-900"
+          className="grid grid-cols-5 text-xs text-neutral-900"
         >
           {columns.map(({ key, isArray, link }, colIndex) => (
             <TableCell
