@@ -5,7 +5,7 @@ const SmallMolecule = ({ reactantData, handleChange }) => {
     <>
       <div>
         <div className="grid grid-cols-2 gap-4">
-          <FormElement
+          {/* <FormElement
             isRequired={false}
             type="select"
             label={"Small Molecule"}
@@ -15,7 +15,19 @@ const SmallMolecule = ({ reactantData, handleChange }) => {
             placeholder="Select Small Molecule"
           >
             <option value="ATP">ATP</option>
-          </FormElement>
+          </FormElement> */}
+
+          <FormElement
+            isRequired={false}
+            type="itemType"
+            label={"Small Molecule"}
+            name="smallMolecule"
+            value={reactantData?.smallMolecule}
+            handleChange={handleChange}
+            placeholder="Select Small Molecule"
+            itemType="Chibe"
+          />
+
           {/* <FormElement
             isRequired={false}
             type="select"
