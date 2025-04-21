@@ -22,6 +22,7 @@ import EditProfile from "../pages/Edit-Profile/EditProfile";
 import EmailInputPage from "../pages/Forgot-Passwrod/pages/EmailInputPage";
 import ConfirmationPage from "../pages/Forgot-Passwrod/pages/ConfirmationPage";
 import ResetPasswordPage from "../pages/Forgot-Passwrod/pages/ResetPasswordPage";
+import ConfirmRegister from "../pages/Register/ConfirmRegister";
 
 const AppRouter = () => {
   return (
@@ -68,6 +69,15 @@ const AppRouter = () => {
         element={
           <Layout>
             <Register />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/confirm-email"
+        element={
+          <Layout>
+            <ConfirmRegister />
           </Layout>
         }
       />

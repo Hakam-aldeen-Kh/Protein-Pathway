@@ -10,6 +10,7 @@ const Register = () => {
     validation,
     validationCases,
     errors,
+    isSubmitting,
     isNextButtonEnabled,
     setAgreePrivacy,
     setShowPassword,
@@ -180,9 +181,9 @@ const Register = () => {
                   </button>
                   <button
                     type="submit"
-                    disabled={!isSubmitButtonEnabled()}
+                    disabled={!isSubmitButtonEnabled() || isSubmitting}
                     className={`px-8 py-[10px] rounded-sm text-white font-semibold transition-all duration-200 ${
-                      isSubmitButtonEnabled()
+                      isSubmitButtonEnabled() && !isSubmitting
                         ? "bg-[#57369E] hover:bg-[#00A7D3]"
                         : "bg-[#BBBBBB]"
                     }`}
