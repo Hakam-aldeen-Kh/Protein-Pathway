@@ -9,6 +9,7 @@ const ResetPasswordPage = () => {
     errors,
     isValid,
     showPassword,
+    isSubmitting,
     validation,
     validationCases,
     passwordsMatch,
@@ -21,12 +22,24 @@ const ResetPasswordPage = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen flex items-center justify-center p-4 relative" // Added relative position
       style={{
         background:
           "linear-gradient(90deg, rgba(87, 54, 158, 0.2) 0%, rgba(0, 167, 211, 0.2) 100%)",
       }}
     >
+      {/* Loading Overlay */}
+      {isSubmitting && (
+        <div className="absolute inset-0 z-20 bg-slate-800 bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
+          <div className="bg-white p-4 rounded-lg shadow-md flex flex-col items-center">
+            <div className="animate-spin rounded-full h-20 w-20 border-4 border-t-transparent border-[#57369E]"></div>
+            <p className="mt-4 text-gray-700 font-medium">
+              Resetting your password...
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="w-full max-w-[1200px] flex items-center justify-between">
         <div className="hidden lg:flex items-center space-x-4 flex-1">
           <img
@@ -38,7 +51,7 @@ const ResetPasswordPage = () => {
 
         <div className="bg-white rounded-lg border border-[#BBBBBB] min-w-[45%] max-w-md">
           <h2 className="text-xl font-bold px-[24px] py-[16px] border-b-2">
-            Register
+            Reset Your Password
           </h2>
 
           <form
@@ -102,15 +115,15 @@ const ResetPasswordPage = () => {
                 </Link>
                 <button
                   type="submit"
-                  disabled={!submitEnabled}
+                  disabled={!submitEnabled || isSubmitting} // Also disable when submitting
                   className={`px-8 py-[10px] rounded-sm text-white font-semibold transition-all duration-200 
                     ${
-                      submitEnabled
+                      submitEnabled && !isSubmitting
                         ? "bg-[#57369E] hover:bg-[#00A7D3]"
                         : "bg-[#BBBBBB]"
                     }`}
                 >
-                  Submit
+                  {isSubmitting ? "Submitting..." : "Submit"}
                 </button>
               </div>
             </>
