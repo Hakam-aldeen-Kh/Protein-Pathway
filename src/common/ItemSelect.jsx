@@ -27,6 +27,7 @@ const API_ENDPOINTS = {
   Tissue: "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Tissue_Onto",
   Cellular:
     "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/GO_Cell_Location",
+  Chibe: "/src/data/APIs/chebi.json",
 };
 
 // Define name properties for each endpoint type
@@ -40,24 +41,26 @@ const NAME_PROPERTIES = {
   ProteinModOntology: "PMOD_name",
   Tissue: "text",
   Cellular: "cell_localization_name",
+  Chibe: "molecule_name",
 };
 
-// Define ID properties for each endpoint type (if needed)
-// const ID_PROPERTIES = {
-//   Human: "Disease_id",
-//   Animal: "Disease_id",
-//   Plant: "Disease_id",
-//   CellType: "cType_id",
-// };
-
-const fetcher = (url) => axios.get(url).then((res) => res.data);
+const fetcher = (url) =>
+  axios.get(url).then((res) => {
+    // Special handling for ChEBI data format
+    if (url.includes("chebi.json")) {
+      // Transform the SPARQL results into the format expected by the component
+      return res.data.results.bindings.map((item) => ({
+        molecule_id: item.molecule_id.value,
+        molecule_name: item.molecule_name.value,
+      }));
+    }
+    return res.data;
+  });
 
 const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
   const [query, setQuery] = useState("");
   const [selectedItem, setSelectedItem] = useState(value || null);
   const [prevItemType, setPrevItemType] = useState(itemType);
-
-  // console.log(itemType)
 
   // Get the appropriate name property based on itemType
   const nameProperty = itemType ? NAME_PROPERTIES[itemType] : null;
