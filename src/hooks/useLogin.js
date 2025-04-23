@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import api from "../utils/api";
+import { useAuth } from "../hooks/useAuth";
 
 export const useLogin = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { refreshAuth } = useAuth();
 
   // init Toast from sweet alert
   const Toast = Swal.mixin({
@@ -32,14 +34,14 @@ export const useLogin = () => {
     try {
       const response = await api.post("auth/login", submissionData);
 
-      // Store the logged In status in localStorage
-      localStorage.setItem("isLoggedIn", "true");
-
       Toast.fire({
         icon: "success",
         timer: 3000,
         title: response.data.message || "Login successful",
       });
+
+      // Refresh authentication state after successful login
+      await refreshAuth();
 
       // Navigate to the dashboard or home page
       navigate("/");
@@ -60,7 +62,6 @@ export const useLogin = () => {
         navigate("/confirm-email", { state: { email: data.email } });
         // Send verify Email
         try {
-
           const response = await api.post("auth/resend-verification", {
             email: submissionData.email,
           });

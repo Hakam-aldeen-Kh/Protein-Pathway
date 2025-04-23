@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import api from "../utils/api";
 import Swal from "sweetalert2";
+import { useAuth } from "../hooks/useAuth";
 
 // Modal types
 export const MODAL_TYPES = {
@@ -26,13 +27,14 @@ export const useProfile = () => {
   const [activeModal, setActiveModal] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { refreshAuth } = useAuth(); // Get refreshAuth function from auth context
 
   // Toggle modal visibility
   const toggleModal = (modalType) => {
     setActiveModal((prev) => (prev === modalType ? null : modalType));
   };
 
-  // Logout logic with loading state
+  // Logout logic with loading state and auth context refresh
   const handleLogout = async () => {
     try {
       setIsLoading(true);
@@ -43,13 +45,15 @@ export const useProfile = () => {
       // Small delay to ensure user sees the loading state
       await new Promise((resolve) => setTimeout(resolve, 500));
 
+      // Refresh auth context to update the authentication state
+      await refreshAuth();
+
       Toast.fire({
         icon: "success",
         timer: 2000,
         title: response.data.message || "Logout successful",
       });
 
-      localStorage.clear();
       navigate("/login");
     } catch (error) {
       Toast.fire({
@@ -62,27 +66,52 @@ export const useProfile = () => {
     }
   };
 
-  // Placeholder account deletion logic
-  const handleDeleteAccount = () => {
+  // Password change logic
+  const handleChangePassword = async (passwordData) => {
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      localStorage.clear();
-      navigate("/login");
-      toggleModal(MODAL_TYPES.DELETE_ACCOUNT);
+    try {
+      const response = await api.post("auth/change-password", passwordData);
+
+      Toast.fire({
+        icon: "success",
+        title: response.data.message || "Password changed successfully",
+      });
+
+      toggleModal(null);
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: error.response?.data?.message || "Failed to change password",
+      });
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
-  // Placeholder password change logic
-  const handleChangePassword = () => {
+  // Account deletion logic
+  const handleDeleteAccount = async () => {
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Password changed");
-      toggleModal(MODAL_TYPES.CHANGE_PASSWORD);
+    try {
+      const response = await api.delete("auth/delete-account");
+
+      // Refresh auth context to update the authentication state
+      await refreshAuth();
+
+      Toast.fire({
+        icon: "success",
+        title: response.data.message || "Account deleted successfully",
+      });
+
+      navigate("/login");
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: error.response?.data?.message || "Failed to delete account",
+      });
+    } finally {
       setIsLoading(false);
-    }, 1000);
+      toggleModal(null);
+    }
   };
 
   return {

@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 export const useGlycaanData = () => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     category: "",
@@ -59,7 +58,6 @@ export const useGlycaanData = () => {
   );
 
   return {
-    isLoggedIn,
     filteredPathways,
     activeTab,
     currentPage,

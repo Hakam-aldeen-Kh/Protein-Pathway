@@ -44,7 +44,7 @@ const PathewayContext = () => {
     }
 
     const cancleCreation = () => {
-        const keysToKeep = ["isLoggedIn", "myPathwayData"];
+        const keysToKeep = ["isAuthenticated", "myPathwayData"];
 
         const allKeys = Object.keys(localStorage);
 

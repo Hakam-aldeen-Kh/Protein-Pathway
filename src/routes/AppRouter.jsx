@@ -1,13 +1,11 @@
 import { Route, Routes } from "react-router";
-
 import Layout from "../layout/Layout";
-
 import ProtectedRoute from "./ProtectedRoute";
 import PathewayContext from "./PathewayContext";
 
+// Import your pages
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
-
 import NotFound from "../pages/404/NotFound";
 import NewPathway from "../pages/New-Pathway/NewPathway";
 import GlycanData from "../pages/Glycan-Data/GlycanData";
@@ -36,7 +34,6 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
       <Route
         path="/*"
         element={
@@ -45,7 +42,6 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
       <Route
         path="/glycan-pathway-data"
         element={
@@ -54,7 +50,6 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
       <Route
         path="/login"
         element={
@@ -63,7 +58,6 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
       <Route
         path="/register"
         element={
@@ -72,7 +66,6 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
       <Route
         path="/confirm-email"
         element={
@@ -81,7 +74,6 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
       <Route
         path="/protein-pathway-data"
         element={
@@ -90,7 +82,6 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
       <Route
         path="/reset-password"
         element={
@@ -99,7 +90,6 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
       <Route
         path="/reset-password/confirmation"
         element={
@@ -108,7 +98,6 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
       <Route
         path="/reset-password/reset"
         element={
@@ -118,7 +107,7 @@ const AppRouter = () => {
         }
       />
 
-      {/* Protected Routes */}
+      {/* Protected Routes with PathewayContext */}
       <Route element={<PathewayContext />}>
         <Route
           path="/new-pathway"
@@ -140,7 +129,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/pathway-result"
           element={
@@ -151,7 +139,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/pathway-result/:id"
           element={
@@ -162,7 +149,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/preview/:id"
           element={
@@ -173,7 +159,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/profile"
           element={
@@ -184,7 +169,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/profile/edit"
           element={
