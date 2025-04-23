@@ -35,8 +35,6 @@ const ConfirmationPage = () => {
 
       return response;
     } catch (error) {
-      console.error("Resend error:", error);
-
       Toast.fire({
         icon: "error",
         title:

@@ -32,8 +32,6 @@ export const useLogin = () => {
     try {
       const response = await api.post("auth/login", submissionData);
 
-      console.log(response)
-
       // Store the logged In status in localStorage
       localStorage.setItem("isLoggedIn", "true");
 
@@ -47,8 +45,6 @@ export const useLogin = () => {
       navigate("/");
       return response;
     } catch (error) {
-      console.error("Login error:", error);
-
       // Check if it's the email verification error
       if (
         error.response?.status === 400 &&

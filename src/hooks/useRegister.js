@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema } from "../validation/registerSchema";
 import { useNavigate } from "react-router";
-import axios from "axios";
 import Swal from "sweetalert2";
+import api from "../utils/api";
 
 export const useRegister = () => {
   const navigate = useNavigate();
@@ -129,10 +129,7 @@ export const useRegister = () => {
     };
 
     try {
-      const response = await axios.post(
-        "https://clean-architcture-express.vercel.app/api/auth/register",
-        submissionData
-      );
+      const response = await api.post("/auth/register", submissionData);
 
       Toast.fire({
         icon: "success",

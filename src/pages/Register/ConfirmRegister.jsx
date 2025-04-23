@@ -1,6 +1,6 @@
-import axios from "axios";
 import { Link, useLocation } from "react-router";
 import Swal from "sweetalert2";
+import api from "../../utils/api";
 
 const ConfirmRegister = () => {
   // Get the email from URL parameters
@@ -21,10 +21,9 @@ const ConfirmRegister = () => {
       },
     });
     try {
-      const response = await axios.post(
-        "https://clean-architcture-express.vercel.app/api/auth/resend-verification",
-        { email: email }
-      );
+      const response = await api.post("auth/resend-verification", {
+        email: email,
+      });
 
       Toast.fire({
         icon: "success",
@@ -65,7 +64,7 @@ const ConfirmRegister = () => {
             verify your account.
           </p>
           <p>
-            <span>Did not receive a link? {" "}</span>
+            <span>Did not receive a link? </span>
             <Link
               to="/login"
               state={{ email }}
