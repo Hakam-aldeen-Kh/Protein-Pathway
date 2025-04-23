@@ -21,6 +21,7 @@ import EmailInputPage from "../pages/Forgot-Passwrod/pages/EmailInputPage";
 import ConfirmationPage from "../pages/Forgot-Passwrod/pages/ConfirmationPage";
 import ResetPasswordPage from "../pages/Forgot-Passwrod/pages/ResetPasswordPage";
 import ConfirmRegister from "../pages/Register/ConfirmRegister";
+import ProfileProtectedRoute from "./ProfileProductedRoute";
 
 const AppRouter = () => {
   return (
@@ -51,30 +52,6 @@ const AppRouter = () => {
         }
       />
       <Route
-        path="/login"
-        element={
-          <Layout>
-            <Login />
-          </Layout>
-        }
-      />
-      <Route
-        path="/register"
-        element={
-          <Layout>
-            <Register />
-          </Layout>
-        }
-      />
-      <Route
-        path="/confirm-email"
-        element={
-          <Layout>
-            <ConfirmRegister />
-          </Layout>
-        }
-      />
-      <Route
         path="/protein-pathway-data"
         element={
           <Layout>
@@ -82,28 +59,65 @@ const AppRouter = () => {
           </Layout>
         }
       />
+      {/* Protected Rout if user login */}
+      <Route
+        path="/login"
+        element={
+          <ProfileProtectedRoute>
+            <Layout>
+              <Login />
+            </Layout>
+          </ProfileProtectedRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <ProfileProtectedRoute>
+            <Layout>
+              <Register />
+            </Layout>
+          </ProfileProtectedRoute>
+        }
+      />
+      <Route
+        path="/confirm-email"
+        element={
+          <ProfileProtectedRoute>
+            <Layout>
+              <ConfirmRegister />
+            </Layout>
+          </ProfileProtectedRoute>
+        }
+      />
       <Route
         path="/reset-password"
         element={
-          <Layout>
-            <EmailInputPage />
-          </Layout>
+          <ProfileProtectedRoute>
+            <Layout>
+              <EmailInputPage />
+            </Layout>
+          </ProfileProtectedRoute>
         }
       />
       <Route
         path="/reset-password/confirmation"
         element={
-          <Layout>
-            <ConfirmationPage />
-          </Layout>
+          <ProfileProtectedRoute>
+            <Layout>
+              <ConfirmationPage />
+            </Layout>
+          </ProfileProtectedRoute>
         }
       />
       <Route
         path="/reset-password/reset"
         element={
-          <Layout>
-            <ResetPasswordPage />
-          </Layout>
+          <ProfileProtectedRoute>
+            <Layout>
+              <ResetPasswordPage />
+            </Layout>
+          </ProfileProtectedRoute>
         }
       />
 
