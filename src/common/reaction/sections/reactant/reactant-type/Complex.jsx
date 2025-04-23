@@ -5,7 +5,7 @@ const Complex = ({ reactantData, handleChange }) => {
     <>
       <div>
         <span className="font-bold text-xs block py-4">
-          When you re complex is in GO ontology complex
+          When your complex is in the GO ontology complex
         </span>
         <div className="grid grid-cols-2 gap-4">
           <FormElement
@@ -33,7 +33,7 @@ const Complex = ({ reactantData, handleChange }) => {
 
       <div>
         <span className="font-bold text-xs block py-4">
-          When you re complex is NOT in GO ontology complex
+          When your complex is NOT in the GO ontology complex
         </span>
         <div className="grid grid-cols-2 gap-4">
           <FormElement
