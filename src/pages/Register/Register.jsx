@@ -24,12 +24,21 @@ const Register = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen flex items-center justify-center p-4 relative"
       style={{
         background:
           "linear-gradient(90deg, rgba(87, 54, 158, 0.2) 0%, rgba(0, 167, 211, 0.2) 100%)",
       }}
     >
+      {/* Improved Loading Overlay */}
+      {isSubmitting && (
+        <div className="absolute inset-0 z-20 bg-slate-800 bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
+          <div className="bg-white p-4 rounded-lg shadow-md flex flex-col items-center">
+            <div className="animate-spin rounded-full h-20 w-20 border-4 border-t-transparent border-[#57369E]"></div>
+            <p className="mt-4 text-gray-700 font-medium">Signing you up...</p>
+          </div>
+        </div>
+      )}
       <div className="w-full max-w-[1200px] flex items-center justify-between">
         <div className="hidden lg:flex items-center space-x-4 flex-1">
           <img
