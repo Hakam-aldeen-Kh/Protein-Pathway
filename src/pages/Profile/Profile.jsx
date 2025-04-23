@@ -7,6 +7,7 @@ import LogoutModal from "./components/LogoutModal";
 import ProfileHeader from "./components/ProfileHeader";
 import { MODAL_TYPES, useProfile } from "../../hooks/useProfile";
 import ChangePasswordModal from "./components/ChangePasswordModal";
+import LoadingProcess from "../../common/LoadingProcess";
 
 // Set app element for accessibility (should ideally be in index.js)
 Modal.setAppElement("#root");
@@ -23,16 +24,7 @@ const Profile = () => {
 
   return (
     <>
-      {isLoading && (
-        <div className="fixed inset-0 bg-slate-800 bg-opacity-50 z-50 flex items-center justify-center backdrop-blur-sm">
-          <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-t-transparent border-[#57369E]"></div>
-            <p className="mt-4 text-gray-700 font-medium">
-              Processing your request...
-            </p>
-          </div>
-        </div>
-      )}
+      {isLoading && <LoadingProcess label="Logging you out..." />}
 
       <div className="w-[85%] mx-auto my-10 p-5 border border-[#BBBBBB] rounded-lg space-y-16">
         <ProfileHeader />

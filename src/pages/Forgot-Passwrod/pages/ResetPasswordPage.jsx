@@ -1,6 +1,7 @@
 import InputField from "../../../common/InputField";
 import { Link } from "react-router";
 import { useResetPassword } from "../../../hooks/useResetPassword";
+import LoadingProcess from "../../../common/LoadingProcess";
 
 const ResetPasswordPage = () => {
   const {
@@ -29,16 +30,7 @@ const ResetPasswordPage = () => {
       }}
     >
       {/* Loading Overlay */}
-      {isSubmitting && (
-        <div className="absolute inset-0 z-20 bg-slate-800 bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
-          <div className="bg-white p-4 rounded-lg shadow-md flex flex-col items-center">
-            <div className="animate-spin rounded-full h-20 w-20 border-4 border-t-transparent border-[#57369E]"></div>
-            <p className="mt-4 text-gray-700 font-medium">
-              Resetting your password...
-            </p>
-          </div>
-        </div>
-      )}
+      {isSubmitting && <LoadingProcess label="Resetting your password..." />}
 
       <div className="w-full max-w-[1200px] flex items-center justify-between">
         <div className="hidden lg:flex items-center space-x-4 flex-1">

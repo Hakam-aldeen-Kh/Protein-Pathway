@@ -2,6 +2,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import api from "../../../utils/api";
 import { useLocation } from "react-router";
+import LoadingProcess from "../../../common/LoadingProcess";
 
 const ConfirmationPage = () => {
   // Get the email from URL parameters
@@ -56,14 +57,7 @@ const ConfirmationPage = () => {
     >
       {/* Loading Overlay */}
       {isResending && (
-        <div className="absolute inset-0 z-20 bg-slate-800 bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
-          <div className="bg-white p-4 rounded-lg shadow-md flex flex-col items-center">
-            <div className="animate-spin rounded-full h-20 w-20 border-4 border-t-transparent border-[#57369E]"></div>
-            <p className="mt-4 text-gray-700 font-medium">
-              Resending reset email...
-            </p>
-          </div>
-        </div>
+        <LoadingProcess label="Resending password reset email..." />
       )}
 
       {/* Reset password Form */}
