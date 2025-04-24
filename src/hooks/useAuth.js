@@ -1,8 +1,25 @@
-// useAuth.jsx - Make sure this is a .jsx file
-import { useContext } from "react";
-import { AuthContext } from "../constants/AuthProvider";
+import { useState, useEffect } from "react";
+import { checkAuth } from "../api/auth";
 
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const verifyAuth = async () => {
+      try {
+        const authStatus = await checkAuth();
+        setIsAuthenticated(authStatus);
+      } catch (error) {
+        console.log(error);
+        setIsAuthenticated(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    verifyAuth();
+  }, []);
+
+  return { isAuthenticated, isLoading };
 };

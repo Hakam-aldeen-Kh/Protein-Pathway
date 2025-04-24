@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import api from "../utils/api";
 import Swal from "sweetalert2";
-import { useAuth } from "../hooks/useAuth";
+// import { useAuth } from "../hooks/useAuth";
 
 // Modal types
 export const MODAL_TYPES = {
@@ -27,7 +27,7 @@ export const useProfile = () => {
   const [activeModal, setActiveModal] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { refreshAuth } = useAuth(); // Get refreshAuth function from auth context
+  // const { refreshAuth } = useAuth(); // Get refreshAuth function from auth context
 
   // Toggle modal visibility
   const toggleModal = (modalType) => {
@@ -46,7 +46,7 @@ export const useProfile = () => {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Refresh auth context to update the authentication state
-      await refreshAuth();
+      // await refreshAuth();
 
       Toast.fire({
         icon: "success",
@@ -95,7 +95,7 @@ export const useProfile = () => {
       const response = await api.delete("auth/delete-account");
 
       // Refresh auth context to update the authentication state
-      await refreshAuth();
+      // await refreshAuth();
 
       Toast.fire({
         icon: "success",
