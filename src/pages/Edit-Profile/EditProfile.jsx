@@ -7,6 +7,7 @@ import PhoneNumberInput from "./components/PhoneNumberInput";
 import InputField from "../../common/InputField";
 import TextareaField from "../../common/TextareaField";
 import { useEditProfile } from "../../hooks/useEditProfile";
+import LoadingProcess from "../../common/LoadingProcess";
 
 const EditProfile = () => {
   const {
@@ -22,7 +23,10 @@ const EditProfile = () => {
     onSubmit,
     getAvailableLinkTypes,
     maxLinksReached,
+    isLoading,
   } = useEditProfile();
+
+  if (isLoading) return <LoadingProcess />;
 
   return (
     <div className="w-[85%] mx-auto my-10 p-5 border border-[#878787] rounded-lg">

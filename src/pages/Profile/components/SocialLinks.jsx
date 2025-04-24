@@ -12,7 +12,7 @@ const SocialLinks = ({ links }) => {
   return (
     <div className="flex flex-col space-y-2">
       <div className="flex items-center flex-wrap">
-        {links.map((link, index) => {
+        {links?.map((link, index) => {
           const iconSrc = iconMap[link.title];
           if (!iconSrc) {
             return (

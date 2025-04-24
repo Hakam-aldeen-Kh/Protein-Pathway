@@ -1,41 +1,36 @@
 import ImageUploading from "react-images-uploading";
+// import { DEFAULT_PROFILE_IMAGE } from "../../../constants/assets";
 
 const ProfileImageUploader = ({ selectedImage, onChangeImage }) => {
   return (
     <ImageUploading
       multiple={false}
-      value={selectedImage}
-      onChange={onChangeImage}
+      name="profileImageUrl"
+      value={selectedImage ? [{ data_url: selectedImage }] : []}
+      onChange={(imageList) => onChangeImage(imageList[0]?.data_url || null)}
       maxNumber={1}
       maxFileSize={1000000}
       dataURLKey="data_url"
       acceptType={["jpg", "jpeg", "png"]}
     >
-      {({
-        imageList,
-        onImageUpload,
-        onImageRemove,
-        isDragging,
-        dragProps,
-        errors,
-      }) => (
+      {({ onImageUpload, onImageRemove, isDragging, dragProps, errors }) => (
         <div className="w-[160px]">
           <p className="text-[14px] text-[#484848] mb-1">Your Photo</p>
           <div
             className={`w-full h-[160px] border-[2px] border-[#BBBBBB] border-dashed rounded-sm flex items-center justify-center ${
               isDragging ? "bg-gray-100" : ""
-            } ${imageList.length > 0 ? "cursor-default" : "cursor-pointer"}`}
-            onClick={imageList.length === 0 ? onImageUpload : undefined}
-            {...(imageList.length === 0 ? dragProps : {})}
+            } ${selectedImage ? "cursor-default" : "cursor-pointer"}`}
+            onClick={selectedImage ? undefined : onImageUpload}
+            {...(selectedImage ? {} : dragProps)}
           >
-            {imageList.length > 0 ? (
+            {selectedImage ? (
               <img
-                src={imageList[0].data_url}
+                src={selectedImage}
                 alt="Profile picture"
                 className="w-full h-full object-cover rounded-sm"
               />
             ) : (
-              <div className="px-5 py-[30px] space-y-5 text-center -z-10">
+              <div className="px-5 py-[30px] space-y-5 text-center">
                 <div className="space-y-2 text-xs">
                   <p>Drop Image here, or</p>
                   <div className="flex justify-center gap-x-1">
@@ -64,10 +59,10 @@ const ProfileImageUploader = ({ selectedImage, onChangeImage }) => {
           )}
           <button
             type="button"
-            disabled={imageList.length <= 0}
+            disabled={!selectedImage}
             onClick={() => onImageRemove(0)}
             className={`mt-2 w-full px-4 py-2 text-white rounded-sm transition-all duration-200 ${
-              imageList.length > 0
+              selectedImage
                 ? "bg-[#57369E] hover:bg-[#00A7D3]"
                 : "bg-[#BBBBBB] cursor-not-allowed"
             }`}

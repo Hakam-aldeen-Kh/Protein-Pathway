@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import profileData from "../../data/profile/profile.json";
+// import profileData from "../../data/profile/profile.json";
 import ProfileInfo from "./components/ProfileInfo";
 import ProfileActions from "./components/ProfileActions";
 // import DeleteAccountModal from "./components/DeleteAccountModal";
@@ -18,9 +18,12 @@ const Profile = () => {
     isLoading,
     handleLogout,
     handleChangePassword,
+    profileData,
     // handleDeleteAccount,
     toggleModal,
   } = useProfile();
+
+  if (isLoading) return <LoadingProcess />;
 
   return (
     <>
