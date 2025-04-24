@@ -19,7 +19,7 @@ const ProteinData = () => {
     filteredPathways,
     itemsPerPage,
     activeTab,
-    isLoggedIn,
+    isAuthenticated,
   } = usePathwayData();
 
   return (
@@ -29,7 +29,7 @@ const ProteinData = () => {
         <div className="flex flex-col px-32 mt-10 w-full max-md:px-5 max-md:max-w-full">
           <PathwayTabs
             activeTab={activeTab}
-            loginState={isLoggedIn}
+            loginState={isAuthenticated}
             onTabChange={handleTabChange}
           />
           <div className="flex flex-col mt-2.5 w-full rounded-lg max-md:max-w-full">

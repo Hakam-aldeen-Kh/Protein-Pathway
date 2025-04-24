@@ -5,10 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../../validation/loginSchema";
 import { useLogin } from "../../hooks/useLogin";
 import { Link } from "react-router";
+import LoadingProcess from "../../common/LoadingProcess";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-
   const {
     register,
     handleSubmit,
@@ -17,21 +17,24 @@ const Login = () => {
     mode: "onChange",
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
-  const { handleSubmit: loginSubmit } = useLogin();
+  const { handleSubmit: loginSubmit, isSubmitting } = useLogin();
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen flex items-center justify-center p-4 relative"
       style={{
         background:
           "linear-gradient(90deg, rgba(87, 54, 158, 0.2) 0%, rgba(0, 167, 211, 0.2) 100%)",
       }}
     >
+      {/* Improved Loading Overlay */}
+      {isSubmitting && <LoadingProcess label="Logging you in..." />}
+
       <div className="w-full max-w-[1200px] flex items-center justify-between">
         {/* Logo Section */}
         <div className="hidden lg:flex items-center space-x-4 flex-1">
@@ -52,12 +55,13 @@ const Login = () => {
             className="space-y-5 px-[24px] py-[40px]"
           >
             <InputField
-              label="Username"
-              name="username"
+              label="Email Address"
+              name="email"
+              type="email"
               register={register}
-              error={errors.username?.message}
+              error={errors.email?.message}
+              disabled={isSubmitting}
             />
-
             <InputField
               label="Password"
               type="password"
@@ -66,20 +70,23 @@ const Login = () => {
               error={errors.password?.message}
               showPassword={showPassword}
               togglePassword={() => setShowPassword(!showPassword)}
+              disabled={isSubmitting}
             />
-
             <div className="w-full flex items-end">
               <button
                 type="submit"
-                disabled={!isValid}
+                disabled={!isValid || isSubmitting}
                 className={`px-8 py-[10px] ml-auto rounded-sm text-white font-semibold transition-all ${
-                  isValid ? "bg-[#57369E] hover:bg-[#00A7D3]" : "bg-[#BBBBBB]"
+                  isSubmitting
+                    ? "bg-[#BBBBBB] cursor-wait"
+                    : isValid
+                    ? "bg-[#57369E] hover:bg-[#00A7D3]"
+                    : "bg-[#BBBBBB]"
                 }`}
               >
-                Log In
+                {isSubmitting ? "Logging in..." : "Log In"}
               </button>
             </div>
-
             <div className="flex items-center justify-between text-sm">
               <Link
                 to="/reset-password"

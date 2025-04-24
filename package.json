@@ -21,7 +21,9 @@
     "cytoscape-fcose": "^2.2.0",
     "cytoscape-klay": "^3.1.4",
     "cytoscape-sbgn-stylesheet": "^4.0.2",
+    "install": "^0.13.0",
     "lucide-react": "^0.474.0",
+    "npm": "^11.3.0",
     "react": "^19.0.0",
     "react-cytoscapejs": "^2.0.0",
     "react-dom": "^19.0.0",
@@ -30,7 +32,7 @@
     "react-modal": "^3.16.3",
     "react-phone-number-input": "^3.4.12",
     "react-router": "^7.1.5",
-    "sweetalert2": "^11.15.10",
+    "sweetalert2": "^11.19.1",
     "swr": "^2.3.3",
     "zod": "^3.24.2"
   },

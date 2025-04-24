@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext, useSearchParams } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 
 export const usePathwayData = () => {
   const context = useOutletContext();
   const myPathwayData = context?.myPathwayData || []; // Fallback to empty array
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { isAuthenticated } = useAuth();
 
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const initialTab = searchParams.get("tab") || "all";
 
   // Handle unauthorized access to "my" tab
   useEffect(() => {
-    if (initialTab === "my" && !isLoggedIn) {
+    if (initialTab === "my" && !isAuthenticated) {
       navigate("/login", { replace: true });
       setActiveTab("all");
     }
-  }, [initialTab, isLoggedIn, navigate]);
+  }, [initialTab, isAuthenticated, navigate]);
 
   // Sample pathways
   const samplePathways = Array.from({ length: 30 }, (_, index) => ({
@@ -119,7 +120,7 @@ export const usePathwayData = () => {
     filteredPathways,
     itemsPerPage,
     activeTab,
-    isLoggedIn,
+    isAuthenticated,
     currentPage,
   };
 };

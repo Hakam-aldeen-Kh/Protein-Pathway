@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useNavigate } from "react-router";
+import api from "../utils/api";
+import { useSearchParams } from "react-router";
+import Swal from "sweetalert2";
 
 // Define the reset password schema as you requested originally
 export const resetPasswordSchema = z
@@ -26,7 +29,10 @@ export const resetPasswordSchema = z
 
 export const useResetPassword = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
+  const [showPassword, setShowPassword] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [validation, setValidation] = useState({
     length: false,
     lowerCase: false,
@@ -83,10 +89,42 @@ export const useResetPassword = () => {
     formValues.confirmPassword &&
     formValues.password.trim() === formValues.confirmPassword.trim();
 
-  const handleResetPasswordSubmit = (data) => {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+  const handleResetPasswordSubmit = async (data) => {
     if (passwordsMatch) {
-      console.log(data);
-      navigate("/login");
+      setIsSubmitting(true); // Set loading state to true before API call
+      try {
+        const response = await api.post("auth/reset-password", {
+          resetPasswordToken: token,
+          newPassword: data.password,
+        });
+        Toast.fire({
+          icon: "success",
+          timer: 2000,
+          title: response.data.message || "Password reset successful",
+        });
+        navigate("/login");
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title:
+            error.response?.data?.message ||
+            "Password reset failed. Please try again.",
+        });
+      } finally {
+        setIsSubmitting(false); // Set loading state to false after API call
+      }
     }
   };
 
@@ -100,6 +138,7 @@ export const useResetPassword = () => {
     errors,
     isValid,
     showPassword,
+    isSubmitting,
     validation,
     validationCases,
     passwordsMatch,

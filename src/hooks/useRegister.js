@@ -3,10 +3,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema } from "../validation/registerSchema";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
+import api from "../utils/api";
 
 export const useRegister = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [agreePrivacy, setAgreePrivacy] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [validation, setValidation] = useState({
@@ -102,9 +105,53 @@ export const useRegister = () => {
     setShowPassword(false);
   };
 
-  const handleFinalSubmit = (data) => {
-    console.log("Form submitted with:", data);
-    navigate("/confirm-email");
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+  // In your form submission handler
+  const handleFinalSubmit = async (data) => {
+    setIsSubmitting(true);
+
+    const submissionData = {
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      password: data.password,
+    };
+
+    try {
+      const response = await api.post("/auth/register", submissionData);
+
+      Toast.fire({
+        icon: "success",
+        timer: 6000,
+        title: response.data.message || "Registration successful",
+      });
+
+      // Pass the email to ConfirmRegister
+      navigate("/confirm-email", { state: { email: data.email } });
+      return response;
+    } catch (error) {
+      console.error("Registration error:", error);
+
+      Toast.fire({
+        icon: "error",
+        title:
+          error.response?.data?.message ||
+          "Registration failed. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return {
@@ -114,6 +161,7 @@ export const useRegister = () => {
     validation,
     validationCases,
     errors,
+    isSubmitting,
     isNextButtonEnabled,
     setAgreePrivacy,
     setShowPassword,

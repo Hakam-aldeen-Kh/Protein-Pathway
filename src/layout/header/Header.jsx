@@ -1,16 +1,14 @@
 import { Link } from "react-router";
-import { useLocation } from "react-router";
 
 import LanguageSelector from "./components/LanguageSelector";
 import AuthButtons from "./components/AuthButtons";
 import NavigationLinks from "./components/NavigationLinks";
 import SearchBox from "./components/SearchBox";
-import profileData from "../../data/profile/profile.json"
+import profileData from "../../data/profile/profile.json";
+import { useAuth } from "../../hooks/useAuth"; // Make sure this path is correct
 
 function Header() {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-  const location = useLocation();
-  const isLoginPage = location.pathname === "/login"; // Check if on login page
+  const { isAuthenticated } = useAuth();
 
   return (
     <header className="flex flex-col px-5 py-3 bg-white">
@@ -28,15 +26,15 @@ function Header() {
           </div>
           <div className="flex gap-10">
             <LanguageSelector />
-            {isLoggedIn ? (
-              <Link to={'/profile'}>
+            {isAuthenticated ? (
+              <Link to={"/profile"}>
                 <img
                   src={profileData.imageSrc}
                   className="w-10 h-10 rounded-full object-cover"
                 />
               </Link>
             ) : (
-              !isLoginPage && <AuthButtons />
+              !isAuthenticated && <AuthButtons />
             )}
           </div>
         </nav>

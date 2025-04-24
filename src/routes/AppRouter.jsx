@@ -1,13 +1,11 @@
 import { Route, Routes } from "react-router";
-
 import Layout from "../layout/Layout";
-
 import ProtectedRoute from "./ProtectedRoute";
 import PathewayContext from "./PathewayContext";
 
+// Import your pages
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
-
 import NotFound from "../pages/404/NotFound";
 import NewPathway from "../pages/New-Pathway/NewPathway";
 import GlycanData from "../pages/Glycan-Data/GlycanData";
@@ -22,6 +20,8 @@ import EditProfile from "../pages/Edit-Profile/EditProfile";
 import EmailInputPage from "../pages/Forgot-Passwrod/pages/EmailInputPage";
 import ConfirmationPage from "../pages/Forgot-Passwrod/pages/ConfirmationPage";
 import ResetPasswordPage from "../pages/Forgot-Passwrod/pages/ResetPasswordPage";
+import ConfirmRegister from "../pages/Register/ConfirmRegister";
+import ProfileProtectedRoute from "./ProfileProductedRoute";
 
 const AppRouter = () => {
   return (
@@ -35,7 +35,6 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
       <Route
         path="/*"
         element={
@@ -44,7 +43,6 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
       <Route
         path="/glycan-pathway-data"
         element={
@@ -53,25 +51,6 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
-      <Route
-        path="/login"
-        element={
-          <Layout>
-            <Login />
-          </Layout>
-        }
-      />
-
-      <Route
-        path="/register"
-        element={
-          <Layout>
-            <Register />
-          </Layout>
-        }
-      />
-
       <Route
         path="/protein-pathway-data"
         element={
@@ -80,35 +59,69 @@ const AppRouter = () => {
           </Layout>
         }
       />
-
+      {/* Protected Rout if user login */}
+      <Route
+        path="/login"
+        element={
+          <ProfileProtectedRoute>
+            <Layout>
+              <Login />
+            </Layout>
+          </ProfileProtectedRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <ProfileProtectedRoute>
+            <Layout>
+              <Register />
+            </Layout>
+          </ProfileProtectedRoute>
+        }
+      />
+      <Route
+        path="/confirm-email"
+        element={
+          <ProfileProtectedRoute>
+            <Layout>
+              <ConfirmRegister />
+            </Layout>
+          </ProfileProtectedRoute>
+        }
+      />
       <Route
         path="/reset-password"
         element={
-          <Layout>
-            <EmailInputPage />
-          </Layout>
+          <ProfileProtectedRoute>
+            <Layout>
+              <EmailInputPage />
+            </Layout>
+          </ProfileProtectedRoute>
         }
       />
-
       <Route
         path="/reset-password/confirmation"
         element={
-          <Layout>
-            <ConfirmationPage />
-          </Layout>
+          <ProfileProtectedRoute>
+            <Layout>
+              <ConfirmationPage />
+            </Layout>
+          </ProfileProtectedRoute>
         }
       />
-
       <Route
         path="/reset-password/reset"
         element={
-          <Layout>
-            <ResetPasswordPage />
-          </Layout>
+          <ProfileProtectedRoute>
+            <Layout>
+              <ResetPasswordPage />
+            </Layout>
+          </ProfileProtectedRoute>
         }
       />
 
-      {/* Protected Routes */}
+      {/* Protected Routes with PathewayContext */}
       <Route element={<PathewayContext />}>
         <Route
           path="/new-pathway"
@@ -130,7 +143,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/pathway-result"
           element={
@@ -141,7 +153,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/pathway-result/:id"
           element={
@@ -152,7 +163,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/preview/:id"
           element={
@@ -163,7 +173,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/profile"
           element={
@@ -174,7 +183,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/profile/edit"
           element={

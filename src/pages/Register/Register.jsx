@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import InputField from "../../common/InputField";
 import { useRegister } from "../../hooks/useRegister";
+import LoadingProcess from "../../common/LoadingProcess";
 
 const Register = () => {
   const {
@@ -10,6 +11,7 @@ const Register = () => {
     validation,
     validationCases,
     errors,
+    isSubmitting,
     isNextButtonEnabled,
     setAgreePrivacy,
     setShowPassword,
@@ -23,12 +25,14 @@ const Register = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen flex items-center justify-center p-4 relative"
       style={{
         background:
           "linear-gradient(90deg, rgba(87, 54, 158, 0.2) 0%, rgba(0, 167, 211, 0.2) 100%)",
       }}
     >
+      {/* Improved Loading Overlay */}
+      {isSubmitting && <LoadingProcess label="Creating your account..." />}
       <div className="w-full max-w-[1200px] flex items-center justify-between">
         <div className="hidden lg:flex items-center space-x-4 flex-1">
           <img
@@ -180,9 +184,9 @@ const Register = () => {
                   </button>
                   <button
                     type="submit"
-                    disabled={!isSubmitButtonEnabled()}
+                    disabled={!isSubmitButtonEnabled() || isSubmitting}
                     className={`px-8 py-[10px] rounded-sm text-white font-semibold transition-all duration-200 ${
-                      isSubmitButtonEnabled()
+                      isSubmitButtonEnabled() && !isSubmitting
                         ? "bg-[#57369E] hover:bg-[#00A7D3]"
                         : "bg-[#BBBBBB]"
                     }`}

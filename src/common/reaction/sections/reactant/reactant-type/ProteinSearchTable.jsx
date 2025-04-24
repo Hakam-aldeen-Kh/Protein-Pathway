@@ -74,10 +74,10 @@ const ProteinSearchTable = ({
       isOpen={isOpen}
       onRequestClose={closeModal}
       ariaHideApp={false}
-      className="bg-white rounded-lg border border-gray-300 min-w-[35%] max-w-4xl mx-auto my-10 p-4 relative overflow-hidden"
+      className="bg-white rounded-lg border border-gray-300 min-w-[35%] max-w-4xl mx-auto my-10 p-4 relative"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     >
-      <div className="w-full max-w-[700px] h-[500px] max-h-[500px] min-h-[500px] overflow-hidden">
+      <div className="w-full max-w-[700px] h-[500px] max-h-[500px] min-h-[500px]">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-800">Protein Search Results</h2>
           <button

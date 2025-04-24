@@ -1,8 +1,12 @@
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import InputField from "../../../common/InputField";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router";
+import api from "../../../utils/api";
+import Swal from "sweetalert2";
+import LoadingProcess from "../../../common/LoadingProcess";
 
 const emailSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -10,6 +14,7 @@ const emailSchema = z.object({
 
 const EmailInputPage = () => {
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     register,
@@ -23,19 +28,55 @@ const EmailInputPage = () => {
     },
   });
 
-  const handleEmailSubmit = (data) => {
-    console.log(data);
-    navigate("/reset-password/confirmation");
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+  const handleEmailSubmit = async (data) => {
+    setIsSubmitting(true);
+    try {
+      const response = await api.post("auth/forgot-password", data);
+
+      Toast.fire({
+        icon: "success",
+        timer: 2000,
+        title: response.data.message || "Email send successful",
+      });
+
+      // Pass email to the confirmation page using navigate state
+      navigate("/reset-password/confirmation", {
+        state: { email: data.email },
+      });
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title:
+          error.response?.data?.message || "Request failed. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen flex items-center justify-center p-4 relative"
       style={{
         background:
           "linear-gradient(90deg, rgba(87, 54, 158, 0.2) 0%, rgba(0, 167, 211, 0.2) 100%)",
       }}
     >
+      {/* Loading Overlay */}
+      {isSubmitting && <LoadingProcess label="Sending password reset email..." />}
+
       <div className="w-full max-w-[1200px] flex items-center justify-between">
         {/* Logo Section */}
         <div className="hidden lg:flex items-center space-x-4 flex-1">
@@ -75,12 +116,14 @@ const EmailInputPage = () => {
               </Link>
               <button
                 type="submit"
-                disabled={!isValid}
+                disabled={!isValid || isSubmitting}
                 className={`px-8 py-[10px] rounded-sm text-white font-semibold transition-all duration-200 ${
-                  isValid ? "bg-[#57369E] hover:bg-[#00A7D3]" : "bg-[#BBBBBB]"
+                  isValid && !isSubmitting
+                    ? "bg-[#57369E] hover:bg-[#00A7D3]"
+                    : "bg-[#BBBBBB]"
                 }`}
               >
-                Submit
+                {isSubmitting ? "Submitting..." : "Submit"}
               </button>
             </div>
           </form>
