@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { changePasswordSchema } from "../validation/changePasswordSchema";
+import api from "../utils/api";
+import Swal from "sweetalert2";
 
 export const useChangePassword = (closeModal) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [validation, setValidation] = useState({
     length: false,
     lowerCase: false,
@@ -88,15 +91,45 @@ export const useChangePassword = (closeModal) => {
     return allFieldsFilled && isFormValid;
   };
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
   // Handle form submission
-  const handleFinalSubmit = (data) => {
-    // TODO: Replace with API call to update password
-    console.log("Password change submitted:", {
+  const handleFinalSubmit = async (data) => {
+    setIsSubmitting(true);
+    const submissionData = {
       currentPassword: data.currentPassword,
       newPassword: data.newPassword,
-    });
-    resetForm(); // Reset form on successful submit
-    closeModal();
+    };
+    try {
+      const response = await api.patch("auth/update-password", submissionData);
+
+      Toast.fire({
+        icon: "success",
+        timer: 3000,
+        title: response.data.message || "Change password successful",
+      });
+      resetForm();
+      closeModal();
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title:
+          error.response?.data?.message ||
+          "Change password failed. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Reset form data, errors, and validation
@@ -122,6 +155,7 @@ export const useChangePassword = (closeModal) => {
     validation,
     validationCases,
     errors,
+    isSubmitting,
     isSubmitButtonEnabled,
     register,
     handleSubmit,
