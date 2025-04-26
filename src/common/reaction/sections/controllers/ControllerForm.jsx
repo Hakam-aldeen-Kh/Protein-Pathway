@@ -113,14 +113,16 @@ const ControllerForm = ({
           placeholder=""
         /> */}
 
-        <FormElement
-          type="itemType"
-          label={"EC enzyme name"}
-          name="controller_ec_enzyme"
-          value={controllerData?.controller_ec_enzyme}
-          handleChange={handleChange}
-          itemType="Enzyme"
-        />
+        {controllerData.controllerType == "enzyme" && (
+          <FormElement
+            type="itemType"
+            label={"EC enzyme name"}
+            name="controller_ec_enzyme"
+            value={controllerData?.controller_ec_enzyme}
+            handleChange={handleChange}
+            itemType="Enzyme"
+          />
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-4">
