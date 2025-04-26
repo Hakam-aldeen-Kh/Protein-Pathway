@@ -86,6 +86,7 @@ const Protein = ({ reactantData, handleChange }) => {
       </div>
 
       <ProteinSearchTable
+        site="reactant"
         isOpen={isOpen}
         setOpenTablePagination={setOpenTablePagination}
         onProteinSelect={handleProteinSelect}
