@@ -14,10 +14,9 @@ const ProteinSearchTable = ({
 
   // Define table columns as a JSON string
   const columns = JSON.stringify([
-    { id: "index", label: "Protein", escape: false },
-    { id: "protein_name", label: "Protein Name" },
+    { id: "index", label: "Protein Name (Selector)", escape: false },
     { id: "protein_id", label: "UniProt ID", link: "protein_uri", target: "_blank" },
-    { id: "taxon_name", label: "Organism", type: "category", rowspan: true },
+    { id: "taxon_name", label: "Species", type: "category" },
     { id: "DNA_name", label: "Gene Name" },
   ]);
 
