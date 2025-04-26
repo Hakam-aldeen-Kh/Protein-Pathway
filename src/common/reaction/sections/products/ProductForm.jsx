@@ -84,7 +84,7 @@ const ProductForm = ({ handleChangeData, reaction, productData, productIndex, ha
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-                <FormElement isRequired={false} type="checkbox" id={`useNextReaction1-${reaction.id}-${productIndex}`} placeholder={"Use this product in the next reaction"} name="useNextReaction" value={productData?.useNextReaction} handleChange={handleChangeWithConfirm} />
+                <FormElement isRequired={false} type="checkbox" id={`useNextReaction1-${reaction.id}-${productIndex}`} placeholder={"Use this product as a reactant in the next reaction"} name="useNextReaction" value={productData?.useNextReaction} handleChange={handleChangeWithConfirm} />
             </div>
 
             {productData.useNextReaction &&
