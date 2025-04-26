@@ -54,7 +54,7 @@ const ControllerForm = ({
           type="itemType"
           label={" Cellular Location"}
           name="cellularLocation"
-          value={controllerData?.cellularLocation?.cell_localization_name}
+          value={controllerData?.cellularLocation}
           handleChange={handleChange}
           placeholder="Select Location"
           itemType="Cellular"
@@ -90,7 +90,7 @@ const ControllerForm = ({
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <FormElement
+        {/* <FormElement
           isRequired={false}
           type="input"
           label={"When your complex is in GO ontology complex."}
@@ -111,6 +111,15 @@ const ControllerForm = ({
           value={controllerData?.notGoOntology}
           handleChange={handleChange}
           placeholder=""
+        /> */}
+
+        <FormElement
+          type="itemType"
+          label={"EC enzyme name"}
+          name="controller_ec_enzyme"
+          value={controllerData?.controller_ec_enzyme}
+          handleChange={handleChange}
+          itemType="Enzyme"
         />
       </div>
 
