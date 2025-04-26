@@ -36,7 +36,7 @@ const ControllerForm = ({ handleChangeData, reaction, controllerData, controller
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-                <FormElement isRequired={false} type="checkbox" id={`useNextReactionController-${reaction.id}-${controllerIndex}`} placeholder={"Use this Controller in the next reaction"} name="useNextReaction" value={controllerData?.useNextReaction} handleChange={handleChange} />
+                <FormElement isRequired={false} type="checkbox" id={`useNextReactionController-${reaction.id}-${controllerIndex}`} placeholder={"Use this Controller as a reactant in the next reaction"} name="useNextReaction" value={controllerData?.useNextReaction} handleChange={handleChange} />
             </div>
 
         </div>
