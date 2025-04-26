@@ -10,24 +10,20 @@ import { useEffect, useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
 
+// Base URL for all SPARQList API endpoints
+const SPARQLIST_BASE_URL = "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api";
+
 const API_ENDPOINTS = {
-  Human:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Human_disease",
-  Animal:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Animal_Disease",
-  Plant:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Plant_Disease",
-  CellType:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/CellTypeOnto",
-  Lipid: "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/LipidMap",
-  GoProteinComplex:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/GO_complex",
-  ProteinModOntology:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/proteinModificationOntology",
-  Tissue: "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Tissue_Onto",
-  Cellular:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/GO_Cell_Location",
-  Chibe: "/src/data/APIs/chebi.json",
+  Human: `${SPARQLIST_BASE_URL}/Human_disease`,
+  Animal: `${SPARQLIST_BASE_URL}/Animal_Disease`,
+  Plant: `${SPARQLIST_BASE_URL}/Plant_Disease`,
+  CellType: `${SPARQLIST_BASE_URL}/CellTypeOnto`,
+  Lipid: `${SPARQLIST_BASE_URL}/LipidMap`,
+  GoProteinComplex: `${SPARQLIST_BASE_URL}/GO_complex`,
+  ProteinModOntology: `${SPARQLIST_BASE_URL}/proteinModificationOntology`,
+  Tissue: `${SPARQLIST_BASE_URL}/Tissue_Onto`,
+  Cellular: `${SPARQLIST_BASE_URL}/GO_Cell_Location`,
+  Chibe: `${SPARQLIST_BASE_URL}/Chebi_sm`,
 };
 
 // Define name properties for each endpoint type
@@ -41,19 +37,11 @@ const NAME_PROPERTIES = {
   ProteinModOntology: "PMOD_name",
   Tissue: "text",
   Cellular: "cell_localization_name",
-  Chibe: "molecule_name",
+  Chibe: "Molecule_name",
 };
 
 const fetcher = (url) =>
   axios.get(url).then((res) => {
-    // Special handling for ChEBI data format
-    if (url.includes("chebi.json")) {
-      // Transform the SPARQL results into the format expected by the component
-      return res.data.results.bindings.map((item) => ({
-        molecule_id: item.molecule_id.value,
-        molecule_name: item.molecule_name.value,
-      }));
-    }
     return res.data;
   });
 
