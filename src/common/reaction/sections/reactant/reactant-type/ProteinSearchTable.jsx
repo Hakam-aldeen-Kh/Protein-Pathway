@@ -8,6 +8,7 @@ const ProteinSearchTable = ({
   setOpenTablePagination,
   onProteinSelect,
   reactantData,
+  site
 }) => {
   const tableRef = useRef(null);
   const [error, setError] = useState(null);
@@ -24,7 +25,7 @@ const ProteinSearchTable = ({
   const inputText = reactantData?.proteinSymbolicName
     ? encodeURIComponent(reactantData.proteinSymbolicName)
     : "";
-  const dataUrl = `https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/uniprot_keyword_search?input_text=${inputText}&input_site=reactant`;
+  const dataUrl = `https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/uniprot_keyword_search?input_text=${inputText}&input_site=${site}`;
 
   // Close the modal
   const closeModal = () => {

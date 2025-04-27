@@ -26,8 +26,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -69,8 +68,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -112,8 +110,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -155,8 +152,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -198,8 +194,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -241,8 +236,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -284,8 +278,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -327,8 +320,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -370,8 +362,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -413,8 +404,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -456,8 +446,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -499,8 +488,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -542,8 +530,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -585,8 +572,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -628,8 +614,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -671,8 +656,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -714,8 +698,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -757,8 +740,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -800,8 +782,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }
@@ -843,8 +824,7 @@ export const publicPathwayData = [
                         "cellularLocation": "Cytosol",
                         "controllerType": "L-Fucose",
                         "actionType": "",
-                        "goOntology": "",
-                        "goOntologyValue": "",
+                        "controller_ec_enzyme": "",
                         "notGoOntology": "",
                         "useNextReaction": false
                     }

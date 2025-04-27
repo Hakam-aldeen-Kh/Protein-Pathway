@@ -22,6 +22,34 @@ const Glycan = ({ reactantData, handleChange }) => {
           <FormElement isRequired={false} type="input" label={"Number of Amino Acid Binding Site"} name="aminoAcidBindingSite" value={reactantData?.aminoAcidBindingSite} handleChange={handleChange} placeholder="Type number of amino acid binding site (e.g. 123)" />
         </div>
       </div>
+
+      <div>
+        <span className="font-bold text-xs block py-4">
+          Protein Modification
+        </span>
+        <div className="grid grid-cols-2 gap-4">
+          <FormElement
+            isRequired={false}
+            type="input"
+            label="Modifying site"
+            name="modifyingSite"
+            value={reactantData?.modifyingSite || ""}
+            handleChange={handleChange}
+            placeholder="Modifying site of amino acid (number)"
+          />
+
+          <FormElement
+            isRequired={false}
+            type="itemType"
+            itemType="ProteinModOntology"
+            label="Modifying Type"
+            name="modifyingType"
+            value={reactantData?.modifyingType || ""}
+            handleChange={handleChange}
+            placeholder="Select Modifying Type"
+          />
+        </div>
+      </div> 
     </>
 
   )
