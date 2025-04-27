@@ -110,7 +110,7 @@ export const useProfile = () => {
   const handleDeleteAccount = async () => {
     setIsLoading(true);
     try {
-      const response = await api.delete("auth/delete-account");
+      const response = await api.delete("user/me");
 
       Toast.fire({
         icon: "success",
