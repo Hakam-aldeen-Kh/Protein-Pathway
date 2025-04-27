@@ -122,7 +122,8 @@ export const useEditProfile = () => {
     try {
       const updatedData = {
         ...data,
-        image: selectedImage || profileData?.imageSrc || null,
+        //! disable send image
+        // image: selectedImage || profileData?.imageSrc || null,
       };
       await api.put("user/me", updatedData); // Adjust endpoint as needed
       Toast.fire({
