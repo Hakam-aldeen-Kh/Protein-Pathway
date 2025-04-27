@@ -60,29 +60,6 @@ export const useLogin = () => {
 
         // Navigate to confirm email page with the email
         navigate("/confirm-email", { state: { email: data.email } });
-        // Send verify Email
-        try {
-          const response = await api.post("auth/resend-verification", {
-            email: submissionData.email,
-          });
-
-          Toast.fire({
-            icon: "success",
-            timer: 6000,
-            title: response.data.message || "Registration successful",
-          });
-
-          return response;
-        } catch (error) {
-          console.error("Registration error:", error);
-
-          Toast.fire({
-            icon: "error",
-            title:
-              error.response?.data?.message ||
-              "Registration failed. Please try again.",
-          });
-        }
       } else {
         // Handle other errors
         Toast.fire({
