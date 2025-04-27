@@ -52,7 +52,7 @@ export const editProfileSchema = z
         }
       ),
     degree: z.string().optional(),
-    school: z.string().optional(),
+    university: z.string().optional(),
     links: z
       .array(
         z.object({

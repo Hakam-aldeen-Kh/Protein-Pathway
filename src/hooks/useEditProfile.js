@@ -47,7 +47,7 @@ export const useEditProfile = () => {
       email: "",
       phoneNumber: "",
       degree: "",
-      school: "",
+      university: "",
       links: [],
     },
   });
@@ -89,7 +89,7 @@ export const useEditProfile = () => {
         email: profileData.email || "",
         phoneNumber: normalizePhoneNumber(profileData.phoneNumber) || "",
         degree: profileData.degree || "",
-        school: profileData.school || "",
+        university: profileData.university || "",
         links: profileData.links || [],
       });
       setSelectedImage(profileData.imageSrc || null);

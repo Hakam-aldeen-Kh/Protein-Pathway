@@ -27,7 +27,7 @@ const ProfileInfo = ({ profileData }) => {
         </div>
 
         {/* Education */}
-        {(profileData?.degree || profileData?.school) && (
+        {(profileData?.degree || profileData?.university) && (
           <div className="flex items-center space-x-2 text-lg md:text-xl text-[#111118]">
             <img
               src="/images/icons/edu-icon.svg"
@@ -36,8 +36,8 @@ const ProfileInfo = ({ profileData }) => {
             />
             <div>
               {profileData.degree && <span>{profileData.degree}</span>}
-              {profileData.degree && profileData.school && <span> - </span>}
-              {profileData.school && <span>{profileData.school}</span>}
+              {profileData.degree && profileData.university && <span> - </span>}
+              {profileData.university && <span>{profileData.university}</span>}
             </div>
           </div>
         )}

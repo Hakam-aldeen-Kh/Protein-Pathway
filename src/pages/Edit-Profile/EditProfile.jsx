@@ -84,9 +84,9 @@ const EditProfile = () => {
             />
             <InputField
               label="School/University"
-              name="school"
+              name="university"
               register={register}
-              error={errors.school?.message}
+              error={errors.university?.message}
             />
           </FormSection>
           {/* Links */}
