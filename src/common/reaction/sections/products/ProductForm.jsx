@@ -1,4 +1,5 @@
 import FormElement from "../../components/FormElement";
+import Complex from "./products-type/Complex";
 import Protein from "./products-type/Protein";
 
 const ProductForm = ({
@@ -185,6 +186,10 @@ const ProductForm = ({
 
       {productData.productType === "protein" && (
         <Protein productData={productData} handleChange={handleChange} />
+      )}
+
+      {productData.productType === "complex" && (
+        <Complex productData={productData} handleChange={handleChange} />
       )}
 
       {/* Protein Size (commit part) */}
