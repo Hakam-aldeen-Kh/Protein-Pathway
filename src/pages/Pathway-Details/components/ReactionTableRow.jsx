@@ -50,8 +50,9 @@ const ReactionTableRow = ({
           ))}
         </td>
         <td className="px-4">
-          {reaction.controllers[0].controllerType
-            ? capitalize(reaction?.controllers[0]?.controllerType)
+          {reaction?.controllers?.length > 0 &&
+          reaction.controllers[0].controllerType
+            ? capitalize(reaction.controllers[0].controllerType)
             : "-"}
         </td>
 
