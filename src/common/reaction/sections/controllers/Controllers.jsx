@@ -33,10 +33,10 @@ const Controllers = ({
                 {
                   id:
                     reaction.controllers[reaction.controllers.length - 1]?.id +
-                      1 || 0,
+                      1 || 1,
                   name: `controller_${reactionId}.${
                     reaction.controllers[reaction.controllers.length - 1]?.id +
-                      1 || 0
+                      1 || 1
                   }`,
                 },
               ],

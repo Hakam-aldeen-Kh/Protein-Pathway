@@ -21,8 +21,8 @@ const Products = ({ reaction, handleChangeData, setDeleteModalData, addReaction,
               products: [
                 ...reaction.products,
                 {
-                  id: reaction.products[reaction.products.length - 1]?.id + 1 || 0,
-                  name: `product_${reactionId}.${reaction.products[reaction.products.length - 1]?.id + 1 || 0}`
+                  id: reaction.products[reaction.products.length - 1]?.id + 1 || 1,
+                  name: `product_${reactionId}.${reaction.products[reaction.products.length - 1]?.id + 1 || 1}`
                 }
               ]
             }
