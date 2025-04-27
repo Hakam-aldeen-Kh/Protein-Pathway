@@ -1,4 +1,5 @@
 import FormElement from "../../components/FormElement";
+import Protein from "./products-type/Protein";
 
 const ProductForm = ({
   handleChangeData,
@@ -182,32 +183,12 @@ const ProductForm = ({
         </FormElement>
       </div>
 
-      <div>
-        <span className=" font-bold text-xs block py-4">Protein Name</span>
+      {productData.productType === "protein" && (
+        <Protein productData={productData} handleChange={handleChange} />
+      )}
 
-        <div className="grid grid-cols-2 gap-4">
-          <FormElement
-            isRequired={false}
-            type="input"
-            label={"Binding site Code"}
-            name="bindingSiteCode"
-            value={productData?.bindingSiteCode}
-            handleChange={handleChange}
-            placeholder="Three letters code of binding site (e.g. ser, tyr...)"
-          />
-          <FormElement
-            isRequired={false}
-            type="input"
-            label={"Protein Symbol"}
-            name="proteinSymbol"
-            value={productData?.proteinSymbol}
-            handleChange={handleChange}
-            placeholder="Type protein symbol"
-          />
-        </div>
-      </div>
-
-      <div>
+      {/* Protein Size (commit part) */}
+      {/* <div>
         <span className=" font-bold text-xs block py-4">
           Protein size (Fragmented protein size information)
         </span>
@@ -232,7 +213,7 @@ const ProductForm = ({
             placeholder="Ending Site"
           />
         </div>
-      </div>
+      </div> */}
 
       <div className="grid grid-cols-2 gap-4">
         <FormElement
