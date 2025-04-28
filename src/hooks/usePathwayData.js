@@ -1,126 +1,121 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useOutletContext, useSearchParams } from "react-router";
+import { useEffect, useState, useRef } from "react";
+import api from "../utils/api";
 import { useAuth } from "../hooks/useAuth";
 
 export const usePathwayData = () => {
-  const context = useOutletContext();
-  const myPathwayData = context?.myPathwayData || []; // Fallback to empty array
-  const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { isAuthenticated } = useAuth();
-
-  const initialTab = searchParams.get("tab") || "all";
-
-  // Handle unauthorized access to "my" tab
-  useEffect(() => {
-    if (initialTab === "my" && !isAuthenticated) {
-      navigate("/login", { replace: true });
-      setActiveTab("all");
-    }
-  }, [initialTab, isAuthenticated, navigate]);
-
-  // Sample pathways
-  const samplePathways = Array.from({ length: 30 }, (_, index) => ({
-    id: `GPW-415820FQ-${index + 1}`,
-    title: `Pathway Title ${index + 1}`,
-    species: "Homo Sapiens",
-    category: ["Notch Signaling", "Metabolic", "Cell Cycle"][index % 3],
-    reactants: [`G04602LA-${index + 1}`, `G04602LB-${index + 1}`],
-    controller: [`G04602LA-${index + 1}`],
-    products: [`G04602LC-${index + 1}`, `G04602LD-${index + 1}`],
-    date: `${(index % 28) + 1}.${(index % 12) + 1}.202${
-      index % 2 === 0 ? "4" : "5"
-    }`,
-    owner: "other",
-    status: index % 3 === 0 ? "Active" : "Inactive",
-  }));
-
-  // Process user's pathway data
-  const userPathways = myPathwayData.map((item, index) => ({
-    id: item.id || `USER-${index}`,
-    title: item.title || "No title",
-    species: item.species || "No species",
-    category: item.category || "No category",
-    reactants:
-      item.reactions?.flatMap((reaction) =>
-        reaction.reactants?.map((reactant) => reactant.name || "No reactant")
-      ) || [],
-    controller:
-      item.reactions?.flatMap((reaction) =>
-        reaction.controllers?.map(
-          (controller) => controller.name || "No controller"
-        )
-      ) || [],
-    products:
-      item.reactions?.flatMap((reaction) =>
-        reaction.products?.map((product) => product.name || "No product")
-      ) || [],
-    date: item.recordDate || "No date",
-    owner: "me",
-    status: index % 3 === 0 ? "Active" : "Inactive",
-  }));
-
-  const allPathways = [...samplePathways, ...userPathways];
-
-  // State management
+  const [pathwayData, setPathwayData] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filters, setFilters] = useState({
-    category: "",
-    date: "",
-    status: "",
-  });
-  const [activeTab, setActiveTab] = useState(initialTab);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [pageNumber, setPageNumber] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
+  const [activeTab, setActiveTab] = useState("all");
+  const [orderBy, setOrderBy] = useState("recordDate");
+  const [category, setCategory] = useState("");
+  const [year, setYear] = useState("");
+  const [orderDirection, setOrderDirection] = useState("DESC");
+  const [categories, setCategories] = useState([]);
+  const [years, setYears] = useState([]);
+  const [allPathways, setAllPathways] = useState(null);
+  const { isAuthenticated } = useAuth();
+  const hasFetchedAllPathways = useRef(false); // Ref to track if fetch has occurred
 
-  // Handle tab change
-  const handleTabChange = (newTab) => {
-    setCurrentPage(1);
-    setActiveTab(newTab);
-    setSearchParams({ tab: newTab });
-  };
+  function capitalize(s) {
+    return String(s[0]).toUpperCase() + String(s).slice(1);
+  }
 
-  // Handle Search
+  // Fetch all pathways once when totalCount becomes greater than 0 for the first time
+  useEffect(() => {
+    if (totalCount > 0 && !hasFetchedAllPathways.current) {
+      async function fetchAllPathways() {
+        try {
+          const response = await api.get(
+            `pathway/protein?pageSize=${totalCount}`
+          );
+          setAllPathways(response.data.data.pathways);
+          hasFetchedAllPathways.current = true; // Mark fetch as complete
+        } catch (error) {
+          console.error("Error fetching all pathways:", error);
+        }
+      }
+      fetchAllPathways();
+    }
+  }, [totalCount]); // Runs whenever totalCount changes
+
+  // Extract unique categories and years from allPathways
+  useEffect(() => {
+    if (allPathways) {
+      // Extract unique categories
+      const uniqueCategories = [
+        ...new Set(allPathways.map((item) => capitalize(item.category))),
+      ];
+      setCategories(uniqueCategories);
+
+      // Extract unique years from recordDate (format: "DD.MM.YYYY")
+      const uniqueYears = [
+        ...new Set(
+          allPathways.map((item) => {
+            const [day, month, year] = item.recordDate.split(".");
+            return year;
+          })
+        ),
+      ];
+      setYears(uniqueYears);
+    }
+  }, [allPathways]);
+
+  // Fetch filtered pathway data
+  useEffect(() => {
+    async function fetchData() {
+      const categoryParam = category !== "" ? `&category=${category}` : "";
+      const searchParam = searchQuery !== "" ? `&search=${searchQuery}` : "";
+      const yearParam = year !== "" ? `&year=${year}` : "";
+
+      try {
+        const response = await api.get(
+          `pathway/protein?pageNumber=${pageNumber}&pageSize=${itemsPerPage}${categoryParam}${searchParam}${yearParam}&orderBy=${orderBy}&orderDirection=${orderDirection}`
+        );
+        setPathwayData(response.data.data.pathways);
+        setTotalCount(response.data.data.totalCount);
+        setItemsPerPage(response.data.data.pageSize);
+      } catch (error) {
+        console.error("Error fetching pathway data:", error);
+      }
+    }
+    fetchData();
+  }, [
+    pageNumber,
+    itemsPerPage,
+    orderBy,
+    orderDirection,
+    category,
+    searchQuery,
+    year,
+  ]);
+
   const handleSearch = (query) => {
     setSearchQuery(query);
-    setCurrentPage(1);
+    setPageNumber(1);
   };
-
-  // Handle Filter Select
-  const handleFilterSelect = (newFilters) => {
-    setFilters(newFilters);
-    setCurrentPage(1);
-  };
-
-  // Filtering logic
-  const filteredPathways = allPathways.filter((pathway) => {
-    if (activeTab === "my" && pathway.owner !== "me") return false;
-    return [
-      searchQuery
-        ? pathway.title.toLowerCase().includes(searchQuery.toLowerCase())
-        : true,
-      filters.category ? pathway.category === filters.category : true,
-      filters.date ? pathway.date.includes(filters.date) : true,
-      filters.status ? pathway.status === filters.status : true,
-    ].every(Boolean);
-  });
-
-  // Pagination
-  const displayedPathways = filteredPathways.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
   return {
-    handleTabChange,
-    handleSearch,
-    handleFilterSelect,
-    setCurrentPage,
-    displayedPathways,
-    filteredPathways,
-    itemsPerPage,
+    pathwayData,
     activeTab,
     isAuthenticated,
-    currentPage,
+    setActiveTab,
+    setPageNumber,
+    setOrderDirection,
+    orderBy,
+    setOrderBy,
+    orderDirection,
+    totalCount,
+    pageNumber,
+    itemsPerPage,
+    category,
+    setCategory,
+    handleSearch,
+    year,
+    setYear,
+    years,
+    categories,
   };
 };
