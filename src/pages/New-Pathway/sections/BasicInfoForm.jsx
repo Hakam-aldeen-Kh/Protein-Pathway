@@ -49,7 +49,7 @@ const BasicInfoForm = ({ data, handleChange }) => {
           >
             <option value="Homo spaiens">Homo spaiens</option>
           </FormElement>
-          <FormElement
+          {/* <FormElement
             type="select"
             label="Pathway Category"
             name="category"
@@ -63,7 +63,16 @@ const BasicInfoForm = ({ data, handleChange }) => {
             <option value="regulatory pathway">regulatory pathway</option>
             <option value="disease pathway">disease pathway</option>
             <option value="drug pathway">drug pathway</option>
-          </FormElement>
+          </FormElement> */}
+
+          <FormElement
+            type="itemType"
+            label="Pathway Category"
+            name="category"
+            value={data?.category}
+            handleChange={handleChange}
+            itemType="Categories"
+          />
         </div>
 
         <div className="grid grid-cols-2 gap-4">

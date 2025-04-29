@@ -32,6 +32,7 @@ const API_ENDPOINTS = {
   Cellular: `${SPARQLIST_BASE_URL}/GO_Cell_Location`,
   Chibe: `${SPARQLIST_BASE_URL}/Chebi_sm`,
   Enzyme: `${SPARQLIST_BASE_URL}/Uniprot_enzyme`,
+  Categories: `${SPARQLIST_BASE_URL}/PW_category`,
 };
 
 // Define name properties for each endpoint type
@@ -47,6 +48,7 @@ const NAME_PROPERTIES = {
   Cellular: "cell_localization_name",
   Chibe: "Molecule_name",
   Enzyme: "enz_name",
+  Categories: "text"
 };
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
