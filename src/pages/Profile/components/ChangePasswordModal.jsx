@@ -14,6 +14,7 @@ const ChangePasswordModal = ({ isOpen, closeModal }) => {
     handleSubmit,
     handleFinalSubmit,
     resetForm,
+    isSubmitting,
   } = useChangePassword(closeModal);
 
   // Wrap closeModal to reset form
@@ -98,14 +99,16 @@ const ChangePasswordModal = ({ isOpen, closeModal }) => {
           </button>
           <button
             type="submit"
-            disabled={!isSubmitButtonEnabled()}
+            disabled={!isSubmitButtonEnabled() || isSubmitting}
             className={`px-8 py-[10px] rounded-sm text-white font-semibold transition-all duration-200 ${
               isSubmitButtonEnabled()
-                ? "bg-[#57369E] hover:bg-[#00A7D3]"
+                ? isSubmitting
+                  ? "bg-[#BBBBBB]"
+                  : "bg-[#57369E] hover:bg-[#00A7D3]"
                 : "bg-[#BBBBBB]"
             }`}
           >
-            Confirm
+            {isSubmitting ? "Processing..." : "Confirm"}
           </button>
         </div>
       </form>

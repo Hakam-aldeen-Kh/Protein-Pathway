@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import api from "../utils/api";
 import Swal from "sweetalert2";
-import { useAuth } from "../hooks/useAuth";
+// import { useAuth } from "../hooks/useAuth";
 
 // Modal types
 export const MODAL_TYPES = {
@@ -26,8 +26,29 @@ const Toast = Swal.mixin({
 export const useProfile = () => {
   const [activeModal, setActiveModal] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [profileData, setProfileData] = useState(null);
   const navigate = useNavigate();
-  const { refreshAuth } = useAuth(); // Get refreshAuth function from auth context
+
+  // get a Profile data from API
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await api.get("user/me");
+        setProfileData(response.data.data.user);
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title:
+            error.response?.data?.message || "Failed to fetch profile data",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
 
   // Toggle modal visibility
   const toggleModal = (modalType) => {
@@ -44,9 +65,6 @@ export const useProfile = () => {
 
       // Small delay to ensure user sees the loading state
       await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // Refresh auth context to update the authentication state
-      await refreshAuth();
 
       Toast.fire({
         icon: "success",
@@ -92,10 +110,7 @@ export const useProfile = () => {
   const handleDeleteAccount = async () => {
     setIsLoading(true);
     try {
-      const response = await api.delete("auth/delete-account");
-
-      // Refresh auth context to update the authentication state
-      await refreshAuth();
+      const response = await api.delete("user/me");
 
       Toast.fire({
         icon: "success",
@@ -117,6 +132,7 @@ export const useProfile = () => {
   return {
     activeModal,
     isLoading,
+    profileData,
     handleLogout,
     handleChangePassword,
     handleDeleteAccount,

@@ -2,12 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import api from "../utils/api";
-import { useAuth } from "../hooks/useAuth";
+// import { useAuth } from "../hooks/useAuth";
 
 export const useLogin = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { refreshAuth } = useAuth();
+  // const { refreshAuth } = useAuth();
 
   // init Toast from sweet alert
   const Toast = Swal.mixin({
@@ -41,7 +41,7 @@ export const useLogin = () => {
       });
 
       // Refresh authentication state after successful login
-      await refreshAuth();
+      // await refreshAuth();
 
       // Navigate to the dashboard or home page
       navigate("/");
@@ -60,29 +60,6 @@ export const useLogin = () => {
 
         // Navigate to confirm email page with the email
         navigate("/confirm-email", { state: { email: data.email } });
-        // Send verify Email
-        try {
-          const response = await api.post("auth/resend-verification", {
-            email: submissionData.email,
-          });
-
-          Toast.fire({
-            icon: "success",
-            timer: 6000,
-            title: response.data.message || "Registration successful",
-          });
-
-          return response;
-        } catch (error) {
-          console.error("Registration error:", error);
-
-          Toast.fire({
-            icon: "error",
-            title:
-              error.response?.data?.message ||
-              "Registration failed. Please try again.",
-          });
-        }
       } else {
         // Handle other errors
         Toast.fire({

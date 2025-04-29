@@ -1,12 +1,11 @@
 import axios from "axios";
 
-// Create a global axios instance for authenticated requests
 const api = axios.create({
-  baseURL: "https://clean-architcture-express.vercel.app/api/",
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   },
-  withCredentials: true, // This ensures cookies are sent with requests
+  withCredentials: true,
 });
 
 export default api;

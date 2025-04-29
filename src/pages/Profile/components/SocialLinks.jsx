@@ -2,17 +2,19 @@ const SocialLinks = ({ links }) => {
   const iconMap = {
     Linkedin: "/images/icons/linkedin-icon.svg",
     X: "/images/icons/x-icon.svg",
+    GitHub: "/images/icons/github-icon.svg",
   };
   const ariaLabels = {
     Linkedin: "LinkedIn profile",
     X: "X profile",
+    GitHub: "GitHub profile",
     Website: "Personal website",
   };
 
   return (
     <div className="flex flex-col space-y-2">
       <div className="flex items-center flex-wrap">
-        {links.map((link, index) => {
+        {links?.map((link, index) => {
           const iconSrc = iconMap[link.title];
           if (!iconSrc) {
             return (
