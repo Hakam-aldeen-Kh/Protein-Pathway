@@ -5,29 +5,34 @@ import {
   ComboboxOptions,
   ComboboxButton,
 } from "@headlessui/react";
-import { CheckIcon, SearchIcon, XIcon, ChevronDownIcon } from "lucide-react";
+import {
+  CheckIcon,
+  SearchIcon,
+  XIcon,
+  ChevronDownIcon,
+  Loader2,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
 
+// Base URL for all SPARQList API endpoints
+const SPARQLIST_BASE_URL =
+  "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api";
+
 const API_ENDPOINTS = {
-  Human:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Human_disease",
-  Animal:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Animal_Disease",
-  Plant:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Plant_Disease",
-  CellType:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/CellTypeOnto",
-  Lipid: "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/LipidMap",
-  GoProteinComplex:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/GO_complex",
-  ProteinModOntology:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/proteinModificationOntology",
-  Tissue: "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/Tissue_Onto",
-  Cellular:
-    "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/GO_Cell_Location",
-  Chibe: "/src/data/APIs/chebi.json",
+  Human: `${SPARQLIST_BASE_URL}/Human_disease`,
+  Animal: `${SPARQLIST_BASE_URL}/Animal_Disease`,
+  Plant: `${SPARQLIST_BASE_URL}/Plant_Disease`,
+  CellType: `${SPARQLIST_BASE_URL}/CellTypeOnto`,
+  Lipid: `${SPARQLIST_BASE_URL}/LipidMap`,
+  GoProteinComplex: `${SPARQLIST_BASE_URL}/GO_complex`,
+  ProteinModOntology: `${SPARQLIST_BASE_URL}/proteinModificationOntology`,
+  Tissue: `${SPARQLIST_BASE_URL}/Tissue_Onto`,
+  Cellular: `${SPARQLIST_BASE_URL}/GO_Cell_Location`,
+  Chibe: `${SPARQLIST_BASE_URL}/Chebi_sm`,
+  Enzyme: `${SPARQLIST_BASE_URL}/Uniprot_enzyme`,
+  Categories: `${SPARQLIST_BASE_URL}/PW_category`,
 };
 
 // Define name properties for each endpoint type
@@ -41,21 +46,12 @@ const NAME_PROPERTIES = {
   ProteinModOntology: "PMOD_name",
   Tissue: "text",
   Cellular: "cell_localization_name",
-  Chibe: "molecule_name",
+  Chibe: "Molecule_name",
+  Enzyme: "enz_name",
+  Categories: "text"
 };
 
-const fetcher = (url) =>
-  axios.get(url).then((res) => {
-    // Special handling for ChEBI data format
-    if (url.includes("chebi.json")) {
-      // Transform the SPARQL results into the format expected by the component
-      return res.data.results.bindings.map((item) => ({
-        molecule_id: item.molecule_id.value,
-        molecule_name: item.molecule_name.value,
-      }));
-    }
-    return res.data;
-  });
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
   const [query, setQuery] = useState("");
@@ -65,16 +61,35 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
   // Get the appropriate name property based on itemType
   const nameProperty = itemType ? NAME_PROPERTIES[itemType] : null;
 
+  // Determine the SWR key based on itemType and query
+  const swrKey =
+    itemType === "Enzyme"
+      ? query.length >= 3
+        ? [itemType, query]
+        : null
+      : itemType;
+
   const {
     data: items = [],
     isLoading,
     error,
-  } = useSWR(itemType ? API_ENDPOINTS[itemType] : null, fetcher, {
-    revalidateOnFocus: false,
-    dedupingInterval: 86400000, // 24h
-  });
+  } = useSWR(
+    swrKey,
+    (key) => {
+      if (Array.isArray(key)) {
+        const [type, q] = key;
+        return fetcher(`${API_ENDPOINTS[type]}?input_text=${q}`);
+      } else {
+        return fetcher(API_ENDPOINTS[key]);
+      }
+    },
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 86400000, // 24h
+    }
+  );
 
-  // Consolidated effect to handle both itemType changes and value synchronization
+  // Handle itemType changes and value synchronization
   useEffect(() => {
     // When itemType changes (including initial load)
     if (prevItemType !== itemType) {
@@ -89,70 +104,65 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
         // Notify parent only when we're changing from a valid selection
         if (value && onChange) {
           onChange({
-            target: {
-              name,
-              value: null,
-            },
+            target: { name, value: null },
           });
         }
       }
-    }
-    // Handle external value changes
-    else if (JSON.stringify(value) !== JSON.stringify(selectedItem)) {
+    } else if (JSON.stringify(value) !== JSON.stringify(selectedItem)) {
       setSelectedItem(value);
     }
   }, [itemType, prevItemType, value, selectedItem, onChange, name]);
 
-  // Helper function to get the name value safely
+  // Helper function to get item name
   const getItemName = (item) => {
     if (!item || !nameProperty) return "";
     return item[nameProperty] || "";
   };
 
-  // Filter the entire dataset first, then slice for display
+  // Filter items based on itemType
   const filteredItems =
-    query === ""
-      ? items.slice(0, 200) // Just show first 200 when no search query
+    itemType === "Enzyme"
+      ? items.slice(0, 200)
+      : query === ""
+      ? items.slice(0, 200)
       : items
           .filter((item) => {
             const itemName = getItemName(item);
             return itemName.toLowerCase().includes(query.toLowerCase());
           })
-          .slice(0, 200); // Limit displayed results to first 200 matches
+          .slice(0, 200);
 
   const totalMatchCount =
-    query === ""
+    itemType === "Enzyme"
+      ? items.length
+      : query === ""
       ? items.length
       : items.filter((item) => {
           const itemName = getItemName(item);
           return itemName.toLowerCase().includes(query.toLowerCase());
         }).length;
 
-  const hasMoreResults = totalMatchCount > 200;
+  const hasMoreResults = itemType !== "Enzyme" && totalMatchCount > 200;
 
-  const isDisabled = !itemType || isLoading || error;
+  const isDisabled = !itemType || error;
 
   const getPlaceholderText = () => {
     if (!itemType) return "Please select category";
-    if (isLoading) return "Loading...";
     if (error) return `Error: ${error.message}`;
     return placeholder || `Search for a ${itemType.toLowerCase()}...`;
   };
 
   const handleClearSearch = (e) => {
-    e.stopPropagation(); // Prevent triggering other click handlers
+    e.stopPropagation();
     setQuery("");
   };
 
   const handleClearSelection = (e) => {
-    e.stopPropagation(); // Prevent triggering other click handlers
+    e.stopPropagation();
     setSelectedItem(null);
     if (onChange) {
       onChange({
-        target: {
-          name,
-          value: null,
-        },
+        target: { name, value: null },
       });
     }
   };
@@ -160,9 +170,12 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
   return (
     <div className="relative w-full">
       <div className="relative">
-        {/* Search Icon */}
         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
-          <SearchIcon size={16} />
+          {isLoading ? (
+            <Loader2 className="animate-spin" size={16} />
+          ) : (
+            <SearchIcon size={16} />
+          )}
         </div>
 
         <Combobox
@@ -172,10 +185,7 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
             setSelectedItem(val);
             if (onChange) {
               onChange({
-                target: {
-                  name,
-                  value: val,
-                },
+                target: { name, value: val },
               });
             }
           }}
@@ -236,7 +246,7 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
                   <ComboboxOption
                     key={`${getItemName(item)}-${idx}`}
                     value={item}
-                    as="div" // Explicitly use div instead of default button
+                    as="div"
                   >
                     {({ selected, active }) => (
                       <div

@@ -8,16 +8,16 @@ const ProteinSearchTable = ({
   setOpenTablePagination,
   onProteinSelect,
   reactantData,
+  site
 }) => {
   const tableRef = useRef(null);
   const [error, setError] = useState(null);
 
   // Define table columns as a JSON string
   const columns = JSON.stringify([
-    { id: "index", label: "Protein", escape: false },
-    { id: "protein_name", label: "Protein Name" },
+    { id: "index", label: "Protein Name (Selector)", escape: false },
     { id: "protein_id", label: "UniProt ID", link: "protein_uri", target: "_blank" },
-    { id: "taxon_name", label: "Organism", type: "category", rowspan: true },
+    { id: "taxon_name", label: "Species", type: "category" },
     { id: "DNA_name", label: "Gene Name" },
   ]);
 
@@ -25,7 +25,7 @@ const ProteinSearchTable = ({
   const inputText = reactantData?.proteinSymbolicName
     ? encodeURIComponent(reactantData.proteinSymbolicName)
     : "";
-  const dataUrl = `https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/uniprot_keyword_search?input_text=${inputText}&input_site=reactant`;
+  const dataUrl = `https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/uniprot_keyword_search?input_text=${inputText}&input_site=${site}`;
 
   // Close the modal
   const closeModal = () => {

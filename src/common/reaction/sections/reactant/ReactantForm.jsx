@@ -2,6 +2,7 @@ import FormElement from "../../components/FormElement";
 import Complex from "./reactant-type/Complex";
 import Dna from "./reactant-type/Dna";
 import Glycan from "./reactant-type/Glycan";
+import Lipid from "./reactant-type/Lipid";
 import Protein from "./reactant-type/Protein";
 import SmallMolecule from "./reactant-type/SmallMolecule";
 
@@ -80,11 +81,15 @@ const ReactantForm = ({
           <option value="glycan">Glycan</option>
           <option value="small_molecule">Small molecule</option>
           <option value="dna">DNA</option>
+          <option value="lipid">Lipid</option>
         </FormElement>
       </div>
 
       {reactantData.reactantType === "complex" && (
         <Complex reactantData={reactantData} handleChange={handleChange} />
+      )}
+      {reactantData.reactantType === "lipid" && (
+        <Lipid reactantData={reactantData} handleChange={handleChange} />
       )}
       {reactantData.reactantType === "protein" && (
         <Protein reactantData={reactantData} handleChange={handleChange} />

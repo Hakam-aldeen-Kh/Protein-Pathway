@@ -57,7 +57,7 @@ const Protein = ({ reactantData, handleChange }) => {
         </div>
       </div>
 
-      <div>
+      {/* <div>
         <span className="font-bold text-xs block py-4">
           Protein Modification
         </span>
@@ -83,9 +83,10 @@ const Protein = ({ reactantData, handleChange }) => {
             placeholder="Select Modifying Type"
           />
         </div>
-      </div>
+      </div> */}
 
       <ProteinSearchTable
+        site="reactant"
         isOpen={isOpen}
         setOpenTablePagination={setOpenTablePagination}
         onProteinSelect={handleProteinSelect}

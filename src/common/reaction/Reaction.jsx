@@ -18,7 +18,7 @@ const Reaction = ({
             <TabItem label="Reactants">
                 <Reactants reactions={reactions} reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} />
             </TabItem>
-            <TabItem label="Controllers">
+            <TabItem label="Controller">
                 <Controllers reactions={reactions} reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} />
             </TabItem>
             <TabItem label="Products">

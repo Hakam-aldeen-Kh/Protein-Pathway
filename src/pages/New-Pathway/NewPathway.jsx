@@ -1,27 +1,31 @@
-import { useState } from 'react';
-import { PlusIcon } from '@heroicons/react/24/outline';
-import { useNavigate, useOutletContext } from 'react-router';
+import { useState } from "react";
+import { PlusIcon } from "@heroicons/react/24/outline";
+import { useNavigate, useOutletContext } from "react-router";
 
-import BasicInfoForm from './sections/BasicInfoForm';
-import Accordion from '../../common/Accordion';
-import DeleteModal from '../../common/DeleteModal';
-import Reaction from '../../common/reaction/Reaction';
-
+import BasicInfoForm from "./sections/BasicInfoForm";
+import Accordion from "../../common/Accordion";
+import DeleteModal from "../../common/DeleteModal";
+import Reaction from "../../common/reaction/Reaction";
 
 const NewPathway = () => {
-
   const { pathwayData, setPathwayData, cancleCreation } = useOutletContext();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [deleteModalData, setDeleteModalData] = useState({
     isModalOpen: false,
     closeModal: () => console.log("click"),
     title: "",
-    handleDelete: () => console.log("click")
+    handleDelete: () => console.log("click"),
   });
 
-  const handleChange = (e, reactionId = null, type = null, index = null, v = null) => {
+  const handleChange = (
+    e,
+    reactionId = null,
+    type = null,
+    index = null,
+    v = null
+  ) => {
     const { name, value, checked } = e.target;
 
     setPathwayData((prevPathwayData) => {
@@ -34,27 +38,30 @@ const NewPathway = () => {
         reactions: prevPathwayData.reactions.map((reaction) =>
           reaction.id === reactionId
             ? {
-              ...reaction,
-              [type]: reaction[type].map((item, i) =>
-                i === index ? { ...item, [name]: value === "on" ? v ? v : checked : value } : item
-              ),
-            }
+                ...reaction,
+                [type]: reaction[type].map((item, i) =>
+                  i === index
+                    ? {
+                        ...item,
+                        [name]: value === "on" ? (v ? v : checked) : value,
+                      }
+                    : item
+                ),
+              }
             : reaction
         ),
       };
-
-
     });
   };
 
   const handleSubmit = () => {
-    console.log("pathwayData : ", pathwayData)
-    navigate("/review")
-  }
-
+    console.log("pathwayData : ", pathwayData);
+    navigate("/review");
+  };
 
   const addReaction = () => {
-    let reactionId = pathwayData.reactions[pathwayData.reactions.length - 1]?.id + 1 || 0
+    let reactionId =
+      pathwayData.reactions[pathwayData.reactions.length - 1]?.id + 1 || 1;
 
     setPathwayData((prevPathwayData) => {
       return {
@@ -63,11 +70,11 @@ const NewPathway = () => {
           ...prevPathwayData.reactions,
           {
             id: reactionId,
-            reactants: [{ id: 0, name: `reactant_${reactionId}.0` }],
-            controllers: [{ id: 0, name: `controller_${reactionId}.0` }],
-            products: [{ id: 0, name: `product_${reactionId}.0` }]
-          }
-        ]
+            reactants: [{ id: 1, name: `reactant_${reactionId}.1` }],
+            controllers: [{ id: 1, name: `controller_${reactionId}.1` }],
+            products: [{ id: 1, name: `product_${reactionId}.1` }],
+          },
+        ],
       };
     });
 
@@ -78,31 +85,43 @@ const NewPathway = () => {
     setDeleteModalData({
       isModalOpen: true,
       title: "Reaction",
-      closeModal: () => setDeleteModalData((prev) => ({ ...prev, isModalOpen: false })),
+      closeModal: () =>
+        setDeleteModalData((prev) => ({ ...prev, isModalOpen: false })),
       handleDelete: () => {
         setPathwayData((prevPathwayData) => ({
           ...prevPathwayData,
-          reactions: prevPathwayData.reactions.filter((reaction) => reaction.id !== id)
+          reactions: prevPathwayData.reactions.filter(
+            (reaction) => reaction.id !== id
+          ),
         }));
-      }
-    })
+      },
+    });
   };
 
   const handelCancelPathway = () => {
-    cancleCreation()
-    navigate("/")
-  }
+    cancleCreation();
+    navigate("/");
+  };
 
   return (
     <div className="min-h-screen px-32 py-10">
       <div className="w-full mx-auto">
         <div className="p-6 space-y-6">
-
           <div className="flex justify-between items-center sticky top-0 bg-white px-2 py-5 z-10">
             <h1 className="text-4xl font-black">Add New Pathway</h1>
             <div className="space-x-2">
-              <button className="px-4 py-2 text-gray-600 hover:text-gray-800" onClick={handelCancelPathway}>Cancel</button>
-              <button className="px-4 py-2 bg-[#57369E] text-white rounded" onClick={handleSubmit}>Review</button>
+              <button
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                onClick={handelCancelPathway}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-[#57369E] text-white rounded"
+                onClick={handleSubmit}
+              >
+                Review
+              </button>
             </div>
           </div>
 
@@ -111,7 +130,12 @@ const NewPathway = () => {
 
           {/* Reactions */}
           {pathwayData?.reactions?.map((reaction, index) => (
-            <Accordion key={reaction.id} title={`Reaction - ${reaction.id}`} className='border bg-[#DDD7EC] rounded-lg mb-4' deleteFn={() => deleteReaction(reaction.id)}>
+            <Accordion
+              key={reaction.id}
+              title={`Reaction - ${reaction.id}`}
+              className="border bg-[#DDD7EC] rounded-lg mb-4"
+              deleteFn={() => deleteReaction(reaction.id)}
+            >
               <Reaction
                 reactions={pathwayData?.reactions}
                 reactionIndex={index}
@@ -124,19 +148,19 @@ const NewPathway = () => {
             </Accordion>
           ))}
 
-          <button onClick={addReaction} className="mt-4 bg-white border border-[#57369E] text-[#57369E] flex items-center justify-center p-3 mx-auto font-bold">
+          <button
+            onClick={addReaction}
+            className="mt-4 bg-white border border-[#57369E] text-[#57369E] flex items-center justify-center p-3 mx-auto font-bold"
+          >
             <PlusIcon className="h-5 w-5 mr-1" />
             <span>Add New Reaction</span>
           </button>
-
         </div>
       </div>
 
-
       <DeleteModal data={deleteModalData} />
-
     </div>
   );
-}
+};
 
 export default NewPathway;

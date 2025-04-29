@@ -92,8 +92,7 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
             <tr className="text-left text-sm font-semibold">
               <th className="p-3">RXN ID</th>
               <th className="p-3">Reactant</th>
-              <th className="p-3">Enzyme</th>
-              <th className="p-3">Sugar Nucleotide</th>
+              <th className="p-3">Controller</th>
               <th className="p-3">Product</th>
               <th className="p-3">Cell Location</th>
               {isEdit && <th className="p-3">Actions</th>}
