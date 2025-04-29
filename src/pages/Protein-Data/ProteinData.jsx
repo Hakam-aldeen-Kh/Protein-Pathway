@@ -26,16 +26,23 @@ const ProteinData = () => {
     setCategory,
     years,
     setYear,
+    handleChangeTab,
+    isLoading,
   } = usePathwayData();
 
-  if (!pathwayData) return <LoadingProcess />;
+  if (isLoading) return <LoadingProcess />;
+  if (!pathwayData) return <NotFoundData />;
 
   return (
     <div className="flex overflow-hidden flex-col justify-center bg-white">
       <div className="flex flex-col w-full max-md:max-w-full">
         <HeroSection title="Protein Pathway Data" />
         <div className="flex flex-col px-32 mt-10 w-full max-md:px-5 max-md:max-w-full">
-          <PathwayTabs activeTab={activeTab} loginState={isAuthenticated} />
+          <PathwayTabs
+            activeTab={activeTab}
+            loginState={isAuthenticated}
+            onTabChange={handleChangeTab}
+          />
           <div className="flex flex-col mt-2.5 w-full rounded-lg max-md:max-w-full">
             <SearchAndFilters
               onSearch={handleSearch}

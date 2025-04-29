@@ -16,6 +16,8 @@ export const usePathwayData = () => {
   const [categories, setCategories] = useState([]);
   const [years, setYears] = useState([]);
   const [allPathways, setAllPathways] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  // const [pathwayState, setPathwayState] = useState("all");
   const { isAuthenticated } = useAuth();
   const hasFetchedAllPathways = useRef(false); // Ref to track if fetch has occurred
 
@@ -72,13 +74,20 @@ export const usePathwayData = () => {
 
       try {
         const response = await api.get(
-          `pathway/protein?pageNumber=${pageNumber}&pageSize=${itemsPerPage}${categoryParam}${searchParam}${yearParam}&orderBy=${orderBy}&orderDirection=${orderDirection}`
+          `${
+            activeTab === "my"
+              ? `user/pathway/protein?pageNumber=${pageNumber}&pageSize=${itemsPerPage}${categoryParam}${searchParam}${yearParam}&orderBy=${orderBy}&orderDirection=${orderDirection}`
+              : `pathway/protein?pageNumber=${pageNumber}&pageSize=${itemsPerPage}${categoryParam}${searchParam}${yearParam}&orderBy=${orderBy}&orderDirection=${orderDirection}`
+          }`
         );
         setPathwayData(response.data.data.pathways);
         setTotalCount(response.data.data.totalCount);
         setItemsPerPage(response.data.data.pageSize);
       } catch (error) {
         console.error("Error fetching pathway data:", error);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchData();
@@ -90,11 +99,16 @@ export const usePathwayData = () => {
     category,
     searchQuery,
     year,
+    activeTab,
   ]);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
     setPageNumber(1);
+  };
+
+  const handleChangeTab = (state) => {
+    if (state !== activeTab) setActiveTab(state);
   };
 
   return {
@@ -116,6 +130,8 @@ export const usePathwayData = () => {
     year,
     setYear,
     years,
+    isLoading,
     categories,
+    handleChangeTab,
   };
 };
