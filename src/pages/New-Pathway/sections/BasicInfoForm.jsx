@@ -44,6 +44,7 @@ const BasicInfoForm = ({ data, handleChange }) => {
             type="select"
             label="Species"
             name="species"
+            placeholder="Select Species"
             value={data?.species}
             handleChange={handleChange}
           >

@@ -7,9 +7,10 @@ const ControllerForm = ({
   reaction,
   controllerData,
   controllerIndex,
+  addReaction,
+  reactions
 }) => {
-  const handleChange = (e) =>
-    handleChangeData(e, reaction.id, "controllers", controllerIndex);
+  const handleChange = (e) => handleChangeData(e, reaction.id, "controllers", controllerIndex);
 
   const [isOpen, setOpenTablePagination] = useState(false);
 
@@ -33,6 +34,33 @@ const ControllerForm = ({
 
     setOpenTablePagination(false); // Close the modal after selection
   };
+
+  const handleChangeCheckBox = (e) => {
+    handleChange(e)
+
+    // if check then create reaction +1 if not created and add this controller in reactants
+    const foundNextReaction = reactions.find(item => item.id === reaction.id + 1)
+    let targetReactionId = reaction.id + 1
+
+    if (!foundNextReaction) {
+      targetReactionId = addReaction()
+      handleChangeData({ target: { value: targetReactionId, name: "targetReactionId" } }, reaction.id, "controllers", controllerIndex)
+
+    }
+
+    if (e.target.checked) {
+      console.log("checked");
+      handleChangeData({ target: { value: `(Controller - ${reaction.id}.${controllerData.id} of Reaction ${reaction.id})`, name: "reference" } }, targetReactionId, "reactants", 0);
+      handleChangeData({ target: { value: reaction.id, name: "fromReaction" } }, targetReactionId, "reactants", 0);
+    }
+
+    else {
+      console.log("use checked");
+      handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "reactants", 0);
+      handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "controllers", 0);
+    }
+
+  }
 
   return (
     <div className="space-y-4 p-4">
@@ -197,7 +225,7 @@ const ControllerForm = ({
           placeholder={"Use this Controller as a reactant in the next reaction"}
           name="useNextReaction"
           value={controllerData?.useNextReaction}
-          handleChange={handleChange}
+          handleChange={handleChangeCheckBox}
         />
       </div>
     </div>

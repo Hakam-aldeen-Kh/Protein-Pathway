@@ -27,20 +27,19 @@ const Reactants = ({
       reactions: prevPathwayData.reactions.map((reaction) =>
         reaction.id === reactionId
           ? {
-              ...reaction,
-              reactants: [
-                ...reaction.reactants,
-                {
-                  id:
-                    reaction.reactants[reaction.reactants.length - 1]?.id + 1 ||
-                    1,
-                  name: `reactant_${reactionId}.${
-                    reaction.reactants[reaction.reactants.length - 1]?.id + 1 ||
-                    1
+            ...reaction,
+            reactants: [
+              ...reaction.reactants,
+              {
+                id:
+                  reaction.reactants[reaction.reactants.length - 1]?.id + 1 ||
+                  1,
+                name: `reactant_${reactionId}.${reaction.reactants[reaction.reactants.length - 1]?.id + 1 ||
+                  1
                   }`,
-                },
-              ],
-            }
+              },
+            ],
+          }
           : reaction
       ),
     }));
@@ -57,11 +56,11 @@ const Reactants = ({
           reactions: prevPathwayData.reactions.map((reaction) =>
             reaction.id === reactionId
               ? {
-                  ...reaction,
-                  reactants: reaction.reactants.filter(
-                    (reactant) => reactant.id !== reactantId
-                  ),
-                }
+                ...reaction,
+                reactants: reaction.reactants.filter(
+                  (reactant) => reactant.id !== reactantId
+                ),
+              }
               : reaction
           ),
         }));
@@ -75,10 +74,7 @@ const Reactants = ({
         <Accordion
           key={index}
           className="border rounded-lg mb-10"
-          reference={
-            isFindReference(item.fromReaction, item.fromProduct) &&
-            item.reference
-          }
+          reference={item.reference || ""}
           variant="gray"
           deleteFn={() => deleteReactant(reaction.id, item.id)}
           title={`Reactant - ${reaction.id}.${item.id}`}

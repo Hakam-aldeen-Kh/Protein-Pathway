@@ -220,7 +220,7 @@ const ProductForm = ({
         </div>
       </div> */}
 
-      <div className="grid grid-cols-2 gap-4">
+      {/* <div className="grid grid-cols-2 gap-4">
         <FormElement
           isRequired={false}
           type="checkbox"
@@ -230,7 +230,7 @@ const ProductForm = ({
           value={productData?.useNextReaction}
           handleChange={handleChangeWithConfirm}
         />
-      </div>
+      </div> */}
 
       {productData.useNextReaction && (
         <div className="grid grid-cols-2 gap-4">

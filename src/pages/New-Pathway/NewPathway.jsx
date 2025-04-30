@@ -38,16 +38,16 @@ const NewPathway = () => {
         reactions: prevPathwayData.reactions.map((reaction) =>
           reaction.id === reactionId
             ? {
-                ...reaction,
-                [type]: reaction[type].map((item, i) =>
-                  i === index
-                    ? {
-                        ...item,
-                        [name]: value === "on" ? (v ? v : checked) : value,
-                      }
-                    : item
-                ),
-              }
+              ...reaction,
+              [type]: reaction[type].map((item, i) =>
+                i === index
+                  ? {
+                    ...item,
+                    [name]: value === "on" ? (v ? v : checked) : value,
+                  }
+                  : item
+              ),
+            }
             : reaction
         ),
       };

@@ -8,7 +8,9 @@ const Controllers = ({
   handleChangeData,
   setDeleteModalData,
   setPathwayData,
+  addReaction
 }) => {
+
   const isFindReference = (fromReaction, fromProduct) => {
     // Find the reaction with id 0
     const reaction = reactions.find((r) => r.id === fromReaction);
@@ -27,20 +29,19 @@ const Controllers = ({
       reactions: prevPathwayData.reactions.map((reaction) =>
         reaction.id === reactionId
           ? {
-              ...reaction,
-              controllers: [
-                ...reaction.controllers,
-                {
-                  id:
-                    reaction.controllers[reaction.controllers.length - 1]?.id +
-                      1 || 1,
-                  name: `controller_${reactionId}.${
-                    reaction.controllers[reaction.controllers.length - 1]?.id +
-                      1 || 1
+            ...reaction,
+            controllers: [
+              ...reaction.controllers,
+              {
+                id:
+                  reaction.controllers[reaction.controllers.length - 1]?.id +
+                  1 || 1,
+                name: `controller_${reactionId}.${reaction.controllers[reaction.controllers.length - 1]?.id +
+                  1 || 1
                   }`,
-                },
-              ],
-            }
+              },
+            ],
+          }
           : reaction
       ),
     }));
@@ -57,11 +58,11 @@ const Controllers = ({
           reactions: prevPathwayData.reactions.map((reaction) =>
             reaction.id === reactionId
               ? {
-                  ...reaction,
-                  controllers: reaction.controllers.filter(
-                    (controller) => controller.id !== controllerId
-                  ),
-                }
+                ...reaction,
+                controllers: reaction.controllers.filter(
+                  (controller) => controller.id !== controllerId
+                ),
+              }
               : reaction
           ),
         }));
@@ -88,6 +89,8 @@ const Controllers = ({
             reaction={reaction}
             controllerData={item}
             controllerIndex={index}
+            addReaction={addReaction}
+            reactions={reactions}
           />
         </Accordion>
       ))}
