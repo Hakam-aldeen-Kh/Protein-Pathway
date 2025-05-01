@@ -22,7 +22,7 @@ const Reaction = ({
                 <Controllers reactions={reactions} reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} addReaction={addReaction} />
             </TabItem>
             <TabItem label="Products">
-                <Products reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} addReaction={addReaction} />
+                <Products reactions={reactions} reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} addReaction={addReaction} />
             </TabItem>
         </Tabs>
     )

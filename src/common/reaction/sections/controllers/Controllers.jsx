@@ -11,14 +11,14 @@ const Controllers = ({
   addReaction
 }) => {
 
-  const isFindReference = (fromReaction, fromProduct) => {
-    // Find the reaction with id 0
-    const reaction = reactions.find((r) => r.id === fromReaction);
-    if (!reaction) return false;
+  // const isFindReference = (fromReaction, fromProduct) => {
+  //   // Find the reaction with id 0
+  //   const reaction = reactions.find((r) => r.id === fromReaction);
+  //   if (!reaction) return false;
 
-    // Check if the reaction has a product with id 0
-    return reaction.products.some((p) => p.id === fromProduct);
-  };
+  //   // Check if the reaction has a product with id 0
+  //   return reaction.products.some((p) => p.id === fromProduct);
+  // };
 
   const closeModal = () =>
     setDeleteModalData((prev) => ({ ...prev, isModalOpen: false }));
@@ -76,10 +76,7 @@ const Controllers = ({
         <Accordion
           key={index}
           className="border rounded-lg mb-10"
-          reference={
-            isFindReference(item.fromReaction, item.fromProduct) &&
-            item.reference
-          }
+          reference={item.reference || ""}
           variant="gray"
           deleteFn={() => deleteController(reaction.id, item.id)}
           title={`Controller - ${reaction.id}.${item.id}`}

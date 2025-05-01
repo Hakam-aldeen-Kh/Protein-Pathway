@@ -1,10 +1,10 @@
 import Accordion from "../../../Accordion";
 import { PlusIcon } from "lucide-react";
 import ProductForm from "./ProductForm";
-import Modal from "react-modal";
-import { useState } from "react";
+// import Modal from "react-modal";
+// import { useState } from "react";
 
-const Products = ({ reaction, handleChangeData, setDeleteModalData, addReaction, setPathwayData }) => {
+const Products = ({ reaction, reactions, handleChangeData, setDeleteModalData, addReaction, setPathwayData }) => {
 
 
   const closeModal = () => setDeleteModalData((prev) => ({ ...prev, isModalOpen: false }))
@@ -57,40 +57,40 @@ const Products = ({ reaction, handleChangeData, setDeleteModalData, addReaction,
   };
 
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [pendingCheck, setPendingCheck] = useState({
-    change: () => console.log("change")
-  });
+  // const [modalIsOpen, setModalIsOpen] = useState(false);
+  // const [pendingCheck, setPendingCheck] = useState({
+  //   change: () => console.log("change")
+  // });
 
-  const openModal = () => setModalIsOpen(true);
-  const closeCheckModal = () => setModalIsOpen(false);
+  // const openModal = () => setModalIsOpen(true);
+  // const closeCheckModal = () => setModalIsOpen(false);
 
-  const confirmChange = () => {
-    pendingCheck.change()
-    setModalIsOpen(false);
-  };
+  // const confirmChange = () => {
+  //   pendingCheck.change()
+  //   setModalIsOpen(false);
+  // };
 
-  const handleCheckboxChange = (reactionId, field, index, e, checked) => {
-    openModal();
-    setPendingCheck({
-      change: () => {
-        handleChangeData(e, reactionId, field, index, checked)
-        // handleChangeData({ target: { value: `controller_${reactionId + 1}.0`, name: "controller" } }, reactionId, field, index)
-        const targetReactionId = addReaction()
-        handleChangeData({ target: { value: targetReactionId, name: "targetReactionId" } }, reactionId, field, index)
+  // const handleCheckboxChange = (reactionId, field, index, e, checked) => {
+  //   openModal();
+  //   setPendingCheck({
+  //     change: () => {
+  //       handleChangeData(e, reactionId, field, index, checked)
+  //       // handleChangeData({ target: { value: `controller_${reactionId + 1}.0`, name: "controller" } }, reactionId, field, index)
+  //       const targetReactionId = addReaction()
+  //       handleChangeData({ target: { value: targetReactionId, name: "targetReactionId" } }, reactionId, field, index)
 
-      },
-    });
-  };
+  //     },
+  //   });
+  // };
 
   return (
     <div className='bg-white rounded-lg pb-2 rounded-tl-none p-5'>
       {reaction.products.map((item, index) => (
         <div key={index}>
           <Accordion className='border rounded-lg mb-10' variant="gray" deleteFn={() => deleteProduct(reaction.id, item.id)} title={`Product - ${reaction.id}.${item.id}`}>
-            <ProductForm handleChangeData={handleChangeData} reaction={reaction} productData={item} productIndex={index} handleCheckboxChange={handleCheckboxChange} />
+            <ProductForm handleChangeData={handleChangeData} reactions={reactions} addReaction={addReaction} reaction={reaction} productData={item} productIndex={index} />
           </Accordion>
-          <Modal
+          {/* <Modal
             isOpen={modalIsOpen}
             onRequestClose={closeCheckModal}
             ariaHideApp={false}
@@ -105,7 +105,7 @@ const Products = ({ reaction, handleChangeData, setDeleteModalData, addReaction,
               <button onClick={confirmChange} className="px-4 w-[48%] py-2 bg-[#57369E] text-white rounded">Confirm</button>
             </div>
 
-          </Modal>
+          </Modal> */}
         </div>
       ))}
       <button onClick={() => addProduct(reaction.id)} className="flex items-center text-blue-600 hover:text-blue-700 mt-5">

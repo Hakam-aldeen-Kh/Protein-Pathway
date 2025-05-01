@@ -3,20 +3,19 @@ import Accordion from "../../../Accordion";
 import ReactantForm from "./ReactantForm";
 
 const Reactants = ({
-  reactions,
   reaction,
   handleChangeData,
   setDeleteModalData,
   setPathwayData,
 }) => {
-  const isFindReference = (fromReaction, fromProduct) => {
-    // Find the reaction with specified ID
-    const reaction = reactions.find((r) => r.id === fromReaction);
-    if (!reaction) return false;
+  // const isFindReference = (fromReaction, fromProduct) => {
+  //   // Find the reaction with specified ID
+  //   const reaction = reactions.find((r) => r.id === fromReaction);
+  //   if (!reaction) return false;
 
-    // Check if the reaction has a product with specified ID
-    return reaction.products.some((p) => p.id === fromProduct);
-  };
+  //   // Check if the reaction has a product with specified ID
+  //   return reaction.products.some((p) => p.id === fromProduct);
+  // };
 
   const closeModal = () =>
     setDeleteModalData((prev) => ({ ...prev, isModalOpen: false }));
