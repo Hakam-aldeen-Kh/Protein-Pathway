@@ -5,22 +5,33 @@ import Pagination from "../../common/pagination/Pagination";
 import AddPathwayButton from "../../common/AddPathwayButton";
 import PathwayTabs from "../../common/pathway-table/PathwayTabs";
 import SearchAndFilters from "../../common/search-and-filter/SearchAndFilters";
-
+import LoadingProcess from "../../common/LoadingProcess";
 import { usePathwayData } from "../../hooks/usePathwayData";
 
 const ProteinData = () => {
   const {
-    handleTabChange,
     handleSearch,
-    handleFilterSelect,
-    setCurrentPage,
-    currentPage,
-    displayedPathways,
-    filteredPathways,
-    itemsPerPage,
+    pathwayData,
     activeTab,
     isAuthenticated,
+    setPageNumber,
+    setOrderDirection,
+    orderBy,
+    setOrderBy,
+    orderDirection,
+    totalCount,
+    pageNumber,
+    itemsPerPage,
+    categories,
+    setCategory,
+    years,
+    setYear,
+    handleChangeTab,
+    isLoading,
   } = usePathwayData();
+
+  if (isLoading) return <LoadingProcess />;
+  if (!pathwayData) return <NotFoundData />;
 
   return (
     <div className="flex overflow-hidden flex-col justify-center bg-white">
@@ -30,24 +41,33 @@ const ProteinData = () => {
           <PathwayTabs
             activeTab={activeTab}
             loginState={isAuthenticated}
-            onTabChange={handleTabChange}
+            onTabChange={handleChangeTab}
           />
           <div className="flex flex-col mt-2.5 w-full rounded-lg max-md:max-w-full">
             <SearchAndFilters
               onSearch={handleSearch}
-              onFilterSelect={handleFilterSelect}
               onAddPathway={() => console.log("Adding new pathway")}
+              categories={categories}
+              dates={years}
+              setCategory={setCategory}
+              setYear={setYear}
             />
-            {filteredPathways.length > 0 ? (
+            {pathwayData.length > 0 ? (
               <>
-                <PathwayTable pathways={displayedPathways} />
+                <PathwayTable
+                  pathways={pathwayData}
+                  orderBy={orderBy}
+                  orderDirection={orderDirection}
+                  setOrderBy={setOrderBy}
+                  setOrderDirection={setOrderDirection}
+                />
                 <Pagination
                   itemsPerPage={itemsPerPage}
-                  onPageChange={setCurrentPage}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  totalItems={filteredPathways.length}
-                  filteredPathways={filteredPathways.length}
+                  onPageChange={setPageNumber}
+                  currentPage={pageNumber}
+                  setCurrentPage={setPageNumber}
+                  totalItems={totalCount}
+                  filteredPathways={pathwayData.length}
                 />
               </>
             ) : (

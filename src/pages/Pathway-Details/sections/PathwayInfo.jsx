@@ -4,11 +4,10 @@ import Graph from "../../../common/Graph";
 import { layouts } from "../../Pathway-Result/components/layouts";
 
 import { reactionsDataToCytoscapeFormat } from "../../../utils/reactionsDataToCytoscapeFormat";
-
+import { capitalize } from "../../../hooks/useCapitalize";
 
 const PathwayInfo = ({ pathway, id }) => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const pathwayData = [
     { label: "Species", value: pathway?.species || "no value" },
     { label: "Pathway Category:", value: pathway?.category?.text || "no value" },
@@ -29,19 +28,17 @@ const PathwayInfo = ({ pathway, id }) => {
 
   const handleGoToPathwayResult = () => {
     if (id) {
-      navigate(`/pathway-result/${id}`, { state: { data: pathway } })
+      navigate(`/pathway-result/${id}`, { state: { data: pathway } });
+    } else {
+      navigate("/pathway-result");
     }
-    else {
-      navigate("/pathway-result")
-    }
-  }
+  };
 
   return (
     <div className="flex flex-col w-full max-md:max-w-full">
       <div className="flex flex-col w-full max-md:max-w-full">
         <h2 className="text-2xl font-bold text-neutral-900">Pathway Info</h2>
         <div className="flex flex-wrap gap-5 mt-2 w-full max-md:max-w-full">
-
           <div className="flex flex-col flex-1 shrink self-start text-base basis-0 min-w-[240px] max-md:max-w-full">
             {pathwayData.map((item, index) => (
               <div
@@ -49,10 +46,10 @@ const PathwayInfo = ({ pathway, id }) => {
                 className="flex flex-wrap gap-2 items-center mt-5 w-full max-md:max-w-full"
               >
                 <div className="self-stretch my-auto w-60 text-zinc-600">
-                  {item.label}
+                  {capitalize(item.label)}
                 </div>
                 <div className="flex-1 shrink gap-2.5 self-stretch p-2 my-auto rounded-lg bg-slate-100 min-w-[240px] text-neutral-900 max-md:max-w-full">
-                  {item.value}
+                  {capitalize(item.value)}
                 </div>
               </div>
             ))}
@@ -60,7 +57,14 @@ const PathwayInfo = ({ pathway, id }) => {
 
           <div className="flex relative flex-1 shrink gap-5 min-h-[280px] rounded h-full basis-0 min-w-[240px] max-md:max-w-full mt-5 border">
             <div className="w-full  object-contain cursor-pointer z-0 flex-1 shrink p-1 basis-0 min-w-[240px] max-md:max-w-full relative">
-              <Graph elements={pathway.reactionsA || reactionsDataToCytoscapeFormat(pathway.reactions)} layout={layouts.klay} touch={false} />
+              <Graph
+                elements={
+                  pathway.reactionsA ||
+                  reactionsDataToCytoscapeFormat(pathway.reactions)
+                }
+                layout={layouts.klay}
+                touch={false}
+              />
             </div>
 
             <div className="flex absolute top-2 right-2 z-0 gap-2.5 items-center self-start">
@@ -79,11 +83,10 @@ const PathwayInfo = ({ pathway, id }) => {
               </button>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default PathwayInfo;
