@@ -16,11 +16,17 @@ const PreviewPathway = () => {
   // const [pathwayClone, setPathwayClone] = useState(pathwayData)
   const [pathwayData, setPathwayData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get(`pathway/protein/${id}`);
+        const response = await api.get(`user/pathway/protein/${id}`);
+        const checkIsOwner = response.data.data.isOwner;
+        console.log(checkIsOwner);
+        if (checkIsOwner) {
+          setIsEdit(true);
+        }
         setPathwayData(response.data.data.pathway);
       } catch (error) {
         console.error(error);
@@ -74,7 +80,7 @@ const PreviewPathway = () => {
     <div className="flex flex-col px-32 py-[40px] max-md:px-5">
       <PathwayDetails
         pathway={pathwayData}
-        // isEdit={isEdit}
+        isEdit={isEdit}
         id={id}
         pageState={"preview"}
         // setPathwayClone={setPathwayClone}
