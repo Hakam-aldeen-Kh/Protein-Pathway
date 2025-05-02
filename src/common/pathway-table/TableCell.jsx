@@ -2,36 +2,33 @@ import { Link } from "react-router";
 
 const TableCell = ({
   content,
-  isArray = false,
   link,
-  id,
+  _id,
   title,
   dataType = "pathway",
-}) => (
-  <div
-    className={`${title === "involvedEnzymes" && "col-span-2"} p-3 flex ${
-      dataType === "glycan" ? "items-start" : "items-center"
-    } justify-start bg-slate-100 border-b-[5px] border-white h-full`}
-  >
-    {isArray && Array.isArray(content) ? (
-      <div className="flex flex-wrap gap-2">
-        {content.map((item, index) => (
-          <div key={index} className="block w-full text-violet-900">
-            {item}
-          </div>
-        ))}
-      </div>
-    ) : link ? (
-      <Link
-        to={`/preview/${id}`}
-        className="text-violet-900 hover:text-violet-600"
-      >
-        {content}
-      </Link>
-    ) : (
-      content
-    )}
-  </div>
-);
+}) => {
+  function capitalize(s) {
+    return String(s[0]).toUpperCase() + String(s).slice(1);
+  }
+
+  return (
+    <div
+      className={`${title === "involvedEnzymes" ? "col-span-2" : ""} p-3 flex ${
+        dataType === "glycan" ? "items-start" : "items-center"
+      } justify-start bg-slate-100 border-b-[5px] border-white h-full`}
+    >
+      {link ? (
+        <Link
+          to={`/preview/${_id}`}
+          className="text-violet-900 hover:text-violet-600"
+        >
+          {capitalize(content)}
+        </Link>
+      ) : (
+        capitalize(content)
+      )}
+    </div>
+  );
+};
 
 export default TableCell;

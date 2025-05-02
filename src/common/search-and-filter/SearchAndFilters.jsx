@@ -1,16 +1,20 @@
 import SearchInput from "./SearchInput";
 import FilterSelect from "./FilterSelect";
 import AddPathwayButton from "../AddPathwayButton";
-import { useSearchAndFilter } from "../../hooks/useSearchAndFilter";
+import { useState } from "react";
 
-const SearchAndFilters = ({ onSearch, onFilterSelect, onAddPathway }) => {
-  const {
-    searchTerm,
-    setSearchTerm,
-    selectedFilters,
-    handleFilterChange,
-    isGlycanPage,
-  } = useSearchAndFilter(onFilterSelect);
+const SearchAndFilters = ({
+  onSearch,
+  onAddPathway,
+  categories,
+  dates,
+  category,
+  setCategory,
+  year,
+  setYear,
+  isGlycanPage,
+}) => {
+  const [searchTerm, setSearchTerm] = useState("");
 
   return (
     <div className="flex flex-wrap gap-10 items-center w-full text-sm">
@@ -26,24 +30,17 @@ const SearchAndFilters = ({ onSearch, onFilterSelect, onAddPathway }) => {
         {!isGlycanPage && (
           <FilterSelect
             label="Category"
-            options={["Notch Signaling", "Metabolic", "Cell Cycle"]}
-            value={selectedFilters.category}
-            onChange={(value) => handleFilterChange("category", value)}
+            options={categories}
+            value={category}
+            onChange={(value) => setCategory(value.toLowerCase())}
           />
         )}
 
         <FilterSelect
           label="Date"
-          options={["2024", "2025"]}
-          value={selectedFilters.date}
-          onChange={(value) => handleFilterChange("date", value)}
-        />
-
-        <FilterSelect
-          label="Status"
-          options={["Active", "Inactive"]}
-          value={selectedFilters.status}
-          onChange={(value) => handleFilterChange("status", value)}
+          options={dates}
+          value={year}
+          onChange={(value) => setYear(value)}
         />
       </div>
 

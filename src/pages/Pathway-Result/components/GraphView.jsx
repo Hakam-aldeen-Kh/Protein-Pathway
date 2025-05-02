@@ -42,7 +42,7 @@ const GraphView = ({ pathwayData }) => {
   };
 
   const handleGoBack = () => {
-    navigate("/review")
+    navigate(`/preview/${pathwayData._id}`)
   };
 
 
