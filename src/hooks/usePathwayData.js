@@ -22,7 +22,8 @@ export const usePathwayData = () => {
   const hasFetchedAllPathways = useRef(false); // Ref to track if fetch has occurred
 
   function capitalize(s) {
-    return String(s[0]).toUpperCase() + String(s).slice(1);
+    if (s) return String(s[0]).toUpperCase() + String(s || "").slice(1);
+    return null
   }
 
   // Fetch all pathways once when totalCount becomes greater than 0 for the first time
@@ -74,10 +75,9 @@ export const usePathwayData = () => {
 
       try {
         const response = await api.get(
-          `${
-            activeTab === "my"
-              ? `user/pathway/protein?pageNumber=${pageNumber}&pageSize=${itemsPerPage}${categoryParam}${searchParam}${yearParam}&orderBy=${orderBy}&orderDirection=${orderDirection}`
-              : `pathway/protein?pageNumber=${pageNumber}&pageSize=${itemsPerPage}${categoryParam}${searchParam}${yearParam}&orderBy=${orderBy}&orderDirection=${orderDirection}`
+          `${activeTab === "my"
+            ? `user/pathway/protein?pageNumber=${pageNumber}&pageSize=${itemsPerPage}${categoryParam}${searchParam}${yearParam}&orderBy=${orderBy}&orderDirection=${orderDirection}`
+            : `pathway/protein?pageNumber=${pageNumber}&pageSize=${itemsPerPage}${categoryParam}${searchParam}${yearParam}&orderBy=${orderBy}&orderDirection=${orderDirection}`
           }`
         );
         setPathwayData(response.data.data.pathways);

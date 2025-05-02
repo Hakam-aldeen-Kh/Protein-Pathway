@@ -160,7 +160,7 @@ const ProductForm = ({
   }
 
   return (
-    <div className="space-y-4 p-4">
+    <form className="space-y-4 p-4">
       <div className="grid grid-cols-2 gap-4">
         {/* <FormElement
           isRequired={false}
@@ -281,14 +281,14 @@ const ProductForm = ({
           type="radio"
           id={`type2-${reaction.id}-${productIndex}`}
           placeholder={"Use this product as a controller in the next reaction"}
-          name="type"
+          name={`type`}
           value={"controllers"}
           checked={productData?.type}
           handleChange={handleChangeRadioBtn}
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      {/* <div className="grid grid-cols-2 gap-4">
         <FormElement
           isRequired={false}
           type="radio"
@@ -299,7 +299,7 @@ const ProductForm = ({
           checked={productData?.type}
           handleChange={handleChangeRadioBtn}
         />
-      </div>
+      </div> */}
 
       {/* {productData.useNextReaction && (
         <div className="grid grid-cols-2 gap-4">
@@ -345,7 +345,7 @@ const ProductForm = ({
           </div>
         </div>
       )} */}
-    </div>
+    </form>
   );
 };
 

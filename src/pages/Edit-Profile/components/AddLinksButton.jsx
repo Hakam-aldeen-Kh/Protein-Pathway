@@ -13,9 +13,8 @@ const AddLinksButton = ({ maxLinksReached, append }) => {
           className={maxLinksReached ? "opacity-50" : ""}
         />
         <span
-          className={`text-[14px] ${
-            maxLinksReached ? "text-gray-400" : "text-[#57369E]"
-          }`}
+          className={`text-[14px] ${maxLinksReached ? "text-gray-400" : "text-[#57369E]"
+            }`}
         >
           Add a Link
         </span>

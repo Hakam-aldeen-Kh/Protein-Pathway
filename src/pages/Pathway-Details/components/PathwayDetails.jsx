@@ -6,7 +6,7 @@ import ReviewHeader from "../sections/ReviewHeader";
 const PathwayDetails = ({
   pathway,
   handleSave,
-  id = null,
+  id,
   isEdit = null,
   setPathwayClone,
   handleChangeClone,
@@ -14,7 +14,7 @@ const PathwayDetails = ({
 }) => {
   return (
     <div className="flex overflow-hidden space-y-16 flex-col p-5 w-full bg-white rounded-lg border border-solid border-zinc-400 max-md:max-w-full">
-      <ReviewHeader title={capitalize(pathway.title)} description={capitalize(pathway.description)} pageState={pageState} handleSave={handleSave} isEdit={isEdit} />
+      <ReviewHeader pathwayId={id} title={capitalize(pathway.title)} description={capitalize(pathway.description)} pageState={pageState} handleSave={handleSave} isEdit={isEdit} />
       <PathwayInfo pathway={pathway} id={id} />
       <ReactionTable reactions={pathway.reactions} isEdit={isEdit} setEditPathwayData={setPathwayClone} handleChangeData={handleChangeClone} />
     </div>

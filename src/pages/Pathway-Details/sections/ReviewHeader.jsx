@@ -1,6 +1,8 @@
-import { Link } from "react-router";
+import { Link, useOutletContext } from "react-router";
 
-const ReviewHeader = ({ title, description, pageState, handleSave, isEdit }) => {
+const ReviewHeader = ({ pathwayId, title, description, pageState, handleSave, isEdit }) => {
+    const { isLoading, handleDeletePathway } = useOutletContext();
+
     return (
         <div className="flex gap-5 items-start w-full max-md:max-w-full">
             <div className="flex flex-col flex-1 shrink w-full basis-0 min-w-[240px] max-md:max-w-full">
@@ -25,34 +27,51 @@ const ReviewHeader = ({ title, description, pageState, handleSave, isEdit }) => 
                             </div>
 
                             <div className="flex gap-5 items-center self-stretch my-auto text-sm font-semibold text-center text-white bg-[#57369E]">
-                                <Link
-                                    to="/protein-pathway-data?tab=my"
+                                <button
                                     className="flex gap-2 justify-center items-center self-stretch px-4 py-2 my-auto rounded-sm border border-[#57369E] hover:border-transparent border-solid min-h-[40px] hover:text-white hover:bg-[#00A7D3] transition-colors duration-500 "
                                     onClick={handleSave}
+                                    disabled={isLoading}
                                 >
-                                    <span className="self-stretch my-auto">Save & Register RDF</span>
+                                    <span className="self-stretch my-auto">{
+                                        isLoading ? "Loading ..." : "Save & Register RDF"
+                                    }</span>
                                     <img src="/images/icons/document-download-light.svg" />
-                                </Link>
+                                </button>
                             </div>
                         </div>
                     }
 
                     {
                         pageState === "preview" &&
-                        <div className="flex gap-5 items-center self-stretch my-auto text-sm font-semibold group text-center text-violet-900">
-                            {isEdit && <Link
-                                to="/protein-pathway-data?tab=my"
-                                className="flex gap-2 justify-center items-center self-stretch px-4 py-2 my-auto rounded-sm border border-violet-900 group-hover:border-transparent border-solid min-h-[40px] group-hover:text-white group-hover:bg-[#00A7D3] transition-colors duration-500 "
-                                onClick={handleSave}
-                            >
-                                <span className="self-stretch my-auto">Register RDF</span>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9 17V11L7 13" className=" stroke-[#57369E] group-hover:stroke-white transition-colors duration-500 " strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M9 11L11 13" className=" stroke-[#57369E] group-hover:stroke-white transition-colors duration-500 " strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" className=" stroke-[#57369E] group-hover:stroke-white transition-colors duration-500 " strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" className=" stroke-[#57369E] group-hover:stroke-white transition-colors duration-500 " strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </Link>}
+                        <div className="flex gap-5 items-center self-stretch my-auto text-sm font-semibold  text-center text-violet-900">
+                            {isEdit &&
+                                <>
+                                    <button
+                                        className="flex items-center justify-center py-2 px-3 border bg-[#57369E] cursor-pointer rounded-lg hover:bg-[#00A7D3] transition-all duration-200"
+                                        disabled={isLoading}
+                                        onClick={() => handleDeletePathway(pathwayId)}
+                                    >
+                                        {isLoading ? "loading" : <img src="/images/icons/trash.svg" className="w-[24px] h-[24px]" />}
+                                    </button>
+
+                                    <div className=" group">
+                                        <Link
+                                            to="/protein-pathway-data?tab=my"
+                                            className="flex gap-2 justify-center items-center self-stretch px-4 py-2 my-auto rounded-sm border border-violet-900 group-hover:border-transparent border-solid min-h-[40px] group-hover:text-white group-hover:bg-[#00A7D3] transition-colors duration-500 "
+                                            onClick={handleSave}
+                                        >
+                                            <span className="self-stretch my-auto">Register RDF</span>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9 17V11L7 13" className=" stroke-[#57369E] group-hover:stroke-white transition-colors duration-500 " strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M9 11L11 13" className=" stroke-[#57369E] group-hover:stroke-white transition-colors duration-500 " strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" className=" stroke-[#57369E] group-hover:stroke-white transition-colors duration-500 " strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" className=" stroke-[#57369E] group-hover:stroke-white transition-colors duration-500 " strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                        </Link>
+                                    </div>
+                                </>
+
+                            }
                         </div>
                     }
 

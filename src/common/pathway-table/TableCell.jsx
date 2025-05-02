@@ -13,19 +13,18 @@ const TableCell = ({
 
   return (
     <div
-      className={`${title === "involvedEnzymes" ? "col-span-2" : ""} p-3 flex ${
-        dataType === "glycan" ? "items-start" : "items-center"
-      } justify-start bg-slate-100 border-b-[5px] border-white h-full`}
+      className={`${title === "involvedEnzymes" ? "col-span-2" : ""} p-3 flex ${dataType === "glycan" ? "items-start" : "items-center"
+        } justify-start bg-slate-100 border-b-[5px] border-white h-full`}
     >
       {link ? (
         <Link
           to={`/preview/${_id}`}
           className="text-violet-900 hover:text-violet-600"
         >
-          {capitalize(content)}
+          {capitalize(content || "-")}
         </Link>
       ) : (
-        capitalize(content)
+        capitalize(content || "-")
       )}
     </div>
   );
