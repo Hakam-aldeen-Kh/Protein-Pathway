@@ -19,10 +19,10 @@ const Reaction = ({
                 <Reactants reactions={reactions} reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} />
             </TabItem>
             <TabItem label="Controller">
-                <Controllers reactions={reactions} reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} />
+                <Controllers reactions={reactions} reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} addReaction={addReaction} />
             </TabItem>
             <TabItem label="Products">
-                <Products reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} addReaction={addReaction} />
+                <Products reactions={reactions} reaction={reactionData} setPathwayData={setPathwayData} handleChangeData={handleChangeData} setDeleteModalData={setDeleteModalData} addReaction={addReaction} />
             </TabItem>
         </Tabs>
     )

@@ -8,15 +8,17 @@ const Controllers = ({
   handleChangeData,
   setDeleteModalData,
   setPathwayData,
+  addReaction
 }) => {
-  const isFindReference = (fromReaction, fromProduct) => {
-    // Find the reaction with id 0
-    const reaction = reactions.find((r) => r.id === fromReaction);
-    if (!reaction) return false;
 
-    // Check if the reaction has a product with id 0
-    return reaction.products.some((p) => p.id === fromProduct);
-  };
+  // const isFindReference = (fromReaction, fromProduct) => {
+  //   // Find the reaction with id 0
+  //   const reaction = reactions.find((r) => r.id === fromReaction);
+  //   if (!reaction) return false;
+
+  //   // Check if the reaction has a product with id 0
+  //   return reaction.products.some((p) => p.id === fromProduct);
+  // };
 
   const closeModal = () =>
     setDeleteModalData((prev) => ({ ...prev, isModalOpen: false }));
@@ -27,20 +29,19 @@ const Controllers = ({
       reactions: prevPathwayData.reactions.map((reaction) =>
         reaction.id === reactionId
           ? {
-              ...reaction,
-              controllers: [
-                ...reaction.controllers,
-                {
-                  id:
-                    reaction.controllers[reaction.controllers.length - 1]?.id +
-                      1 || 1,
-                  name: `controller_${reactionId}.${
-                    reaction.controllers[reaction.controllers.length - 1]?.id +
-                      1 || 1
+            ...reaction,
+            controllers: [
+              ...reaction.controllers,
+              {
+                id:
+                  reaction.controllers[reaction.controllers.length - 1]?.id +
+                  1 || 1,
+                name: `controller_${reactionId}.${reaction.controllers[reaction.controllers.length - 1]?.id +
+                  1 || 1
                   }`,
-                },
-              ],
-            }
+              },
+            ],
+          }
           : reaction
       ),
     }));
@@ -57,11 +58,11 @@ const Controllers = ({
           reactions: prevPathwayData.reactions.map((reaction) =>
             reaction.id === reactionId
               ? {
-                  ...reaction,
-                  controllers: reaction.controllers.filter(
-                    (controller) => controller.id !== controllerId
-                  ),
-                }
+                ...reaction,
+                controllers: reaction.controllers.filter(
+                  (controller) => controller.id !== controllerId
+                ),
+              }
               : reaction
           ),
         }));
@@ -75,10 +76,7 @@ const Controllers = ({
         <Accordion
           key={index}
           className="border rounded-lg mb-10"
-          reference={
-            isFindReference(item.fromReaction, item.fromProduct) &&
-            item.reference
-          }
+          reference={item.reference || ""}
           variant="gray"
           deleteFn={() => deleteController(reaction.id, item.id)}
           title={`Controller - ${reaction.id}.${item.id}`}
@@ -88,6 +86,8 @@ const Controllers = ({
             reaction={reaction}
             controllerData={item}
             controllerIndex={index}
+            addReaction={addReaction}
+            reactions={reactions}
           />
         </Accordion>
       ))}

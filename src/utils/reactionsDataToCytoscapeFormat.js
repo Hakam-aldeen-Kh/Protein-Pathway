@@ -20,6 +20,17 @@ export function reactionsDataToCytoscapeFormat(reactions) {
         elements.push(createChemicalNode(reactionController.name, reactionController.name, reactionController.cellularLocation?.cell_localization_name, "macromolecule"));
         elements.push(createEdge(`e-${reactionController.name}-${reactionController.name}-process`, reactionController.name, `${reactionController.name}-process`, "stimulation"));
 
+        const targetReaction = reactions.find(item => item.id === reactionController.targetReactionId)
+
+        if (reactionController.useNextReaction && targetReaction) {
+
+            elements.push(createEdge(`e-${reactionController.name}-${targetReaction.controllers[0].name}-process}`, reactionController.name, `${targetReaction.controllers[0].name}-process`));
+
+
+            toDeletedFromElements.push(targetReaction.reactants[0].name)
+            toDeletedFromElements.push(`e-${targetReaction.reactants[0].name}-${targetReaction.controllers[0].name}-process`)
+        }
+
 
         // create node for each reactant with edge form reactant to controller inside parent node
         reaction.reactants.forEach((reactant) => {

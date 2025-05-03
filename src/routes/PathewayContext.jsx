@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router";
+import { usePathway } from "../hooks/usePathway";
 
 const PathewayContext = () => {
     const today = new Date();
+    const { isLoading, handleSubmitAddPathway, handleSubmitEditPathway, handleDeletePathway } = usePathway()
 
     const [myPathwayData, setMyPathwayData] = useState(() => {
         const saved = localStorage.getItem('myPathwayData');
@@ -31,14 +33,16 @@ const PathewayContext = () => {
         localStorage.setItem('pathwayData', JSON.stringify(pathwayData));
     }, [pathwayData]);
 
-    const saveAfterCreation = () => {
+    const saveAfterCreation = async () => {
         setMyPathwayData([...myPathwayData, pathwayData])
         localStorage.setItem('myPathwayData', JSON.stringify([...myPathwayData, pathwayData]));
+        await handleSubmitAddPathway(pathwayData)
         cancleCreation()
     }
 
-    const saveAfterEdit = (data) => {
+    const saveAfterEdit = async (data) => {
         setMyPathwayData(data)
+        await handleSubmitEditPathway(data)
         localStorage.setItem('myPathwayData', JSON.stringify(data));
         cancleCreation()
     }
@@ -69,7 +73,7 @@ const PathewayContext = () => {
     }
 
     return (
-        <Outlet context={{ pathwayData, setPathwayData, cancleCreation, saveAfterCreation, saveAfterEdit, myPathwayData, setMyPathwayData }} />
+        <Outlet context={{ pathwayData, setPathwayData, cancleCreation, saveAfterCreation, saveAfterEdit, myPathwayData, setMyPathwayData, isLoading, handleDeletePathway }} />
     );
 };
 

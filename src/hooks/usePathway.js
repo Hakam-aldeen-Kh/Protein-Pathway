@@ -1,80 +1,95 @@
 import { useState } from "react";
 import { ShowToast } from "../common/ToastNotification";
 import api from "../utils/api";
-import { useParams } from "react-router";
+import { useNavigate } from "react-router";
 
 export const usePathway = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate()
   // the function handle submit add new pathway
-  const handleSubmitAddPathway = async () => {
-    const submissionData = {
-      title,
-      description,
-      species,
-      category,
-      tissue,
-      relatedDisease,
-      diseaseInput,
-      reactions,
-      recordDate,
-      pubMeds,
-    };
+  const handleSubmitAddPathway = async (data) => {
+    // const submissionData = {
+    //   title:data.title,
+    //   description,
+    //   species,
+    //   category,
+    //   tissue,
+    //   relatedDisease,
+    //   diseaseInput,
+    //   reactions,
+    //   recordDate,
+    //   pubMeds,
+    // };
 
     try {
-      const response = await api.post("user/pathway/protein", submissionData);
-      return <ShowToast title="Pathway Added" message={response.message} />;
+      setIsLoading(true)
+      const response = await api.post("user/pathway/protein", data);
+      navigate("/protein-pathway-data?tab=my");
+
+      ShowToast("Pathway Added", response.data.message);
     } catch (error) {
       setIsLoading(false);
-      return <ShowToast title="Add Pathway Fail" message={error.message} />;
+      ShowToast("Add Pathway Fail", error.data.message);
     } finally {
       setIsLoading(false);
     }
   };
 
   // the function handle submit edit pathway (id)
-  const handleSubmitEditPathway = async () => {
-    const { id } = useParams;
+  const handleSubmitEditPathway = async (data, id) => {
 
-    const submissionData = {
-      title,
-      description,
-      species,
-      category,
-      tissue,
-      relatedDisease,
-      diseaseInput,
-      reactions,
-      recordDate,
-      pubMeds,
-    };
+    // const submissionData = {
+    //   title,
+    //   description,
+    //   species,
+    //   category,
+    //   tissue,
+    //   relatedDisease,
+    //   diseaseInput,
+    //   reactions,
+    //   recordDate,
+    //   pubMeds,
+    // };
 
     try {
+      setIsLoading(true)
+
       const response = await api.put(
         `user/pathway/protein/${id}`,
-        submissionData
+        data
       );
-      return <ShowToast title="Pathway Edited" message={response.message} />;
+      navigate("/protein-pathway-data?tab=my");
+      return ShowToast("Pathway Edited", response.data.message);
     } catch (error) {
       setIsLoading(false);
-      return <ShowToast title="Edit Pathway Fail" message={error.message} />;
+      return ShowToast("Edit Pathway Fail", error.data.message);
     } finally {
       setIsLoading(false);
     }
   };
 
   // the function handle delete pathway (id)
-  const handleDeletePathway = async () => {
-    const { id } = useParams;
+  const handleDeletePathway = async (id) => {
 
     try {
+      setIsLoading(true)
+
       const response = await api.delete(`user/pathway/protein/${id}`);
-      return <ShowToast title="Pathway Deleted" message={response.message} />;
+      navigate("/protein-pathway-data?tab=my");
+      return ShowToast("Pathway Deleted", response.data.message);
+
     } catch (error) {
       setIsLoading(false);
-      return <ShowToast title="Delete Pathway Fail" message={error.message} />;
+      return ShowToast("Delete Pathway Fail", error.data.message);
     } finally {
       setIsLoading(false);
     }
   };
+
+  return {
+    isLoading,
+    handleSubmitAddPathway,
+    handleSubmitEditPathway,
+    handleDeletePathway
+  }
 };

@@ -4,12 +4,39 @@ import FormElement from "../../../common/reaction/components/FormElement";
 
 const BasicInfoForm = ({ data, handleChange }) => {
   const [diseaseType, setDiseaseType] = useState(data.relatedDisease);
+  const [pubMeds, setPubMeds] = useState(data.pubMeds || []);
+
 
   const handleDiseaseTypeChange = (e) => {
     const { value } = e.target;
     setDiseaseType(value);
     handleChange(e);
   };
+
+  const addPubMed = () => {
+    const newPubMeds = [...pubMeds, { id: '' }];
+    setPubMeds(newPubMeds);
+    handleChange({ target: { name: "pubMeds", value: newPubMeds } });
+  }
+
+  const removePubMed = (pubMedIndex) => {
+    const newPubMeds = pubMeds.filter((_, index) => index !== pubMedIndex);
+    setPubMeds(newPubMeds);
+    handleChange({ target: { name: "pubMeds", value: newPubMeds } });
+  }
+
+  const handleChangePubMed = (e, pubMedIndex) => {
+    const newPubMeds = pubMeds.map((field, index) => {
+      if (index === pubMedIndex) {
+        return { id: e.target.value };
+      }
+      return field;
+    });
+    setPubMeds(newPubMeds);
+    handleChange({ target: { name: "pubMeds", value: newPubMeds } });
+  }
+
+
 
   return (
     <Accordion
@@ -44,6 +71,7 @@ const BasicInfoForm = ({ data, handleChange }) => {
             type="select"
             label="Species"
             name="species"
+            placeholder="Select Species"
             value={data?.species}
             handleChange={handleChange}
           >
@@ -120,7 +148,39 @@ const BasicInfoForm = ({ data, handleChange }) => {
             />
           </div>
         </div>
+
+
+        <div>
+
+          <button className="mb-5 flex items-center text-[14px] text-[#57369E]" onClick={addPubMed}>+ Add pubMeds</button>
+          <div className="grid grid-cols-2 gap-4">
+
+            {data?.pubMeds?.map((item, index) =>
+              <div className="flex gap-2" key={index}>
+                <input
+                  type="text"
+                  placeholder="Add pubMeds Id"
+                  className="outline-none block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
+                  value={item?.id}
+                  onChange={(e) => handleChangePubMed(e, index)}
+                />
+                <div
+                  className="flex items-center justify-center py-2 px-3 border bg-[#57369E] cursor-pointer rounded-lg hover:bg-[#00A7D3] transition-all duration-200"
+                  onClick={() => removePubMed(index)}
+                >
+                  <img src="/images/icons/trash.svg" className="w-[24px] h-[24px]" />
+                </div>
+              </div>
+            )}
+
+
+
+          </div>
+        </div>
+
       </div>
+
+
     </Accordion>
   );
 };

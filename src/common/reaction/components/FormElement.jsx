@@ -16,6 +16,7 @@ const FormElement = ({
   paginationTable,
   setOpenTablePagination,
   reactantData,
+  checked
 }) => {
   const [paginationTableBtn, setPaginationTableBtn] = useState(true);
 
@@ -65,9 +66,8 @@ const FormElement = ({
 
         {type === "paginationTable" && (
           <div
-            className={`${
-              customStyle ? customStyle : "select-container w-full flex-1"
-            }`}
+            className={`${customStyle ? customStyle : "select-container w-full flex-1"
+              }`}
           >
             <input
               type="text"
@@ -84,11 +84,10 @@ const FormElement = ({
                   type="button"
                   disabled={paginationTableBtn}
                   onClick={() => setOpenTablePagination(true)}
-                  className={`px-8 w-fit py-[10px] rounded-sm text-white font-semibold transition-all ${
-                    paginationTableBtn
-                      ? "bg-gray-400 cursor-not-allowed opacity-70"
-                      : "bg-[#57369E] hover:bg-[#00A7D3]"
-                  }`}
+                  className={`px-8 w-fit py-[10px] rounded-sm text-white font-semibold transition-all ${paginationTableBtn
+                    ? "bg-gray-400 cursor-not-allowed opacity-70"
+                    : "bg-[#57369E] hover:bg-[#00A7D3]"
+                    }`}
                 >
                   Search
                 </button>
@@ -129,6 +128,25 @@ const FormElement = ({
             itemType={itemType}
             placeholder={placeholder}
           />
+        )}
+
+        {type === "radio" && (
+          <div className="space-x-3 flex-1">
+            <input
+              type="radio"
+              id={id}
+              checked={checked === value}
+              value={value || ""}
+              name={name}
+              onChange={handleChange}
+            />
+            <label
+              htmlFor={id}
+              className="text-sm cursor-pointer font-medium text-gray-700"
+            >
+              {placeholder}
+            </label>
+          </div>
         )}
       </div>
     </div>
