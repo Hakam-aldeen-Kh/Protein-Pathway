@@ -52,15 +52,15 @@ export const useRegister = () => {
 
   // Add useEffect to validate password in real-time
   useEffect(() => {
-    const password = formValues.password || "";
+    const confirmPassword = formValues.confirmPassword || "";
     setValidation({
-      length: password.length >= 8,
-      lowerCase: /[a-z]/.test(password),
-      upperCase: /[A-Z]/.test(password),
-      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-      oneNumber: /[0-9]/.test(password),
+      length: confirmPassword.length >= 8,
+      lowerCase: /[a-z]/.test(confirmPassword),
+      upperCase: /[A-Z]/.test(confirmPassword),
+      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(confirmPassword),
+      oneNumber: /[0-9]/.test(confirmPassword),
     });
-  }, [formValues.password]);
+  }, [formValues.confirmPassword]);
 
   // Reset validation errors when either password field changes
   useEffect(() => {

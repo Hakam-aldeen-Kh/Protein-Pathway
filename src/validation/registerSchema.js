@@ -28,7 +28,17 @@ export const signupSchema = z
         "Password must contain at least 1 special character"
       )
       .regex(/[0-9]/, "Password must contain at least 1 number"),
-    confirmPassword: z.string().trim(),
+    confirmPassword: z
+      .string()
+      .trim()
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Password must contain at least 1 uppercase letter")
+      .regex(/[a-z]/, "Password must contain at least 1 lowercase letter")
+      .regex(
+        /[!@#$%^&*(),.?":{}|<>]/,
+        "Password must contain at least 1 special character"
+      )
+      .regex(/[0-9]/, "Password must contain at least 1 number"),
   })
   .superRefine((data, ctx) => {
     // More reliable password matching validation
@@ -36,7 +46,7 @@ export const signupSchema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Passwords do not match",
-        path: ["confirmPassword"],
+        path: ["password"],
       });
     }
   });

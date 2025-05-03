@@ -47,15 +47,15 @@ export const useChangePassword = (closeModal) => {
 
   // Validate newPassword in real-time
   useEffect(() => {
-    const newPassword = formValues.newPassword || "";
+    const confirmNewPassword = formValues.confirmNewPassword || "";
     setValidation({
-      length: newPassword.length >= 8,
-      lowerCase: /[a-z]/.test(newPassword),
-      upperCase: /[A-Z]/.test(newPassword),
-      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(newPassword),
-      oneNumber: /[0-9]/.test(newPassword),
+      length: confirmNewPassword.length >= 8,
+      lowerCase: /[a-z]/.test(confirmNewPassword),
+      upperCase: /[A-Z]/.test(confirmNewPassword),
+      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(confirmNewPassword),
+      oneNumber: /[0-9]/.test(confirmNewPassword),
     });
-  }, [formValues.newPassword]);
+  }, [formValues.confirmNewPassword]);
 
   // Reset validation errors when either password field changes
   useEffect(() => {
