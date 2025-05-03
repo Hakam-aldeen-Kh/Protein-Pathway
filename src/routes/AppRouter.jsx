@@ -73,51 +73,41 @@ const AppRouter = () => {
       <Route
         path="/register"
         element={
-          <ProfileProtectedRoute>
-            <Layout>
-              <Register />
-            </Layout>
-          </ProfileProtectedRoute>
+          <Layout>
+            <Register />
+          </Layout>
         }
       />
       <Route
         path="/confirm-email"
         element={
-          <ProfileProtectedRoute>
-            <Layout>
-              <ConfirmRegister />
-            </Layout>
-          </ProfileProtectedRoute>
+          <Layout>
+            <ConfirmRegister />
+          </Layout>
         }
       />
       <Route
         path="/reset-password"
         element={
-          <ProfileProtectedRoute>
-            <Layout>
-              <EmailInputPage />
-            </Layout>
-          </ProfileProtectedRoute>
+          <Layout>
+            <EmailInputPage />
+          </Layout>
         }
       />
       <Route
         path="/reset-password/confirmation"
         element={
-          <ProfileProtectedRoute>
-            <Layout>
-              <ConfirmationPage />
-            </Layout>
-          </ProfileProtectedRoute>
+          <Layout>
+            <ConfirmationPage />
+          </Layout>
         }
       />
       <Route
         path="/reset-password/reset"
         element={
-          <ProfileProtectedRoute>
-            <Layout>
-              <ResetPasswordPage />
-            </Layout>
-          </ProfileProtectedRoute>
+          <Layout>
+            <ResetPasswordPage />
+          </Layout>
         }
       />
 
@@ -166,11 +156,9 @@ const AppRouter = () => {
         <Route
           path="/preview/:id"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <PreviewPathway />
-              </Layout>
-            </ProtectedRoute>
+            <Layout>
+              <PreviewPathway />
+            </Layout>
           }
         />
         <Route

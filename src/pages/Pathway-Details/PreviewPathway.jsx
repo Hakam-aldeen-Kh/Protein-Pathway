@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useSearchParams } from "react-router";
 
 import PathwayDetails from "./components/PathwayDetails";
-import { usePathwayDataById } from "../../hooks/usePathwayDataById";
+// import { usePathwayDataById } from "../../hooks/usePathwayDataById";
 import NotFound from "../404/NotFound";
-import { ShowToast } from "../../common/ToastNotification";
+// import { ShowToast } from "../../common/ToastNotification";
 import api from "../../utils/api";
 import LoadingProcess from "../../common/LoadingProcess";
 
 const PreviewPathway = () => {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const [activeTab] = useState(searchParams.get("tab") || "all");
 
   // const { pathwayData, isEdit, saveEditingPathway } = usePathwayDataById(id)
 
@@ -21,13 +23,21 @@ const PreviewPathway = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get(`user/pathway/protein/${id}`);
-        const checkIsOwner = response.data.data.isOwner;
-        console.log(checkIsOwner);
-        if (checkIsOwner) {
-          setIsEdit(true);
+        if (activeTab === "all") {
+          const response = await api.get(`pathway/protein/${id}`);
+          setPathwayData(response.data.data.pathway);
         }
-        setPathwayData(response.data.data.pathway);
+
+        else {
+          const response = await api.get(`user/pathway/protein/${id}`);
+          const checkIsOwner = response.data.data.isOwner;
+          console.log(checkIsOwner);
+          if (checkIsOwner) {
+            setIsEdit(true);
+          }
+          setPathwayData(response.data.data.pathway);
+        }
+
       } catch (error) {
         console.error(error);
         setIsLoading(false);
@@ -83,9 +93,9 @@ const PreviewPathway = () => {
         isEdit={isEdit}
         id={id}
         pageState={"preview"}
-        // setPathwayClone={setPathwayClone}
-        // handleSave={handleSaveAfterEdit}
-        // handleChangeClone={handleChangeClone}
+      // setPathwayClone={setPathwayClone}
+      // handleSave={handleSaveAfterEdit}
+      // handleChangeClone={handleChangeClone}
       />
     </div>
   );
