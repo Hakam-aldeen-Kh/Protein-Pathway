@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import api from "../utils/api";
 import { useAuth } from "../hooks/useAuth";
+import { useSearchParams } from "react-router";
 
 export const usePathwayData = () => {
   const [pathwayData, setPathwayData] = useState(null);
@@ -8,7 +9,7 @@ export const usePathwayData = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [activeTab, setActiveTab] = useState("all");
+
   const [orderBy, setOrderBy] = useState("recordDate");
   const [category, setCategory] = useState("");
   const [year, setYear] = useState("");
@@ -20,6 +21,9 @@ export const usePathwayData = () => {
   // const [pathwayState, setPathwayState] = useState("all");
   const { isAuthenticated } = useAuth();
   const hasFetchedAllPathways = useRef(false); // Ref to track if fetch has occurred
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "all");
 
   function capitalize(s) {
     if (s) return String(s[0]).toUpperCase() + String(s || "").slice(1);
@@ -109,6 +113,7 @@ export const usePathwayData = () => {
 
   const handleChangeTab = (state) => {
     if (state !== activeTab) setActiveTab(state);
+    setSearchParams({ tab: state });
   };
 
   return {
