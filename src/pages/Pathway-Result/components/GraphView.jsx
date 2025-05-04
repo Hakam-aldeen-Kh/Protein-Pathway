@@ -13,7 +13,7 @@ import { reactionsDataToCytoscapeFormat } from "../../../utils/reactionsDataToCy
 setupCy();
 
 
-const GraphView = ({ pathwayData }) => {
+const GraphView = ({ pathwayData, backLink }) => {
 
   const navigate = useNavigate()
 
@@ -42,7 +42,7 @@ const GraphView = ({ pathwayData }) => {
   };
 
   const handleGoBack = () => {
-    navigate(`/preview/${pathwayData._id}`)
+    navigate(backLink)
   };
 
 

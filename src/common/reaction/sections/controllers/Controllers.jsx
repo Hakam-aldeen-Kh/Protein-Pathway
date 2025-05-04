@@ -6,7 +6,7 @@ const Controllers = ({
   reactions,
   reaction,
   handleChangeData,
-  setDeleteModalData,
+  // setDeleteModalData,
   setPathwayData,
   addReaction
 }) => {
@@ -20,8 +20,7 @@ const Controllers = ({
   //   return reaction.products.some((p) => p.id === fromProduct);
   // };
 
-  const closeModal = () =>
-    setDeleteModalData((prev) => ({ ...prev, isModalOpen: false }));
+  // const closeModal = () =>setDeleteModalData((prev) => ({ ...prev, isModalOpen: false }));
 
   const addController = (reactionId) => {
     setPathwayData((prevPathwayData) => ({
@@ -47,28 +46,28 @@ const Controllers = ({
     }));
   };
 
-  const deleteController = (reactionId, controllerId) => {
-    setDeleteModalData({
-      isModalOpen: true,
-      closeModal,
-      title: "Contoller",
-      handleDelete: () => {
-        setPathwayData((prevPathwayData) => ({
-          ...prevPathwayData,
-          reactions: prevPathwayData.reactions.map((reaction) =>
-            reaction.id === reactionId
-              ? {
-                ...reaction,
-                controllers: reaction.controllers.filter(
-                  (controller) => controller.id !== controllerId
-                ),
-              }
-              : reaction
-          ),
-        }));
-      },
-    });
-  };
+  // const deleteController = (reactionId, controllerId) => {
+  //   setDeleteModalData({
+  //     isModalOpen: true,
+  //     closeModal,
+  //     title: "Contoller",
+  //     handleDelete: () => {
+  //       setPathwayData((prevPathwayData) => ({
+  //         ...prevPathwayData,
+  //         reactions: prevPathwayData.reactions.map((reaction) =>
+  //           reaction.id === reactionId
+  //             ? {
+  //               ...reaction,
+  //               controllers: reaction.controllers.filter(
+  //                 (controller) => controller.id !== controllerId
+  //               ),
+  //             }
+  //             : reaction
+  //         ),
+  //       }));
+  //     },
+  //   });
+  // };
 
   return (
     <div className="bg-white rounded-lg pb-2 rounded-tl-none p-5">
@@ -78,14 +77,16 @@ const Controllers = ({
           className="border rounded-lg mb-10"
           reference={item.reference || ""}
           variant="gray"
-          deleteFn={() => deleteController(reaction.id, item.id)}
+          // deleteFn={() => deleteController(reaction.id, item.id)}
           title={`Controller - ${reaction.id}.${item.id}`}
         >
           <ControllerForm
+            isEdit={!item.reference || false}
+            setPathwayData={setPathwayData}
             handleChangeData={handleChangeData}
             reaction={reaction}
             controllerData={item}
-            controllerIndex={index}
+            controllerId={item.id}
             addReaction={addReaction}
             reactions={reactions}
           />

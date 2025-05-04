@@ -1,6 +1,6 @@
 import FormElement from "../../../components/FormElement";
 
-const SmallMolecule = ({ reactantData, handleChange }) => {
+const SmallMolecule = ({ reactantData, handleChange, isEdit }) => {
   return (
     <>
       <div>
@@ -26,6 +26,7 @@ const SmallMolecule = ({ reactantData, handleChange }) => {
             handleChange={handleChange}
             placeholder="Select Small Molecule"
             itemType="Chibe"
+            isEdit={isEdit}
           />
 
           {/* <FormElement
@@ -66,6 +67,7 @@ const SmallMolecule = ({ reactantData, handleChange }) => {
               value={reactantData?.modifyingSite || ""}
               handleChange={handleChange}
               placeholder="Modifying site of amino acid (number)"
+              isEdit={isEdit}
             />
 
             <FormElement
@@ -77,6 +79,7 @@ const SmallMolecule = ({ reactantData, handleChange }) => {
               value={reactantData?.modifyingType || ""}
               handleChange={handleChange}
               placeholder="Select Modifying Type"
+              isEdit={isEdit}
             />
           </div>
         </div>

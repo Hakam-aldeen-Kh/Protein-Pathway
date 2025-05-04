@@ -10,13 +10,14 @@ const ReactantForm = ({
   handleChangeData,
   reaction,
   reactantData,
-  reactantIndex,
+  reactantId,
+  isEdit
 }) => {
   const handleChange = (e) =>
-    handleChangeData(e, reaction.id, "reactants", reactantIndex);
+    handleChangeData(e, reaction.id, "reactants", reactantId);
 
   return (
-    <div className="space-y-4 p-4">
+    <div className={`space-y-4 p-4 ${!isEdit && "bg-gray-100"}`}>
       <div className="grid grid-cols-2 gap-4">
         {/* <FormElement
           isRequired={false}
@@ -39,6 +40,7 @@ const ReactantForm = ({
           placeholder="Select Cell Type"
           type="itemType"
           itemType="CellType"
+          isEdit={isEdit}
         />
 
         {/* <FormElement
@@ -63,6 +65,7 @@ const ReactantForm = ({
           handleChange={handleChange}
           placeholder="Select Location"
           itemType="Cellular"
+          isEdit={isEdit}
         />
       </div>
 
@@ -75,6 +78,7 @@ const ReactantForm = ({
           value={reactantData?.reactantType}
           handleChange={handleChange}
           placeholder="Select Reactant Type"
+          isEdit={isEdit}
         >
           <option value="complex">Complex</option>
           <option value="protein">Protein</option>
@@ -86,25 +90,26 @@ const ReactantForm = ({
       </div>
 
       {reactantData.reactantType === "complex" && (
-        <Complex reactantData={reactantData} handleChange={handleChange} />
+        <Complex reactantData={reactantData} handleChange={handleChange} isEdit={isEdit} />
       )}
       {reactantData.reactantType === "lipid" && (
-        <Lipid reactantData={reactantData} handleChange={handleChange} />
+        <Lipid reactantData={reactantData} handleChange={handleChange} isEdit={isEdit} />
       )}
       {reactantData.reactantType === "protein" && (
-        <Protein reactantData={reactantData} handleChange={handleChange} />
+        <Protein reactantData={reactantData} handleChange={handleChange} isEdit={isEdit} />
       )}
       {reactantData.reactantType === "glycan" && (
-        <Glycan reactantData={reactantData} handleChange={handleChange} />
+        <Glycan reactantData={reactantData} handleChange={handleChange} isEdit={isEdit} />
       )}
       {reactantData.reactantType === "small_molecule" && (
         <SmallMolecule
           reactantData={reactantData}
           handleChange={handleChange}
+          isEdit={isEdit}
         />
       )}
       {reactantData.reactantType === "dna" && (
-        <Dna reactantData={reactantData} handleChange={handleChange} />
+        <Dna reactantData={reactantData} handleChange={handleChange} isEdit={isEdit} />
       )}
     </div>
   );

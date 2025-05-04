@@ -27,8 +27,8 @@ export function reactionsDataToCytoscapeFormat(reactions) {
             elements.push(createEdge(`e-${reactionController.name}-${targetReaction.controllers[0].name}-process}`, reactionController.name, `${targetReaction.controllers[0].name}-process`));
 
 
-            toDeletedFromElements.push(targetReaction.reactants[0].name)
-            toDeletedFromElements.push(`e-${targetReaction.reactants[0].name}-${targetReaction.controllers[0].name}-process`)
+            toDeletedFromElements.push(targetReaction.reactants.find(item => item.id === reactionController.conectedReactantId).name)
+            toDeletedFromElements.push(`e-${targetReaction.reactants.find(item => item.id === reactionController.conectedReactantId).name}-${targetReaction.controllers[0].name}-process`)
         }
 
 
@@ -75,8 +75,8 @@ export function reactionsDataToCytoscapeFormat(reactions) {
                 elements.push(createEdge(`e-${product.name}-${targetReaction.controllers[0].name}-process}`, product.name, `${targetReaction.controllers[0].name}-process`));
 
 
-                toDeletedFromElements.push(targetReaction.reactants[0].name)
-                toDeletedFromElements.push(`e-${targetReaction.reactants[0].name}-${targetReaction.controllers[0].name}-process`)
+                toDeletedFromElements.push(targetReaction.reactants.find(item => item.id === product.conectedReactantId).name)
+                toDeletedFromElements.push(`e-${targetReaction.reactants.find(item => item.id === product.conectedReactantId).name}-${targetReaction.controllers[0].name}-process`)
             }
 
             // is this product useNextReaction and type is controllers:

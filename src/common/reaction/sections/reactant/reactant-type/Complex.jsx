@@ -1,6 +1,6 @@
 import FormElement from "../../../components/FormElement";
 
-const Complex = ({ reactantData, handleChange }) => {
+const Complex = ({ reactantData, handleChange, isEdit }) => {
   return (
     <>
       <div>
@@ -9,6 +9,7 @@ const Complex = ({ reactantData, handleChange }) => {
         </span>
         <div className="grid grid-cols-2 gap-4">
           <FormElement
+            isEdit={isEdit}
             isRequired={false}
             type="itemType"
             itemType="GoProteinComplex"
@@ -20,6 +21,7 @@ const Complex = ({ reactantData, handleChange }) => {
           />
 
           <FormElement
+            isEdit={isEdit}
             isRequired={false}
             type="input"
             label={"Complex Symbol"}
@@ -37,6 +39,7 @@ const Complex = ({ reactantData, handleChange }) => {
         </span>
         <div className="grid grid-cols-2 gap-4">
           <FormElement
+            isEdit={isEdit}
             isRequired={false}
             type="input"
             label={"Complex Name"}
@@ -46,6 +49,7 @@ const Complex = ({ reactantData, handleChange }) => {
             placeholder="Type The Complex Name"
           />
           <FormElement
+            isEdit={isEdit}
             isRequired={false}
             type="input"
             label={"Complex Symbol"}

@@ -1,6 +1,6 @@
 import FormElement from "../../../components/FormElement";
 
-const Lipid = ({ reactantData, handleChange }) => {
+const Lipid = ({ reactantData, handleChange, isEdit }) => {
   return (
     <>
       <div>
@@ -50,6 +50,7 @@ const Lipid = ({ reactantData, handleChange }) => {
             handleChange={handleChange}
             placeholder="Select Lipid"
             itemType="Lipid"
+            isEdit={isEdit}
           />
         </div>
 
@@ -66,6 +67,7 @@ const Lipid = ({ reactantData, handleChange }) => {
               value={reactantData?.modifyingSite || ""}
               handleChange={handleChange}
               placeholder="Modifying site of amino acid (number)"
+              isEdit={isEdit}
             />
 
             <FormElement
@@ -77,6 +79,7 @@ const Lipid = ({ reactantData, handleChange }) => {
               value={reactantData?.modifyingType || ""}
               handleChange={handleChange}
               placeholder="Select Modifying Type"
+              isEdit={isEdit}
             />
           </div>
         </div>

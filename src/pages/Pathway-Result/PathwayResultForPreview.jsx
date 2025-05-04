@@ -1,9 +1,9 @@
-import { useParams, useLocation } from "react-router";
+import { useParams } from "react-router";
 
 import GraphView from "./components/GraphView";
 import NotFound from "../404/NotFound";
 
-import { usePathwayDataById } from "../../hooks/usePathwayDataById";
+// import { usePathwayDataById } from "../../hooks/usePathwayDataById";
 import { useEffect, useState } from "react";
 import LoadingProcess from "../../common/LoadingProcess";
 import api from "../../utils/api";
@@ -47,7 +47,7 @@ const PathwayResultForPreview = () => {
   //   <GraphView pathwayData={pathwayData} />
   // );
 
-  return <GraphView pathwayData={pathwayData} />;
+  return <GraphView pathwayData={pathwayData} backLink={`/preview/${pathwayData._id}`} />;
 };
 
 export default PathwayResultForPreview;

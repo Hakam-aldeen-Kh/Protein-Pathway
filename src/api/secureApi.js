@@ -4,7 +4,7 @@ const secureApi = api
 
 export const refreshAuthToken = async (originalRequest) => {
   try {
-    await secureApi.post('auth/refresh-token');
+    await api.post('auth/refresh-token');
     originalRequest._retry = true;
     return secureApi(originalRequest);
   } catch (refreshError) {
