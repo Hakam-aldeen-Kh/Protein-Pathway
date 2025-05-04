@@ -14,6 +14,7 @@ export const useChangePassword = (closeModal) => {
     upperCase: false,
     specialCharacter: false,
     oneNumber: false,
+    match: false,
   });
 
   const validationCases = [
@@ -22,6 +23,7 @@ export const useChangePassword = (closeModal) => {
     "At least 1 uppercase letter",
     "At least 1 special character",
     "At least 1 number",
+    "The password and confirm password match",
   ];
 
   const {
@@ -48,14 +50,16 @@ export const useChangePassword = (closeModal) => {
   // Validate newPassword in real-time
   useEffect(() => {
     const confirmNewPassword = formValues.confirmNewPassword || "";
+    const newPassword = formValues.newPassword || "";
     setValidation({
       length: confirmNewPassword.length >= 8,
       lowerCase: /[a-z]/.test(confirmNewPassword),
       upperCase: /[A-Z]/.test(confirmNewPassword),
       specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(confirmNewPassword),
       oneNumber: /[0-9]/.test(confirmNewPassword),
+      match: confirmNewPassword === newPassword,
     });
-  }, [formValues.confirmNewPassword]);
+  }, [formValues.confirmNewPassword, formValues.newPassword]);
 
   // Reset validation errors when either password field changes
   useEffect(() => {

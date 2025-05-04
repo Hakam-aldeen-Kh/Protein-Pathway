@@ -42,4 +42,14 @@ export const changePasswordSchema = z
         path: ["confirmNewPassword"],
       });
     }
+    if (
+      data.newPassword !== data.confirmNewPassword &&
+      data.newPassword
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Passwords do not match",
+        path: ["newPassword"],
+      });
+    }
   });

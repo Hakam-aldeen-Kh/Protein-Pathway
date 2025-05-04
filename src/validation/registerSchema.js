@@ -49,4 +49,11 @@ export const signupSchema = z
         path: ["password"],
       });
     }
+    if (data.password !== data.confirmPassword && data.password) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Passwords do not match",
+        path: ["confirmPassword"],
+      });
+    }
   });
