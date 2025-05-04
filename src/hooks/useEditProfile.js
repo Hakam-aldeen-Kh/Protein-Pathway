@@ -4,25 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
 import { editProfileSchema } from "../validation/editProfileSchema";
 import api from "../utils/api";
-import Swal from "sweetalert2";
+import { ShowToast } from "../common/ToastNotification";
 
 // Utility to normalize phone number to E.164 format
 const normalizePhoneNumber = (phone) => {
   if (!phone || typeof phone !== "string") return "";
   return phone.replace(/[^+\d]/g, "");
 };
-
-const Toast = Swal.mixin({
-  toast: true,
-  position: "top-end",
-  showConfirmButton: false,
-  timer: 3000,
-  timerProgressBar: true,
-  didOpen: (toast) => {
-    toast.onmouseenter = Swal.stopTimer;
-    toast.onmouseleave = Swal.resumeTimer;
-  },
-});
 
 export const useEditProfile = () => {
   const [profileData, setProfileData] = useState(null);
@@ -66,11 +54,10 @@ export const useEditProfile = () => {
         const response = await api.get("user/me");
         setProfileData(response.data.data.user);
       } catch (error) {
-        Toast.fire({
-          icon: "error",
-          title:
-            error.response?.data?.message || "Failed to fetch profile data",
-        });
+        ShowToast(
+          "Error",
+          error.response?.data?.message || "Failed to fetch profile data"
+        );
       } finally {
         setIsLoading(false);
       }
@@ -126,18 +113,15 @@ export const useEditProfile = () => {
         // image: selectedImage || profileData?.imageSrc || null,
       };
       await api.put("user/me", updatedData); // Adjust endpoint as needed
-      Toast.fire({
-        icon: "success",
-        title: "Profile updated successfully",
-      });
+      ShowToast("Successful", "Profile updated successfully");
       reset();
       setSelectedImage(profileData?.imageSrc || null);
       navigate("/profile");
     } catch (error) {
-      Toast.fire({
-        icon: "error",
-        title: error.response?.data?.message || "Failed to update profile",
-      });
+      ShowToast(
+        "Failed update profile",
+        error.response?.data?.message || "Failed to update profile"
+      );
     }
   };
 

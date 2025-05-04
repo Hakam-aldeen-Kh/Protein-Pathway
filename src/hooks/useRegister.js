@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema } from "../validation/registerSchema";
 import { useNavigate } from "react-router";
-import Swal from "sweetalert2";
 import api from "../utils/api";
+import { ShowToast } from "../common/ToastNotification";
 
 export const useRegister = () => {
   const navigate = useNavigate();
@@ -109,18 +109,6 @@ export const useRegister = () => {
     setShowPassword(false);
   };
 
-  const Toast = Swal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    },
-  });
-
   // In your form submission handler
   const handleFinalSubmit = async (data) => {
     setIsSubmitting(true);
@@ -135,11 +123,7 @@ export const useRegister = () => {
     try {
       const response = await api.post("/auth/register", submissionData);
 
-      Toast.fire({
-        icon: "success",
-        timer: 6000,
-        title: response.data.message || "Registration successful",
-      });
+      ShowToast("Success", response.data.message || "Registration successful");
 
       // Pass the email to ConfirmRegister
       navigate("/confirm-email", { state: { email: data.email } });
@@ -147,12 +131,11 @@ export const useRegister = () => {
     } catch (error) {
       console.error("Registration error:", error);
 
-      Toast.fire({
-        icon: "error",
-        title:
-          error.response?.data?.message ||
-          "Registration failed. Please try again.",
-      });
+      ShowToast(
+        "Error",
+        error.response?.data?.message ||
+          "Registration failed. Please try again."
+      );
     } finally {
       setIsSubmitting(false);
     }
