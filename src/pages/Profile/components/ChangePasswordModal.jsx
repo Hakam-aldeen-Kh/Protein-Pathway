@@ -48,6 +48,7 @@ const ChangePasswordModal = ({ isOpen, closeModal }) => {
           showPassword={showPassword}
           togglePassword={() => setShowPassword(!showPassword)}
         />
+        <br/>
         <InputField
           label="New Password"
           type="password"
@@ -55,6 +56,16 @@ const ChangePasswordModal = ({ isOpen, closeModal }) => {
           placeholder="Enter Your New Password"
           register={register}
           error={errors.newPassword?.message}
+          showPassword={showPassword}
+          togglePassword={() => setShowPassword(!showPassword)}
+        />
+        <InputField
+          label="Confirm New Password"
+          type="password"
+          name="confirmNewPassword"
+          placeholder="Re-enter Your New Password"
+          register={register}
+          error={errors.confirmNewPassword?.message}
           showPassword={showPassword}
           togglePassword={() => setShowPassword(!showPassword)}
         />
@@ -79,16 +90,6 @@ const ChangePasswordModal = ({ isOpen, closeModal }) => {
             );
           })}
         </ul>
-        <InputField
-          label="Confirm New Password"
-          type="password"
-          name="confirmNewPassword"
-          placeholder="Re-enter Your New Password"
-          register={register}
-          error={errors.confirmNewPassword?.message}
-          showPassword={showPassword}
-          togglePassword={() => setShowPassword(!showPassword)}
-        />
         <div className="grid grid-cols-2 gap-x-5 mt-6">
           <button
             type="button"

@@ -48,12 +48,40 @@ export const usePathwayData = () => {
     }
   }, [totalCount]); // Runs whenever totalCount changes
 
+
+  const extractText = (value) => {
+    if (value == null) return "-";
+
+    // Handle JSON string case
+    if (typeof value === "string") {
+      try {
+        // Check if it's a JSON string
+        if (value.trim().startsWith("{")) {
+          const parsed = JSON.parse(value);
+          return parsed.text || value;
+        }
+        return value;
+      } catch {
+        // If parsing fails, just return the original string
+        return value;
+      }
+    }
+  
+    // Handle object with text property
+    if (typeof value === "object" && value.text) {
+      return value.text;
+    }
+  
+    // Default case
+    return String(value);
+  };
+
   // Extract unique categories and years from allPathways
   useEffect(() => {
     if (allPathways) {
       // Extract unique categories
       const uniqueCategories = [
-        ...new Set(allPathways.map((item) => capitalize(item.category))),
+        ...new Set(allPathways.map((item) => capitalize(extractText(item.category)))),
       ];
       setCategories(uniqueCategories);
 
@@ -114,6 +142,9 @@ export const usePathwayData = () => {
   const handleChangeTab = (state) => {
     if (state !== activeTab) setActiveTab(state);
     setSearchParams({ tab: state });
+    setCategory("")
+    setYear("")
+    setPageNumber(1)
   };
 
   return {

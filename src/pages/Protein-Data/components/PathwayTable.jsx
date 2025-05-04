@@ -33,14 +33,22 @@ const PathwayTable = ({
           key={rowIndex}
           className="grid grid-cols-5 text-xs text-neutral-900"
         >
-          {columns.map(({ key, link }, colIndex) => (
-            <TableCell
-              key={`${rowIndex}-${colIndex}`}
-              content={row[key]}
-              link={link}
-              _id={row._id}
-            />
-          ))}
+          {columns.map(({ key, link, transform }, colIndex) => {
+            // Get the raw value from the row
+            const rawValue = row[key];
+
+            // Transform the value if a transform function exists
+            const displayValue = transform ? transform(rawValue) : rawValue;
+
+            return (
+              <TableCell
+                key={`${rowIndex}-${colIndex}`}
+                content={displayValue}
+                link={link}
+                _id={row._id}
+              />
+            );
+          })}
         </div>
       ))}
     </div>

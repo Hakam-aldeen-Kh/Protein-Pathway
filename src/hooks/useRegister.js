@@ -18,6 +18,7 @@ export const useRegister = () => {
     upperCase: false,
     specialCharacter: false,
     oneNumber: false,
+    match: false,
   });
 
   const validationCases = [
@@ -26,6 +27,7 @@ export const useRegister = () => {
     "At least 1 uppercase letter",
     "At least 1 special character",
     "At least 1 number",
+    "The password and confirm password match",
   ];
 
   const {
@@ -52,15 +54,17 @@ export const useRegister = () => {
 
   // Add useEffect to validate password in real-time
   useEffect(() => {
+    const confirmPassword = formValues.confirmPassword || "";
     const password = formValues.password || "";
     setValidation({
-      length: password.length >= 8,
-      lowerCase: /[a-z]/.test(password),
-      upperCase: /[A-Z]/.test(password),
-      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-      oneNumber: /[0-9]/.test(password),
+      length: confirmPassword.length >= 8,
+      lowerCase: /[a-z]/.test(confirmPassword),
+      upperCase: /[A-Z]/.test(confirmPassword),
+      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(confirmPassword),
+      oneNumber: /[0-9]/.test(confirmPassword),
+      match: confirmPassword === password,
     });
-  }, [formValues.password]);
+  }, [formValues.confirmPassword, formValues.password]);
 
   // Reset validation errors when either password field changes
   useEffect(() => {

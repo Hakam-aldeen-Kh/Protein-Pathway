@@ -48,7 +48,7 @@ const NAME_PROPERTIES = {
   Cellular: "cell_localization_name",
   Chibe: "Molecule_name",
   Enzyme: "enz_name",
-  Categories: "text"
+  Categories: "text",
 };
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
@@ -91,27 +91,28 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
 
   // Handle itemType changes and value synchronization
   useEffect(() => {
-    // When itemType changes (including initial load)
     if (prevItemType !== itemType) {
       setQuery("");
       setPrevItemType(itemType);
-
-      // Only clear selection when changing from one valid type to another
-      // or when explicitly setting to empty
-      if ((prevItemType && itemType) || itemType === "") {
+      if (prevItemType && itemType) {
         setSelectedItem(null);
-
-        // Notify parent only when we're changing from a valid selection
-        if (value && onChange) {
+        if (onChange) {
           onChange({
             target: { name, value: null },
           });
         }
       }
-    } else if (JSON.stringify(value) !== JSON.stringify(selectedItem)) {
-      setSelectedItem(value);
+    } else {
+      if (name === "category" && typeof value === "string") {
+        const matchingItem = items.find(
+          (item) => item.text.toLowerCase() === value.toLowerCase()
+        );
+        setSelectedItem(matchingItem || null);
+      } else {
+        setSelectedItem(value);
+      }
     }
-  }, [itemType, prevItemType, value, selectedItem, onChange, name]);
+  }, [itemType, prevItemType, value, items, name, onChange]);
 
   // Helper function to get item name
   const getItemName = (item) => {
@@ -167,6 +168,23 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
     }
   };
 
+  // Process the value before passing to onChange
+  const handleValueChange = (val) => {
+    setSelectedItem(val);
+
+    if (onChange) {
+      let processedValue;
+      if (name === "category" && val) {
+        processedValue = val.text;
+      } else {
+        processedValue = val;
+      }
+      onChange({
+        target: { name, value: processedValue },
+      });
+    }
+  };
+
   return (
     <div className="relative w-full">
       <div className="relative">
@@ -181,20 +199,15 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
         <Combobox
           value={selectedItem}
           name={name}
-          onChange={(val) => {
-            setSelectedItem(val);
-            if (onChange) {
-              onChange({
-                target: { name, value: val },
-              });
-            }
-          }}
+          onChange={handleValueChange}
           disabled={isDisabled}
         >
           <div className="flex w-full">
             <ComboboxInput
               aria-label={itemType || "Item"}
-              displayValue={(item) => getItemName(item)}
+              displayValue={(item) =>
+                item ? getItemName(item) : ""
+              }
               onChange={(e) => setQuery(e.target.value)}
               className={`h-[40px] mt-1 block w-full rounded-md border ${
                 error ? "border-red-300" : "border-gray-300"
@@ -208,7 +221,6 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
 
           {/* Clear and Dropdown Icons */}
           <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
-            {/* Clear selection button - show when there's a selection */}
             {selectedItem && (
               <button
                 type="button"
@@ -220,7 +232,6 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
               </button>
             )}
 
-            {/* Clear search button - show when there's a search query but no selection */}
             {query && !selectedItem && (
               <button
                 type="button"
@@ -263,7 +274,9 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
                               : "opacity-0 group-hover:opacity-100 text-white"
                           }`}
                         />
-                        <span className="truncate">{getItemName(item)}</span>
+                        <span className="truncate">
+                          {getItemName(item)}
+                        </span>
                       </div>
                     )}
                   </ComboboxOption>
