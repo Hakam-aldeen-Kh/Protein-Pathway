@@ -4,6 +4,8 @@ import { usePathway } from "../hooks/usePathway";
 
 const PathewayContext = () => {
     const today = new Date();
+    const recordDate = `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`;
+
     const { isLoading, handleSubmitAddPathway, handleSubmitEditPathway, handleDeletePathway } = usePathway()
 
     const [myPathwayData, setMyPathwayData] = useState(() => {
@@ -16,7 +18,6 @@ const PathewayContext = () => {
         const saved = localStorage.getItem('pathwayData');
         return saved ? JSON.parse(saved) : {
             id: Date.now(),
-            recordDate: `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`,
             reactions: [
                 {
                     id: 1,
@@ -34,9 +35,14 @@ const PathewayContext = () => {
     }, [pathwayData]);
 
     const saveAfterCreation = async () => {
-        setMyPathwayData([...myPathwayData, pathwayData])
-        localStorage.setItem('myPathwayData', JSON.stringify([...myPathwayData, pathwayData]));
-        await handleSubmitAddPathway(pathwayData)
+        const updatedPathwayData = {
+            ...pathwayData,
+            recordDate
+        };
+
+        setMyPathwayData([...myPathwayData, updatedPathwayData])
+        localStorage.setItem('myPathwayData', JSON.stringify([...myPathwayData, updatedPathwayData]));
+        await handleSubmitAddPathway(updatedPathwayData)
         cancleCreation()
     }
 
