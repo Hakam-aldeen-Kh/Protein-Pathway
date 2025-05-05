@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Swal from "sweetalert2";
 import api from "../../../utils/api";
 import { useLocation } from "react-router";
 import LoadingProcess from "../../../common/LoadingProcess";
+import { ShowToast } from "../../../common/ToastNotification";
 
 const ConfirmationPage = () => {
   // Get the email from URL parameters
@@ -12,36 +12,23 @@ const ConfirmationPage = () => {
 
   const handleResend = async () => {
     setIsResending(true);
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
-      },
-    });
     try {
       const response = await api.post("auth/forgot-password", {
         email: email,
       });
 
-      Toast.fire({
-        icon: "success",
-        timer: 6000,
-        title: response.data.message || "Email resent successfully",
-      });
+      ShowToast(
+        "Success",
+        response.data.message || "Email resent successfully"
+      );
 
       return response;
     } catch (error) {
-      Toast.fire({
-        icon: "error",
-        title:
-          error.response?.data?.message ||
-          "Failed to resend email. Please try again.",
-      });
+      ShowToast(
+        "Error",
+        error.response?.data?.message ||
+          "Failed to resend email. Please try again."
+      );
     } finally {
       setIsResending(false);
     }

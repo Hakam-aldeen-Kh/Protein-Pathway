@@ -5,8 +5,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router";
 import api from "../../../utils/api";
-import Swal from "sweetalert2";
 import LoadingProcess from "../../../common/LoadingProcess";
+import { ShowToast } from "../../../common/ToastNotification";
 
 const emailSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -28,39 +28,22 @@ const EmailInputPage = () => {
     },
   });
 
-  const Toast = Swal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    },
-  });
-
   const handleEmailSubmit = async (data) => {
     setIsSubmitting(true);
     try {
       const response = await api.post("auth/forgot-password", data);
 
-      Toast.fire({
-        icon: "success",
-        timer: 2000,
-        title: response.data.message || "Email send successful",
-      });
+      ShowToast("Success", response.data.message || "Email send successful");
 
       // Pass email to the confirmation page using navigate state
       navigate("/reset-password/confirmation", {
         state: { email: data.email },
       });
     } catch (error) {
-      Toast.fire({
-        icon: "error",
-        title:
-          error.response?.data?.message || "Request failed. Please try again.",
-      });
+      ShowToast(
+        "Error",
+        error.response?.data?.message || "Request failed. Please try again."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -75,7 +58,9 @@ const EmailInputPage = () => {
       }}
     >
       {/* Loading Overlay */}
-      {isSubmitting && <LoadingProcess label="Sending password reset email..." />}
+      {isSubmitting && (
+        <LoadingProcess label="Sending password reset email..." />
+      )}
 
       <div className="w-full max-w-[1200px] flex items-center justify-between">
         {/* Logo Section */}

@@ -14,6 +14,7 @@ const FormElement = ({
   itemType,
   customStyle,
   paginationTable,
+  speciesPaginationTable,
   setOpenTablePagination,
   reactantData,
   checked
@@ -96,6 +97,43 @@ const FormElement = ({
                   name="reactant_protein_uniprot_id"
                   type="hidden"
                   value={reactantData?.reactant_protein_uniprot_id || ""}
+                />
+              </>
+            )}
+          </div>
+        )}
+        {type === "speciesPaginationTable" && (
+          <div
+            className={`${customStyle ? customStyle : "select-container w-full flex-1"
+              }`}
+          >
+            <input
+              type="text"
+              value={value || ""}
+              name={name}
+              required={isRequired}
+              onChange={handleInputChange}
+              placeholder={placeholder}
+              className="mt-1 outline-none block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
+            />
+            {speciesPaginationTable && (
+              <>
+                <button
+                  type="button"
+                  disabled={paginationTableBtn}
+                  onClick={() => setOpenTablePagination(true)}
+                  className={`px-8 w-fit py-[10px] rounded-sm text-white font-semibold transition-all ${paginationTableBtn
+                    ? "bg-gray-400 cursor-not-allowed opacity-70"
+                    : "bg-[#57369E] hover:bg-[#00A7D3]"
+                    }`}
+                >
+                  Search
+                </button>
+                <input
+                  id="species"
+                  name="species"
+                  type="hidden"
+                  value={value}
                 />
               </>
             )}

@@ -1,9 +1,8 @@
 import { useLocation } from "react-router";
-import Swal from "sweetalert2";
 import api from "../../utils/api";
 import { useState } from "react";
 import LoadingProcess from "../../common/LoadingProcess";
-
+import { ShowToast } from "../../common/ToastNotification";
 
 const ConfirmRegister = () => {
   // Get the email from URL parameters
@@ -12,41 +11,26 @@ const ConfirmRegister = () => {
   const email = location.state?.email || "your email address";
 
   const handleResend = async () => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
-      },
-    });
-
     setIsResending(true);
     try {
       const response = await api.post("auth/resend-verification", {
         email: email,
       });
 
-      Toast.fire({
-        icon: "success",
-        timer: 6000,
-        title:
-          response.data.message || "Verification email resent successfully",
-      });
+      ShowToast(
+        "Success",
+        response.data.message || "Verification email resent successfully"
+      );
 
       return response;
     } catch (error) {
       console.error("Resend verification error:", error);
 
-      Toast.fire({
-        icon: "error",
-        title:
-          error.response?.data?.message ||
-          "Failed to resend verification email. Please try again.",
-      });
+      ShowToast(
+        "Error",
+        error.response?.data?.message ||
+          "Failed to resend verification email. Please try again."
+      );
     } finally {
       setIsResending(false);
     }

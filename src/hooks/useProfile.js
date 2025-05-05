@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import api from "../utils/api";
-import Swal from "sweetalert2";
+import { ShowToast } from "../common/ToastNotification";
 // import { useAuth } from "../hooks/useAuth";
 
 // Modal types
@@ -10,18 +10,6 @@ export const MODAL_TYPES = {
   CHANGE_PASSWORD: "changePassword",
   LOGOUT: "logout",
 };
-
-const Toast = Swal.mixin({
-  toast: true,
-  position: "top-end",
-  showConfirmButton: false,
-  timer: 3000,
-  timerProgressBar: true,
-  didOpen: (toast) => {
-    toast.onmouseenter = Swal.stopTimer;
-    toast.onmouseleave = Swal.resumeTimer;
-  },
-});
 
 export const useProfile = () => {
   const [activeModal, setActiveModal] = useState(null);
@@ -37,11 +25,10 @@ export const useProfile = () => {
         const response = await api.get("user/me");
         setProfileData(response.data.data.user);
       } catch (error) {
-        Toast.fire({
-          icon: "error",
-          title:
-            error.response?.data?.message || "Failed to fetch profile data",
-        });
+        ShowToast(
+          "Error",
+          error.response?.data?.message || "Failed to fetch profile data"
+        );
       } finally {
         setIsLoading(false);
       }
@@ -66,19 +53,13 @@ export const useProfile = () => {
       // Small delay to ensure user sees the loading state
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      Toast.fire({
-        icon: "success",
-        timer: 2000,
-        title: response.data.message || "Logout successful",
-      });
-
+      ShowToast("Success", response.data.message || "Logout successful");
       navigate("/login");
     } catch (error) {
-      Toast.fire({
-        icon: "error",
-        title:
-          error.response?.data?.message || "Logout failed. Please try again.",
-      });
+      ShowToast(
+        "Error",
+        error.response?.data?.message || "Logout failed. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -89,18 +70,16 @@ export const useProfile = () => {
     setIsLoading(true);
     try {
       const response = await api.post("auth/change-password", passwordData);
-
-      Toast.fire({
-        icon: "success",
-        title: response.data.message || "Password changed successfully",
-      });
-
+      ShowToast(
+        "Success",
+        response.data.message || "Password changed successfully"
+      );
       toggleModal(null);
     } catch (error) {
-      Toast.fire({
-        icon: "error",
-        title: error.response?.data?.message || "Failed to change password",
-      });
+      ShowToast(
+        "Error",
+        error.response?.data?.message || "Failed to change password"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -112,17 +91,17 @@ export const useProfile = () => {
     try {
       const response = await api.delete("user/me");
 
-      Toast.fire({
-        icon: "success",
-        title: response.data.message || "Account deleted successfully",
-      });
+      ShowToast(
+        "Success",
+        response.data.message || "Account deleted successfully"
+      );
 
       navigate("/login");
     } catch (error) {
-      Toast.fire({
-        icon: "error",
-        title: error.response?.data?.message || "Failed to delete account",
-      });
+      ShowToast(
+        "Error",
+        error.response?.data?.message || "Failed to delete account"
+      );
     } finally {
       setIsLoading(false);
       toggleModal(null);

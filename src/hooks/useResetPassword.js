@@ -4,8 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
 import api from "../utils/api";
 import { useSearchParams } from "react-router";
-import Swal from "sweetalert2";
 import { resetPasswordSchema } from "../validation/resetPasswordSchema";
+import { ShowToast } from "../common/ToastNotification";
 
 export const useResetPassword = () => {
   const navigate = useNavigate();
@@ -58,7 +58,10 @@ export const useResetPassword = () => {
       upperCase: /[A-Z]/.test(confirmPassword),
       specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(confirmPassword),
       oneNumber: /[0-9]/.test(confirmPassword),
-      match: confirmPassword === password,
+      match:
+        password.length > 0 &&
+        confirmPassword.length > 0 &&
+        confirmPassword === password,
     });
 
     // Re-validate confirmPassword field whenever password changes
@@ -76,18 +79,6 @@ export const useResetPassword = () => {
     formValues.confirmPassword &&
     formValues.password.trim() === formValues.confirmPassword.trim();
 
-  const Toast = Swal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    },
-  });
-
   const handleResetPasswordSubmit = async (data) => {
     if (passwordsMatch) {
       setIsSubmitting(true); // Set loading state to true before API call
@@ -96,19 +87,17 @@ export const useResetPassword = () => {
           resetPasswordToken: token,
           newPassword: data.password,
         });
-        Toast.fire({
-          icon: "success",
-          timer: 2000,
-          title: response.data.message || "Password reset successful",
-        });
+        ShowToast(
+          "Success",
+          response.data.message || "Password reset successful"
+        );
         navigate("/login");
       } catch (error) {
-        Toast.fire({
-          icon: "error",
-          title:
-            error.response?.data?.message ||
-            "Password reset failed. Please try again.",
-        });
+        ShowToast(
+          "Error",
+          error.response?.data?.message ||
+            "Password reset failed. Please try again."
+        );
       } finally {
         setIsSubmitting(false); // Set loading state to false after API call
       }

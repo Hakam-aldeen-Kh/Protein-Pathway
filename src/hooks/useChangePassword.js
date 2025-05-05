@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { changePasswordSchema } from "../validation/changePasswordSchema";
 import api from "../utils/api";
-import Swal from "sweetalert2";
+import { ShowToast } from "../common/ToastNotification";
 
 export const useChangePassword = (closeModal) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,8 +21,8 @@ export const useChangePassword = (closeModal) => {
     "At least 8 characters",
     "At least 1 lowercase letter",
     "At least 1 uppercase letter",
-    "At least 1 special character",
     "At least 1 number",
+    "At least 1 special character",
     "The password and confirm password match",
   ];
 
@@ -55,9 +55,12 @@ export const useChangePassword = (closeModal) => {
       length: confirmNewPassword.length >= 8,
       lowerCase: /[a-z]/.test(confirmNewPassword),
       upperCase: /[A-Z]/.test(confirmNewPassword),
-      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(confirmNewPassword),
       oneNumber: /[0-9]/.test(confirmNewPassword),
-      match: confirmNewPassword === newPassword,
+      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(confirmNewPassword),
+      match:
+        newPassword.length > 0 &&
+        confirmNewPassword.length > 0 &&
+        confirmNewPassword === newPassword,
     });
   }, [formValues.confirmNewPassword, formValues.newPassword]);
 
@@ -95,18 +98,6 @@ export const useChangePassword = (closeModal) => {
     return allFieldsFilled && isFormValid;
   };
 
-  const Toast = Swal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    },
-  });
-
   // Handle form submission
   const handleFinalSubmit = async (data) => {
     setIsSubmitting(true);
@@ -116,21 +107,18 @@ export const useChangePassword = (closeModal) => {
     };
     try {
       const response = await api.patch("auth/update-password", submissionData);
-
-      Toast.fire({
-        icon: "success",
-        timer: 3000,
-        title: response.data.message || "Change password successful",
-      });
+      ShowToast(
+        "Succuss",
+        response.data.message || "Change password successful"
+      );
       resetForm();
       closeModal();
     } catch (error) {
-      Toast.fire({
-        icon: "error",
-        title:
-          error.response?.data?.message ||
-          "Change password failed. Please try again.",
-      });
+      ShowToast(
+        "Error",
+        error.response?.data?.message ||
+          "Change password failed. Please try again."
+      );
     } finally {
       setIsSubmitting(false);
     }
