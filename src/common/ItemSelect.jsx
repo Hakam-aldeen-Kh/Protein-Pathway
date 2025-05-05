@@ -53,7 +53,7 @@ const NAME_PROPERTIES = {
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
+const ItemSelect = ({ itemType, value, onChange, name, placeholder, isEdit }) => {
   const [query, setQuery] = useState("");
   const [selectedItem, setSelectedItem] = useState(value || null);
   const [prevItemType, setPrevItemType] = useState(itemType);
@@ -125,8 +125,8 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
     itemType === "Enzyme"
       ? items.slice(0, 200)
       : query === ""
-      ? items.slice(0, 200)
-      : items
+        ? items.slice(0, 200)
+        : items
           .filter((item) => {
             const itemName = getItemName(item);
             return itemName.toLowerCase().includes(query.toLowerCase());
@@ -137,8 +137,8 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
     itemType === "Enzyme"
       ? items.length
       : query === ""
-      ? items.length
-      : items.filter((item) => {
+        ? items.length
+        : items.filter((item) => {
           const itemName = getItemName(item);
           return itemName.toLowerCase().includes(query.toLowerCase());
         }).length;
@@ -200,7 +200,7 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
           value={selectedItem}
           name={name}
           onChange={handleValueChange}
-          disabled={isDisabled}
+          disabled={isDisabled || !isEdit}
         >
           <div className="flex w-full">
             <ComboboxInput
@@ -209,13 +209,11 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
                 item ? getItemName(item) : ""
               }
               onChange={(e) => setQuery(e.target.value)}
-              className={`h-[40px] mt-1 block w-full rounded-md border ${
-                error ? "border-red-300" : "border-gray-300"
-              } pl-9 pr-16 shadow-sm transition-all duration-200 focus:border-[#57369E] focus:ring-[#57369E] focus:outline-none focus:ring-opacity-50 hover:border-gray-400 text-gray-900 ${
-                isDisabled ? "bg-gray-100 cursor-not-allowed" : ""
-              } ${error ? "text-red-500" : "placeholder-gray-400"}`}
+              className={`h-[40px] mt-1 block w-full rounded-md border ${error ? "border-red-300" : "border-gray-300"
+                } pl-9 pr-16 shadow-sm transition-all duration-200 focus:border-[#57369E] focus:ring-[#57369E] focus:outline-none focus:ring-opacity-50 hover:border-gray-400 text-gray-900 ${isDisabled ? "bg-gray-100 cursor-not-allowed" : ""
+                } ${error ? "text-red-500" : "placeholder-gray-400"}`}
               placeholder={getPlaceholderText()}
-              disabled={isDisabled}
+              disabled={isDisabled || !isEdit}
             />
           </div>
 
@@ -224,6 +222,7 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
             {selectedItem && (
               <button
                 type="button"
+                disabled={!isEdit}
                 onClick={handleClearSelection}
                 className="p-1 text-gray-400 hover:text-gray-600 focus:outline-none"
                 aria-label="Clear selection"
@@ -261,18 +260,16 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder }) => {
                   >
                     {({ selected, active }) => (
                       <div
-                        className={`flex items-center gap-3 p-3 cursor-pointer group ${
-                          active ? "bg-[#57369E] text-white" : "text-gray-900"
-                        } hover:bg-[#57369E] hover:text-white`}
+                        className={`flex items-center gap-3 p-3 cursor-pointer group ${active ? "bg-[#57369E] text-white" : "text-gray-900"
+                          } hover:bg-[#57369E] hover:text-white`}
                       >
                         <CheckIcon
-                          className={`h-5 w-5 flex-shrink-0 ${
-                            selected
-                              ? active
-                                ? "text-white"
-                                : "text-[#57369E] group-hover:text-white"
-                              : "opacity-0 group-hover:opacity-100 text-white"
-                          }`}
+                          className={`h-5 w-5 flex-shrink-0 ${selected
+                            ? active
+                              ? "text-white"
+                              : "text-[#57369E] group-hover:text-white"
+                            : "opacity-0 group-hover:opacity-100 text-white"
+                            }`}
                         />
                         <span className="truncate">
                           {getItemName(item)}

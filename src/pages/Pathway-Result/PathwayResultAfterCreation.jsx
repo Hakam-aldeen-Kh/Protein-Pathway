@@ -8,7 +8,7 @@ const PathwayResultAfterCreation = () => {
   const { pathwayData } = useOutletContext();
 
   return (
-    <GraphView pathwayData={pathwayData} />
+    <GraphView pathwayData={pathwayData} backLink="/review" />
   );
 };
 

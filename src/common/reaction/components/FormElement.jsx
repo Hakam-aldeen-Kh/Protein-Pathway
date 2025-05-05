@@ -17,7 +17,8 @@ const FormElement = ({
   speciesPaginationTable,
   setOpenTablePagination,
   reactantData,
-  checked
+  checked,
+  isEdit = true
 }) => {
   const [paginationTableBtn, setPaginationTableBtn] = useState(true);
 
@@ -39,6 +40,7 @@ const FormElement = ({
       <div className="flex items-center justify-center gap-2">
         {type === "input" && (
           <input
+            disabled={!isEdit}
             type="text"
             value={value || ""}
             name={name}
@@ -53,6 +55,7 @@ const FormElement = ({
         {type === "select" && (
           <div className="select-container w-full flex-1">
             <select
+              disabled={!isEdit}
               required={isRequired}
               name={name}
               value={value || ""}
@@ -71,6 +74,7 @@ const FormElement = ({
               }`}
           >
             <input
+              disabled={!isEdit}
               type="text"
               value={value || ""}
               name={name}
@@ -93,6 +97,7 @@ const FormElement = ({
                   Search
                 </button>
                 <input
+                  disabled={!isEdit}
                   id="reactant_protein_uniprot_id"
                   name="reactant_protein_uniprot_id"
                   type="hidden"
@@ -143,6 +148,7 @@ const FormElement = ({
         {type === "checkbox" && (
           <div className="space-x-3 flex-1">
             <input
+              disabled={!isEdit}
               type="checkbox"
               id={id}
               checked={value || false}
@@ -160,6 +166,7 @@ const FormElement = ({
 
         {type === "itemType" && (
           <ItemSelect
+            isEdit={isEdit}
             name={name}
             value={value}
             onChange={handleChange}
@@ -171,6 +178,7 @@ const FormElement = ({
         {type === "radio" && (
           <div className="space-x-3 flex-1">
             <input
+              disabled={!isEdit}
               type="radio"
               id={id}
               checked={checked === value}

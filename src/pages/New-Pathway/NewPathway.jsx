@@ -23,7 +23,7 @@ const NewPathway = () => {
     e,
     reactionId = null,
     type = null,
-    index = null,
+    id = null,
     v = null
   ) => {
     const { name, value, checked } = e.target;
@@ -39,8 +39,8 @@ const NewPathway = () => {
           reaction.id === reactionId
             ? {
               ...reaction,
-              [type]: reaction[type].map((item, i) =>
-                i === index
+              [type]: reaction[type].map((item) =>
+                item.id === id
                   ? {
                     ...item,
                     [name]: value === "on" ? (v ? v : checked) : value,
@@ -60,25 +60,23 @@ const NewPathway = () => {
   };
 
   const addReaction = () => {
-    let reactionId =
-      pathwayData.reactions[pathwayData.reactions.length - 1]?.id + 1 || 1;
+    let reactionId = pathwayData.reactions[pathwayData.reactions.length - 1]?.id + 1 || 1;
+
+    const newReaction = {
+      id: reactionId,
+      reactants: [{ id: 1, name: `reactant_${reactionId}.1` }],
+      controllers: [{ id: 1, name: `controller_${reactionId}.1` }],
+      products: [{ id: 1, name: `product_${reactionId}.1` }],
+    };
 
     setPathwayData((prevPathwayData) => {
       return {
         ...prevPathwayData,
-        reactions: [
-          ...prevPathwayData.reactions,
-          {
-            id: reactionId,
-            reactants: [{ id: 1, name: `reactant_${reactionId}.1` }],
-            controllers: [{ id: 1, name: `controller_${reactionId}.1` }],
-            products: [{ id: 1, name: `product_${reactionId}.1` }],
-          },
-        ],
+        reactions: [...prevPathwayData.reactions, newReaction],
       };
     });
 
-    return reactionId;
+    return newReaction;
   };
 
   const deleteReaction = (id) => {

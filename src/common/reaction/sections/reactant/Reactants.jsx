@@ -30,12 +30,8 @@ const Reactants = ({
             reactants: [
               ...reaction.reactants,
               {
-                id:
-                  reaction.reactants[reaction.reactants.length - 1]?.id + 1 ||
-                  1,
-                name: `reactant_${reactionId}.${reaction.reactants[reaction.reactants.length - 1]?.id + 1 ||
-                  1
-                  }`,
+                id: reaction.reactants[reaction.reactants.length - 1]?.id + 1 || 1,
+                name: `reactant_${reactionId}.${reaction.reactants[reaction.reactants.length - 1]?.id + 1 || 1}`,
               },
             ],
           }
@@ -79,10 +75,11 @@ const Reactants = ({
           title={`Reactant - ${reaction.id}.${item.id}`}
         >
           <ReactantForm
+            isEdit={!item.reference || false}
             handleChangeData={handleChangeData}
             reaction={reaction}
             reactantData={item}
-            reactantIndex={index}
+            reactantId={item.id}
           />
         </Accordion>
       ))}

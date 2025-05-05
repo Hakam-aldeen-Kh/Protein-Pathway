@@ -2,7 +2,7 @@ import { useState } from "react";
 import FormElement from "../../../components/FormElement";
 import ProteinSearchTable from "./ProteinSearchTable";
 
-const Protein = ({ reactantData, handleChange }) => {
+const Protein = ({ reactantData, handleChange, isEdit }) => {
   const [isOpen, setOpenTablePagination] = useState(false);
 
   // Callback to handle protein selection
@@ -32,6 +32,7 @@ const Protein = ({ reactantData, handleChange }) => {
         <span className="font-bold text-xs block py-4">Protein Name</span>
         <div className="grid grid-cols-2 gap-4">
           <FormElement
+            isEdit={isEdit}
             isRequired={false}
             type="paginationTable"
             label="Protein Search"
@@ -46,6 +47,7 @@ const Protein = ({ reactantData, handleChange }) => {
           />
 
           <FormElement
+            isEdit={isEdit}
             isRequired={false}
             type="input"
             label="Protein Symbol"

@@ -1,10 +1,10 @@
 import FormElement from "../../../components/FormElement";
 
-const Glycan = ({ reactantData, handleChange }) => {
+const Glycan = ({ reactantData, handleChange, isEdit }) => {
   return (
     <>
       <div className="grid grid-cols-2 gap-4">
-        <FormElement isRequired={false} type="select" label={" Glycan Text Type"} name="glycanTextType" value={reactantData?.glycanTextType} handleChange={handleChange} placeholder="Select Glycan Text Type" >
+        <FormElement isEdit={isEdit} isRequired={false} type="select" label={" Glycan Text Type"} name="glycanTextType" value={reactantData?.glycanTextType} handleChange={handleChange} placeholder="Select Glycan Text Type" >
           <option value="Linear code">Linear code</option>
           <option value="IUPAC Extended">IUPAC Extended</option>
           <option value="IUPAC condensed">IUPAC condensed</option>
@@ -18,8 +18,8 @@ const Glycan = ({ reactantData, handleChange }) => {
           Binding Backbone Information
         </span>
         <div className="grid grid-cols-2 gap-4">
-          <FormElement isRequired={false} type="input" label={"Binding Site Code"} name="bindingSiteCode" value={reactantData?.bindingSiteCode} handleChange={handleChange} placeholder="Three letters code of binding site (e.g. ser, tyr...)" />
-          <FormElement isRequired={false} type="input" label={"Number of Amino Acid Binding Site"} name="aminoAcidBindingSite" value={reactantData?.aminoAcidBindingSite} handleChange={handleChange} placeholder="Type number of amino acid binding site (e.g. 123)" />
+          <FormElement isEdit={isEdit} isRequired={false} type="input" label={"Binding Site Code"} name="bindingSiteCode" value={reactantData?.bindingSiteCode} handleChange={handleChange} placeholder="Three letters code of binding site (e.g. ser, tyr...)" />
+          <FormElement isEdit={isEdit} isRequired={false} type="input" label={"Number of Amino Acid Binding Site"} name="aminoAcidBindingSite" value={reactantData?.aminoAcidBindingSite} handleChange={handleChange} placeholder="Type number of amino acid binding site (e.g. 123)" />
         </div>
       </div>
 
@@ -29,6 +29,7 @@ const Glycan = ({ reactantData, handleChange }) => {
         </span>
         <div className="grid grid-cols-2 gap-4">
           <FormElement
+            isEdit={isEdit}
             isRequired={false}
             type="input"
             label="Modifying site"
@@ -39,6 +40,7 @@ const Glycan = ({ reactantData, handleChange }) => {
           />
 
           <FormElement
+            isEdit={isEdit}
             isRequired={false}
             type="itemType"
             itemType="ProteinModOntology"
@@ -49,7 +51,7 @@ const Glycan = ({ reactantData, handleChange }) => {
             placeholder="Select Modifying Type"
           />
         </div>
-      </div> 
+      </div>
     </>
 
   )
