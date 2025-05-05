@@ -1,11 +1,25 @@
 import { useState } from "react";
 import Accordion from "../../../common/Accordion";
 import FormElement from "../../../common/reaction/components/FormElement";
+import SpeciesTable from "./SpeciesTable";
 
 const BasicInfoForm = ({ data, handleChange }) => {
   const [diseaseType, setDiseaseType] = useState(data.relatedDisease);
   const [pubMeds, setPubMeds] = useState(data.pubMeds || []);
+  const [isOpen, setOpenTablePagination] = useState(false);
 
+  // Callback to handle species selection
+  const handleSpeciesSelect = ({ species }) => {
+    // Update the species name
+    handleChange({
+      target: {
+        name: "species",
+        value: species,
+      },
+    });
+
+    setOpenTablePagination(false); // Close the modal after selection
+  };
 
   const handleDiseaseTypeChange = (e) => {
     const { value } = e.target;
@@ -14,16 +28,16 @@ const BasicInfoForm = ({ data, handleChange }) => {
   };
 
   const addPubMed = () => {
-    const newPubMeds = [...pubMeds, { id: '' }];
+    const newPubMeds = [...pubMeds, { id: "" }];
     setPubMeds(newPubMeds);
     handleChange({ target: { name: "pubMeds", value: newPubMeds } });
-  }
+  };
 
   const removePubMed = (pubMedIndex) => {
     const newPubMeds = pubMeds.filter((_, index) => index !== pubMedIndex);
     setPubMeds(newPubMeds);
     handleChange({ target: { name: "pubMeds", value: newPubMeds } });
-  }
+  };
 
   const handleChangePubMed = (e, pubMedIndex) => {
     const newPubMeds = pubMeds.map((field, index) => {
@@ -34,9 +48,7 @@ const BasicInfoForm = ({ data, handleChange }) => {
     });
     setPubMeds(newPubMeds);
     handleChange({ target: { name: "pubMeds", value: newPubMeds } });
-  }
-
-
+  };
 
   return (
     <Accordion
@@ -68,30 +80,24 @@ const BasicInfoForm = ({ data, handleChange }) => {
 
         <div className="grid grid-cols-2 gap-4">
           <FormElement
-            type="select"
+            isRequired={false}
+            type="speciesPaginationTable"
             label="Species"
             name="species"
             placeholder="Select Species"
             value={data?.species}
             handleChange={handleChange}
-          >
-            <option value="Homo spaiens">Homo spaiens</option>
-          </FormElement>
-          {/* <FormElement
-            type="select"
-            label="Pathway Category"
-            name="category"
-            value={data?.category}
-            handleChange={handleChange}
-          >
-            <option value="classic metabolic pathway">
-              classic metabolic pathway
-            </option>
-            <option value="signaling pathway">signaling pathway</option>
-            <option value="regulatory pathway">regulatory pathway</option>
-            <option value="disease pathway">disease pathway</option>
-            <option value="drug pathway">drug pathway</option>
-          </FormElement> */}
+            speciesPaginationTable
+            customStyle="flex items-end gap-x-2 flex-1"
+            setOpenTablePagination={setOpenTablePagination}
+          />
+
+          <SpeciesTable
+            isOpen={isOpen}
+            setOpenTablePagination={setOpenTablePagination}
+            onSpeciesSelect={handleSpeciesSelect}
+            data={data}
+          />
 
           <FormElement
             type="itemType"
@@ -104,17 +110,6 @@ const BasicInfoForm = ({ data, handleChange }) => {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          {/* <FormElement
-            type="select"
-            label="Tissue"
-            name="tissue"
-            value={data?.tissue}
-            handleChange={handleChange}
-          >
-            <option value="Blood">Blood</option>
-            <option value="Heart">Heart</option>
-          </FormElement> */}
-
           <FormElement
             type="itemType"
             label="Tissue"
@@ -149,13 +144,16 @@ const BasicInfoForm = ({ data, handleChange }) => {
           </div>
         </div>
 
-
         <div>
-
-          <button className="mb-5 flex items-center text-[14px] text-[#57369E]" onClick={addPubMed}>+ Add pubMeds</button>
+          <button
+            className="mb-5 flex items-center text-[14px] text-[#57369E]"
+            onClick={addPubMed}
+            type="button"
+          >
+            + Add pubMeds
+          </button>
           <div className="grid grid-cols-2 gap-4">
-
-            {data?.pubMeds?.map((item, index) =>
+            {data?.pubMeds?.map((item, index) => (
               <div className="flex gap-2" key={index}>
                 <input
                   type="text"
@@ -168,19 +166,16 @@ const BasicInfoForm = ({ data, handleChange }) => {
                   className="flex items-center justify-center py-2 px-3 border bg-[#57369E] cursor-pointer rounded-lg hover:bg-[#00A7D3] transition-all duration-200"
                   onClick={() => removePubMed(index)}
                 >
-                  <img src="/images/icons/trash.svg" className="w-[24px] h-[24px]" />
+                  <img
+                    src="/images/icons/trash.svg"
+                    className="w-[24px] h-[24px]"
+                  />
                 </div>
               </div>
-            )}
-
-
-
+            ))}
           </div>
         </div>
-
       </div>
-
-
     </Accordion>
   );
 };
