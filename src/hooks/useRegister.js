@@ -25,8 +25,8 @@ export const useRegister = () => {
     "At least 8 characters",
     "At least 1 lowercase letter",
     "At least 1 uppercase letter",
-    "At least 1 special character",
     "At least 1 number",
+    "At least 1 special character",
     "The password and confirm password match",
   ];
 
@@ -60,9 +60,12 @@ export const useRegister = () => {
       length: confirmPassword.length >= 8,
       lowerCase: /[a-z]/.test(confirmPassword),
       upperCase: /[A-Z]/.test(confirmPassword),
-      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(confirmPassword),
       oneNumber: /[0-9]/.test(confirmPassword),
-      match: confirmPassword === password,
+      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(confirmPassword),
+      match:
+        password.length > 0 &&
+        confirmPassword.length > 0 &&
+        confirmPassword === password,
     });
   }, [formValues.confirmPassword, formValues.password]);
 

@@ -21,8 +21,8 @@ export const useChangePassword = (closeModal) => {
     "At least 8 characters",
     "At least 1 lowercase letter",
     "At least 1 uppercase letter",
-    "At least 1 special character",
     "At least 1 number",
+    "At least 1 special character",
     "The password and confirm password match",
   ];
 
@@ -55,9 +55,12 @@ export const useChangePassword = (closeModal) => {
       length: confirmNewPassword.length >= 8,
       lowerCase: /[a-z]/.test(confirmNewPassword),
       upperCase: /[A-Z]/.test(confirmNewPassword),
-      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(confirmNewPassword),
       oneNumber: /[0-9]/.test(confirmNewPassword),
-      match: confirmNewPassword === newPassword,
+      specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(confirmNewPassword),
+      match:
+        newPassword.length > 0 &&
+        confirmNewPassword.length > 0 &&
+        confirmNewPassword === newPassword,
     });
   }, [formValues.confirmNewPassword, formValues.newPassword]);
 

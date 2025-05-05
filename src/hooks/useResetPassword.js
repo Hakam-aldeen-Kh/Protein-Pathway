@@ -58,7 +58,10 @@ export const useResetPassword = () => {
       upperCase: /[A-Z]/.test(confirmPassword),
       specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(confirmPassword),
       oneNumber: /[0-9]/.test(confirmPassword),
-      match: confirmPassword === password,
+      match:
+        password.length > 0 &&
+        confirmPassword.length > 0 &&
+        confirmPassword === password,
     });
 
     // Re-validate confirmPassword field whenever password changes
