@@ -21,8 +21,6 @@ export const usePathway = () => {
     //   pubMeds,
     // };
 
-    console.log(data)
-
     try {
       setIsLoading(true)
       const response = await api.post("user/pathway/protein", data);
