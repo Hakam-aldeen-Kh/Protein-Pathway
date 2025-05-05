@@ -222,6 +222,7 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder, isEdit }) =>
             {selectedItem && (
               <button
                 type="button"
+                disabled={!isEdit}
                 onClick={handleClearSelection}
                 className="p-1 text-gray-400 hover:text-gray-600 focus:outline-none"
                 aria-label="Clear selection"

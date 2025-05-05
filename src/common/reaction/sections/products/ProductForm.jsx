@@ -162,6 +162,7 @@ const ProductForm = ({
 
     // if check then create reaction +1 if not created and add this controller in reactants
     const foundNextReaction = reactions.find(item => item.id === reaction.id + 1)
+
     let targetReactionId = reaction.id + 1
     let targetReactantId = reaction?.products.find(item => item.id === productId)?.conectedReactantId
 
@@ -182,6 +183,8 @@ const ProductForm = ({
     if (targetReactantId) {
       handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "reactants", targetReactantId);
       handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "reactants", targetReactantId);
+      handleChangeData({ target: { value: "", name: "productId", }, }, targetReactionId, "controllers", 1);
+
     }
 
     if (e.target.value === "controllers") {
@@ -192,6 +195,8 @@ const ProductForm = ({
       handleChangeData({ target: { value: targetReactionId, name: "targetReactionId" } }, reaction.id, "products", productId)
 
       handleChangeData({ target: { value: reference, name: "reference", }, }, targetReactionId, "controllers", 1);
+      handleChangeData({ target: { value: productId, name: "productId", }, }, targetReactionId, "controllers", 1);
+
       handleChangeData({ target: { value: reaction.id, name: "fromReaction" } }, targetReactionId, "controllers", 1);
     }
 
@@ -213,32 +218,6 @@ const ProductForm = ({
       handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "controllers", 1);
       handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "controllers", 1);
     }
-
-
-    // // reset reference property in reactant and controller
-    // handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "reactants", 0);
-    // handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "controllers", 0);
-    // handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "reactants", 0);
-    // handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "controllers", 0);
-
-    // if (e.target.value === "reactants" || e.target.value === "controllers") {
-    //   console.log(e.target.value)
-
-    //   const reference = `(Product - ${reaction.id}.${productData.id} of Reaction ${reaction.id})`
-
-    //   handleChangeData({ target: { value: true, name: "useNextReaction", }, }, reaction.id, "products", productId);
-    //   handleChangeData({ target: { value: targetReactionId, name: "targetReactionId" } }, reaction.id, "products", productId)
-
-    //   handleChangeData({ target: { value: reference, name: "reference", }, }, targetReactionId, e.target.value, 0);
-    //   handleChangeData({ target: { value: reaction.id, name: "fromReaction" } }, targetReactionId, e.target.value, 0);
-    // }
-
-    // else {
-    //   console.log("none")
-
-    //   handleChangeData({ target: { value: false, name: "useNextReaction", }, }, reaction.id, "products", productId);
-    //   handleChangeData({ target: { value: "", name: "targetReactionId" } }, reaction.id, "products", productId)
-    // }
 
   }
 
@@ -358,18 +337,34 @@ const ProductForm = ({
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <FormElement
-          isRequired={false}
-          type="radio"
-          id={`type2-${reaction.id}-${productId}`}
-          placeholder={"Use this product as a controller in the next reaction"}
-          name={`type`}
-          value={"controllers"}
-          checked={productData?.type}
-          handleChange={handleChangeRadioBtn}
-        />
-      </div>
+      {/* found referense in next reaction in controller */}
+      {!reactions.find(item => item.id === reaction.id + 1)?.controllers[0]?.reference ?
+        <div className="grid grid-cols-2 gap-4">
+          <FormElement
+            isRequired={false}
+            type="radio"
+            id={`type2-${reaction.id}-${productId}`}
+            placeholder={"Use this product as a controller in the next reaction"}
+            name={`type`}
+            value={"controllers"}
+            checked={productData?.type}
+            handleChange={handleChangeRadioBtn}
+          />
+        </div>
+        : reactions.find(item => item.id === reaction.id + 1)?.controllers[0]?.productId === productId &&
+        <div className="grid grid-cols-2 gap-4">
+          <FormElement
+            isRequired={false}
+            type="radio"
+            id={`type2-${reaction.id}-${productId}`}
+            placeholder={"Use this product as a controller in the next reaction"}
+            name={`type`}
+            value={"controllers"}
+            checked={productData?.type}
+            handleChange={handleChangeRadioBtn}
+          />
+        </div>
+      }
 
       {/* <div className="grid grid-cols-2 gap-4">
         <FormElement
@@ -428,7 +423,7 @@ const ProductForm = ({
           </div>
         </div>
       )} */}
-    </form>
+    </form >
   );
 };
 

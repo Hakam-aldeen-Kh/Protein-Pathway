@@ -96,6 +96,7 @@ const ControllerForm = ({
       handleChangeData({ target: { value: targetReactantId, name: "conectedReactantId" } }, reaction.id, "controllers", controllerId)
       handleChangeData({ target: { value: targetReactionId, name: "targetReactionId" } }, reaction.id, "controllers", controllerId)
 
+      handleChangeData({ target: { value: controllerData, name: "connectedData" } }, targetReactionId, "reactants", targetReactantId);
       handleChangeData({ target: { value: `(Controller - ${reaction.id}.${controllerData.id} of Reaction ${reaction.id})`, name: "reference" } }, targetReactionId, "reactants", targetReactantId);
       handleChangeData({ target: { value: reaction.id, name: "fromReaction" } }, targetReactionId, "reactants", targetReactantId);
     }
