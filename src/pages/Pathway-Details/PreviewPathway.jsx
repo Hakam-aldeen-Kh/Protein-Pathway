@@ -10,8 +10,8 @@ import LoadingProcess from "../../common/LoadingProcess";
 
 const PreviewPathway = () => {
   const { id } = useParams();
-  const [searchParams] = useSearchParams();
-  const [activeTab] = useState(searchParams.get("tab") || "all");
+  // const [searchParams] = useSearchParams();
+  // const [activeTab] = useState(searchParams.get("tab") || "all");
 
   // const { pathwayData, isEdit, saveEditingPathway } = usePathwayDataById(id)
 
@@ -23,21 +23,18 @@ const PreviewPathway = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (activeTab === "all") {
-          const response = await api.get(`pathway/protein/${id}`);
-          setPathwayData(response.data.data.pathway);
-        }
+        // if (activeTab === "all") {
+        //   const response = await api.get(`pathway/protein/${id}`);
+        //   setPathwayData(response.data.data.pathway);
+        // }
 
-        else {
-          const response = await api.get(`user/pathway/protein/${id}`);
-          const checkIsOwner = response.data.data.isOwner;
-          console.log(checkIsOwner);
-          if (checkIsOwner) {
-            setIsEdit(true);
-          }
-          setPathwayData(response.data.data.pathway);
+        const response = await api.get(`user/pathway/protein/${id}`);
+        const checkIsOwner = response.data.data.isOwner;
+        console.log(checkIsOwner);
+        if (checkIsOwner) {
+          setIsEdit(true);
         }
-
+        setPathwayData(response.data.data.pathway);
       } catch (error) {
         console.error(error);
         setIsLoading(false);
@@ -93,9 +90,9 @@ const PreviewPathway = () => {
         isEdit={isEdit}
         id={id}
         pageState={"preview"}
-      // setPathwayClone={setPathwayClone}
-      // handleSave={handleSaveAfterEdit}
-      // handleChangeClone={handleChangeClone}
+        // setPathwayClone={setPathwayClone}
+        // handleSave={handleSaveAfterEdit}
+        // handleChangeClone={handleChangeClone}
       />
     </div>
   );
