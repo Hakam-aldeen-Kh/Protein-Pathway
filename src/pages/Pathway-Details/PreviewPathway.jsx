@@ -1,51 +1,49 @@
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router";
-
+import { useParams } from "react-router";
 import PathwayDetails from "./components/PathwayDetails";
-// import { usePathwayDataById } from "../../hooks/usePathwayDataById";
 import NotFound from "../404/NotFound";
-// import { ShowToast } from "../../common/ToastNotification";
 import api from "../../utils/api";
 import LoadingProcess from "../../common/LoadingProcess";
+import { useAuth } from "../../hooks/useAuth";
 
 const PreviewPathway = () => {
   const { id } = useParams();
-  // const [searchParams] = useSearchParams();
-  // const [activeTab] = useState(searchParams.get("tab") || "all");
+  const { isAuthenticated, loading: authLoading } = useAuth(); // Add loading state from auth hook
 
-  // const { pathwayData, isEdit, saveEditingPathway } = usePathwayDataById(id)
-
-  // const [pathwayClone, setPathwayClone] = useState(pathwayData)
   const [pathwayData, setPathwayData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
+    // Only fetch data when authentication state is determined (not loading)
+    if (authLoading) return;
+
     const fetchData = async () => {
       try {
-        // if (activeTab === "all") {
-        //   const response = await api.get(`pathway/protein/${id}`);
-        //   setPathwayData(response.data.data.pathway);
-        // }
 
-        const response = await api.get(`user/pathway/protein/${id}`);
-        const checkIsOwner = response.data.data.isOwner;
-        console.log(checkIsOwner);
-        if (checkIsOwner) {
-          setIsEdit(true);
+        if (isAuthenticated) {
+          const response = await api.get(`user/pathway/protein/${id}`);
+          const checkIsOwner = response.data.data.isOwner;
+
+          if (checkIsOwner) {
+            setIsEdit(true);
+          }
+          setPathwayData(response.data.data.pathway);
+        } else {
+          const response = await api.get(`pathway/protein/${id}`);
+          setPathwayData(response.data.data.pathway);
         }
-        setPathwayData(response.data.data.pathway);
       } catch (error) {
-        console.error(error);
-        setIsLoading(false);
+        console.error("Error fetching pathway:", error);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchData();
-  }, [id]);
 
-  if (isLoading) {
+    fetchData();
+  }, [id, isAuthenticated, authLoading]); // Add authLoading as dependency
+
+  if (authLoading || isLoading) {
     return <LoadingProcess />;
   }
 
