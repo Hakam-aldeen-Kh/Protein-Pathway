@@ -51,8 +51,8 @@ const ReactionTableRow = ({
         </td>
         <td className="px-4">
           {reaction?.controllers?.length > 0 &&
-          reaction.controllers[0].controllerType
-            ? capitalize(reaction.controllers[0].controllerType)
+            reaction.controllers[0].name
+            ? capitalize(reaction.controllers[0].name)
             : "-"}
         </td>
 
@@ -78,13 +78,13 @@ const ReactionTableRow = ({
         <td className="pt-[5px]">
           {cellTypes.length > 0
             ? cellTypes.map((cell, index) => (
-                <div
-                  key={index}
-                  className="px-4 flex items-center gap-2 pt-[5px]"
-                >
-                  {cell}
-                </div>
-              ))
+              <div
+                key={index}
+                className="px-4 flex items-center gap-2 pt-[5px]"
+              >
+                {cell}
+              </div>
+            ))
             : "-"}
         </td>
 
