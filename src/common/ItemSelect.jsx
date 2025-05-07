@@ -44,7 +44,7 @@ const NAME_PROPERTIES = {
   Lipid: "backbone_name",
   GoProteinComplex: "go_complex_name",
   ProteinModOntology: "PMOD_name",
-  Tissue: "text",
+  Tissue: "label",
   Cellular: "cell_localization_name",
   Chibe: "Molecule_name",
   Enzyme: "enz_name",
