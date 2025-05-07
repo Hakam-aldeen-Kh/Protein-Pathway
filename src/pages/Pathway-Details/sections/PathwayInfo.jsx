@@ -13,7 +13,7 @@ const PathwayInfo = ({ pathway, id }) => {
   const pathwayData = [
     { label: "Species", value: pathway?.species || "no value" },
     { label: "Pathway Category:", value: pathway?.category?.text || "no value" },
-    { label: "Tissue:", value: pathway?.tissue?.text || "no value" },
+    { label: "Tissue:", value: pathway?.tissue?.label || "no value" },
     { label: "Related Disease:", value: pathway?.relatedDisease || "no value" },
     { label: "Record Date:", value: `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}` },
   ];
