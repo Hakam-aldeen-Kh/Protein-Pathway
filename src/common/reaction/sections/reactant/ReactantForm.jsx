@@ -11,10 +11,15 @@ const ReactantForm = ({
   reaction,
   reactantData,
   reactantId,
-  isEdit
+  isEdit,
+  reactions
 }) => {
-  const handleChange = (e) =>
-    handleChangeData(e, reaction.id, "reactants", reactantId);
+  const handleChange = (e) => handleChangeData(e, reaction.id, "reactants", reactantId);
+
+  if (reactantData?.connectedData) {
+    reactantData = reactions?.find(item => item.id === reactantData?.fromReaction)[reactantData?.connectedData?.type]?.find(item => item.id === reactantData?.connectedData.id)
+  }
+
 
   return (
     <div className={`space-y-4 p-4 ${!isEdit && "bg-gray-100"}`}>
@@ -26,7 +31,8 @@ const ReactantForm = ({
           name="cellType"
           value={reactantData?.cellType}
           handleChange={handleChange}
-          placeholder="Select Cell Type"
+ +4
+ ';lk         placeholder="Select Cell Type"
         >
           <option value="embryonic cell">embryonic cell</option>
           <option value="prokaryotic cell">prokaryotic cell</option>
@@ -74,8 +80,8 @@ const ReactantForm = ({
           isRequired={false}
           type="select"
           label={"Reactant Type"}
-          name="reactantType"
-          value={reactantData?.reactantType}
+          name="pType"
+          value={reactantData?.pType}
           handleChange={handleChange}
           placeholder="Select Reactant Type"
           isEdit={isEdit}
@@ -89,26 +95,26 @@ const ReactantForm = ({
         </FormElement>
       </div>
 
-      {reactantData.reactantType === "complex" && (
+      {reactantData.pType === "complex" && (
         <Complex reactantData={reactantData} handleChange={handleChange} isEdit={isEdit} />
       )}
-      {reactantData.reactantType === "lipid" && (
+      {reactantData.pType === "lipid" && (
         <Lipid reactantData={reactantData} handleChange={handleChange} isEdit={isEdit} />
       )}
-      {reactantData.reactantType === "protein" && (
+      {reactantData.pType === "protein" && (
         <Protein reactantData={reactantData} handleChange={handleChange} isEdit={isEdit} />
       )}
-      {reactantData.reactantType === "glycan" && (
+      {reactantData.pType === "glycan" && (
         <Glycan reactantData={reactantData} handleChange={handleChange} isEdit={isEdit} />
       )}
-      {reactantData.reactantType === "small_molecule" && (
+      {reactantData.pType === "small_molecule" && (
         <SmallMolecule
           reactantData={reactantData}
           handleChange={handleChange}
           isEdit={isEdit}
         />
       )}
-      {reactantData.reactantType === "dna" && (
+      {reactantData.pType === "dna" && (
         <Dna reactantData={reactantData} handleChange={handleChange} isEdit={isEdit} />
       )}
     </div>

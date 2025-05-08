@@ -168,7 +168,7 @@ const ProductForm = ({
 
     let targetReaction = null
 
-    if (!foundNextReaction) {
+    if (!foundNextReaction && e.target.value) {
       targetReaction = addReaction()
       localReactions.push(targetReaction)
       targetReactionId = targetReaction.id
@@ -184,7 +184,10 @@ const ProductForm = ({
       handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "reactants", targetReactantId);
       handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "reactants", targetReactantId);
       handleChangeData({ target: { value: "", name: "productId", }, }, targetReactionId, "controllers", 1);
+      handleChangeData({ target: { value: "", name: "conectedReactantId" } }, reaction.id, "products", productId)
 
+      handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "reactants", targetReactantId);
+      handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "controllers", 1);
     }
 
     if (e.target.value === "controllers") {
@@ -198,6 +201,9 @@ const ProductForm = ({
       handleChangeData({ target: { value: productId, name: "productId", }, }, targetReactionId, "controllers", 1);
 
       handleChangeData({ target: { value: reaction.id, name: "fromReaction" } }, targetReactionId, "controllers", 1);
+
+      handleChangeData({ target: { value: { type: "products", id: productId }, name: "connectedData" } }, targetReactionId, "controllers", 1);
+
     }
 
     else if (e.target.value === "reactants") {
@@ -212,11 +218,24 @@ const ProductForm = ({
 
       handleChangeData({ target: { value: reference, name: "reference", }, }, targetReactionId, "reactants", targetReactantId);
       handleChangeData({ target: { value: reaction.id, name: "fromReaction" } }, targetReactionId, "reactants", targetReactantId);
+
+      handleChangeData({ target: { value: { type: "products", id: productId }, name: "connectedData" } }, targetReactionId, "reactants", targetReactantId);
+
     }
 
     else {
       handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "controllers", 1);
       handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "controllers", 1);
+      handleChangeData({ target: { value: false, name: "useNextReaction", }, }, reaction.id, "products", productId);
+      handleChangeData({ target: { value: "", name: "targetReactionId" } }, reaction.id, "products", productId)
+
+      handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "reactants", targetReactantId);
+      handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "reactants", targetReactantId);
+      handleChangeData({ target: { value: "", name: "productId", }, }, targetReactionId, "controllers", 1);
+      handleChangeData({ target: { value: "", name: "conectedReactantId" } }, reaction.id, "products", productId)
+
+      handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "reactants", targetReactantId);
+      handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "controllers", 1);
     }
 
   }
@@ -278,8 +297,8 @@ const ProductForm = ({
           isRequired={false}
           type="select"
           label={"Product Type"}
-          name="productType"
-          value={productData?.productType}
+          name="pType"
+          value={productData?.pType}
           handleChange={handleChange}
           placeholder="Select Product Type"
         >
@@ -288,11 +307,11 @@ const ProductForm = ({
         </FormElement>
       </div>
 
-      {productData.productType === "protein" && (
+      {productData.pType === "protein" && (
         <Protein productData={productData} handleChange={handleChange} />
       )}
 
-      {productData.productType === "complex" && (
+      {productData.pType === "complex" && (
         <Complex productData={productData} handleChange={handleChange} />
       )}
 
@@ -366,7 +385,7 @@ const ProductForm = ({
         </div>
       }
 
-      {/* <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <FormElement
           isRequired={false}
           type="radio"
@@ -377,7 +396,7 @@ const ProductForm = ({
           checked={productData?.type}
           handleChange={handleChangeRadioBtn}
         />
-      </div> */}
+      </div>
 
       {/* {productData.useNextReaction && (
         <div className="grid grid-cols-2 gap-4">

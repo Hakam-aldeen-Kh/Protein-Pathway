@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronUpIcon, ChevronDownIcon, TrashIcon } from '@heroicons/react/24/outline';
 
-const Accordion = ({ title, children, className = "", deleteFn = null, variant, reference = "" }) => {
+const Accordion = ({ title, children, className = "", deleteFn = null, variant, reference = "", useInNextReaction = false }) => {
 
     const storageKey = `${title} Accordion`;
     const storedState = localStorage.getItem(storageKey);
@@ -21,7 +21,7 @@ const Accordion = ({ title, children, className = "", deleteFn = null, variant, 
                     <span className="text-sm text-[#57369E] pl-2">{reference}</span>
                 </h2>
                 <div className="flex items-center space-x-2">
-                    {deleteFn && <button onClick={deleteFn} className="p-1 hover:bg-purple-100 rounded">
+                    {deleteFn && !reference && !useInNextReaction && <button onClick={deleteFn} className="p-1 hover:bg-purple-100 rounded">
                         <TrashIcon className="h-5 w-5 text-gray-500" />
                     </button>}
                     <button className="p-1 hover:bg-purple-100 rounded" onClick={handleToggle}>
