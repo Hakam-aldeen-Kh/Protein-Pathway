@@ -80,7 +80,8 @@ const PreviewPathway = () => {
   };
 
   const handleSaveAfterEdit = () => {
-    handleSubmitEditPathway(pathwayData, id)
+    console.log(pathwayData);
+    // handleSubmitEditPathway(pathwayData, id)
   }
 
   return (

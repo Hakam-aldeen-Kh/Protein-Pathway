@@ -11,6 +11,20 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
 
   const [isAddModalOpen, setAddModalOpen] = useState(false);
 
+  let reactionId = reactions[reactions.length - 1]?.id + 1 || 1;
+
+  const newReaction = {
+    id: reactionId,
+    reactants: [{ id: 1, name: `reactant_${reactionId}.1` }],
+    controllers: [{ id: 1, name: `controller_${reactionId}.1` }],
+    products: [{ id: 1, name: `product_${reactionId}.1` }],
+  };
+
+  const [pathwayCloneForAddReaction, setPathwayCloneForAddReaction] = useState({ reactions: [newReaction] });
+
+  const [pathwayCloneForEditReaction, setPathwayCloneForEditReaction] = useState({});
+
+
   const [deleteModalData, setDeleteModalData] = useState({
     isModalOpen: false,
     closeModal: () => console.log("click"),
@@ -38,9 +52,14 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
     })
   }
 
-
   const addReaction = () => {
-    console.log("add reaction");
+    setEditPathwayData((prevPathwayData) => {
+      return {
+        ...prevPathwayData,
+        reactions: [...prevPathwayData.reactions, pathwayCloneForAddReaction.reactions[0]],
+      };
+    });
+
   };
 
   const deleteReaction = (id) => {
@@ -57,18 +76,77 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
     })
   };
 
+  const editReaction = () => {
+    setEditPathwayData((prevPathwayData) => {
+      return {
+        ...prevPathwayData,
+        reactions: [...prevPathwayData.reactions, pathwayCloneForEditReaction.reactions[0]],
+      };
+    });
+
+  };
+  const handleChangeDataCloneForAddReaction = (e, reactionId = null, type = null, id = null, check = null) => {
+    const { name, value, checked } = e.target;
+
+    setPathwayCloneForAddReaction((prevPathwayData) => {
+      if (reactionId === null) {
+        return { ...prevPathwayData, [name]: value };
+      }
+
+      return {
+        ...prevPathwayData,
+        reactions: prevPathwayData.reactions.map((reaction) =>
+          reaction?.id === reactionId
+            ? {
+              ...reaction,
+              [type]: reaction[type].map((item) =>
+                item.id === id ? { ...item, [name]: value === "on" ? check ? check : checked : value } : item
+              ),
+            }
+            : reaction
+        ),
+      };
+
+    });
+  };
+
+  const handleChangeDataCloneForEditReaction = (e, reactionId = null, type = null, id = null, check = null) => {
+    const { name, value, checked } = e.target;
+
+    setPathwayCloneForEditReaction((prevPathwayData) => {
+      if (reactionId === null) {
+        return { ...prevPathwayData, [name]: value };
+      }
+
+      return {
+        ...prevPathwayData,
+        reactions: prevPathwayData.reactions.map((reaction) =>
+          reaction.id === reactionId
+            ? {
+              ...reaction,
+              [type]: reaction[type].map((item) =>
+                item.id === id ? { ...item, [name]: value === "on" ? check ? check : checked : value } : item
+              ),
+            }
+            : reaction
+        ),
+      };
+
+    });
+  };
+
 
   return (
     <div className="w-full mt-10">
       <ReactionModal
-        reactions={reactions}
+        reactions={pathwayCloneForAddReaction.reactions}
         addReaction={addReaction}
         isOpen={isAddModalOpen}
         setIsOpen={setAddModalOpen}
         title="Add New Reaction"
-        data={reactions[0]}
-        handleChangeData={""}
-        setEditPathwayData={""}
+        data={pathwayCloneForAddReaction.reactions[0]}
+        handleChangeData={handleChangeDataCloneForAddReaction}
+        setEditPathwayData={setPathwayCloneForAddReaction}
       />
 
       <div className="flex flex-wrap gap-2.5 justify-center items-center w-full max-md:max-w-full mb-5">
@@ -107,9 +185,11 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
                 reactionIndex={reactionIndex}
                 reaction={reaction}
                 isEdit={isEdit}
-                handleChangeData={handleChangeData}
-                setEditPathwayData={setEditPathwayData}
+                handleChangeData={handleChangeDataCloneForEditReaction}
+                setEditPathwayData={setPathwayCloneForEditReaction}
                 deleteReaction={deleteReaction}
+                editReaction={editReaction}
+                addReaction={addReaction}
                 handleShowDetails={handleShowDetails}
               />
             ))}
