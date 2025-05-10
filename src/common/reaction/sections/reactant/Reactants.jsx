@@ -7,6 +7,7 @@ const Reactants = ({
   handleChangeData,
   setDeleteModalData,
   setPathwayData,
+  reactions
 }) => {
   // const isFindReference = (fromReaction, fromProduct) => {
   //   // Find the reaction with specified ID
@@ -80,6 +81,7 @@ const Reactants = ({
             reaction={reaction}
             reactantData={item}
             reactantId={item.id}
+            reactions={reactions}
           />
         </Accordion>
       ))}

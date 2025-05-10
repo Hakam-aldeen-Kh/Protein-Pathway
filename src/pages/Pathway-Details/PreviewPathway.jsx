@@ -5,12 +5,15 @@ import NotFound from "../404/NotFound";
 import api from "../../utils/api";
 import LoadingProcess from "../../common/LoadingProcess";
 import { useAuth } from "../../hooks/useAuth";
+import { usePathway } from "../../hooks/usePathway";
 
 const PreviewPathway = () => {
   const { id } = useParams();
+
+  const { handleSubmitEditPathway, isLoading: editLoading } = usePathway()
   const { isAuthenticated, loading: authLoading } = useAuth(); // Add loading state from auth hook
 
-  const [pathwayData, setPathwayData] = useState(null);
+  const [pathwayData, setPathwayClone] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -28,10 +31,10 @@ const PreviewPathway = () => {
           if (checkIsOwner) {
             setIsEdit(true);
           }
-          setPathwayData(response.data.data.pathway);
+          setPathwayClone(response.data.data.pathway);
         } else {
           const response = await api.get(`pathway/protein/${id}`);
-          setPathwayData(response.data.data.pathway);
+          setPathwayClone(response.data.data.pathway);
         }
       } catch (error) {
         console.error("Error fetching pathway:", error);
@@ -51,35 +54,34 @@ const PreviewPathway = () => {
     return <NotFound />;
   }
 
-  // const handleChangeClone = (e, reactionId = null, type = null, index = null, check = null) => {
-  //     const { name, value, checked } = e.target;
+  const handleChangeClone = (e, reactionId = null, type = null, index = null, check = null) => {
+    const { name, value, checked } = e.target;
 
-  //     setPathwayClone((prevPathwayData) => {
-  //         if (reactionId === null) {
-  //             return { ...prevPathwayData, [name]: value };
-  //         }
+    setPathwayClone((prevPathwayData) => {
+      if (reactionId === null) {
+        return { ...prevPathwayData, [name]: value };
+      }
 
-  //         return {
-  //             ...prevPathwayData,
-  //             reactions: prevPathwayData.reactions.map((reaction) =>
-  //                 reaction.id === reactionId
-  //                     ? {
-  //                         ...reaction,
-  //                         [type]: reaction[type].map((item, i) =>
-  //                             i === index ? { ...item, [name]: value === "on" ? check ? check : checked : value } : item
-  //                         ),
-  //                     }
-  //                     : reaction
-  //             ),
-  //         };
+      return {
+        ...prevPathwayData,
+        reactions: prevPathwayData.reactions.map((reaction) =>
+          reaction.id === reactionId
+            ? {
+              ...reaction,
+              [type]: reaction[type].map((item, i) =>
+                i === index ? { ...item, [name]: value === "on" ? check ? check : checked : value } : item
+              ),
+            }
+            : reaction
+        ),
+      };
 
-  //     });
-  // };
+    });
+  };
 
-  // const handleSaveAfterEdit = () => {
-  //     ShowToast("Pathway Updated", "Your pathway was updated successfully")
-  //     saveEditingPathway(pathwayClone, id)
-  // }
+  const handleSaveAfterEdit = () => {
+    handleSubmitEditPathway(pathwayData, id)
+  }
 
   return (
     <div className="flex flex-col px-32 py-[40px] max-md:px-5">
@@ -88,9 +90,10 @@ const PreviewPathway = () => {
         isEdit={isEdit}
         id={id}
         pageState={"preview"}
-        // setPathwayClone={setPathwayClone}
-        // handleSave={handleSaveAfterEdit}
-        // handleChangeClone={handleChangeClone}
+        setPathwayClone={setPathwayClone}
+        handleSave={handleSaveAfterEdit}
+        handleChangeClone={handleChangeClone}
+        isLoading={editLoading}
       />
     </div>
   );

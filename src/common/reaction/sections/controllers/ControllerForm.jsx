@@ -13,6 +13,12 @@ const ControllerForm = ({
   setPathwayData
 }) => {
   const handleChange = (e) => handleChangeData(e, reaction.id, "controllers", controllerId);
+  let display = true
+
+  if (controllerData?.connectedData) {
+    display = false
+    controllerData = reactions?.find(item => item.id === controllerData?.fromReaction)[controllerData?.connectedData?.type]?.find(item => item.id === controllerData?.connectedData.id)
+  }
 
   const [isOpen, setOpenTablePagination] = useState(false);
   let localReactions = reactions
@@ -96,7 +102,7 @@ const ControllerForm = ({
       handleChangeData({ target: { value: targetReactantId, name: "conectedReactantId" } }, reaction.id, "controllers", controllerId)
       handleChangeData({ target: { value: targetReactionId, name: "targetReactionId" } }, reaction.id, "controllers", controllerId)
 
-      handleChangeData({ target: { value: controllerData, name: "connectedData" } }, targetReactionId, "reactants", targetReactantId);
+      handleChangeData({ target: { value: { type: "controllers", id: controllerId }, name: "connectedData" } }, targetReactionId, "reactants", targetReactantId);
       handleChangeData({ target: { value: `(Controller - ${reaction.id}.${controllerData.id} of Reaction ${reaction.id})`, name: "reference" } }, targetReactionId, "reactants", targetReactantId);
       handleChangeData({ target: { value: reaction.id, name: "fromReaction" } }, targetReactionId, "reactants", targetReactantId);
     }
@@ -104,8 +110,13 @@ const ControllerForm = ({
     else {
       console.log(" un checked", targetReactantId);
       // change only conected reactant
+      handleChangeData({ target: { value: "", name: "conectedReactantId" } }, reaction.id, "controllers", controllerId)
+      handleChangeData({ target: { value: "", name: "targetReactionId" } }, reaction.id, "controllers", controllerId)
+
       handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "reactants", targetReactantId);
       handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "reactants", targetReactantId);
+      handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "reactants", targetReactantId);
+
     }
 
   }
@@ -170,8 +181,8 @@ const ControllerForm = ({
           isRequired={false}
           type="select"
           label={"Controller Type"}
-          name="controllerType"
-          value={controllerData?.controllerType}
+          name="pType"
+          value={controllerData?.pType}
           handleChange={handleChange}
           placeholder="Select Controller Type"
         >
@@ -194,7 +205,7 @@ const ControllerForm = ({
         </FormElement>
       </div>
 
-      {controllerData.controllerType == "protein" && (
+      {controllerData.pType == "protein" && (
         <div>
           <span className="font-bold text-xs block py-4">Protein Name</span>
           <div className="grid grid-cols-2 gap-4">
@@ -259,7 +270,7 @@ const ControllerForm = ({
           placeholder=""
         /> */}
 
-        {controllerData.controllerType == "enzyme" && (
+        {controllerData.pType == "enzyme" && (
           <FormElement
             isEdit={isEdit}
             type="itemType"
@@ -272,18 +283,20 @@ const ControllerForm = ({
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <FormElement
-          isEdit={isEdit}
-          isRequired={false}
-          type="checkbox"
-          id={`useNextReactionController-${reaction.id}-${controllerId}`}
-          placeholder={"Use this Controller as a reactant in the next reaction"}
-          name="useNextReaction"
-          value={controllerData?.useNextReaction}
-          handleChange={handleChangeCheckBox}
-        />
-      </div>
+      {display &&
+        <div className="grid grid-cols-2 gap-4">
+          <FormElement
+            isEdit={isEdit}
+            isRequired={false}
+            type="checkbox"
+            id={`useNextReactionController-${reaction.id}-${controllerId}`}
+            placeholder={"Use this Controller as a reactant in the next reaction"}
+            name="useNextReaction"
+            value={controllerData?.useNextReaction}
+            handleChange={handleChangeCheckBox}
+          />
+        </div>
+      }
     </div>
   );
 };

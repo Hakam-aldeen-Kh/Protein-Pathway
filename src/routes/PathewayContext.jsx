@@ -65,7 +65,6 @@ const PathewayContext = () => {
         });
         setPathwayData({
             id: Date.now(),
-            recordDate: `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`,
             reactions: [
                 {
                     id: 1,

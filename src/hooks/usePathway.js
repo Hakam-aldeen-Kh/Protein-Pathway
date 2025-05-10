@@ -52,6 +52,7 @@ export const usePathway = () => {
     // };
 
     try {
+      console.log(data)
       setIsLoading(true)
 
       const response = await api.put(

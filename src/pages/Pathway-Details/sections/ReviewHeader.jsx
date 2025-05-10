@@ -1,6 +1,6 @@
 import { Link, useOutletContext } from "react-router";
 
-const ReviewHeader = ({ pathwayId, title, description, pageState, handleSave, isEdit }) => {
+const ReviewHeader = ({ pathwayId, title, description, pageState, handleSave, isEdit, editLoading }) => {
     const { isLoading, handleDeletePathway } = useOutletContext();
 
     return (
@@ -55,19 +55,20 @@ const ReviewHeader = ({ pathwayId, title, description, pageState, handleSave, is
                                     </button>
 
                                     <div className=" group">
-                                        <Link
-                                            to="/protein-pathway-data?tab=my"
+                                        <button
                                             className="flex gap-2 justify-center items-center self-stretch px-4 py-2 my-auto rounded-sm border border-violet-900 group-hover:border-transparent border-solid min-h-[40px] group-hover:text-white group-hover:bg-[#00A7D3] transition-colors duration-500 "
                                             onClick={handleSave}
                                         >
-                                            <span className="self-stretch my-auto">Register RDF</span>
+                                            <span className="self-stretch my-auto">{
+                                                editLoading ? "Loading ..." : "Register RDF"
+                                            }</span>
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M9 17V11L7 13" className=" stroke-[#57369E] group-hover:stroke-white transition-colors duration-500 " strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                                 <path d="M9 11L11 13" className=" stroke-[#57369E] group-hover:stroke-white transition-colors duration-500 " strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                                 <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" className=" stroke-[#57369E] group-hover:stroke-white transition-colors duration-500 " strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                                 <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" className=" stroke-[#57369E] group-hover:stroke-white transition-colors duration-500 " strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
-                                        </Link>
+                                        </button>
                                     </div>
                                 </>
 
