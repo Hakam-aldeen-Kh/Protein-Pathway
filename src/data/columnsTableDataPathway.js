@@ -30,12 +30,13 @@ export const columns = [
   {
     title: "Pathway ID",
     key: "_id",
+    link: true,
     transform: (value) => value,
   },
   {
     title: "Title",
     key: "title",
-    link: true,
+    // link: true,
     transform: (value) => extractText(value),
   },
   {

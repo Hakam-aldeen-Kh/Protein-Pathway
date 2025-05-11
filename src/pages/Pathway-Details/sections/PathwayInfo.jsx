@@ -5,9 +5,13 @@ import { layouts } from "../../Pathway-Result/components/layouts";
 
 import { reactionsDataToCytoscapeFormat } from "../../../utils/reactionsDataToCytoscapeFormat";
 import { capitalize } from "../../../hooks/useCapitalize";
+import { useState } from "react";
 
 const PathwayInfo = ({ pathway, id }) => {
   const navigate = useNavigate();
+  const [layout, setLayout] = useState(layouts.klay)
+
+
   const today = new Date();
   const recordDate = `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`;
 
@@ -65,12 +69,26 @@ const PathwayInfo = ({ pathway, id }) => {
                   pathway.reactionsA ||
                   reactionsDataToCytoscapeFormat(pathway.reactions)
                 }
-                layout={layouts.klay}
-                touch={false}
+                layout={layout}
+                touch={true}
               />
             </div>
 
             <div className="flex absolute top-2 right-2 z-0 gap-2.5 items-center self-start">
+              <button
+                className="flex gap-2 text-white justify-center items-center self-stretch px-0.5 my-auto w-6 h-6 rounded bg-neutral-900 bg-opacity-50 min-h-[24px]"
+                onClick={() => {
+                  if (layout === layouts.klay) {
+                    setLayout(layouts.cola)
+                  }
+                  else {
+                    setLayout(layouts.klay)
+                  }
+                }}
+              >
+                F
+              </button>
+
               <button
                 className="flex gap-2 justify-center items-center self-stretch px-0.5 my-auto w-6 h-6 rounded bg-neutral-900 bg-opacity-50 min-h-[24px]"
                 onClick={handleGoToPathwayResult}

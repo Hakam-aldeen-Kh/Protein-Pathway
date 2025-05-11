@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Modal from "react-modal";
-import Button from "./Button";
+// import Button from "./Button";
 import DeleteModal from "../../../common/DeleteModal";
 import Reaction from "../../../common/reaction/Reaction";
 
@@ -68,7 +68,7 @@ const ReactionModal = ({ isOpen, setIsOpen, addReaction, reactions, data, reacti
       />
 
       {/* Buttons */}
-      <div className="flex gap-5 justify-center mt-10">
+      {/* <div className="flex gap-5 justify-center mt-10">
         <Button variant="secondary" onClick={closeMainModal}>
           Cancel
         </Button>
@@ -78,7 +78,7 @@ const ReactionModal = ({ isOpen, setIsOpen, addReaction, reactions, data, reacti
         }}>
           Save
         </Button>
-      </div>
+      </div> */}
 
       <DeleteModal data={deleteModalData} />
     </Modal>

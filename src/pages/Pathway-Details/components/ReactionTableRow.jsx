@@ -10,6 +10,8 @@ const ReactionTableRow = ({
   setEditPathwayData,
   deleteReaction,
   handleShowDetails,
+  addReaction,
+  addReactionAfterReaction
 }) => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
@@ -90,7 +92,7 @@ const ReactionTableRow = ({
 
         {isEdit && (
           <td className="px-4 flex items-center h-full gap-2 -translate-y-[10px]">
-            <button>
+            <button onClick={() => addReactionAfterReaction()}>
               <img src="/images/icons/add-square.svg" alt="add" />
             </button>
             <button onClick={() => setEditModalOpen(true)}>
@@ -111,7 +113,7 @@ const ReactionTableRow = ({
         data={reaction}
         isOpen={isEditModalOpen}
         setIsOpen={setEditModalOpen}
-        addReaction={() => console.log("edit reaction")}
+        addReaction={addReaction}
       />
     </>
   );

@@ -7,39 +7,40 @@ import NotFound from "../404/NotFound";
 import { useEffect, useState } from "react";
 import LoadingProcess from "../../common/LoadingProcess";
 import api from "../../utils/api";
+import { useLocation } from 'react-router';
 
 const PathwayResultForPreview = () => {
   const { id } = useParams();
-  // const location = useLocation();
-  // const data = location.state?.data;
+  const location = useLocation();
+  const data = location.state?.data;
 
   // const { pathwayData } = usePathwayDataById(id)
 
-  const [pathwayData, setPathwayData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [pathwayData, setPathwayData] = useState(data);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get(`pathway/protein/${id}`);
-        setPathwayData(response.data.data.pathway);
-      } catch (error) {
-        console.error(error);
-        setIsLoading(false);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, [id]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await api.get(`pathway/protein/${id}`);
+  //       setPathwayData(response.data.data.pathway);
+  //     } catch (error) {
+  //       console.error(error);
+  //       setIsLoading(false);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [id]);
 
-  if (isLoading) {
-    return <LoadingProcess />;
-  }
+  // if (isLoading) {
+  //   return <LoadingProcess />;
+  // }
 
-  if (!pathwayData) {
-    return <NotFound />;
-  }
+  // if (!pathwayData) {
+  //   return <NotFound />;
+  // }
 
   // return data ? (
   //   <GraphView pathwayData={data} />
