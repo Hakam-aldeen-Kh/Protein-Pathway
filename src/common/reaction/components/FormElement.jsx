@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ItemSelect from "../../ItemSelect"; // Adjust path as needed
+import EnzymeContainer from "../../EnzymeContainer";
 
 const FormElement = ({
   isRequired = false,
@@ -18,7 +19,7 @@ const FormElement = ({
   setOpenTablePagination,
   reactantData,
   checked,
-  isEdit = true
+  isEdit = true,
 }) => {
   const [paginationTableBtn, setPaginationTableBtn] = useState(true);
 
@@ -29,7 +30,7 @@ const FormElement = ({
 
   const handleOnBlur = (e) => {
     setPaginationTableBtn(e.target.value.length <= 2);
-  }
+  };
 
   return (
     <div>
@@ -70,8 +71,9 @@ const FormElement = ({
 
         {type === "paginationTable" && (
           <div
-            className={`${customStyle ? customStyle : "select-container w-full flex-1"
-              }`}
+            className={`${
+              customStyle ? customStyle : "select-container w-full flex-1"
+            }`}
           >
             <input
               disabled={!isEdit}
@@ -89,10 +91,11 @@ const FormElement = ({
                   type="button"
                   disabled={paginationTableBtn}
                   onClick={() => setOpenTablePagination(true)}
-                  className={`px-8 w-fit py-[10px] rounded-sm text-white font-semibold transition-all ${paginationTableBtn
-                    ? "bg-gray-400 cursor-not-allowed opacity-70"
-                    : "bg-[#57369E] hover:bg-[#00A7D3]"
-                    }`}
+                  className={`px-8 w-fit py-[10px] rounded-sm text-white font-semibold transition-all ${
+                    paginationTableBtn
+                      ? "bg-gray-400 cursor-not-allowed opacity-70"
+                      : "bg-[#57369E] hover:bg-[#00A7D3]"
+                  }`}
                 >
                   Search
                 </button>
@@ -109,8 +112,9 @@ const FormElement = ({
         )}
         {type === "speciesPaginationTable" && (
           <div
-            className={`${customStyle ? customStyle : "select-container w-full flex-1"
-              }`}
+            className={`${
+              customStyle ? customStyle : "select-container w-full flex-1"
+            }`}
           >
             <input
               type="text"
@@ -127,10 +131,11 @@ const FormElement = ({
                   type="button"
                   disabled={paginationTableBtn}
                   onClick={() => setOpenTablePagination(true)}
-                  className={`px-8 w-fit py-[10px] rounded-sm text-white font-semibold transition-all ${paginationTableBtn
-                    ? "bg-gray-400 cursor-not-allowed opacity-70"
-                    : "bg-[#57369E] hover:bg-[#00A7D3]"
-                    }`}
+                  className={`px-8 w-fit py-[10px] rounded-sm text-white font-semibold transition-all ${
+                    paginationTableBtn
+                      ? "bg-gray-400 cursor-not-allowed opacity-70"
+                      : "bg-[#57369E] hover:bg-[#00A7D3]"
+                  }`}
                 >
                   Search
                 </button>
@@ -172,6 +177,14 @@ const FormElement = ({
             onChange={handleChange}
             itemType={itemType}
             placeholder={placeholder}
+          />
+        )}
+
+        {type == "enzyme" && (
+          <EnzymeContainer
+            name={name}
+            value={value}
+            handleChange={handleChange}
           />
         )}
 

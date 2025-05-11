@@ -262,12 +262,12 @@ const ControllerForm = ({
         {controllerData.controllerType == "enzyme" && (
           <FormElement
             isEdit={isEdit}
-            type="itemType"
+            type="enzyme"
             label={"EC enzyme name"}
             name="controller_ec_enzyme"
             value={controllerData?.controller_ec_enzyme}
             handleChange={handleChange}
-            itemType="Enzyme"
+            // itemType="Enzyme"
           />
         )}
       </div>
