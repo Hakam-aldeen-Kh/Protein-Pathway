@@ -148,7 +148,7 @@ const EnzymeContainer = ({ name, value, handleChange }) => {
 
       {/* Data table for selection */}
       {showTable && (
-        <div className="mt-2 absolute z-10 w-[100%] shadow-lg">
+        <div className="mt-2 absolute z-10 w-[235%] shadow-lg">
           <DataTable
             data={data}
             onRowClick={onRowClick}

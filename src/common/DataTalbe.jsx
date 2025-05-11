@@ -268,61 +268,59 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
           No enzymes found matching "{searchQuery}".
         </div>
       ) : (
-        <div style={{ overflowX: "auto" }}>
-          <div style={{ height: 400, minWidth: 1300 }}>
-            <AutoSizer>
-              {({ height, width }) => (
-                <Table
-                  ref={tableRef}
-                  height={height}
-                  width={width}
-                  rowHeight={60}
-                  headerHeight={48}
-                  rowCount={rowCount}
-                  rowGetter={({ index }) => filteredData[index] || {}}
-                  onRowClick={handleRowClick}
-                  className="font-sans"
-                  rowStyle={({ index }) => {
-                    const row = filteredData[index];
-                    if (!row || !selectedRow) return { cursor: "pointer" };
-                    const isSelected =
-                      row.enzyme_id?.value === selectedRow.enzyme_id?.value;
-                    return {
-                      backgroundColor: isSelected
-                        ? "rgba(59, 130, 246, 0.1)"
-                        : undefined,
-                      cursor: "pointer",
-                    };
-                  }}
-                  overscanRowCount={10}
-                  sort={({ sortBy, sortDirection }) => {
-                    setSortBy(sortBy);
-                    setSortDirection(sortDirection);
-                  }}
-                  sortBy={sortBy}
-                  sortDirection={sortDirection}
-                >
-                  {columns.map((col) => (
-                    <VirtualizedColumn
-                      key={col.id}
-                      dataKey={col.id}
-                      label={col.header}
-                      width={col.width}
-                      minWidth={col.width}
-                      flexGrow={1}
-                      cellDataGetter={({ rowData, dataKey }) =>
-                        rowData ? rowData[dataKey]?.value ?? "" : ""
-                      }
-                      cellRenderer={({ rowIndex, columnIndex, key, style }) =>
-                        cellRenderer({ rowIndex, columnIndex, key, style })
-                      }
-                      headerRenderer={headerRenderer}
-                    />
-                  ))}
-                </Table>
-              )}
-            </AutoSizer>
-          </div>
+        <div className="h-[300px] w-full">
+          <AutoSizer>
+            {({ height, width }) => (
+              <Table
+                ref={tableRef}
+                height={height}
+                width={width}
+                rowHeight={60}
+                headerHeight={48}
+                rowCount={rowCount}
+                rowGetter={({ index }) => filteredData[index] || {}}
+                onRowClick={handleRowClick}
+                className="font-sans"
+                rowStyle={({ index }) => {
+                  const row = filteredData[index];
+                  if (!row || !selectedRow) return { cursor: "pointer" };
+                  const isSelected =
+                    row.enzyme_id?.value === selectedRow.enzyme_id?.value;
+                  return {
+                    backgroundColor: isSelected
+                      ? "rgba(59, 130, 246, 0.1)"
+                      : undefined,
+                    cursor: "pointer",
+                  };
+                }}
+                overscanRowCount={10}
+                sort={({ sortBy, sortDirection }) => {
+                  setSortBy(sortBy);
+                  setSortDirection(sortDirection);
+                }}
+                sortBy={sortBy}
+                sortDirection={sortDirection}
+              >
+                {columns.map((col) => (
+                  <VirtualizedColumn
+                    key={col.id}
+                    dataKey={col.id}
+                    label={col.header}
+                    width={col.width}
+                    minWidth={col.width}
+                    flexGrow={1}
+                    cellDataGetter={({ rowData, dataKey }) =>
+                      rowData ? rowData[dataKey]?.value ?? "" : ""
+                    }
+                    cellRenderer={({ rowIndex, columnIndex, key, style }) =>
+                      cellRenderer({ rowIndex, columnIndex, key, style })
+                    }
+                    headerRenderer={headerRenderer}
+                  />
+                ))}
+              </Table>
+            )}
+          </AutoSizer>
         </div>
       )}
     </div>
