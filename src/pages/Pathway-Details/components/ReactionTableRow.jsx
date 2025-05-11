@@ -11,7 +11,8 @@ const ReactionTableRow = ({
   deleteReaction,
   handleShowDetails,
   addReaction,
-  addReactionAfterReaction
+  addReactionAfterReaction,
+  reactionState,
 }) => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
@@ -31,7 +32,7 @@ const ReactionTableRow = ({
 
   return (
     <>
-      <tr className="border-b-[5px] border-white bg-[#F1F5F9] hover:bg-gray-100 rounded">
+      <tr className={`border-b-[5px] border-white rounded ${reactionState?.state === "new" ? "bg-green-100" : "bg-[#F1F5F9]"}`}>
         <td className="px-4">{reactionIndex + 1}</td>
         <td className="flex  flex-col items-start justify-center gap-2 pb-1">
           {reaction.reactants.map((item, index) => (
@@ -92,7 +93,7 @@ const ReactionTableRow = ({
 
         {isEdit && (
           <td className="px-4 flex items-center h-full gap-2 -translate-y-[10px]">
-            <button onClick={() => addReactionAfterReaction()}>
+            <button onClick={() => addReactionAfterReaction(reaction.id)}>
               <img src="/images/icons/add-square.svg" alt="add" />
             </button>
             <button onClick={() => setEditModalOpen(true)}>
@@ -101,6 +102,8 @@ const ReactionTableRow = ({
             <button onClick={() => deleteReaction(reaction.id)}>
               <img src="/images/icons/trash-square.svg" alt="Delete" />
             </button>
+
+            {reactionState?.state === "warning" && <span>⚠️</span>}
           </td>
         )}
       </tr>

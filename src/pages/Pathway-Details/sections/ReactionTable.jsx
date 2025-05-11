@@ -10,7 +10,12 @@ import ReactionTableRow from "../components/ReactionTableRow";
 function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData }) {
 
   // const [isAddModalOpen, setAddModalOpen] = useState(false);
-
+  const [reactionState, setReactionState] = useState(
+    reactions.map(r => ({
+      id: r.id,
+      state: 'old'
+    }))
+  );
 
 
   const [deleteModalData, setDeleteModalData] = useState({
@@ -50,6 +55,11 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
       products: [{ id: 1, name: `product_${reactionId}.1` }],
     };
 
+    setReactionState((prevState) => [
+      ...prevState,
+      { id: reactionId, state: 'new' },
+    ]);
+
 
     setEditPathwayData((prevPathwayData) => {
       return {
@@ -63,28 +73,111 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
   };
 
   const addReactionAfterReaction = (targetReactionId) => {
-    console.log(targetReactionId);
 
-    let reactionId = reactions[reactions.length - 1]?.id + 1 || 1;
-
-    const newReaction = {
-      id: reactionId,
-      reactants: [{ id: 1, name: `reactant_${reactionId}.1` }],
-      controllers: [{ id: 1, name: `controller_${reactionId}.1` }],
-      products: [{ id: 1, name: `product_${reactionId}.1` }],
-    };
-
+    let targetIndexNew = null
 
     setEditPathwayData((prevPathwayData) => {
+      const reactions = [...prevPathwayData.reactions];
+
+      // Find the index of the target reaction
+      const targetIndex = reactions.findIndex(r => r.id === targetReactionId);
+      targetIndexNew = targetIndex
+
+      if (targetIndex === -1) {
+        console.error('Target reaction not found');
+        return prevPathwayData;
+      }
+
+      // Insert new reaction after target
+      const newReaction = {
+        id: targetReactionId + 1, // New ID is targetId + 1
+        reactants: [{ id: 1, name: `reactant_${targetReactionId + 1}.1` }],
+        controllers: [{ id: 1, name: `controller_${targetReactionId + 1}.1` }],
+        products: [{ id: 1, name: `product_${targetReactionId + 1}.1` }],
+      };
+
+      // Insert the new reaction after the target index
+      reactions.splice(targetIndex + 1, 0, newReaction);
+
+      // Shift and update IDs and names of all reactions after the inserted one
+      for (let i = targetIndex + 2; i < reactions.length; i++) {
+        const oldReaction = reactions[i];
+        const newId = i + 1;
+
+        reactions[i] = {
+          ...oldReaction,
+          id: newId,
+          reactants: oldReaction.reactants.map(r => ({ ...r, name: `reactant_${newId}.1` })),
+          controllers: oldReaction.controllers.map(c => ({ ...c, name: `controller_${newId}.1` })),
+          products: oldReaction.products.map(p => ({ ...p, name: `product_${newId}.1` })),
+        };
+      }
+
       return {
         ...prevPathwayData,
-        reactions: [...prevPathwayData.reactions, newReaction],
+        reactions,
       };
     });
 
-    return reactionId
 
+    setReactionState((prevStates) => {
+      let newStates = [...prevStates];
+
+      // Insert new state
+      newStates.splice(targetIndexNew + 1, 0, { id: targetReactionId + 1, state: 'new' });
+
+      // Update previous (if exists)
+      if (targetIndexNew >= 0) {
+        newStates[targetIndexNew] = {
+          ...newStates[targetIndexNew],
+          state: 'warning',
+        };
+      }
+
+      // Update next (if exists)
+      if (targetIndexNew + 2 < newStates.length) {
+        newStates[targetIndexNew + 2] = {
+          ...newStates[targetIndexNew + 2],
+          state: 'warning',
+        };
+      }
+
+
+      const updatedReactions = newStates.map((reaction, index) => {
+        const newId = index + 1; // Start from
+
+        return {
+          id: newId,
+          state: reaction.state
+        };
+      });
+
+
+
+
+
+      return updatedReactions;
+    });
+
+    return targetReactionId + 1;
   };
+
+
+
+
+  // const deleteReaction = (id) => {
+  //   setDeleteModalData({
+  //     isModalOpen: true,
+  //     closeModal,
+  //     title: "Reaction",
+  //     handleDelete: () => {
+  //       setEditPathwayData((prevPathwayData) => ({
+  //         ...prevPathwayData,
+  //         reactions: prevPathwayData.reactions.filter((reaction) => reaction.id !== id)
+  //       }));
+  //     }
+  //   })
+  // };
 
   const deleteReaction = (id) => {
     setDeleteModalData({
@@ -92,13 +185,61 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
       closeModal,
       title: "Reaction",
       handleDelete: () => {
-        setEditPathwayData((prevPathwayData) => ({
-          ...prevPathwayData,
-          reactions: prevPathwayData.reactions.filter((reaction) => reaction.id !== id)
-        }));
+
+        setReactionState((prevState) => {
+          // Filter out the deleted ID
+          const remainingStates = prevState.filter(state => state.id !== id);
+
+          // Reindex state to match new reaction IDs
+          return remainingStates.map((reaction, index) => {
+            return {
+              id: index + 1,
+              state: reaction?.state || 'old', // default to 'old' if not found
+            };
+          });
+        });
+
+        setEditPathwayData((prevPathwayData) => {
+          // Step 1: Remove the selected reaction
+          const filteredReactions = prevPathwayData.reactions
+            .filter((reaction) => reaction.id !== id);
+
+          // Step 2: Re-index the remaining reactions and update names
+          const updatedReactions = filteredReactions.map((reaction, index) => {
+            const newId = index + 1; // Start from 1
+
+            const updateNames = (items, type) =>
+              items.map((item) => ({
+                ...item,
+                name: `${type}_${newId}.${item.id}`,
+              }));
+
+
+
+            return {
+              ...reaction,
+              id: newId,
+              reactants: updateNames(reaction.reactants, 'reactant'),
+              controllers: updateNames(reaction.controllers, 'controller'),
+              products: updateNames(reaction.products, 'product'),
+            };
+          });
+
+
+          return {
+            ...prevPathwayData,
+            reactions: updatedReactions,
+          };
+        });
+
+
+
+
       }
-    })
+    });
   };
+
+
 
 
 
@@ -157,6 +298,8 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
                 deleteReaction={deleteReaction}
                 handleShowDetails={handleShowDetails}
                 addReactionAfterReaction={addReactionAfterReaction}
+                addReaction={addReaction}
+                reactionState={reactionState.find(item => item.id === reaction.id)}
               />
             ))}
           </tbody>
