@@ -185,10 +185,26 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
       closeModal,
       title: "Reaction",
       handleDelete: () => {
+        const targetIndex = reactions.findIndex(r => r.id === id);
 
         setReactionState((prevState) => {
           // Filter out the deleted ID
-          const remainingStates = prevState.filter(state => state.id !== id);
+          let remainingStates = prevState.filter(state => state.id !== id);
+
+          if (targetIndex - 1 >= 0) {
+            remainingStates[targetIndex - 1] = {
+              ...remainingStates[targetIndex - 1],
+              state: 'warning',
+            };
+          }
+
+          // Update next (if exists)
+          if (targetIndex < remainingStates.length) {
+            remainingStates[targetIndex] = {
+              ...remainingStates[targetIndex],
+              state: 'warning',
+            };
+          }
 
           // Reindex state to match new reaction IDs
           return remainingStates.map((reaction, index) => {
