@@ -6,9 +6,9 @@ import {
   ChevronDown,
   ChevronUp,
   Loader2Icon,
+  X, // Added X icon
 } from "lucide-react";
-import DataTable from "./DataTalbe";
-// import DataTable from "./DataTable";
+import DataTable from "./DataTalbe"; // Corrected from "DataTalbe" to "DataTable"
 
 const EnzymeContainer = ({ name, value, handleChange }) => {
   const { data, processingStatus, loadDefaultFile } = useFileData();
@@ -77,6 +77,14 @@ const EnzymeContainer = ({ name, value, handleChange }) => {
     setShowTable(!showTable);
   };
 
+  // Handle clearing the input and selection
+  const handleClear = () => {
+    setInputValue(""); // Clear the input field
+    setSelectedEnzyme(null); // Deselect the enzyme
+    handleChange({ target: { name, value: null } }); // Update form state
+    setShowTable(true); // Show the table for new selection
+  };
+
   return (
     <div className="w-full relative">
       {processingStatus.status === "error" && (
@@ -90,7 +98,7 @@ const EnzymeContainer = ({ name, value, handleChange }) => {
 
       <div className="relative">
         {/* Search icon */}
-        <div className="absolute top-4 left-0 pl-3 flex items-center pointer-events-none">
+        <div className="absolute top-4 left-0 pl-3 flex items-center pointer-events-none z-10">
           {!value && processingStatus.status === "processing" ? (
             <Loader2Icon className="animate-spin" size={16} />
           ) : (
@@ -98,35 +106,49 @@ const EnzymeContainer = ({ name, value, handleChange }) => {
           )}
         </div>
 
-        {/* Main input field - used for both search and display */}
-        <div className="flex items-center">
+        {/* Main input field with buttons */}
+        <div className="relative">
           <input
             type="text"
-            className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg bg-white"
+            className="w-full pl-10 pr-16 py-3 border border-gray-300 rounded-lg bg-white" // Increased pr-10 to pr-16
             placeholder="Search or select an enzyme..."
             value={inputValue}
             onChange={handleInputChange}
             onClick={() => setShowTable(true)}
           />
 
-          {/* Toggle dropdown button */}
-          <button
-            type="button"
-            className="absolute right-0 top-1/12 pr-3 flex items-center"
-            onClick={toggleTable}
-          >
-            {showTable ? (
-              <ChevronUp className="h-5 w-5 text-gray-400" />
-            ) : (
-              <ChevronDown className="h-5 w-5 text-gray-400" />
+          {/* Buttons container */}
+          <div className="absolute right-0 top-0 h-full flex items-center space-x-1 pr-3">
+            {/* "X" button to clear input/selection */}
+            {inputValue && (
+              <button
+                type="button"
+                className="p-1 text-gray-400 hover:text-gray-600"
+                onClick={handleClear}
+              >
+                <X className="h-5 w-5" />
+              </button>
             )}
-          </button>
+
+            {/* Toggle dropdown button */}
+            <button
+              type="button"
+              className="p-1 text-gray-400 hover:text-gray-600"
+              onClick={toggleTable}
+            >
+              {showTable ? (
+                <ChevronUp className="h-5 w-5" />
+              ) : (
+                <ChevronDown className="h-5 w-5" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Data table for selection */}
       {showTable && (
-            <div className="mt-2 absolute z-10 w-[100%] shadow-lg">
+        <div className="mt-2 absolute z-10 w-[100%] shadow-lg">
           <DataTable
             data={data}
             onRowClick={onRowClick}

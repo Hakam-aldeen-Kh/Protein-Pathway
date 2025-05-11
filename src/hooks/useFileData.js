@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import {
-  processDataInChunks,
   fetchDefaultFile,
+  processDataInChunks,
 } from "../utils/fetchEnzymeData";
 
 export const useFileData = () => {
@@ -20,31 +20,26 @@ export const useFileData = () => {
         message: "Loading enzymes data...",
       });
 
-      // Fetch and process the default file
       const jsonData = await fetchDefaultFile();
-
       setProcessingStatus({
         status: "processing",
         progress: 20,
         message: "File loaded. Processing data...",
       });
 
-      // Process the data in chunks to avoid blocking the UI
       const processedData = await processDataInChunks(
         jsonData,
         5000,
         (progress) => {
           setProcessingStatus({
             status: "processing",
-            progress: 20 + Math.floor(progress * 0.8), // Scale progress from 20-100%
+            progress: 20 + Math.floor(progress * 0.8),
             message: `Processing data... ${progress}%`,
           });
         }
       );
 
-      // Set the processed data
       setData(processedData);
-
       setProcessingStatus({
         status: "success",
         progress: 100,
@@ -57,13 +52,6 @@ export const useFileData = () => {
           ? `Error loading data: ${error.message}`
           : "Unknown error occurred while loading data";
 
-      // Log additional details to help debug
-      console.error("Error details:", {
-        errorType: error instanceof Error ? error.name : typeof error,
-        errorStack:
-          error instanceof Error ? error.stack : "No stack trace available",
-      });
-
       setProcessingStatus({
         status: "error",
         progress: 0,
@@ -72,7 +60,6 @@ export const useFileData = () => {
     }
   }, []);
 
-  // Load default data on component mount
   useEffect(() => {
     loadDefaultFile();
   }, [loadDefaultFile]);
