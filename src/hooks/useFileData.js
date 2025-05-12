@@ -31,11 +31,11 @@ export const useFileData = () => {
         jsonData,
         5000,
         (progress) => {
-          setProcessingStatus({
-            status: "processing",
+          setProcessingStatus((ps) => ({
+            ...ps,
             progress: 20 + Math.floor(progress * 0.8),
             message: `Processing data... ${progress}%`,
-          });
+          }));
         }
       );
 
@@ -43,19 +43,14 @@ export const useFileData = () => {
       setProcessingStatus({
         status: "success",
         progress: 100,
-        message: `Successfully loaded ${processedData.results.bindings.length} rows of enzyme data.`,
+        message: `Loaded ${processedData.results.bindings.length} enzymes`,
       });
     } catch (error) {
       console.error("Error loading data:", error);
-      const errorMessage =
-        error instanceof Error
-          ? `Error loading data: ${error.message}`
-          : "Unknown error occurred while loading data";
-
       setProcessingStatus({
         status: "error",
         progress: 0,
-        message: errorMessage,
+        message: error.message || "Unknown error",
       });
     }
   }, []);
@@ -64,9 +59,5 @@ export const useFileData = () => {
     loadDefaultFile();
   }, [loadDefaultFile]);
 
-  return {
-    data,
-    processingStatus,
-    loadDefaultFile,
-  };
+  return { data, processingStatus, reload: loadDefaultFile };
 };

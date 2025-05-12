@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useFileData } from "../hooks/useFileData";
 import {
   AlertCircle,
@@ -6,83 +6,57 @@ import {
   ChevronDown,
   ChevronUp,
   Loader2Icon,
-  X, // Added X icon
+  X,
 } from "lucide-react";
 import DataTable from "./DataTalbe"; // Corrected from "DataTalbe" to "DataTable"
 
 const EnzymeContainer = ({ name, value, handleChange }) => {
-  const { data, processingStatus, loadDefaultFile } = useFileData();
+  const { data, processingStatus, reload } = useFileData();
   const didLoadRef = useRef(false);
 
-  // Parse initial value if provided
+  // Parse initial value
   const initialValue = value
     ? typeof value === "string"
       ? JSON.parse(value)
       : value
     : null;
 
-  // Store the full selected enzyme object
-  const [selectedEnzyme, setSelectedEnzyme] = useState(initialValue);
-
-  // Handle input state
+  const [selected, setSelected] = useState(initialValue);
   const [inputValue, setInputValue] = useState(
     initialValue?.enzyme_name?.value || ""
   );
-
-  // Control table visibility
   const [showTable, setShowTable] = useState(false);
 
-  // Load default data on mount
+  // Ensure we only reload once
   useEffect(() => {
     if (!didLoadRef.current) {
-      loadDefaultFile();
+      reload();
       didLoadRef.current = true;
     }
-  }, [loadDefaultFile]);
+  }, [reload]);
 
-  // Handle input changes for searching
   const handleInputChange = (e) => {
-    const value = e.target.value;
-    setInputValue(value);
-
-    // If we clear the input, also clear the selection
-    if (!value.trim()) {
-      setSelectedEnzyme(null);
+    const v = e.target.value;
+    setInputValue(v);
+    if (!v.trim()) {
+      setSelected(null);
       handleChange({ target: { name, value: null } });
     }
-
-    // Show table when typing in the input
     setShowTable(true);
   };
 
-  // Handle when a row is clicked in the table
   const onRowClick = (row) => {
-    const enzymeObj = { ...row };
-
-    // Update the selected enzyme
-    setSelectedEnzyme(enzymeObj);
-
-    // Set the input value to the enzyme name
-    setInputValue(enzymeObj.enzyme_name?.value || "");
-
-    // Hide the table after selection
+    setSelected(row);
+    setInputValue(row.enzyme_name.value);
     setShowTable(false);
-
-    // Pass the full enzyme object to the form handler
-    handleChange({ target: { name, value: enzymeObj } });
+    handleChange({ target: { name, value: row } });
   };
 
-  // Toggle showing/hiding the table
-  const toggleTable = () => {
-    setShowTable(!showTable);
-  };
-
-  // Handle clearing the input and selection
   const handleClear = () => {
-    setInputValue(""); // Clear the input field
-    setSelectedEnzyme(null); // Deselect the enzyme
-    handleChange({ target: { name, value: null } }); // Update form state
-    setShowTable(true); // Show the table for new selection
+    setInputValue("");
+    setSelected(null);
+    handleChange({ target: { name, value: null } });
+    setShowTable(true);
   };
 
   return (
@@ -97,72 +71,52 @@ const EnzymeContainer = ({ name, value, handleChange }) => {
       )}
 
       <div className="relative">
-        {/* Search icon */}
-        <div className="absolute top-4 left-0 pl-3 flex items-center pointer-events-none z-10">
-          {!value && processingStatus.status === "processing" ? (
+        <div className="absolute top-4 left-0 pl-3 flex items-center z-10 pointer-events-none">
+          {processingStatus.status === "processing" ? (
             <Loader2Icon className="animate-spin" size={16} />
           ) : (
             <Search className="h-5 w-5 text-gray-400" />
           )}
         </div>
-
-        {/* Main input field with buttons */}
-        <div className="relative">
-          <input
-            type="text"
-            className="w-full pl-10 pr-16 py-3 border border-gray-300 rounded-lg bg-white" // Increased pr-10 to pr-16
-            placeholder="Search or select an enzyme..."
-            value={inputValue}
-            onChange={handleInputChange}
-            onClick={() => setShowTable(true)}
-          />
-
-          {/* Buttons container */}
-          <div className="absolute right-0 top-0 h-full flex items-center space-x-1 pr-3">
-            {/* "X" button to clear input/selection */}
-            {inputValue && (
-              <button
-                type="button"
-                className="p-1 text-gray-400 hover:text-gray-600"
-                onClick={handleClear}
-              >
-                <X className="h-5 w-5" />
-              </button>
-            )}
-
-            {/* Toggle dropdown button */}
-            <button
-              type="button"
-              className="p-1 text-gray-400 hover:text-gray-600"
-              onClick={toggleTable}
-            >
-              {showTable ? (
-                <ChevronUp className="h-5 w-5" />
-              ) : (
-                <ChevronDown className="h-5 w-5" />
-              )}
+        <input
+          type="text"
+          className="w-full pl-10 pr-16 py-3 border rounded-lg"
+          placeholder="Search or select an enzyme..."
+          value={inputValue}
+          onChange={handleInputChange}
+          onClick={() => setShowTable(true)}
+        />
+        <div className="absolute top-0 right-0 h-full flex items-center space-x-1 pr-3">
+          {inputValue && (
+            <button onClick={handleClear} className="p-1 text-gray-400">
+              <X className="h-5 w-5" />
             </button>
-          </div>
+          )}
+          <button onClick={() => setShowTable((s) => !s)} className="p-1">
+            {showTable ? (
+              <ChevronUp className="h-5 w-5" />
+            ) : (
+              <ChevronDown className="h-5 w-5" />
+            )}
+          </button>
         </div>
       </div>
 
-      {/* Data table for selection */}
-      {showTable && (
-        <div className="mt-2 absolute z-10 w-[100%] shadow-lg">
+      {showTable && data && (
+        <div className="mt-2 absolute z-10 w-full shadow-lg bg-white">
           <DataTable
             data={data}
             onRowClick={onRowClick}
             searchQuery={inputValue}
-            selectedRow={selectedEnzyme}
+            selectedRow={selected}
           />
         </div>
       )}
 
-      {/* Hidden input for form submission with the full enzyme object */}
       <input
         type="hidden"
         name={name}
-        value={selectedEnzyme ? JSON.stringify(selectedEnzyme) : ""}
+        value={selected ? JSON.stringify(selected) : ""}
       />
     </div>
   );
