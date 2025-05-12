@@ -55,7 +55,7 @@ export const layouts = {
 
     cola: {
         name: "cola",
-        animate: true,
+        // animate: true,
     },
     dagre: {
         name: "dagre",

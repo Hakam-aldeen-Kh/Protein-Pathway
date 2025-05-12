@@ -68,8 +68,8 @@ const PreviewPathway = () => {
           reaction.id === reactionId
             ? {
               ...reaction,
-              [type]: reaction[type].map((item, i) =>
-                i === index ? { ...item, [name]: value === "on" ? check ? check : checked : value } : item
+              [type]: reaction[type].map((item) =>
+                item.id === index ? { ...item, [name]: value === "on" ? check ? check : checked : value } : item
               ),
             }
             : reaction
@@ -80,6 +80,7 @@ const PreviewPathway = () => {
   };
 
   const handleSaveAfterEdit = () => {
+    console.log(pathwayData);
     handleSubmitEditPathway(pathwayData, id)
   }
 
