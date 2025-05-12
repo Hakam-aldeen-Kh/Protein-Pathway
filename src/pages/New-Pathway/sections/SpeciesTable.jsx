@@ -16,8 +16,12 @@ const SpeciesTable = ({
   const columns = JSON.stringify([
     {
       id: "index",
-      label: "Common Name (Selector)",
+      label: "Toxan Name (Selector)",
       escape: false,
+    },
+    {
+      id: "common_name",
+      label: "Common Name",
     },
     {
       id: "taxon_id",
