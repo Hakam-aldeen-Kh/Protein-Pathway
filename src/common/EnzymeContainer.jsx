@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useFileData } from "../hooks/useFileData";
 import {
   AlertCircle,
@@ -8,13 +8,11 @@ import {
   Loader2Icon,
   X,
 } from "lucide-react";
-import DataTable from "./DataTalbe"; // Corrected from "DataTalbe" to "DataTable"
+import DataTable from "./DataTalbe";
 
 const EnzymeContainer = ({ name, value, handleChange }) => {
-  const { data, processingStatus, reload } = useFileData();
-  const didLoadRef = useRef(false);
+  const { data, processingStatus } = useFileData();
 
-  // Parse initial value
   const initialValue = value
     ? typeof value === "string"
       ? JSON.parse(value)
@@ -26,14 +24,6 @@ const EnzymeContainer = ({ name, value, handleChange }) => {
     initialValue?.enzyme_name?.value || ""
   );
   const [showTable, setShowTable] = useState(false);
-
-  // Ensure we only reload once
-  useEffect(() => {
-    if (!didLoadRef.current) {
-      reload();
-      didLoadRef.current = true;
-    }
-  }, [reload]);
 
   const handleInputChange = (e) => {
     const v = e.target.value;
@@ -80,7 +70,7 @@ const EnzymeContainer = ({ name, value, handleChange }) => {
         </div>
         <input
           type="text"
-          className="w-full pl-10 pr-16 py-3 border rounded-lg"
+          className="w-full pl-10 pr-16 py-3 border focus:ring-[#57369E] rounded-lg outline-none"
           placeholder="Search or select an enzyme..."
           value={inputValue}
           onChange={handleInputChange}

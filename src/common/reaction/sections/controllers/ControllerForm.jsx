@@ -13,11 +13,6 @@ const ControllerForm = ({
   isEdit,
   setPathwayData,
 }) => {
-  useEffect(() => {
-    fetchDefaultFile().catch((e) =>
-      console.error("Preload enzyme data failed:", e)
-    );
-  }, []);
   const handleChange = (e) =>
     handleChangeData(e, reaction.id, "controllers", controllerId);
   let display = true;

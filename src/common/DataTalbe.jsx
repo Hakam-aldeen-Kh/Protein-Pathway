@@ -1,4 +1,11 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+  useTransition,
+} from "react";
 import {
   AutoSizer,
   Table,
@@ -12,6 +19,7 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
   const [sortDirection, setSortDirection] = useState("ASC");
   const [filteredData, setFilteredData] = useState([]);
   const tableRef = useRef(null);
+  const [isPending, startTransition] = useTransition();
 
   // Extract column definitions from data
   const columns = data?.head?.vars
@@ -50,7 +58,9 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
   // Filter and sort data when dependencies change
   useEffect(() => {
     if (!data?.results?.bindings) {
-      setFilteredData([]);
+      startTransition(() => {
+        setFilteredData([]);
+      });
       return;
     }
 
@@ -83,7 +93,9 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
       });
     }
 
-    setFilteredData(processed);
+    startTransition(() => {
+      setFilteredData(processed);
+    });
 
     // After sorting, scroll to top to show the sorted results
     if (tableRef.current) {
@@ -206,6 +218,7 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
         className="flex items-center justify-between px-4 py-3 text-xs font-medium text-gray-700 cursor-pointer select-none"
         onClick={handleHeaderClick}
       >
+        {isPending && "Loading.."}
         <span>{label}</span>
         {isSorted ? (
           sortDirection === "ASC" ? (
