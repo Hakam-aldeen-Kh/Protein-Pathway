@@ -5,6 +5,7 @@ import DeleteModal from "../../../common/DeleteModal";
 // import ReactionModal from "../components/ReactionModal";
 import DetailsModal from "../components/DetailsModal";
 import ReactionTableRow from "../components/ReactionTableRow";
+// import { isReactionHaveReference } from "../../../utils/isReactionHaveReference";
 
 
 function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData }) {
@@ -60,6 +61,18 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
       { id: reactionId, state: 'new' },
     ]);
 
+    setReactionState((prevState) => {
+      const updatedState = prevState.map((item) =>
+        item.id === reactionId - 1
+          ? { ...item, state: 'warning' } // change state as needed
+          : item
+      );
+
+      return [
+        ...updatedState,
+      ]
+    });
+
 
     setEditPathwayData((prevPathwayData) => {
       return {
@@ -68,21 +81,58 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
       };
     });
 
-    return reactionId
+    return newReaction
 
   };
 
   const addReactionAfterReaction = (targetReactionId) => {
 
-    let targetIndexNew = null
+    const targetIndex = reactions.findIndex(r => r.id === targetReactionId);
+    const targetReaction = reactions.find(r => r.id === targetReactionId);
+
+    let targetIndexNew = targetIndex
+
+    // remove linked between targetIndex and targetIndex+1
+    if (reactions.find(r => r.id === targetReactionId + 1)) {
+
+      handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId + 1, "controllers", 1);
+      handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "controllers", 1);
+      handleChangeData({ target: { value: "", name: "productId", }, }, targetReactionId + 1, "controllers", 1);
+      handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "controllers", 1);
+
+      // handleChangeData({ target: { value: "", name: "conectedReactantId" } }, reaction.id, "products", productId)
+
+      for (let i = 0; i < targetReaction.products.length; i += 1) {
+        const conectedReactantId = targetReaction.products[i].conectedReactantId
+        handleChangeData({ target: { value: false, name: "useNextReaction", }, }, targetReactionId, "products", targetReaction.products[i].id);
+
+        if (conectedReactantId) {
+          handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId + 1, "reactants", conectedReactantId);
+          handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "reactants", conectedReactantId);
+          handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "reactants", conectedReactantId);
+        }
+      }
+
+      handleChangeData({ target: { value: false, name: "useNextReaction", }, }, targetReactionId, "controllers", 1);
+
+      handleChangeData({ target: { value: "", name: "conectedReactantId" } }, targetReactionId, "controllers", 1)
+      handleChangeData({ target: { value: "", name: "targetReactionId" } }, targetReactionId, "controllers", 1)
+
+      const conectedReactantId = targetReaction.controllers[0].conectedReactantId
+
+      if (conectedReactantId) {
+        handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId + 1, "reactants", conectedReactantId);
+        handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "reactants", conectedReactantId);
+        handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "reactants", conectedReactantId);
+      }
+
+
+    }
 
     setEditPathwayData((prevPathwayData) => {
       const reactions = [...prevPathwayData.reactions];
 
       // Find the index of the target reaction
-      const targetIndex = reactions.findIndex(r => r.id === targetReactionId);
-      targetIndexNew = targetIndex
-
       if (targetIndex === -1) {
         console.error('Target reaction not found');
         return prevPathwayData;
@@ -122,9 +172,11 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
 
     setReactionState((prevStates) => {
       let newStates = [...prevStates];
+      console.log(targetIndexNew)
 
       // Insert new state
       newStates.splice(targetIndexNew + 1, 0, { id: targetReactionId + 1, state: 'new' });
+      console.log(newStates)
 
       // Update previous (if exists)
       if (targetIndexNew >= 0) {
@@ -142,6 +194,9 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
         };
       }
 
+      // console.log(newStates)
+
+
 
       const updatedReactions = newStates.map((reaction, index) => {
         const newId = index + 1; // Start from
@@ -158,6 +213,7 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
 
       return updatedReactions;
     });
+
 
     return targetReactionId + 1;
   };
@@ -186,6 +242,47 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
       title: "Reaction",
       handleDelete: () => {
         const targetIndex = reactions.findIndex(r => r.id === id);
+        const targetReactionId = id
+
+        const targetReaction = reactions.find(r => r.id === targetReactionId);
+
+
+        // remove linked between targetIndex and targetIndex+1
+        if (reactions.find(r => r.id === targetReactionId + 1)) {
+
+          handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId + 1, "controllers", 1);
+          handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "controllers", 1);
+          handleChangeData({ target: { value: "", name: "productId", }, }, targetReactionId + 1, "controllers", 1);
+          handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "controllers", 1);
+
+          // handleChangeData({ target: { value: "", name: "conectedReactantId" } }, reaction.id, "products", productId)
+
+          for (let i = 0; i < targetReaction.products.length; i += 1) {
+            const conectedReactantId = targetReaction.products[i].conectedReactantId
+            handleChangeData({ target: { value: false, name: "useNextReaction", }, }, targetReactionId, "products", targetReaction.products[i].id);
+
+            if (conectedReactantId) {
+              handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId + 1, "reactants", conectedReactantId);
+              handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "reactants", conectedReactantId);
+              handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "reactants", conectedReactantId);
+            }
+          }
+
+          handleChangeData({ target: { value: false, name: "useNextReaction", }, }, targetReactionId, "controllers", 1);
+
+          handleChangeData({ target: { value: "", name: "conectedReactantId" } }, targetReactionId, "controllers", 1)
+          handleChangeData({ target: { value: "", name: "targetReactionId" } }, targetReactionId, "controllers", 1)
+
+          const conectedReactantId = targetReaction.controllers[0].conectedReactantId
+
+          if (conectedReactantId) {
+            handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId + 1, "reactants", conectedReactantId);
+            handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "reactants", conectedReactantId);
+            handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "reactants", conectedReactantId);
+          }
+
+
+        }
 
         setReactionState((prevState) => {
           // Filter out the deleted ID

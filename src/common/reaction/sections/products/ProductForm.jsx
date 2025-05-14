@@ -125,7 +125,7 @@ const ProductForm = ({
   const addReactant = (reactionId) => {
     const nextReaction = localReactions.find(item => item.id === reactionId)
 
-    console.log("nextReaction", nextReaction);
+    console.log("nextReaction", localReactions);
     let reactantId = nextReaction.reactants[nextReaction.reactants.length - 1]?.id + 1
 
     const firstUnReferencedReactant = nextReaction.reactants.find(r => !r.reference || r.reference.trim() === "");
@@ -179,15 +179,15 @@ const ProductForm = ({
     // reset reference property in reactant and controller
     handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "controllers", 1);
     handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "controllers", 1);
+    handleChangeData({ target: { value: "", name: "productId", }, }, targetReactionId, "controllers", 1);
+    handleChangeData({ target: { value: "", name: "conectedReactantId" } }, reaction.id, "products", productId)
+    handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "controllers", 1);
+
 
     if (targetReactantId) {
       handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "reactants", targetReactantId);
       handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "reactants", targetReactantId);
-      handleChangeData({ target: { value: "", name: "productId", }, }, targetReactionId, "controllers", 1);
-      handleChangeData({ target: { value: "", name: "conectedReactantId" } }, reaction.id, "products", productId)
-
       handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "reactants", targetReactantId);
-      handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "controllers", 1);
     }
 
     if (e.target.value === "controllers") {
@@ -203,6 +203,20 @@ const ProductForm = ({
       handleChangeData({ target: { value: reaction.id, name: "fromReaction" } }, targetReactionId, "controllers", 1);
 
       handleChangeData({ target: { value: { type: "products", id: productId }, name: "connectedData" } }, targetReactionId, "controllers", 1);
+
+      // uncheck controller in next reaction if is checked
+      const foundControllerCheckedNextReaction = reactions.find(item => item.id === reaction.id + 1)
+      console.log(foundControllerCheckedNextReaction);
+
+      if (foundControllerCheckedNextReaction && foundControllerCheckedNextReaction.controllers[0].useNextReaction) {
+        handleChangeData({ target: { value: "", name: "conectedReactantId" } }, targetReactionId, "controllers", 1)
+        handleChangeData({ target: { value: "", name: "targetReactionId" } }, targetReactionId, "controllers", 1)
+        handleChangeData({ target: { value: false, name: "useNextReaction", }, }, targetReactionId, "controllers", productId);
+
+        handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId + 1, "reactants", foundControllerCheckedNextReaction.controllers[0].conectedReactantId);
+        handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "reactants", foundControllerCheckedNextReaction.controllers[0].conectedReactantId);
+        handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "reactants", foundControllerCheckedNextReaction.controllers[0].conectedReactantId);
+      }
 
     }
 
