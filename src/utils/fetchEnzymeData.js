@@ -42,8 +42,6 @@ export const fetchDefaultFile = async () => {
 
 /**
  * Process an ArrayBuffer containing plain JSON data
- * @param arrayBuffer The ArrayBuffer containing data
- * @returns Promise resolving to the parsed SparqlJsonResult
  */
 export const processArrayBuffer = async (arrayBuffer) => {
   try {
@@ -64,8 +62,7 @@ export const processArrayBuffer = async (arrayBuffer) => {
 };
 
 /**
- * Chunk processing for large datasets - process data in small batches
- * to avoid blocking the main thread
+ * Chunk processing for large datasets
  */
 export const processDataInChunks = async (
   data,
@@ -98,11 +95,7 @@ export const processDataInChunks = async (
         processedData.results.bindings.push(bindings[i]);
       }
       processedItems = end;
-      const progress = Math.min(
-        Math.round((processedItems / totalItems) * 100),
-        100
-      );
-      onProgress(progress);
+      onProgress(Math.round((processedItems / totalItems) * 100));
 
       if (processedItems < totalItems) {
         setTimeout(processChunk, 0);
