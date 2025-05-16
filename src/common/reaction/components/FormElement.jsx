@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ItemSelect from "../../ItemSelect"; // Adjust path as needed
 import EnzymeContainer from "../../EnzymeContainer";
+import GlycanText from "./GlycanText";
 
 const FormElement = ({
   isRequired = false,
@@ -19,7 +20,10 @@ const FormElement = ({
   setOpenTablePagination,
   reactantData,
   checked,
+  isDisabled,
+  setIsDisabled,
   className,
+  glycanTextType,
   isEdit = true,
 }) => {
   const [paginationTableBtn, setPaginationTableBtn] = useState(true);
@@ -186,6 +190,18 @@ const FormElement = ({
             name={name}
             value={value}
             handleChange={handleChange}
+          />
+        )}
+
+        {type === "Glycan Text" && (
+          <GlycanText
+            name={name}
+            value={value}
+            isRequired={isRequired}
+            glycanTextType={glycanTextType}
+            handleChange={handleChange}
+            isDisabled={isDisabled}
+            setIsDisabled={setIsDisabled}
           />
         )}
 
