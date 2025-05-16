@@ -19,6 +19,7 @@ const FormElement = ({
   setOpenTablePagination,
   reactantData,
   checked,
+  className,
   isEdit = true,
 }) => {
   const [paginationTableBtn, setPaginationTableBtn] = useState(true);
@@ -33,7 +34,7 @@ const FormElement = ({
   };
 
   return (
-    <div>
+    <div className={className}>
       <label className="block text-sm font-medium text-gray-700">
         {isRequired && <span className="text-red-500">*</span>}
         <span>{label}</span>
@@ -54,7 +55,7 @@ const FormElement = ({
         )}
 
         {type === "select" && (
-          <div className="select-container w-full flex-1">
+          <div className={`select-container w-full flex-1`}>
             <select
               disabled={!isEdit}
               required={isRequired}

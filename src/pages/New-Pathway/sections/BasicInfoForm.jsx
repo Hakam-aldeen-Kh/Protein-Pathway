@@ -4,27 +4,23 @@ import FormElement from "../../../common/reaction/components/FormElement";
 import SpeciesTable from "./SpeciesTable";
 
 const BasicInfoForm = ({ data, handleChange }) => {
-  const [diseaseType, setDiseaseType] = useState(data.relatedDisease);
   const [pubMeds, setPubMeds] = useState(data.pubMeds || []);
+  const [relatedDiseases, setRelatedDiseases] = useState(
+    data.relatedDiseases && data.relatedDiseases.length > 0
+      ? data.relatedDiseases
+      : [{ type: "", value: "" }]
+  );
   const [isOpen, setOpenTablePagination] = useState(false);
 
   // Callback to handle species selection
   const handleSpeciesSelect = ({ species }) => {
-    // Update the species name
     handleChange({
       target: {
         name: "species",
         value: species,
       },
     });
-
-    setOpenTablePagination(false); // Close the modal after selection
-  };
-
-  const handleDiseaseTypeChange = (e) => {
-    const { value } = e.target;
-    setDiseaseType(value);
-    handleChange(e);
+    setOpenTablePagination(false);
   };
 
   const addPubMed = () => {
@@ -48,6 +44,35 @@ const BasicInfoForm = ({ data, handleChange }) => {
     });
     setPubMeds(newPubMeds);
     handleChange({ target: { name: "pubMeds", value: newPubMeds } });
+  };
+
+  const addRelatedDisease = () => {
+    const newRelatedDiseases = [...relatedDiseases, { type: "", value: "" }];
+    setRelatedDiseases(newRelatedDiseases);
+    handleChange({
+      target: { name: "relatedDiseases", value: newRelatedDiseases },
+    });
+  };
+
+  const removeRelatedDisease = (index) => {
+    const newRelatedDiseases = relatedDiseases.filter((_, i) => i !== index);
+    setRelatedDiseases(newRelatedDiseases);
+    handleChange({
+      target: { name: "relatedDiseases", value: newRelatedDiseases },
+    });
+  };
+
+  const handleRelatedDiseaseChange = (index, field, value) => {
+    const newRelatedDiseases = relatedDiseases.map((rd, i) => {
+      if (i === index) {
+        return { ...rd, [field]: value };
+      }
+      return rd;
+    });
+    setRelatedDiseases(newRelatedDiseases);
+    handleChange({
+      target: { name: "relatedDiseases", value: newRelatedDiseases },
+    });
   };
 
   return (
@@ -118,40 +143,73 @@ const BasicInfoForm = ({ data, handleChange }) => {
             value={data?.tissue}
             handleChange={handleChange}
           />
+          {/* Related Diseases */}
+          <div className="space-y-2">
+            {relatedDiseases.map((relatedDisease, index) => (
+              <div key={index} className="grid grid-cols-2 gap-4">
+                <div className="flex items-end gap-x-1">
+                  <FormElement
+                    type="select"
+                    label="Related Disease"
+                    name={`relatedDiseaseType-${index}`}
+                    value={relatedDisease.type}
+                    handleChange={(e) =>
+                      handleRelatedDiseaseChange(index, "type", e.target.value)
+                    }
+                    placeholder="Select a Type"
+                    className={`${index > 0 ? "w-[90%]" : "w-full"}`}
+                  >
+                    <option value="Human">Human</option>
+                    <option value="Animal">Animal</option>
+                    <option value="Plant">Plant</option>
+                  </FormElement>
+                  {index > 0 && (
+                    <div
+                      className="flex items-center justify-center py-2 px-3 border bg-[#57369E] cursor-pointer rounded-lg hover:bg-[#00A7D3] transition-all duration-200"
+                      onClick={() => removeRelatedDisease(index)}
+                    >
+                      <img
+                        src="/images/icons/trash.svg"
+                        className="w-[24px] h-[24px]"
+                      />
+                    </div>
+                  )}
+                </div>
 
-          <div className="grid grid-cols-2 gap-2 items-end">
-            <FormElement
-              type="select"
-              label="Related Disease"
-              name="relatedDisease"
-              value={data?.relatedDisease}
-              handleChange={handleDiseaseTypeChange}
-              placeholder="Select a Type"
-            >
-              <option value="Human">Human</option>
-              <option value="Animal">Animal</option>
-              <option value="Plant">Plant</option>
-            </FormElement>
-
-            <FormElement
-              label=""
-              type="itemType"
-              name="diseaseInput"
-              value={data?.diseaseInput}
-              handleChange={handleChange}
-              itemType={diseaseType}
-            />
+                <FormElement
+                  label=""
+                  type="itemType"
+                  name={`diseaseInput-${index}`}
+                  value={relatedDisease.value}
+                  handleChange={(e) =>
+                    handleRelatedDiseaseChange(index, "value", e.target.value)
+                  }
+                  itemType={relatedDisease.type}
+                  placeholder="Enter disease value"
+                  className='self-end'
+                />
+              </div>
+            ))}
           </div>
         </div>
 
-        <div>
+        <div className="grid grid-cols-2 gap-4">
           <button
-            className="mb-5 flex items-center text-[14px] text-[#57369E]"
+            className="text-[14px] text-start text-[#57369E]"
             onClick={addPubMed}
             type="button"
           >
             + Add pubMeds
           </button>
+          <button
+            className="text-[14px] text-end text-[#57369E]"
+            onClick={addRelatedDisease}
+            type="button"
+          >
+            + Add Related Disease
+          </button>
+        </div>
+        <div>
           <div className="grid grid-cols-2 gap-4">
             {data?.pubMeds?.map((item, index) => (
               <div className="flex gap-2" key={index}>
