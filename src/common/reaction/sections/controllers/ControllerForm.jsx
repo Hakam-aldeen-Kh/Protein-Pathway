@@ -19,6 +19,7 @@ const ControllerForm = ({
 
   if (controllerData?.connectedData) {
     display = false
+    console.log(reactions?.find(item => item.id === controllerData?.fromReaction), controllerData?.fromReaction);
     controllerData = reactions?.find(item => item.id === controllerData?.fromReaction)[controllerData?.connectedData?.type]?.find(item => item.id === controllerData?.connectedData.id)
   }
 
