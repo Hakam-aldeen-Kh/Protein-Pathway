@@ -15,7 +15,7 @@ const HeroSection = () => {
     >
       <div className="max-w-3xl">
         <h1 className="text-4xl md:text-5xl font-bold mb-10">
-          GLYCAN PATHWAY PORTAL
+          Glycan Pathway Repository
         </h1>
         <p className="text-3xl mb-10 text-gray-200">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
