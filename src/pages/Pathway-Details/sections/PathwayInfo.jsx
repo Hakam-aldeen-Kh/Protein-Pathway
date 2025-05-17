@@ -16,19 +16,19 @@ const PathwayInfo = ({ pathway, id }) => {
   const recordDate = `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`;
 
   
-  const getDiseaseNames = (relatedDiseases) => {
-    if (!Array.isArray(relatedDiseases) || relatedDiseases.length === 0) {
+  const getDiseaseNames = (diseaseInput) => {
+    if (!Array.isArray(diseaseInput) || diseaseInput.length === 0) {
       return "";
     }
     
-    const diseaseNames = relatedDiseases
+    const diseaseNames = diseaseInput
     .filter((disease) => disease?.value?.Disease_name)
     .map((disease) => disease.value.Disease_name);
     
     return diseaseNames.length > 0 ? diseaseNames.join(", ") : "";
   };
 
-  const relatedDiseasesValues= getDiseaseNames(pathway?.relatedDiseases)
+  const relatedDiseasesValues= getDiseaseNames(pathway?.diseaseInput)
 
   const pathwayData = [
     { label: "Species", value: pathway?.species || "no value" },
