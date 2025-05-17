@@ -46,13 +46,13 @@ const ReviewHeader = ({ pathwayId, title, description, pageState, handleSave, is
                         <div className="flex gap-5 items-center self-stretch my-auto text-sm font-semibold  text-center text-violet-900">
                             {isEdit &&
                                 <>
-                                    <button
+                                    {/* <button
                                         className="flex items-center justify-center py-2 px-3 border bg-[#57369E] cursor-pointer rounded-lg hover:bg-[#00A7D3] transition-all duration-200"
                                         disabled={isLoading}
                                         onClick={() => handleDeletePathway(pathwayId)}
                                     >
                                         {isLoading ? "loading" : <img src="/images/icons/trash.svg" className="w-[24px] h-[24px]" />}
-                                    </button>
+                                    </button> */}
 
                                     <div className=" group">
                                         <button
