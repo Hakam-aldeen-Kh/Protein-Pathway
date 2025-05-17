@@ -95,7 +95,6 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
 
       const colId = columns[columnIndex].id;
       const rawVal = row[colId]?.value || "";
-      const isUri = colId !== "enzyme_id" && row[colId]?.type === "uri";
 
       // value to display
       const displayVal =
@@ -134,19 +133,7 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
           } hover:bg-gray-50 cursor-pointer`}
           title={rawVal}
         >
-          {isUri ? (
-            <a
-              href={rawVal}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline block"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {highlightText(displayVal, searchQuery)}
-            </a>
-          ) : (
-            highlightText(displayVal, searchQuery)
-          )}
+          {highlightText(displayVal, searchQuery)}
         </div>
       );
     },

@@ -8,7 +8,7 @@ import {
   Loader2Icon,
   X,
 } from "lucide-react";
-import DataTable from "./DataTalbe";
+import DataTable from "./DataTable";
 
 const EnzymeContainer = ({ name, value, handleChange }) => {
   const { data, processingStatus } = useFileData();
