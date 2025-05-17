@@ -22,7 +22,7 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
   const [isPending, startTransition] = useTransition();
 
   // Extract column definitions from data
-  const columns = data?.head?.vars
+  let columns = data?.head?.vars
     ? data.head.vars.map((varName) => ({
         id: varName,
         header: formatColumnHeader(varName),
@@ -30,6 +30,18 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
         width: getColumnWidth(varName),
       }))
     : [];
+
+  // Swap enzyme_id and enzyme_name if both exist
+  const idx1 = columns.findIndex((c) => c.id === "enzyme_id");
+  const idx2 = columns.findIndex((c) => c.id === "enzyme_name");
+
+  if (idx1 !== -1 && idx2 !== -1) {
+    const temp = columns[idx1];
+    columns[idx1] = columns[idx2];
+    columns[idx2] = temp;
+  }
+
+  console.log(columns);
 
   // Format column header names to be more user-friendly
   function formatColumnHeader(columnName) {
@@ -45,9 +57,9 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
       case "enzyme_id":
         return 270;
       case "enzyme_name":
-        return 450;
+        return 350;
       case "gene_name":
-        return 100;
+        return 150;
       case "taxon_name":
         return 300;
       default:
@@ -96,6 +108,8 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
     startTransition(() => {
       setFilteredData(processed);
     });
+
+    console.log(filteredData)
 
     // After sorting, scroll to top to show the sorted results
     if (tableRef.current) {
@@ -264,7 +278,7 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
   const rowCount = filteredData.length;
 
   return (
-    <div className="rounded-lg border border-gray-200 shadow-sm overflow-hidden bg-white overflow-x-auto">
+    <div className="rounded-lg border border-gray-200 shadow-sm overflow-hidden bg-white">
       <div className="px-4 py-2 bg-gray-50 border-b border-gray-200 text-sm text-gray-600 flex justify-between items-center">
         <span>
           Showing <strong>{rowCount.toLocaleString()}</strong> of{" "}
@@ -282,7 +296,7 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
         </div>
       ) : (
         <div style={{ overflowX: "auto" }}>
-          <div style={{ height: 400, minWidth: 1300 }}>
+          <div style={{ height: 400, minWidth: 1040 }}>
             <AutoSizer>
               {({ height, width }) => (
                 <Table
@@ -322,6 +336,7 @@ const DataTable = ({ data, onRowClick, searchQuery, selectedRow, loading }) => {
                       label={col.header}
                       width={col.width}
                       minWidth={col.width}
+                      maxWidth={col.width}
                       flexGrow={1}
                       cellDataGetter={({ rowData, dataKey }) =>
                         rowData ? rowData[dataKey]?.value ?? "" : ""
