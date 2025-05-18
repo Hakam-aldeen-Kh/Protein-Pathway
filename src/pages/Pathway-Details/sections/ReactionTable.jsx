@@ -393,6 +393,7 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
               <th className="p-3">Reactant</th>
               <th className="p-3">Controller</th>
               <th className="p-3">Product</th>
+              <th className="p-3">Cell Type</th>
               <th className="p-3">Cell Location</th>
               {isEdit && <th className="p-3">Actions</th>}
             </tr>
