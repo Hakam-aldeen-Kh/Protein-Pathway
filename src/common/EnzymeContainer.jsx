@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import DataTable from "./DataTable";
 
-const EnzymeContainer = ({ name, value, handleChange }) => {
+const EnzymeContainer = ({ name, value, handleChange, isEdit }) => {
   const { data, processingStatus } = useFileData();
 
   const initialValue = value
@@ -69,6 +69,7 @@ const EnzymeContainer = ({ name, value, handleChange }) => {
           )}
         </div>
         <input
+          disabled={!isEdit}
           type="text"
           className="w-full pl-10 pr-16 py-3 border focus:ring-[#57369E] rounded-lg outline-none"
           placeholder="Search or select an enzyme..."
@@ -78,11 +79,11 @@ const EnzymeContainer = ({ name, value, handleChange }) => {
         />
         <div className="absolute top-0 right-0 h-full flex items-center space-x-1 pr-3">
           {inputValue && (
-            <button onClick={handleClear} className="p-1 text-gray-400">
+            <button disabled={!isEdit} onClick={handleClear} className="p-1 text-gray-400">
               <X className="h-5 w-5" />
             </button>
           )}
-          <button onClick={() => setShowTable((s) => !s)} className="p-1">
+          <button disabled={!isEdit} onClick={() => setShowTable((s) => !s)} className="p-1">
             {showTable ? (
               <ChevronUp className="h-5 w-5" />
             ) : (
@@ -105,6 +106,7 @@ const EnzymeContainer = ({ name, value, handleChange }) => {
 
       <input
         type="hidden"
+        disabled={!isEdit}
         name={name}
         value={selected ? JSON.stringify(selected) : ""}
       />
