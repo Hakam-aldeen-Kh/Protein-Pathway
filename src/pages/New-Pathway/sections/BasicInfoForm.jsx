@@ -50,7 +50,7 @@ const BasicInfoForm = ({ data, handleChange }) => {
     const newRelatedDiseases = [...relatedDiseases, { type: "", value: "" }];
     setRelatedDiseases(newRelatedDiseases);
     handleChange({
-      target: { name: "relatedDiseases", value: newRelatedDiseases },
+      target: { name: "diseaseInput", value: newRelatedDiseases },
     });
   };
 
@@ -58,7 +58,7 @@ const BasicInfoForm = ({ data, handleChange }) => {
     const newRelatedDiseases = relatedDiseases.filter((_, i) => i !== index);
     setRelatedDiseases(newRelatedDiseases);
     handleChange({
-      target: { name: "relatedDiseases", value: newRelatedDiseases },
+      target: { name: "diseaseInput", value: newRelatedDiseases },
     });
   };
 
@@ -71,7 +71,7 @@ const BasicInfoForm = ({ data, handleChange }) => {
     });
     setRelatedDiseases(newRelatedDiseases);
     handleChange({
-      target: { name: "relatedDiseases", value: newRelatedDiseases },
+      target: { name: "diseaseInput", value: newRelatedDiseases },
     });
   };
 
@@ -151,7 +151,7 @@ const BasicInfoForm = ({ data, handleChange }) => {
                   <FormElement
                     type="select"
                     label="Related Disease"
-                    name={`relatedDiseaseType-${index}`}
+                    name={`relatedDiseaseType`}
                     value={relatedDisease.type}
                     handleChange={(e) =>
                       handleRelatedDiseaseChange(index, "type", e.target.value)
@@ -179,7 +179,7 @@ const BasicInfoForm = ({ data, handleChange }) => {
                 <FormElement
                   label=""
                   type="itemType"
-                  name={`diseaseInput-${index}`}
+                  name={`diseaseInput`}
                   value={relatedDisease.value}
                   handleChange={(e) =>
                     handleRelatedDiseaseChange(index, "value", e.target.value)

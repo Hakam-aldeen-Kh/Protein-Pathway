@@ -8,7 +8,7 @@ import {
   Loader2Icon,
   X,
 } from "lucide-react";
-import DataTable from "./DataTalbe";
+import DataTable from "./DataTable";
 
 const EnzymeContainer = ({ name, value, handleChange }) => {
   const { data, processingStatus } = useFileData();
@@ -93,7 +93,7 @@ const EnzymeContainer = ({ name, value, handleChange }) => {
       </div>
 
       {showTable && data && (
-        <div className="mt-2 absolute z-10 w-full shadow-lg bg-white">
+        <div className="mt-2 absolute z-10 w-[1000px] shadow-lg bg-white">
           <DataTable
             data={data}
             onRowClick={onRowClick}
