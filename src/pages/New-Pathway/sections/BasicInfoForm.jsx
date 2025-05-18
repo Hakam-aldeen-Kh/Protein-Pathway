@@ -142,14 +142,56 @@ const BasicInfoForm = ({ data, handleChange }) => {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <FormElement
-            type="itemType"
-            label="Tissue"
-            name="tissue"
-            itemType="Tissue"
-            value={data?.tissue}
-            handleChange={handleChange}
-          />
+          <div>
+            <FormElement
+              type="itemType"
+              label="Tissue"
+              name="tissue"
+              itemType="Tissue"
+              value={data?.tissue}
+              handleChange={handleChange}
+            />
+            <button
+              className="text-[14px] text-start text-[#57369E] mt-4 mb-2"
+              onClick={addPubMed}
+              type="button"
+            >
+              + Add PubMed
+            </button>
+            <div className="space-y-2">
+              {pubMeds?.map((item, index) => (
+                <div key={index} className="grid grid-cols-2 gap-x-4">
+                  <div className="flex items-end gap-x-1">
+                    <FormElement
+                      label="PubMed"
+                      placeholder="Add PubMed Title"
+                      value={item?.title}
+                      handleChange={(e) =>
+                        handleChangePubMed(e, index, "title")
+                      }
+                      className="w-[90%]"
+                    />
+                    <div
+                      className="flex items-center h-[40px] justify-center py-2 px-3 border bg-[#57369E] cursor-pointer rounded-lg hover:bg-[#00A7D3] transition-all duration-200"
+                      onClick={() => removePubMed(index)}
+                    >
+                      <img
+                        src="/images/icons/trash.svg"
+                        className="w-[24px] h-[24px]"
+                      />
+                    </div>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Add PubMed ID"
+                    className="outline-none block w-full h-[40px] self-end flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
+                    value={item?.id}
+                    onChange={(e) => handleChangePubMed(e, index, "id")}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
           {/* Related Diseases */}
           <div className="space-y-2">
             {relatedDiseases.map((relatedDisease, index) => (
@@ -172,7 +214,7 @@ const BasicInfoForm = ({ data, handleChange }) => {
                   </FormElement>
                   {index > 0 && (
                     <div
-                      className="flex items-center justify-center py-2 px-3 border bg-[#57369E] cursor-pointer rounded-lg hover:bg-[#00A7D3] transition-all duration-200"
+                      className="flex items-center h-[40px] justify-center py-2 px-3 border bg-[#57369E] cursor-pointer rounded-lg hover:bg-[#00A7D3] transition-all duration-200"
                       onClick={() => removeRelatedDisease(index)}
                     >
                       <img
@@ -195,56 +237,16 @@ const BasicInfoForm = ({ data, handleChange }) => {
                   placeholder="Enter disease value"
                   className="self-end"
                 />
-              </div>
-            ))}
-          </div>
-        </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <button
-            className="text-[14px] text-start text-[#57369E]"
-            onClick={addPubMed}
-            type="button"
-          >
-            + Add PubMed
-          </button>
-          <button
-            className="text-[14px] text-end text-[#57369E]"
-            onClick={addRelatedDisease}
-            type="button"
-          >
-            + Add Related Disease
-          </button>
-        </div>
-        <div>
-          <div className="grid grid-cols-2 gap-4">
-            {pubMeds?.map((item, index) => (
-              <div key={index} className="grid grid-cols-2 gap-2">
-                <div className="flex items-end gap-x-1">
-                  <input
-                    type="text"
-                    placeholder="Add PubMed Title"
-                    className="outline-none block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
-                    value={item?.title}
-                    onChange={(e) => handleChangePubMed(e, index, "title")}
-                  />
-                  <div
-                    className="flex items-center justify-center py-2 px-3 border bg-[#57369E] cursor-pointer rounded-lg hover:bg-[#00A7D3] transition-all duration-200"
-                    onClick={() => removePubMed(index)}
+                {index === 0 && (
+                  <button
+                    className="text-[14px] text-end text-[#57369E] col-span-2"
+                    onClick={addRelatedDisease}
+                    type="button"
                   >
-                    <img
-                      src="/images/icons/trash.svg"
-                      className="w-[24px] h-[24px]"
-                    />
-                  </div>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Add PubMed ID"
-                  className="outline-none block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
-                  value={item?.id}
-                  onChange={(e) => handleChangePubMed(e, index, "id")}
-                />
+                    + Add Related Disease
+                  </button>
+                )}
               </div>
             ))}
           </div>
