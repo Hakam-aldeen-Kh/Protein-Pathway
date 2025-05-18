@@ -59,15 +59,28 @@ const NewPathway = () => {
     navigate("/review");
   };
 
-  const addReaction = () => {
+  const addReaction = (withController) => {
     let reactionId = pathwayData.reactions[pathwayData.reactions.length - 1]?.id + 1 || 1;
+    let newReaction = {}
 
-    const newReaction = {
-      id: reactionId,
-      reactants: [{ id: 1, name: `reactant_${reactionId}.1` }],
-      controllers: [{ id: 1, name: `controller_${reactionId}.1` }],
-      products: [{ id: 1, name: `product_${reactionId}.1` }],
-    };
+    if (withController === true) {
+      newReaction = {
+        id: reactionId,
+        reactants: [{ id: 1, name: `reactant_${reactionId}.1` }],
+        controllers: [{ id: 1, name: `controller_${reactionId}.1` }],
+        products: [{ id: 1, name: `product_${reactionId}.1` }],
+      };
+    }
+
+    else {
+      newReaction = {
+        id: reactionId,
+        reactants: [{ id: 1, name: `reactant_${reactionId}.1` }],
+        controllers: [],
+        products: [{ id: 1, name: `product_${reactionId}.1` }],
+      };
+    }
+
 
     setPathwayData((prevPathwayData) => {
       return {

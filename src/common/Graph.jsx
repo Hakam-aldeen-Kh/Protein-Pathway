@@ -16,25 +16,79 @@ const Graph = ({ elements, layout, touch = false }) => {
             layout={layout}
             cy={(cy) => {
                 cy.style(cyStylesheet).update();
-                // .append(stylesheet)
                 window.cy = cy;
+
                 if (!touch) {
-                    cy.nodes().forEach(node => node.lock()); // Lock all nodes
-                    cy.boxSelectionEnabled(false); // Disable selection
-                    cy.userPanningEnabled(false); // Disable graph panning
-                    // cy.zoomingEnabled(false); // Disable zooming
-                    cy.zoom(0.15)
+                    cy.nodes().forEach(node => node.lock());
+                    cy.boxSelectionEnabled(false);
+                    cy.userPanningEnabled(false);
+                    cy.zoom(0.15);
                 }
+
                 cy.center();
 
+                // Add tooltip logic here
+                // cy.on('mouseover', 'node', async (evt) => {
+                //     const node = evt.target;
+                //     const link = node.data('link');
+
+                //     const tooltip = document.getElementById('tooltip');
+                //     const image = document.getElementById('tooltip-image');
+                //     const title = document.getElementById('tooltip-title');
+
+                //     if (!link) return;
+
+                //     try {
+                //         const response = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(link)}`);
+                //         const result = await response.json();
+                //         const metadata = result.data;
+
+
+                //         image.src = metadata.image?.url || '';
+                //         title.innerText = node.data('label') || 'No title';
+                //         const renderedPosition = node.renderedPosition();
+
+                //         tooltip.style.left = renderedPosition.x + 'px';
+                //         tooltip.style.top = renderedPosition.y + 30 + 'px';
+                //         tooltip.style.display = 'block';
+
+                //         // // Position tooltip near the mouse
+                //         // tooltip.style.left = evt.originalEvent.pageX + 'px';
+                //         // tooltip.style.top = evt.originalEvent.pageY + 'px';
+                //         // tooltip.style.display = 'block';
+                //     } catch (err) {
+                //         console.log(err);
+                //         title.innerText = 'Preview not available';
+                //         tooltip.style.display = 'none';
+                //     }
+                // });
+
+                // cy.on('mouseout', 'node', () => {
+                //     const tooltip = document.getElementById('tooltip');
+                //     tooltip.style.display = 'none';
+                // });
             }}
+
         />
     );
 };
 
 export default Graph;
 
+// cy = {(cy) => {
+//     cy.style(cyStylesheet).update();
+//     // .append(stylesheet)
+//     window.cy = cy;
+//     if (!touch) {
+//         cy.nodes().forEach(node => node.lock()); // Lock all nodes
+//         cy.boxSelectionEnabled(false); // Disable selection
+//         cy.userPanningEnabled(false); // Disable graph panning
+//         // cy.zoomingEnabled(false); // Disable zooming
+//         cy.zoom(0.15)
+//     }
+//     cy.center();
 
+// }}
 
 
 

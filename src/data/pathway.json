@@ -1,0 +1,196 @@
+{
+  "_id": "6e9121d7-b4c2-42f5-9cf1-a1ab462666fe",
+  "userId": "78f5f387-4146-4002-bead-43175ddfdcbf",
+  "title": "pathway title",
+  "description": "pathway description",
+  "species": "homoroselaps lacteus",
+  "category": "signaling pathway",
+  "tissue": {
+    "id": "http://www.w3.org/2002/07/owl#FunctionalProperty",
+    "label": "FunctionalProperty"
+  },
+  "relatedDisease": "human",
+  "diseaseInput": {
+    "Disease_id": "DOID_0040085",
+    "Disease_name": "bacterial sepsis"
+  },
+  "reactions": [
+    {
+      "id": 1,
+      "products": [
+        {
+          "id": 1,
+          "name": "product_1.1",
+          "type": "reactants",
+          "pType": "complex",
+          "cellType": {
+            "cType_id": "CL_0000001",
+            "cType_name": "primary cultured cell"
+          },
+          "complexSymbolGo": "234432a",
+          "useNextReaction": true,
+          "cellularLocation": {
+            "cell_localization_id": "GO_0000139",
+            "cell_localization_name": "Golgi membrane"
+          },
+          "targetReactionId": 2,
+          "conectedReactantId": 2,
+          "complexSymbolicName": {
+            "go_complex_id": "GO:0005583",
+            "go_complex_name": "fibrillar collagen trimer"
+          }
+        },
+        {
+          "id": 2,
+          "name": "product_1.2",
+          "type": "controllers",
+          "pType": "complex",
+          "cellType": {
+            "cType_id": "CL_0000001",
+            "cType_name": "primary cultured cell"
+          },
+          "complexSymbolGo": "12312312",
+          "useNextReaction": true,
+          "cellularLocation": {
+            "cell_localization_id": "GO_0000139",
+            "cell_localization_name": "Golgi membrane"
+          },
+          "targetReactionId": 2,
+          "complexSymbolicName": {
+            "go_complex_id": "GO:0005583",
+            "go_complex_name": "fibrillar collagen trimer"
+          }
+        }
+      ],
+      "reactants": [
+        {
+          "id": 1,
+          "name": "reactant_1.1",
+          "pType": "complex",
+          "cellType": {
+            "cType_id": "CL_0000001",
+            "cType_name": "primary cultured cell"
+          },
+          "complexName": "Complex Name",
+          "complexSymbolGo": "12312312",
+          "cellularLocation": {
+            "cell_localization_id": "GO_0000139",
+            "cell_localization_name": "Golgi membrane"
+          },
+          "complexSymbolicName": {
+            "go_complex_id": "GO:0005581",
+            "go_complex_name": "collagen trimer"
+          },
+          "complexSymbolNotInGo": "123123"
+        },
+        {
+          "id": 2,
+          "name": "reactant_1.2",
+          "pType": "protein",
+          "cellType": {
+            "cType_id": "CL_0000001",
+            "cType_name": "primary cultured cell"
+          },
+          "proteinSymbol": "1321",
+          "cellularLocation": {
+            "cell_localization_id": "GO_0000139",
+            "cell_localization_name": "Golgi membrane"
+          },
+          "proteinSymbolicName": "Uncharacterized AAA domain-containing protein ycf46",
+          "reactant_protein_uniprot_id": "P49541"
+        }
+      ],
+      "controllers": [
+        {
+          "id": 1,
+          "name": "controller_1.1",
+          "pType": "protein",
+          "cellType": {
+            "cType_id": "CL_0000001",
+            "cType_name": "primary cultured cell"
+          },
+          "actionType": "activation",
+          "proteinSymbol": "2ww2332",
+          "useNextReaction": true,
+          "cellularLocation": {
+            "cell_localization_id": "GO_0000139",
+            "cell_localization_name": "Golgi membrane"
+          },
+          "targetReactionId": 2,
+          "conectedReactantId": 1,
+          "proteinSymbolicName": "Uncharacterized AAA domain-containing protein ycf46",
+          "reactant_protein_uniprot_id": "P49541"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "products": [
+        {
+          "id": 1,
+          "name": "product_2.1",
+          "pType": "complex",
+          "cellType": {
+            "cType_id": "CL_0000001",
+            "cType_name": "primary cultured cell"
+          },
+          "complexSymbolGo": "2222a2",
+          "cellularLocation": {
+            "cell_localization_id": "GO_0000139",
+            "cell_localization_name": "Golgi membrane"
+          },
+          "complexSymbolicName": {
+            "go_complex_id": "GO:0005583",
+            "go_complex_name": "fibrillar collagen trimer"
+          }
+        }
+      ],
+      "reactants": [
+        {
+          "id": 1,
+          "name": "reactant_2.1",
+          "reference": "(Controller - 1.1 of Reaction 1)",
+          "fromReaction": 1,
+          "connectedData": {
+            "id": 1,
+            "type": "controllers"
+          }
+        },
+        {
+          "id": 2,
+          "name": "reactant_2.2",
+          "reference": "(Product - 1.1 of Reaction 1)",
+          "fromReaction": 1,
+          "connectedData": {
+            "id": 1,
+            "type": "products"
+          }
+        }
+      ],
+      "controllers": [
+        {
+          "id": 1,
+          "name": "controller_2.1",
+          "productId": 2,
+          "reference": "(Product - 1.2 of Reaction 1)",
+          "fromReaction": 1,
+          "connectedData": {
+            "id": 2,
+            "type": "products"
+          }
+        }
+      ]
+    }
+  ],
+  "recordDate": "14.5.2025",
+  "pubMeds": [
+    {
+      "id": "1323123"
+    },
+    {
+      "id": "123123123"
+    }
+  ],
+  "created_at": "2025-05-14T10:15:33.090Z",
+  "updated_at": "2025-05-14T10:15:33.090Z"
+}

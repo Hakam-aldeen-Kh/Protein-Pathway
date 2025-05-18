@@ -1,0 +1,225 @@
+{
+  "pathway_id": "PW-12345",
+  "pathway_name": "Example Metabolic Pathway",
+  "pathway_description": "This is an example of a metabolic pathway.",
+  "pathway_category": {
+    "category_name": "metabolic pathway",
+    "category_id": "PW_000002"
+  },
+  "pathway_reference": [
+    {
+      "reference_id": "1234567",
+      "reference_db": "PubMed",
+      "reference_title": "Pathway anlysis in Hela cells"
+    },
+    {
+      "reference_id": "9876543",
+      "reference_type": "PubMed",
+      "reference_title": "Glycan Pathway anlysis in Hela cells"
+    }
+  ],
+  "pathway_taxon": {
+    "taxon_db": "NCBI",
+    "taxon_id": "9606",
+    "taxon_name": "Homo sapiens"
+  },
+  "pathway_tissue": {
+    "tissue_db": "BRENDA Tissue Ontology",
+    "tissue_id": "BTO_0000439",
+    "tissue_name": "eye"
+  },
+  "pathway_disease": {
+    "disease_db": "Mondo Disease Ontology (MONDO)",
+    "disease_id": "MONDO_0000257",
+    "disease_name": "acute diarrhea"
+  },
+  "pathway_reactions_num": "3",
+  "reactions": [
+    {
+      "rxn_number": "1",
+      "rxn_id": "R-0001",
+      "rxn_component": [
+        {
+          "role": "reactant",
+          "reactant_info": [
+            {
+              "type": "protein",
+              "db": "UniProt",
+              "id": "P67890",
+              "name": "Phosphoglucose isomerase",
+              "cellular_location": {
+                "location_db": "GO Ontology",
+                "location_id": "GO:0005737",
+                "location_name": "cytoplasm"
+              },
+              "cell_type": {
+                "co_db": "Cell Ontology",
+                "co_id": "CL_0005737",
+                "co_name": "Hela cell"
+              }
+            },
+            {
+              "type": "Glycan",
+              "db": "GlyTouCan",
+              "id": "G12345AB",
+              "name": "Mannose",
+              "cellular_location": {
+                "location_db": "GO ontology",
+                "location_id": "GO:0005737",
+                "location_name": "cytoplasm"
+              },
+              "cell_type": {
+                "co_db": "Cell Ontology",
+                "co_id": "CL_0005737",
+                "co_name": "Hela cell"
+              }
+            },
+            {
+              "type": "lipid",
+              "db": "CHEBI",
+              "id": "CHEBI_70042",
+              "name": "Carijodienone",
+              "cellular_location": {
+                "location_db": "GO ontology",
+                "location_id": "GO:0005737",
+                "location_name": "cytoplasm"
+              },
+              "cell_type": {
+                "co_db": "Cell Ontology",
+                "co_id": "CL_0005737",
+                "co_name": "Hela cell"
+              }
+            }
+          ]
+        },
+        {
+          "role": "controller",
+          "controller_info": [
+            {
+              "type": "protein",
+              "db": "UniProt",
+              "id": "P67890",
+              "name": "Phosphoglucose isomerase",
+              "cellular_location": {
+                "location_db": "GO ontology",
+                "location_id": "GO:0005737",
+                "location_name": "cytoplasm"
+              },
+              "cell_type": {
+                "co_db": "Cell Ontology",
+                "co_id": "CL_0005737",
+                "co_name": "Hela cell"
+              }
+            }
+          ]
+        },
+        {
+          "role": "product",
+          "product_info": [
+            {
+              "type": "complex",
+              "db": "GO ontology",
+              "id": "GO_123456",
+              "name": "NF-kB complex",
+              "cellular_location": {
+                "location_db": "GO ontology",
+                "location_id": "GO:0005737",
+                "location_name": "cytoplasm"
+              },
+              "cell_type": {
+                "co_db": "Cell Ontology",
+                "co_id": "CL_0005737",
+                "co_name": "Hela cell"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rxn_number": "2",
+      "rxn_id": "R-0002",
+      "rxn_component": [
+        {
+          "role": "reactant",
+          "reactant_info": [
+            {
+              "type": "complex",
+              "db": "GO ontology",
+              "id": "GO_123456",
+              "name": "NF-kB complex",
+              "cellular_location": {
+                "location_db": "GO ontology",
+                "location_id": "GO:0005737",
+                "location_name": "cytoplasm"
+              },
+              "cell_type": {
+                "co_db": "Cell Ontology",
+                "co_id": "CL_0005737",
+                "co_name": "Hela cell"
+              }
+            },
+            {
+              "type": "protein",
+              "db": "UniProt",
+              "id": "P67890",
+              "name": "Phosphoglucose isomerase",
+              "cellular_location": {
+                "location_db": "GO ontology",
+                "location_id": "GO:0005737",
+                "location_name": "cytoplasm"
+              },
+              "cell_type": {
+                "co_db": "Cell Ontology",
+                "co_id": "CL_0005737",
+                "co_name": "Hela cell"
+              }
+            }
+          ]
+        },
+        {
+          "role": "controller",
+          "controller_info": [
+            {
+              "type": "protein",
+              "db": "UniProt",
+              "id": "P67890",
+              "name": "Phosphoglucose isomerase",
+              "cellular_location": {
+                "location_db": "GO ontology",
+                "location_id": "GO:0005737",
+                "location_name": "cytoplasm"
+              },
+              "cell_type": {
+                "co_db": "Cell Ontology",
+                "co_id": "CL_0005737",
+                "co_name": "Hela cell"
+              }
+            }
+          ]
+        },
+        {
+          "role": "product",
+          "product_info": [
+            {
+              "type": "complex",
+              "db": "GO ontology",
+              "id": "GO_123456",
+              "name": "NF-kB complex",
+              "cellular_location": {
+                "location_db": "GO ontology",
+                "location_id": "GO:0005737",
+                "location_name": "cytoplasm"
+              },
+              "cell_type": {
+                "co_db": "Cell Ontology",
+                "co_id": "CL_0005737",
+                "co_name": "Hela cell"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

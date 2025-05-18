@@ -22,7 +22,7 @@ const PathewayContext = () => {
                 {
                     id: 1,
                     reactants: [{ id: 1, name: `reactant_1.1` }],
-                    controllers: [{ id: 1, name: `controller_1.1` }],
+                    controllers: [],
                     products: [{ id: 1, name: `product_1.1` }],
                 }
             ]
@@ -69,7 +69,7 @@ const PathewayContext = () => {
                 {
                     id: 1,
                     reactants: [{ id: 1, name: `reactant_1.1` }],
-                    controllers: [{ id: 1, name: `controller_1.1` }],
+                    controllers: [],
                     products: [{ id: 1, name: `product_1.1` }],
                 }
             ]

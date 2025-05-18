@@ -71,6 +71,7 @@ const Reactants = ({
           key={index}
           className="border rounded-lg mb-10"
           reference={item.reference || ""}
+          canRemove={reaction.reactants.length > 1}
           variant="gray"
           deleteFn={() => deleteReactant(reaction.id, item.id)}
           title={`Reactant - ${reaction.id}.${item.id}`}

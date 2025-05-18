@@ -1,0 +1,176 @@
+{
+  "_id": "c2f777ac-6ca3-4647-a993-a6eb7cf0646a",
+  "userId": "78f5f387-4146-4002-bead-43175ddfdcbf",
+  "title": "pathway basic information",
+  "description": "aaaaaaaaaaa",
+  "species": "homo sapiens",
+  "category": "classic metabolic pathway",
+  "tissue": null,
+  "relatedDisease": "human",
+  "diseaseInput": null,
+  "reactions": [
+    {
+      "id": 1,
+      "products": [
+        {
+          "id": 1,
+          "name": "product_1.1",
+          "type": "controllers",
+          "pType": "complex",
+          "cellType": {
+            "cType_id": "CL_0000006",
+            "cType_name": "neuronal receptor cell"
+          },
+          "proteinSymbol": "ssssssssssss",
+          "complexSymbolGo": "111",
+          "useNextReaction": true,
+          "cellularLocation": null,
+          "targetReactionId": 2,
+          "conectedReactantId": "",
+          "proteinSymbolicName": "asd"
+        },
+        {
+          "id": 2,
+          "name": "product_1.2",
+          "type": "reactants",
+          "useNextReaction": true,
+          "targetReactionId": 2,
+          "conectedReactantId": 2
+        }
+      ],
+      "reactants": [
+        {
+          "id": 1,
+          "name": "reactant_1.1",
+          "pType": "protein"
+        }
+      ],
+      "controllers": [
+        {
+          "id": 1,
+          "name": "controller_1.1",
+          "pType": "enzyme",
+          "cellType": {
+            "cType_id": "CL_1000424",
+            "cType_name": "chromaffin cell of paraaortic body"
+          },
+          "proteinSymbol": "jj",
+          "useNextReaction": true,
+          "targetReactionId": 2,
+          "conectedReactantId": 1,
+          "proteinSymbolicName": "asd",
+          "controller_ec_enzyme": {
+            "enzyme_id": {
+              "type": "uri",
+              "value": "http://purl.uniprot.org/uniprot/A0A031WJ55"
+            },
+            "gene_name": {
+              "type": "typed-literal",
+              "value": "pucE",
+              "datatype": "http://www.w3.org/2001/XMLSchema#string"
+            },
+            "taxon_name": {
+              "type": "typed-literal",
+              "value": "Clostridioides difficile",
+              "datatype": "http://www.w3.org/2001/XMLSchema#string"
+            },
+            "enzyme_name": {
+              "type": "typed-literal",
+              "value": "(2Fe-2S)-binding protein",
+              "datatype": "http://www.w3.org/2001/XMLSchema#string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "products": [
+        {
+          "id": 1,
+          "name": "product_2.1",
+          "type": "controllers",
+          "pType": "complex",
+          "complexSymbolGo": "111",
+          "useNextReaction": true,
+          "targetReactionId": 3,
+          "conectedReactantId": ""
+        }
+      ],
+      "reactants": [
+        {
+          "id": 1,
+          "name": "reactant_2.1",
+          "pType": "protein",
+          "cellType": {
+            "cType_id": "CL_0000021",
+            "cType_name": "female germ cell"
+          },
+          "reference": "(Controller - 1.1 of Reaction 1)",
+          "fromReaction": 1,
+          "connectedData": {
+            "id": 1,
+            "type": "controllers"
+          }
+        },
+        {
+          "id": 2,
+          "name": "reactant_2.2",
+          "reference": "(Product - 1.2 of Reaction 1)",
+          "fromReaction": 1,
+          "connectedData": {
+            "id": 2,
+            "type": "products"
+          }
+        }
+      ],
+      "controllers": [
+        {
+          "id": 1,
+          "name": "controller_2.1",
+          "productId": 1,
+          "reference": "(Product - 1.1 of Reaction 1)",
+          "fromReaction": 1,
+          "connectedData": {
+            "id": 1,
+            "type": "products"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "products": [
+        {
+          "id": 1,
+          "name": "product_3.1",
+          "pType": "complex",
+          "complexSymbolGo": "111"
+        }
+      ],
+      "reactants": [
+        {
+          "id": 1,
+          "name": "reactant_3.1"
+        }
+      ],
+      "controllers": [
+        {
+          "id": 1,
+          "name": "controller_3.1",
+          "productId": 1,
+          "reference": "(Product - 2.1 of Reaction 2)",
+          "fromReaction": 2,
+          "connectedData": {
+            "id": 1,
+            "type": "products"
+          }
+        }
+      ]
+    }
+  ],
+  "recordDate": "13.5.2025",
+  "pubMeds": {},
+  "created_at": "2025-05-13T08:00:46.843Z",
+  "updated_at": "2025-05-14T07:09:18.511Z"
+}
