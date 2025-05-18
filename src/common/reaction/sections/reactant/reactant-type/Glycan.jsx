@@ -1,16 +1,43 @@
+import { useState } from "react";
 import FormElement from "../../../components/FormElement";
 
 const Glycan = ({ reactantData, handleChange, isEdit }) => {
+  const [isDisabled, setIsDisabled] = useState(false);
+  const handleGlycanTextTypeChange = (e) => {
+    handleChange(e);
+    setIsDisabled(false)
+    handleChange({ target: { name: "glycanText", value: "" } });
+  };
   return (
     <>
       <div className="grid grid-cols-2 gap-4">
-        <FormElement isEdit={isEdit} isRequired={false} type="select" label={" Glycan Text Type"} name="glycanTextType" value={reactantData?.glycanTextType} handleChange={handleChange} placeholder="Select Glycan Text Type" >
+        <FormElement
+          isEdit={isEdit}
+          isRequired={false}
+          type="select"
+          label={" Glycan Text Type"}
+          name="glycanTextType"
+          value={reactantData?.glycanTextType}
+          handleChange={handleGlycanTextTypeChange}
+          placeholder="Select Glycan Text Type"
+        >
           <option value="Linear code">Linear code</option>
           <option value="IUPAC Extended">IUPAC Extended</option>
           <option value="IUPAC condensed">IUPAC condensed</option>
           <option value="GlyTouCan ID">GlyTouCan ID</option>
         </FormElement>
-        <FormElement isRequired={false} type="input" label={" Glycan Text"} name="glycanText" value={reactantData?.glycanText} handleChange={handleChange} placeholder="Type Glycan Text" />
+        <FormElement
+          isRequired={false}
+          glycanTextType={reactantData?.glycanTextType}
+          type="Glycan Text"
+          label={" Glycan Text"}
+          isDisabled={isDisabled}
+          setIsDisabled={setIsDisabled}
+          name="glycanText"
+          value={reactantData?.glycanText}
+          handleChange={handleChange}
+          placeholder="Type Glycan Text"
+        />
       </div>
 
       <div>
@@ -18,8 +45,26 @@ const Glycan = ({ reactantData, handleChange, isEdit }) => {
           Binding Backbone Information
         </span>
         <div className="grid grid-cols-2 gap-4">
-          <FormElement isEdit={isEdit} isRequired={false} type="input" label={"Binding Site Code"} name="bindingSiteCode" value={reactantData?.bindingSiteCode} handleChange={handleChange} placeholder="Three letters code of binding site (e.g. ser, tyr...)" />
-          <FormElement isEdit={isEdit} isRequired={false} type="input" label={"Number of Amino Acid Binding Site"} name="aminoAcidBindingSite" value={reactantData?.aminoAcidBindingSite} handleChange={handleChange} placeholder="Type number of amino acid binding site (e.g. 123)" />
+          <FormElement
+            isEdit={isEdit}
+            isRequired={false}
+            type="input"
+            label={"Binding Site Code"}
+            name="bindingSiteCode"
+            value={reactantData?.bindingSiteCode}
+            handleChange={handleChange}
+            placeholder="Three letters code of binding site (e.g. ser, tyr...)"
+          />
+          <FormElement
+            isEdit={isEdit}
+            isRequired={false}
+            type="input"
+            label={"Number of Amino Acid Binding Site"}
+            name="aminoAcidBindingSite"
+            value={reactantData?.aminoAcidBindingSite}
+            handleChange={handleChange}
+            placeholder="Type number of amino acid binding site (e.g. 123)"
+          />
         </div>
       </div>
 
@@ -53,8 +98,7 @@ const Glycan = ({ reactantData, handleChange, isEdit }) => {
         </div>
       </div>
     </>
-
-  )
+  );
 };
 
 export default Glycan;
