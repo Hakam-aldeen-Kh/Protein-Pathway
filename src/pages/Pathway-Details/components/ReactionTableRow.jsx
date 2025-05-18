@@ -9,7 +9,6 @@ const ReactionTableRow = ({
   handleChangeData,
   setEditPathwayData,
   deleteReaction,
-  handleShowDetails,
   addReaction,
   addReactionAfterReaction,
   reactionState,
@@ -30,47 +29,44 @@ const ReactionTableRow = ({
     );
   }, [reactions]);
 
+  const cellLocation = useMemo(() => {
+    return reactions.flatMap((reac) =>
+      reac.reactants
+        .map((r) =>
+          r.cellularLocation?.cell_localization_name
+            ? capitalize(r.cellularLocation.cell_localization_name)
+            : null
+        )
+        .filter(Boolean)
+    );
+  }, [reactions]);
+
   return (
     <>
-      <tr className={`border-b-[5px] border-white rounded ${reactionState?.state === "new" ? "bg-green-100" : "bg-[#F1F5F9]"}`}>
-        <td className="px-4">{reactionIndex + 1}</td>
-        <td className="flex  flex-col items-start justify-center gap-2 pb-1">
+      <tr
+        className={`border-b-[5px] border-white rounded ${
+          reactionState?.state === "new" ? "bg-green-100" : "bg-[#F1F5F9]"
+        }`}
+      >
+        <td className="px-4 py-2">{reactionIndex + 1}</td>
+        <td className="h-full  py-2">
           {reaction.reactants.map((item, index) => (
-            <div
-              key={index}
-              className="px-4 flex items-center gap-2 pt-[5px] "
-              onClick={() => handleShowDetails(item)}
-            >
-              <img
-                src={item.image || "/images/gpr.png"}
-                alt={item.name}
-                className="w-[60px] h-[36px] object-contain"
-              />
-              <span className="text-violet-900 hover:text-violet-600 cursor-pointer">
+            <div key={index} className="px-4 flex items-center h-full">
+              <span className="text-violet-900 hover:text-violet-600">
                 {item.name}
               </span>
             </div>
           ))}
         </td>
-        <td className="px-4">
-          {reaction?.controllers?.length > 0 &&
-            reaction.controllers[0].name
+        <td className="px-4  py-2">
+          {reaction?.controllers?.length > 0 && reaction.controllers[0].name
             ? capitalize(reaction.controllers[0].name)
             : "-"}
         </td>
 
-        <td className="flex flex-col items-start justify-center gap-2 pt-[5px]">
+        <td className="h-full  py-2">
           {reaction.products.map((item, index) => (
-            <div
-              key={index}
-              className="px-4 flex items-center gap-2 pt-[5px]"
-              onClick={() => handleShowDetails(item)}
-            >
-              <img
-                src={item.image || "/images/gpr.png"}
-                alt={item.name}
-                className="w-[60px] h-[36px] object-contain"
-              />
+            <div key={index} className="px-4 flex items-center h-full">
               <span className="text-violet-900 hover:text-violet-600 cursor-pointer">
                 {item.name}
               </span>
@@ -78,21 +74,28 @@ const ReactionTableRow = ({
           ))}
         </td>
 
-        <td className="pt-[5px]">
+        <td className="py-2">
           {cellTypes.length > 0
             ? cellTypes.map((cell, index) => (
-              <div
-                key={index}
-                className="px-4 flex items-center gap-2 pt-[5px]"
-              >
-                {cell}
-              </div>
-            ))
+                <div key={index} className="px-4 flex items-center gap-2">
+                  {cell}
+                </div>
+              ))
+            : "-"}
+        </td>
+
+        <td className="py-2">
+          {cellLocation.length > 0
+            ? cellLocation.map((cell, index) => (
+                <div key={index} className="px-4 flex items-center gap-2">
+                  {cell}
+                </div>
+              ))
             : "-"}
         </td>
 
         {isEdit && (
-          <td className="px-4 flex items-center h-full gap-2 -translate-y-[10px]">
+          <td className="px-4 flex items-center h-full gap-x-2  py-2">
             <button onClick={() => addReactionAfterReaction(reaction.id)}>
               <img src="/images/icons/add-square.svg" alt="add" />
             </button>
