@@ -13,8 +13,8 @@ const BasicInfoForm = ({ data, handleChange }) => {
       : []
   );
   const [relatedDiseases, setRelatedDiseases] = useState(
-    data.relatedDiseases && data.relatedDiseases.length > 0
-      ? data.relatedDiseases
+    data.diseaseInput && data.diseaseInput.length > 0
+      ? data.diseaseInput
       : [{ type: "", value: "" }]
   );
   const [isOpen, setOpenTablePagination] = useState(false);
@@ -194,14 +194,14 @@ const BasicInfoForm = ({ data, handleChange }) => {
           </div>
           {/* Related Diseases */}
           <div className="space-y-2">
-            {relatedDiseases.map((relatedDisease, index) => (
+            {relatedDiseases?.map((relatedDisease, index) => (
               <div key={index} className="grid grid-cols-2 gap-4">
                 <div className="flex items-end gap-x-1">
                   <FormElement
                     type="select"
                     label="Related Disease"
                     name={`relatedDiseaseType`}
-                    value={relatedDisease.type}
+                    value={relatedDisease?.type}
                     handleChange={(e) =>
                       handleRelatedDiseaseChange(index, "type", e.target.value)
                     }
@@ -229,7 +229,7 @@ const BasicInfoForm = ({ data, handleChange }) => {
                   label=""
                   type="itemType"
                   name={`diseaseInput`}
-                  value={relatedDisease.value}
+                  value={relatedDisease?.value}
                   handleChange={(e) =>
                     handleRelatedDiseaseChange(index, "value", e.target.value)
                   }
