@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FormElement from "../../components/FormElement";
 import ProteinSearchTable from "../reactant/reactant-type/ProteinSearchTable";
-import { fetchDefaultFile } from "../../../../utils/fetchEnzymeData";
+// import { fetchDefaultFile } from "../../../../utils/fetchEnzymeData";
 
 const ControllerForm = ({
   handleChangeData,

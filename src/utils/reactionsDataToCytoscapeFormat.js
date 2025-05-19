@@ -1,3 +1,4 @@
+import { controllerNodeName, productNodeName, reactantNodeName } from "./nameNode";
 
 
 export function reactionsDataToCytoscapeFormat(reactions) {
@@ -16,10 +17,10 @@ export function reactionsDataToCytoscapeFormat(reactions) {
         }
 
         // controller shape
-        elements.push(createChemicalNode(`process-${reactionIndex}`, "", reaction.reactants[0].cellularLocation?.cell_localization_name, "process"));
+        elements.push(createChemicalNode(`process-${reactionIndex}`, "", reaction.products[0].cellularLocation?.cell_localization_name, "process"));
 
         if (reactionController) {
-            elements.push(createChemicalNode(reactionController.name, reactionController.name, reactionController.cellularLocation?.cell_localization_name, "macromolecule"));
+            elements.push(createChemicalNode(reactionController.name, controllerNodeName(reactionController), reactionController.cellularLocation?.cell_localization_name, "macromolecule"));
             elements.push(createEdge(`e-${reactionController.name}-process-${reactionIndex}`, reactionController.name, `process-${reactionIndex}`, "stimulation"));
 
             const targetReaction = reactions.find(item => item.id === reactionController.targetReactionId)
@@ -42,7 +43,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
                 elements.push(createChemicalNode(reactant.cellularLocation?.cell_localization_name, reactant.cellularLocation?.cell_localization_name, "", "complex"));
             }
             // // reactant node
-            elements.push(createChemicalNode(reactant.name, reactant.name, reactant.cellularLocation?.cell_localization_name, "simple chemical"));
+            elements.push(createChemicalNode(reactant.name, reactantNodeName(reactant), reactant.cellularLocation?.cell_localization_name, "simple chemical"));
 
             // // edge to controller
             elements.push(createEdge(`e-${reactant.name}-process-${reactionIndex}`, reactant.name, `process-${reactionIndex}`));
@@ -58,7 +59,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
                 elements.push(createChemicalNode(product.cellularLocation?.cell_localization_name, product.cellularLocation?.cell_localization_name, "", "complex"));
             }
             // // product node
-            elements.push(createChemicalNode(product.name, product.name, product.cellularLocation?.cell_localization_name, product.useNextReaction && product.type === "controllers" ? "macromolecule" : "simple chemical"));
+            elements.push(createChemicalNode(product.name, productNodeName(product), product.cellularLocation?.cell_localization_name, product.useNextReaction && product.type === "controllers" ? "macromolecule" : "simple chemical"));
 
             // // edge to controller
             elements.push(createEdge(`e-${product.name}-process-${reactionIndex}`, `process-${reactionIndex}`, product.name));

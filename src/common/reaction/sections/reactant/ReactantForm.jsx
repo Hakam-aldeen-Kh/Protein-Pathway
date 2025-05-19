@@ -17,10 +17,7 @@ const ReactantForm = ({
   const handleChange = (e) => handleChangeData(e, reaction.id, "reactants", reactantId);
 
   if (reactantData?.connectedData) {
-    console.log(reactantData)
     reactantData = reactions?.find(item => item.id === reactantData?.fromReaction)[reactantData?.connectedData?.type]?.find(item => item.id === reactantData?.connectedData.id)
-    console.log(reactantData)
-
   }
 
 
