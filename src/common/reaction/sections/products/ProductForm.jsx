@@ -198,10 +198,10 @@ const ProductForm = ({
 
     if (!foundNextReaction && e.target.value) {
       if (e.target.value === "controllers") {
-        targetReaction = addReaction(true)
+        targetReaction = addReaction(true, targetReactionId)
       }
       else {
-        targetReaction = addReaction()
+        targetReaction = addReaction(false, targetReactionId);
       }
       localReactions.push(targetReaction)
       targetReactionId = targetReaction.id

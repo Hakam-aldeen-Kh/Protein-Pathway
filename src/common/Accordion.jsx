@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronUpIcon, ChevronDownIcon, TrashIcon } from '@heroicons/react/24/outline';
 
-const Accordion = ({ title, children, className = "", deleteFn = null, variant, reference = "", useInNextReaction = false, canRemove = false }) => {
+const Accordion = ({ title, children, className = "", deleteFn = null, variant, reference = "", useInNextReaction = false, canRemove = true }) => {
 
     const storageKey = `${title} Accordion`;
     const storedState = localStorage.getItem(storageKey);
