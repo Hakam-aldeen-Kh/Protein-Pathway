@@ -6,7 +6,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
     const toDeletedFromElements = []
     // console.log(reactions)
 
-    reactions.forEach((reaction, reactionIndex) => {
+    reactions.forEach((reaction) => {
         const reactionController = reaction.controllers[0]
 
         // create node for each controller with edge form reactant to controller inside parent node
@@ -17,27 +17,30 @@ export function reactionsDataToCytoscapeFormat(reactions) {
         }
 
         // controller shape
-        elements.push(createChemicalNode(`process-${reactionIndex}`, "", reaction.products[0].cellularLocation?.cell_localization_name, "process"));
+        elements.push(createChemicalNode(`process-${reaction.id}`, "", reaction.products[0].cellularLocation?.cell_localization_name, "process"));
 
         if (reactionController) {
             elements.push(createChemicalNode(reactionController.name, controllerNodeName(reactionController), reactionController.cellularLocation?.cell_localization_name, "macromolecule"));
-            elements.push(createEdge(`e-${reactionController.name}-process-${reactionIndex}`, reactionController.name, `process-${reactionIndex}`, "stimulation"));
+            elements.push(createEdge(`e-${reactionController.name}-process-${reaction.id}`, reactionController.name, `process-${reaction.id}`, "stimulation"));
 
-            const targetReaction = reactions.find(item => item.id === reactionController.targetReactionId)
+            const targetReaction1 = reactions.find(item => item.id === reactionController.targetReactionId)
+            const targetReaction2 = reactions.find(item => item.id === reaction.id + 1)
 
-            if (reactionController.useNextReaction && targetReaction) {
+            // console.log(targetReaction, reactionController.targetReactionId)
 
-                elements.push(createEdge(`e-${reactionController.name}-process-${reactionIndex + 1}}`, reactionController.name, `process-${reactionIndex + 1}`));
+            if (reactionController.useNextReaction && targetReaction1 && targetReaction2) {
+                // console.log(targetReaction1.id, `process-${reaction.id + 1}`)
 
+                elements.push(createEdge(`e-${reactionController.name}-process-${reaction.id + 1}}`, reactionController.name, `process-${reaction.id + 1}`));
 
-                toDeletedFromElements.push(targetReaction.reactants.find(item => item.id === reactionController.conectedReactantId).name)
-                toDeletedFromElements.push(`e-${targetReaction.reactants.find(item => item.id === reactionController.conectedReactantId).name}-process-${reactionIndex + 1}`)
+                toDeletedFromElements.push(`e-${targetReaction2.reactants.find(item => item.id === reactionController.conectedReactantId).name}-process-${reaction.id + 1}`)
+                toDeletedFromElements.push(targetReaction2.reactants.find(item => item.id === reactionController.conectedReactantId).name)
             }
         }
 
 
         // create node for each reactant with edge form reactant to controller inside parent node
-        reaction.reactants.forEach((reactant) => {
+        reaction.reactants?.forEach((reactant) => {
             // // parent node
             if (reactant.cellularLocation?.cell_localization_name && !isFindElement(elements, reactant.cellularLocation?.cell_localization_name)) {
                 elements.push(createChemicalNode(reactant.cellularLocation?.cell_localization_name, reactant.cellularLocation?.cell_localization_name, "", "complex"));
@@ -46,7 +49,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
             elements.push(createChemicalNode(reactant.name, reactantNodeName(reactant), reactant.cellularLocation?.cell_localization_name, "simple chemical"));
 
             // // edge to controller
-            elements.push(createEdge(`e-${reactant.name}-process-${reactionIndex}`, reactant.name, `process-${reactionIndex}`));
+            elements.push(createEdge(`e-${reactant.name}-process-${reaction.id}`, reactant.name, `process-${reaction.id}`));
 
 
 
@@ -62,32 +65,35 @@ export function reactionsDataToCytoscapeFormat(reactions) {
             elements.push(createChemicalNode(product.name, productNodeName(product), product.cellularLocation?.cell_localization_name, product.useNextReaction && product.type === "controllers" ? "macromolecule" : "simple chemical"));
 
             // // edge to controller
-            elements.push(createEdge(`e-${product.name}-process-${reactionIndex}`, `process-${reactionIndex}`, product.name));
+            elements.push(createEdge(`e-${product.name}-process-${reaction.id}`, `process-${reaction.id}`, product.name));
 
 
             // is this product useNextReaction and type is reactants:
             // edge form this product to controller in next reaction and 
             // delete reactant which is product in next reaction
-            const targetReaction = reactions.find(item => item.id === product.targetReactionId)
-            // const targetReaction = reactions[reactionIndex + 1]
+            const targetReaction1 = reactions.find(item => item.id === product.targetReactionId)
+            const targetReaction2 = reactions.find(item => item.id === reaction.id + 1)
+
+            // console.log(targetReaction)
+            // const targetReaction = reactions[reaction.id + 1]
 
 
-            if (product.useNextReaction && product.type === "reactants" && targetReaction) {
-                elements.push(createEdge(`e-${product.name}-process-${reactionIndex + 1}}`, product.name, `process-${reactionIndex + 1}`));
+            if (product.useNextReaction && product.type === "reactants" && targetReaction1 && targetReaction2) {
+                elements.push(createEdge(`e-${product.name}-process-${reaction.id + 1}}`, product.name, `process-${reaction.id + 1}`));
 
-                toDeletedFromElements.push(targetReaction.reactants.find(item => item.id === product.conectedReactantId).name)
-                toDeletedFromElements.push(`e-${targetReaction.reactants.find(item => item.id === product.conectedReactantId).name}-process-${reactionIndex + 1}`)
+                toDeletedFromElements.push(`e-${targetReaction2.reactants.find(item => item.id === product.conectedReactantId).name}-process-${reaction.id + 1}`)
+                toDeletedFromElements.push(targetReaction2.reactants.find(item => item.id === product.conectedReactantId).name)
             }
 
             // is this product useNextReaction and type is controllers:
             // edge form this product to controller in next reaction and 
             // delete reactant which is product in next reaction
-            else if (product.useNextReaction && product.type === "controllers" && targetReaction) {
+            else if (product.useNextReaction && product.type === "controllers" && targetReaction1) {
 
-                elements.push(createEdge(`e-${product.name}-process-${reactionIndex + 1}`, product.name, `process-${reactionIndex + 1}`, "stimulation"));
+                elements.push(createEdge(`e-${product.name}-process-${reaction.id + 1}`, product.name, `process-${reaction.id + 1}`, "stimulation"));
 
-                toDeletedFromElements.push(targetReaction.controllers[0].name)
-                toDeletedFromElements.push(`e-${targetReaction.controllers[0].name}-process-${reactionIndex + 1}`)
+                toDeletedFromElements.push(targetReaction1.controllers[0].name)
+                toDeletedFromElements.push(`e-${targetReaction1.controllers[0].name}-process-${reaction.id + 1}`)
             }
 
         })
@@ -96,11 +102,12 @@ export function reactionsDataToCytoscapeFormat(reactions) {
 
     })
 
+    // console.log(toDeletedFromElements)
+
     toDeletedFromElements.forEach(deleteItem => {
         elements = elements.filter(item => item.data.id !== deleteItem)
     })
 
-    // console.log(elements)
     return elements;
 
 }

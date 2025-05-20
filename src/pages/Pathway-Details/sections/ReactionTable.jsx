@@ -118,7 +118,7 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
       handleChangeData({ target: { value: "", name: "conectedReactantId" } }, targetReactionId, "controllers", 1)
       handleChangeData({ target: { value: "", name: "targetReactionId" } }, targetReactionId, "controllers", 1)
 
-      const conectedReactantId = targetReaction.controllers[0].conectedReactantId
+      const conectedReactantId = targetReaction?.controllers[0]?.conectedReactantId
 
       if (conectedReactantId) {
         handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId + 1, "reactants", conectedReactantId);
@@ -172,11 +172,11 @@ function ReactionTable({ reactions, isEdit, handleChangeData, setEditPathwayData
 
     setReactionState((prevStates) => {
       let newStates = [...prevStates];
-      console.log(targetIndexNew)
+      // console.log(targetIndexNew)
 
       // Insert new state
       newStates.splice(targetIndexNew + 1, 0, { id: targetReactionId + 1, state: 'new' });
-      console.log(newStates)
+      // console.log(newStates)
 
       // Update previous (if exists)
       if (targetIndexNew >= 0) {

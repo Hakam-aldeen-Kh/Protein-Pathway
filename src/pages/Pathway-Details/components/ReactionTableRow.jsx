@@ -15,7 +15,7 @@ const ReactionTableRow = ({
   reactionState,
 }) => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  console.log(reactions);
+  // console.log(reactions);
   function capitalize(s) {
     return String(s[0]).toUpperCase() + String(s).slice(1);
   }
@@ -53,7 +53,11 @@ const ReactionTableRow = ({
           {reaction.reactants.map((reactantData, index) => (
             <div key={index} className="px-4 flex items-center h-full">
               <span className="text-violet-900 hover:text-violet-600">
-                {reactantData.connectedData ? reactantNodeName(reactions?.find(item => item.id === reactantData?.fromReaction)[reactantData?.connectedData?.type]?.find(item => item.id === reactantData?.connectedData.id)) : reactantNodeName(reactantData)}
+                {reactantData.connectedData ?
+                  reactantData.connectedData.type === "controllers" ?
+                    controllerNodeName(reactions?.find(item => item.id === reactantData?.fromReaction)[reactantData?.connectedData?.type]?.find(item => item.id === reactantData?.connectedData.id)) :
+                    productNodeName(reactions?.find(item => item.id === reactantData?.fromReaction)[reactantData?.connectedData?.type]?.find(item => item.id === reactantData?.connectedData.id)) :
+                  reactantNodeName(reactantData)}
                 {reaction.reactants.length !== index + 1 && "-"}
               </span>
             </div>
@@ -61,7 +65,8 @@ const ReactionTableRow = ({
         </td>
         <td className="px-4  py-2">
           {reaction?.controllers?.length > 0 && reaction.controllers[0].name
-            ? reaction.controllers[0].connectedData ? controllerNodeName(reactions?.find(item => item.id === reaction.controllers[0]?.fromReaction)[reaction.controllers[0]?.connectedData?.type]?.find(item => item.id === reaction.controllers[0]?.connectedData.id)) : controllerNodeName(reaction.controllers[0])
+            ? reaction.controllers[0].connectedData ? productNodeName(reactions?.find(item => item.id === reaction.controllers[0]?.fromReaction)[reaction.controllers[0]?.connectedData?.type]?.find(item => item.id === reaction.controllers[0]?.connectedData.id)) :
+              controllerNodeName(reaction.controllers[0])
             : "-"}
         </td>
         <td className="h-full  py-2">
