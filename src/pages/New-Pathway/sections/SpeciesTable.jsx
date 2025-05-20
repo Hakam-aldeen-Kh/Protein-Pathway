@@ -251,6 +251,7 @@ const SpeciesTable = ({
             padding="0px"
             page-size-option="10,20,50,100"
             page-slider="false"
+            data-unavailable_message="No data found."
             columns={columns}
             style={{
               "--togostanza-thead-background-color": "#583d8d",
