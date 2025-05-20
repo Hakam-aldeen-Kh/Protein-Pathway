@@ -156,6 +156,34 @@ const ProductForm = ({
     return unReferencedReactantId
   };
 
+  const addController = (reactionId) => {
+    const nextReaction = localReactions.find(item => item.id === reactionId)
+
+    console.log("nextReaction", localReactions);
+
+    const findController = nextReaction.controllers[0]
+
+    if (!findController) {
+      setPathwayData((prevPathwayData) => ({
+        ...prevPathwayData,
+        reactions: prevPathwayData.reactions.map((reaction) =>
+          reaction.id === reactionId
+            ? {
+              ...reaction,
+              controllers: [
+                ...reaction.controllers,
+                {
+                  id: 1,
+                  name: `controller_${reactionId}.${1}`,
+                },
+              ],
+            }
+            : reaction
+        ),
+      }));
+    }
+  };
+
   const handleChangeRadioBtn = (e) => {
     handleChange(e)
 
@@ -169,7 +197,12 @@ const ProductForm = ({
     let targetReaction = null
 
     if (!foundNextReaction && e.target.value) {
-      targetReaction = addReaction()
+      if (e.target.value === "controllers") {
+        targetReaction = addReaction(true, targetReactionId)
+      }
+      else {
+        targetReaction = addReaction(false, targetReactionId);
+      }
       localReactions.push(targetReaction)
       targetReactionId = targetReaction.id
       handleChangeData({ target: { value: targetReactionId, name: "targetReactionId" } }, reaction.id, "products", productId)
@@ -191,6 +224,7 @@ const ProductForm = ({
     }
 
     if (e.target.value === "controllers") {
+      addController(targetReactionId)
 
       const reference = `(Product - ${reaction.id}.${productData.id} of Reaction ${reaction.id})`
 
@@ -208,7 +242,7 @@ const ProductForm = ({
       const foundControllerCheckedNextReaction = reactions.find(item => item.id === reaction.id + 1)
       console.log(foundControllerCheckedNextReaction);
 
-      if (foundControllerCheckedNextReaction && foundControllerCheckedNextReaction.controllers[0].useNextReaction) {
+      if (foundControllerCheckedNextReaction && foundControllerCheckedNextReaction.controllers[0]?.useNextReaction) {
         handleChangeData({ target: { value: "", name: "conectedReactantId" } }, targetReactionId, "controllers", 1)
         handleChangeData({ target: { value: "", name: "targetReactionId" } }, targetReactionId, "controllers", 1)
         handleChangeData({ target: { value: false, name: "useNextReaction", }, }, targetReactionId, "controllers", productId);

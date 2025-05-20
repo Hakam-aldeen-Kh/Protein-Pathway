@@ -87,7 +87,13 @@ const Products = ({ reaction, reactions, handleChangeData, setDeleteModalData, a
     <div className='bg-white rounded-lg pb-2 rounded-tl-none p-5'>
       {reaction.products.map((item, index) => (
         <div key={index}>
-          <Accordion className='border rounded-lg mb-10' variant="gray" deleteFn={() => deleteProduct(reaction.id, item.id)} title={`Product - ${reaction.id}.${item.id}`} useInNextReaction={item.useNextReaction}>
+          <Accordion
+            className='border rounded-lg mb-10'
+            variant="gray"
+            deleteFn={() => deleteProduct(reaction.id, item.id)}
+            title={`Product - ${reaction.id}.${item.id}`}
+            canRemove={reaction.products.length > 1}
+            useInNextReaction={item.useNextReaction}>
             <ProductForm setPathwayData={setPathwayData} handleChangeData={handleChangeData} reactions={reactions} addReaction={addReaction} reaction={reaction} productData={item} productId={item.id} />
           </Accordion>
           {/* <Modal

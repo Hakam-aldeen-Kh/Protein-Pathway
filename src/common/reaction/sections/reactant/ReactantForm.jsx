@@ -81,7 +81,7 @@ const ReactantForm = ({
           type="select"
           label={"Reactant Type"}
           name="pType"
-          value={reactantData?.pType}
+          value={reactantData?.pType === "enzyme" ? "protein" : reactantData?.pType}
           handleChange={handleChange}
           placeholder="Select Reactant Type"
           isEdit={isEdit}
@@ -92,6 +92,7 @@ const ReactantForm = ({
           <option value="small_molecule">Small molecule</option>
           <option value="dna">DNA</option>
           <option value="lipid">Lipid</option>
+
         </FormElement>
       </div>
 
@@ -116,6 +117,19 @@ const ReactantForm = ({
       )}
       {reactantData.pType === "dna" && (
         <Dna reactantData={reactantData} handleChange={handleChange} isEdit={isEdit} />
+      )}
+      {reactantData.pType === "enzyme" && (
+        <div className="grid grid-cols-2 gap-4">
+          <FormElement
+            isEdit={isEdit}
+            type="enzyme"
+            label={"EC enzyme name"}
+            name="controller_ec_enzyme"
+            value={reactantData?.controller_ec_enzyme}
+            handleChange={handleChange}
+          // itemType="Enzyme"
+          />
+        </div>
       )}
     </div>
   );

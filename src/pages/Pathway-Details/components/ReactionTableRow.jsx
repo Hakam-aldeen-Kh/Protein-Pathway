@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import ReactionModal from "./ReactionModal";
+import { controllerNodeName, productNodeName, reactantNodeName } from "../../../utils/nameNode";
 
 const ReactionTableRow = ({
   reactions,
@@ -14,7 +15,7 @@ const ReactionTableRow = ({
   reactionState,
 }) => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-
+  console.log(reactions);
   function capitalize(s) {
     return String(s[0]).toUpperCase() + String(s).slice(1);
   }
@@ -44,31 +45,31 @@ const ReactionTableRow = ({
   return (
     <>
       <tr
-        className={`border-b-[5px] border-white rounded ${
-          reactionState?.state === "new" ? "bg-green-100" : "bg-[#F1F5F9]"
-        }`}
+        className={`border-b-[5px] border-white rounded ${reactionState?.state === "new" ? "bg-green-100" : "bg-[#F1F5F9]"
+          }`}
       >
         <td className="px-4 py-2">{reactionIndex + 1}</td>
         <td className="h-full  py-2">
-          {reaction.reactants.map((item, index) => (
+          {reaction.reactants.map((reactantData, index) => (
             <div key={index} className="px-4 flex items-center h-full">
               <span className="text-violet-900 hover:text-violet-600">
-                {item.name}
+                {reactantData.connectedData ? reactantNodeName(reactions?.find(item => item.id === reactantData?.fromReaction)[reactantData?.connectedData?.type]?.find(item => item.id === reactantData?.connectedData.id)) : reactantNodeName(reactantData)}
+                {reaction.reactants.length !== index + 1 && "-"}
               </span>
             </div>
           ))}
         </td>
         <td className="px-4  py-2">
           {reaction?.controllers?.length > 0 && reaction.controllers[0].name
-            ? capitalize(reaction.controllers[0].name)
+            ? reaction.controllers[0].connectedData ? controllerNodeName(reactions?.find(item => item.id === reaction.controllers[0]?.fromReaction)[reaction.controllers[0]?.connectedData?.type]?.find(item => item.id === reaction.controllers[0]?.connectedData.id)) : controllerNodeName(reaction.controllers[0])
             : "-"}
         </td>
-
         <td className="h-full  py-2">
           {reaction.products.map((item, index) => (
             <div key={index} className="px-4 flex items-center h-full">
               <span className="text-violet-900 hover:text-violet-600 cursor-pointer">
-                {item.name}
+                {productNodeName(item)}
+                {reaction.products.length !== index + 1 && " - "}
               </span>
             </div>
           ))}
@@ -77,20 +78,20 @@ const ReactionTableRow = ({
         <td className="py-2">
           {cellTypes.length > 0
             ? cellTypes.map((cell, index) => (
-                <div key={index} className="px-4 flex items-center gap-2">
-                  {cell}
-                </div>
-              ))
+              <div key={index} className="px-4 flex items-center gap-2">
+                {cell}
+              </div>
+            ))
             : "-"}
         </td>
 
         <td className="py-2">
           {cellLocation.length > 0
             ? cellLocation.map((cell, index) => (
-                <div key={index} className="px-4 flex items-center gap-2">
-                  {cell}
-                </div>
-              ))
+              <div key={index} className="px-4 flex items-center gap-2">
+                {cell}
+              </div>
+            ))
             : "-"}
         </td>
 

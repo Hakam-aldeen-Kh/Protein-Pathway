@@ -59,22 +59,58 @@ const NewPathway = () => {
     navigate("/review");
   };
 
-  const addReaction = () => {
+  const addReaction = (withController, newReactionId) => {
+
     let reactionId = pathwayData.reactions[pathwayData.reactions.length - 1]?.id + 1 || 1;
+    let reOrder = false
 
-    const newReaction = {
-      id: reactionId,
-      reactants: [{ id: 1, name: `reactant_${reactionId}.1` }],
-      controllers: [{ id: 1, name: `controller_${reactionId}.1` }],
-      products: [{ id: 1, name: `product_${reactionId}.1` }],
-    };
+    if (newReactionId && newReactionId !== reactionId) {
+      reactionId = newReactionId
+      reOrder = true
+    }
 
-    setPathwayData((prevPathwayData) => {
-      return {
-        ...prevPathwayData,
-        reactions: [...prevPathwayData.reactions, newReaction],
+
+    let newReaction = {}
+
+    if (withController === true) {
+      newReaction = {
+        id: reactionId,
+        reactants: [{ id: 1, name: `reactant_${reactionId}.1` }],
+        controllers: [{ id: 1, name: `controller_${reactionId}.1` }],
+        products: [{ id: 1, name: `product_${reactionId}.1` }],
       };
-    });
+    }
+
+    else {
+      newReaction = {
+        id: reactionId,
+        reactants: [{ id: 1, name: `reactant_${reactionId}.1` }],
+        controllers: [],
+        products: [{ id: 1, name: `product_${reactionId}.1` }],
+      };
+    }
+
+
+    if (reOrder) {
+      setPathwayData((prevPathwayData) => {
+        let newReactions = [...prevPathwayData.reactions]
+        newReactions.splice(reactionId - 1, 0, newReaction);
+
+        return {
+          ...prevPathwayData,
+          reactions: newReactions,
+        };
+      });
+    }
+    else {
+      setPathwayData((prevPathwayData) => {
+        return {
+          ...prevPathwayData,
+          reactions: [...prevPathwayData.reactions, newReaction],
+        };
+      });
+
+    }
 
     return newReaction;
   };
@@ -86,6 +122,46 @@ const NewPathway = () => {
       closeModal: () =>
         setDeleteModalData((prev) => ({ ...prev, isModalOpen: false })),
       handleDelete: () => {
+        const targetReactionId = id
+
+        const targetReaction = pathwayData.reactions.find(r => r.id === targetReactionId);
+
+
+        // remove linked between targetIndex and targetIndex+1
+        if (pathwayData.reactions.find(r => r.id === targetReactionId + 1)) {
+
+          handleChange({ target: { value: "", name: "reference" } }, targetReactionId + 1, "controllers", 1);
+          handleChange({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "controllers", 1);
+          handleChange({ target: { value: "", name: "productId", }, }, targetReactionId + 1, "controllers", 1);
+          handleChange({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "controllers", 1);
+
+          // handleChange({ target: { value: "", name: "conectedReactantId" } }, reaction.id, "products", productId)
+
+          for (let i = 0; i < targetReaction.products.length; i += 1) {
+            const conectedReactantId = targetReaction.products[i].conectedReactantId
+            handleChange({ target: { value: false, name: "useNextReaction", }, }, targetReactionId, "products", targetReaction.products[i].id);
+
+            if (conectedReactantId) {
+              handleChange({ target: { value: "", name: "reference" } }, targetReactionId + 1, "reactants", conectedReactantId);
+              handleChange({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "reactants", conectedReactantId);
+              handleChange({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "reactants", conectedReactantId);
+            }
+          }
+
+          handleChange({ target: { value: false, name: "useNextReaction", }, }, targetReactionId, "controllers", 1);
+
+          handleChange({ target: { value: "", name: "conectedReactantId" } }, targetReactionId, "controllers", 1)
+          handleChange({ target: { value: "", name: "targetReactionId" } }, targetReactionId, "controllers", 1)
+
+          const conectedReactantId = targetReaction?.controllers[0]?.conectedReactantId
+
+          if (conectedReactantId) {
+            handleChange({ target: { value: "", name: "reference" } }, targetReactionId + 1, "reactants", conectedReactantId);
+            handleChange({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "reactants", conectedReactantId);
+            handleChange({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "reactants", conectedReactantId);
+          }
+        }
+
         setPathwayData((prevPathwayData) => ({
           ...prevPathwayData,
           reactions: prevPathwayData.reactions.filter(

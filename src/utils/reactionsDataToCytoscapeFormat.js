@@ -1,3 +1,4 @@
+import { controllerNodeName, productNodeName, reactantNodeName } from "./nameNode";
 
 
 export function reactionsDataToCytoscapeFormat(reactions) {
@@ -5,30 +6,33 @@ export function reactionsDataToCytoscapeFormat(reactions) {
     const toDeletedFromElements = []
     // console.log(reactions)
 
-    reactions.forEach((reaction) => {
+    reactions.forEach((reaction, reactionIndex) => {
         const reactionController = reaction.controllers[0]
 
         // create node for each controller with edge form reactant to controller inside parent node
 
         //  // controller parent
-        if (reactionController.cellularLocation?.cell_localization_name && !isFindElement(elements, reactionController.cellularLocation?.cell_localization_name)) {
-            elements.push(createChemicalNode(reactionController.cellularLocation?.cell_localization_name, reactionController.cellularLocation?.cell_localization_name, "", "complex"));
+        if (reactionController?.cellularLocation?.cell_localization_name && !isFindElement(elements, reactionController?.cellularLocation?.cell_localization_name)) {
+            elements.push(createChemicalNode(reactionController?.cellularLocation?.cell_localization_name, reactionController?.cellularLocation?.cell_localization_name, "", "complex"));
         }
 
         // controller shape
-        elements.push(createChemicalNode(`${reactionController.name}-process`, "", reactionController.cellularLocation?.cell_localization_name, "process"));
-        elements.push(createChemicalNode(reactionController.name, reactionController.name, reactionController.cellularLocation?.cell_localization_name, "macromolecule"));
-        elements.push(createEdge(`e-${reactionController.name}-${reactionController.name}-process`, reactionController.name, `${reactionController.name}-process`, "stimulation"));
+        elements.push(createChemicalNode(`process-${reactionIndex}`, "", reaction.products[0].cellularLocation?.cell_localization_name, "process"));
 
-        const targetReaction = reactions.find(item => item.id === reactionController.targetReactionId)
+        if (reactionController) {
+            elements.push(createChemicalNode(reactionController.name, controllerNodeName(reactionController), reactionController.cellularLocation?.cell_localization_name, "macromolecule"));
+            elements.push(createEdge(`e-${reactionController.name}-process-${reactionIndex}`, reactionController.name, `process-${reactionIndex}`, "stimulation"));
 
-        if (reactionController.useNextReaction && targetReaction) {
+            const targetReaction = reactions.find(item => item.id === reactionController.targetReactionId)
 
-            elements.push(createEdge(`e-${reactionController.name}-${targetReaction.controllers[0].name}-process}`, reactionController.name, `${targetReaction.controllers[0].name}-process`));
+            if (reactionController.useNextReaction && targetReaction) {
+
+                elements.push(createEdge(`e-${reactionController.name}-process-${reactionIndex + 1}}`, reactionController.name, `process-${reactionIndex + 1}`));
 
 
-            toDeletedFromElements.push(targetReaction.reactants.find(item => item.id === reactionController.conectedReactantId).name)
-            toDeletedFromElements.push(`e-${targetReaction.reactants.find(item => item.id === reactionController.conectedReactantId).name}-${targetReaction.controllers[0].name}-process`)
+                toDeletedFromElements.push(targetReaction.reactants.find(item => item.id === reactionController.conectedReactantId).name)
+                toDeletedFromElements.push(`e-${targetReaction.reactants.find(item => item.id === reactionController.conectedReactantId).name}-process-${reactionIndex + 1}`)
+            }
         }
 
 
@@ -39,10 +43,10 @@ export function reactionsDataToCytoscapeFormat(reactions) {
                 elements.push(createChemicalNode(reactant.cellularLocation?.cell_localization_name, reactant.cellularLocation?.cell_localization_name, "", "complex"));
             }
             // // reactant node
-            elements.push(createChemicalNode(reactant.name, reactant.name, reactant.cellularLocation?.cell_localization_name, "simple chemical"));
+            elements.push(createChemicalNode(reactant.name, reactantNodeName(reactant), reactant.cellularLocation?.cell_localization_name, "simple chemical"));
 
             // // edge to controller
-            elements.push(createEdge(`e-${reactant.name}-${reactionController.name}-process`, reactant.name, `${reactionController.name}-process`));
+            elements.push(createEdge(`e-${reactant.name}-process-${reactionIndex}`, reactant.name, `process-${reactionIndex}`));
 
 
 
@@ -55,10 +59,10 @@ export function reactionsDataToCytoscapeFormat(reactions) {
                 elements.push(createChemicalNode(product.cellularLocation?.cell_localization_name, product.cellularLocation?.cell_localization_name, "", "complex"));
             }
             // // product node
-            elements.push(createChemicalNode(product.name, product.name, product.cellularLocation?.cell_localization_name, product.useNextReaction && product.type === "controllers" ? "macromolecule" : "simple chemical"));
+            elements.push(createChemicalNode(product.name, productNodeName(product), product.cellularLocation?.cell_localization_name, product.useNextReaction && product.type === "controllers" ? "macromolecule" : "simple chemical"));
 
             // // edge to controller
-            elements.push(createEdge(`e-${product.name}-${reactionController.name}-process`, `${reactionController.name}-process`, product.name));
+            elements.push(createEdge(`e-${product.name}-process-${reactionIndex}`, `process-${reactionIndex}`, product.name));
 
 
             // is this product useNextReaction and type is reactants:
@@ -69,14 +73,10 @@ export function reactionsDataToCytoscapeFormat(reactions) {
 
 
             if (product.useNextReaction && product.type === "reactants" && targetReaction) {
-
-
-
-                elements.push(createEdge(`e-${product.name}-${targetReaction.controllers[0].name}-process}`, product.name, `${targetReaction.controllers[0].name}-process`));
-
+                elements.push(createEdge(`e-${product.name}-process-${reactionIndex + 1}}`, product.name, `process-${reactionIndex + 1}`));
 
                 toDeletedFromElements.push(targetReaction.reactants.find(item => item.id === product.conectedReactantId).name)
-                toDeletedFromElements.push(`e-${targetReaction.reactants.find(item => item.id === product.conectedReactantId).name}-${targetReaction.controllers[0].name}-process`)
+                toDeletedFromElements.push(`e-${targetReaction.reactants.find(item => item.id === product.conectedReactantId).name}-process-${reactionIndex + 1}`)
             }
 
             // is this product useNextReaction and type is controllers:
@@ -84,10 +84,10 @@ export function reactionsDataToCytoscapeFormat(reactions) {
             // delete reactant which is product in next reaction
             else if (product.useNextReaction && product.type === "controllers" && targetReaction) {
 
-                elements.push(createEdge(`e-${product.name}-${targetReaction.controllers[0].name}-process`, product.name, `${targetReaction.controllers[0].name}-process`, "stimulation"));
+                elements.push(createEdge(`e-${product.name}-process-${reactionIndex + 1}`, product.name, `process-${reactionIndex + 1}`, "stimulation"));
 
                 toDeletedFromElements.push(targetReaction.controllers[0].name)
-                toDeletedFromElements.push(`e-${targetReaction.controllers[0].name}-${targetReaction.controllers[0].name}-process`)
+                toDeletedFromElements.push(`e-${targetReaction.controllers[0].name}-process-${reactionIndex + 1}`)
             }
 
         })
@@ -111,9 +111,9 @@ function createChemicalNode(id, name, parent, classType) {
             id,
             class: classType,
             label: name || '',
-            parent: parent || "cytocol",
+            parent: parent,
             stateVariables: [],
-            unitsOfInformation: []
+            unitsOfInformation: [],
         },
         group: "nodes",
         removed: false,

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FormElement from "../../components/FormElement";
 import ProteinSearchTable from "../reactant/reactant-type/ProteinSearchTable";
-import { fetchDefaultFile } from "../../../../utils/fetchEnzymeData";
+// import { fetchDefaultFile } from "../../../../utils/fetchEnzymeData";
 
 const ControllerForm = ({
   handleChangeData,
@@ -67,15 +67,15 @@ const ControllerForm = ({
         reactions: prevPathwayData.reactions.map((reaction) =>
           reaction.id === reactionId
             ? {
-                ...reaction,
-                reactants: [
-                  ...reaction.reactants,
-                  {
-                    id: reactantId,
-                    name: `reactant_${reactionId}.${reactantId}`,
-                  },
-                ],
-              }
+              ...reaction,
+              reactants: [
+                ...reaction.reactants,
+                {
+                  id: reactantId,
+                  name: `reactant_${reactionId}.${reactantId}`,
+                },
+              ],
+            }
             : reaction
         ),
       }));
@@ -96,7 +96,7 @@ const ControllerForm = ({
     let targetReaction = null;
 
     if (!foundNextReaction) {
-      targetReaction = addReaction();
+      targetReaction = addReaction(false, targetReactionId);
       localReactions.push(targetReaction);
       targetReactionId = targetReaction.id;
 
@@ -347,7 +347,7 @@ const ControllerForm = ({
             name="controller_ec_enzyme"
             value={controllerData?.controller_ec_enzyme}
             handleChange={handleChange}
-            // itemType="Enzyme"
+          // itemType="Enzyme"
           />
         )}
       </div>
