@@ -14,14 +14,18 @@ const GlycanText = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const inputRef = useRef(null);
-  
+
   useEffect(() => {
-    if (value && value !== "" && glycanTextType) {
+    if (
+      value &&
+      value !== "" &&
+      glycanTextType &&
+      glycanTextType !== "GlyTouCan ID"
+    ) {
       setIsDisabled(true);
     }
   }, []);
 
-  
   const handlePlaceHolder = () => {
     if (glycanTextType && glycanTextType !== "") {
       return `Please Enter the ${glycanTextType}`;
@@ -37,8 +41,6 @@ const GlycanText = ({
         return "https://api.glycosmos.org/glycanformatconverter/2.10.4/iupacextended2wurcs/";
       case "IUPAC condensed":
         return "https://api.glycosmos.org/glycanformatconverter/2.10.4/iupaccondensed2wurcs/";
-      case "GlyTouCan ID":
-        return "https://api.glycosmos.org/glycanformatconverter/2.10.4/glycoct2wurcs/";
       default:
         return null;
     }
@@ -85,7 +87,7 @@ const GlycanText = ({
         .replace(/\\r\\n/g, "\n") // Replace escaped \r\n with actual newline
         .replace(/\\n/g, "\n") // Replace escaped \n with actual newline
         .replace(/\\r/g, "\n") // Replace escaped \r with actual newline
-        .replace(/ /g, "\n");// Replace escaped " " with actual newline 
+        .replace(/ /g, "\n"); // Replace escaped " " with actual newline
 
       // Step 2: For this specific API, convert newlines to plain newline characters
       // This is critical based on what you showed - the API expects actual newlines
