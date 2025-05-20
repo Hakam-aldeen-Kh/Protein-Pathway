@@ -15,20 +15,20 @@ const PathwayInfo = ({ pathway, id }) => {
   const today = new Date();
   const recordDate = `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`;
 
-  
+
   const getDiseaseNames = (diseaseInput) => {
     if (!Array.isArray(diseaseInput) || diseaseInput.length === 0) {
       return "";
     }
-    
+
     const diseaseNames = diseaseInput
-    .filter((disease) => disease?.value?.Disease_name)
-    .map((disease) => disease.value.Disease_name);
-    
+      .filter((disease) => disease?.value?.Disease_name)
+      .map((disease) => disease.value.Disease_name);
+
     return diseaseNames.length > 0 ? diseaseNames.join(", ") : "";
   };
 
-  const relatedDiseasesValues= getDiseaseNames(pathway?.diseaseInput)
+  const relatedDiseasesValues = getDiseaseNames(pathway?.diseaseInput)
 
   const pathwayData = [
     { label: "Species", value: pathway?.species || "no value" },
@@ -36,6 +36,8 @@ const PathwayInfo = ({ pathway, id }) => {
     { label: "Tissue:", value: pathway?.tissue?.label || "no value" },
     { label: "Related Disease:", value: relatedDiseasesValues || "no value" },
     { label: "Record Date:", value: pathway?.recordDate || recordDate },
+    { label: "PubMeds", value: pathway?.pubMeds || "no value", isArray: true & !!pathway?.pubMeds },
+
   ];
 
   const handleExport = () => {
@@ -59,7 +61,7 @@ const PathwayInfo = ({ pathway, id }) => {
   return (
     <div className="flex flex-col w-full max-md:max-w-full">
       <div className="flex flex-col w-full max-md:max-w-full">
-        <h2 className="text-2xl font-bold text-neutral-900">Pathway Info</h2>
+        <h2 className="text-2xl font-bold text-neutral-900">Pathway Basic Information</h2>
         <div className="flex flex-wrap gap-5 mt-2 w-full max-md:max-w-full">
           <div className="flex flex-col flex-1 shrink self-start text-base basis-0 min-w-[240px] max-md:max-w-full">
             {pathwayData.map((item, index) => (
@@ -71,7 +73,15 @@ const PathwayInfo = ({ pathway, id }) => {
                   {capitalize(item.label)}
                 </div>
                 <div className="flex-1 shrink gap-2.5 self-stretch p-2 my-auto rounded-lg bg-slate-100 min-w-[240px] text-neutral-900 max-md:max-w-full">
-                  {capitalize(item.value)}
+                  {
+                    item.isArray ? item?.value?.map((item, index) =>
+                      <div key={index} className="flex gap-2">
+                        <span>ID: {item.id}</span>
+                        <span>Title: {item.title}</span>
+                      </div>
+                    ) : capitalize(item.value)
+                  }
+
                 </div>
               </div>
             ))}

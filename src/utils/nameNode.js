@@ -2,19 +2,19 @@ export const reactantNodeName = (reactant) => {
     const type = reactant.pType
 
     if (type === "complex") {
-        return reactant.complexSymbolGo || reactant.complexSymbolicName?.go_complex_name || reactant.name
+        return reactant?.complexSymbolGo || reactant.complexSymbolicName?.go_complex_name || reactant.name
     }
 
     if (type === "protein") {
-        return reactant.proteinSymbol || reactant.proteinSymbolicName || reactant.name
+        return reactant?.proteinSymbol || reactant?.proteinSymbolicName || reactant.name
     }
 
     if (type === "glycan") {
-        return reactant.glycanText || reactant.name
+        return reactant?.glycanText || reactant.name
     }
 
     if (type === "small_molecule") {
-        return reactant.smallMolecule.Molecule_name || reactant.name
+        return reactant.smallMolecule?.Molecule_name || reactant.name
     }
 
     if (type === "dna") {

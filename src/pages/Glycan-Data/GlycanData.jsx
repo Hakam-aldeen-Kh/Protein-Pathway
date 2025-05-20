@@ -22,7 +22,7 @@ const GlycanData = () => {
   return (
     <div className="flex overflow-hidden flex-col justify-center bg-white">
       <div className="flex flex-col w-full max-md:max-w-full">
-        <HeroSection title="Glycan Synthetic Patway Data" />
+        <HeroSection title="Glycan Synthetic Pathway Data" />
         <div className="flex flex-col px-32 mt-10 w-full max-md:px-5 max-md:max-w-full">
           <PathwayTabs activeTab={activeTab} onTabChange={setActiveTab} />
           <div className="flex flex-col mt-2.5 w-full rounded-lg max-md:max-w-full">
