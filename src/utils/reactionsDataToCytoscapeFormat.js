@@ -20,7 +20,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
         elements.push(createChemicalNode(`process-${reaction.id}`, "", reaction.products[0].cellularLocation?.cell_localization_name, "process"));
 
         if (reactionController) {
-            elements.push(createChemicalNode(reactionController.name, controllerNodeName(reactionController), reactionController.cellularLocation?.cell_localization_name, "macromolecule"));
+            elements.push(createChemicalNode(reactionController.name, controllerNodeName(reactionController), reactionController.cellularLocation?.cell_localization_name, findClass(reactionController?.pType || "protein")));
             elements.push(createEdge(`e-${reactionController.name}-process-${reaction.id}`, reactionController.name, `process-${reaction.id}`, "stimulation"));
 
             const targetReaction1 = reactions.find(item => item.id === reactionController.targetReactionId)
@@ -46,7 +46,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
                 elements.push(createChemicalNode(reactant.cellularLocation?.cell_localization_name, reactant.cellularLocation?.cell_localization_name, "", "complex"));
             }
             // // reactant node
-            elements.push(createChemicalNode(reactant.name, reactantNodeName(reactant), reactant.cellularLocation?.cell_localization_name, "simple chemical"));
+            elements.push(createChemicalNode(reactant.name, reactantNodeName(reactant), reactant.cellularLocation?.cell_localization_name, findClass(reactant?.pType)));
 
             // // edge to controller
             elements.push(createEdge(`e-${reactant.name}-process-${reaction.id}`, reactant.name, `process-${reaction.id}`));
@@ -62,7 +62,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
                 elements.push(createChemicalNode(product.cellularLocation?.cell_localization_name, product.cellularLocation?.cell_localization_name, "", "complex"));
             }
             // // product node
-            elements.push(createChemicalNode(product.name, productNodeName(product), product.cellularLocation?.cell_localization_name, product.useNextReaction && product.type === "controllers" ? "macromolecule" : "simple chemical"));
+            elements.push(createChemicalNode(product.name, productNodeName(product), product.cellularLocation?.cell_localization_name, product.useNextReaction && product.type === "controllers" ? findClass(product?.pType || "protein") : findClass(product?.pType)));
 
             // // edge to controller
             elements.push(createEdge(`e-${product.name}-process-${reaction.id}`, `process-${reaction.id}`, product.name));
@@ -163,6 +163,39 @@ function isFindElement(elements, id) {
     )
     if (isFind.length === 0) return false
     else return true
+}
+
+function findClass(type) {
+    if (type === "complex") {
+        return "complex"
+    }
+    else if (type === "protein") {
+        return "macromolecule"
+    }
+
+    else if (type === "glycan") {
+        return "macromolecule"
+    }
+
+    else if (type === "small_molecule") {
+        return "simple chemical"
+    }
+
+    else if (type === "dna") {
+        return "nucleic acid feature"
+    }
+
+    else if (type === "lipid") {
+        return "simple chemical"
+    }
+
+    else if (type === "enzyme") {
+        return "macromolecule"
+    }
+
+    else {
+        return "simple chemical"
+    }
 }
 
 

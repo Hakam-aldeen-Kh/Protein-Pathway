@@ -204,22 +204,26 @@ const NewPathway = () => {
 
           {/* Reactions */}
           {pathwayData?.reactions?.map((reaction, index) => (
-            <Accordion
-              key={reaction.id}
-              title={`Reaction - ${reaction.id}`}
-              className="border bg-[#DDD7EC] rounded-lg mb-4"
-              deleteFn={() => deleteReaction(reaction.id)}
-            >
-              <Reaction
-                reactions={pathwayData?.reactions}
-                reactionIndex={index}
-                reactionData={reaction}
-                setPathwayData={setPathwayData}
-                handleChangeData={handleChange}
-                setDeleteModalData={setDeleteModalData}
-                addReaction={addReaction}
-              />
-            </Accordion>
+            <>
+              <Accordion
+                key={reaction.id}
+                title={`Reaction - ${reaction.id}`}
+                className="border bg-[#DDD7EC] rounded-lg mb-4"
+                deleteFn={() => deleteReaction(reaction.id)}
+              >
+                <Reaction
+                  reactions={pathwayData?.reactions}
+                  reactionIndex={index}
+                  reactionData={reaction}
+                  setPathwayData={setPathwayData}
+                  handleChangeData={handleChange}
+                  setDeleteModalData={setDeleteModalData}
+                  addReaction={addReaction}
+                />
+              </Accordion>
+
+              <p className=" text-sm">To complete the pathway input, please click the &apos;Save Pathway&apos; button in the upper right corner after reviewing.</p>
+            </>
           ))}
 
           <button
