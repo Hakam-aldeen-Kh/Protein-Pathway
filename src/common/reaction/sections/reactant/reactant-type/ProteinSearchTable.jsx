@@ -235,6 +235,7 @@ const ProteinSearchTable = ({
             id="reactant_name_text"
             data-type="json"
             custom-css-url=""
+            data-unavailable_message="No data found."
             width=""
             fixed-columns="1"
             padding="0px"
