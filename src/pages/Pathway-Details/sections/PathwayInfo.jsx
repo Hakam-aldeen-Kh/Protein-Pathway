@@ -36,9 +36,11 @@ const PathwayInfo = ({ pathway, id }) => {
     { label: "Tissue:", value: pathway?.tissue?.label || "no value" },
     { label: "Related Disease:", value: relatedDiseasesValues || "no value" },
     { label: "Record Date:", value: pathway?.recordDate || recordDate },
-    { label: "PubMeds", value: pathway?.pubMeds || "no value", isArray: true & !!pathway?.pubMeds },
+    { label: "PubMeds", value: JSON.stringify(pathway.pubMeds) === '{}' ? "no value" : pathway?.pubMeds, isArray: Array.isArray(pathway?.pubMeds) },
 
   ];
+
+  console.log(pathwayData)
 
   const handleExport = () => {
     if (window.cy) {
