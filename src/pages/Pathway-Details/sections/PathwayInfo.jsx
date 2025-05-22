@@ -40,7 +40,6 @@ const PathwayInfo = ({ pathway, id }) => {
 
   ];
 
-  console.log(pathwayData)
 
   const handleExport = () => {
     if (window.cy) {
