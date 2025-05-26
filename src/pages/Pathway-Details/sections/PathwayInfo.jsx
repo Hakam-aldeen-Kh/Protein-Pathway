@@ -6,6 +6,7 @@ import { layouts } from "../../Pathway-Result/components/layouts";
 import { reactionsDataToCytoscapeFormat } from "../../../utils/reactionsDataToCytoscapeFormat";
 import { capitalize } from "../../../hooks/useCapitalize";
 import { useState } from "react";
+import { controllerNodeId, controllerNodeName, productNodeId, productNodeName, reactantNodeId, reactantNodeName } from "../../../utils/nameNode";
 
 const PathwayInfo = ({ pathway, id }) => {
   const navigate = useNavigate();
@@ -42,13 +43,121 @@ const PathwayInfo = ({ pathway, id }) => {
 
 
   const handleExport = () => {
-    if (window.cy) {
-      const png = window.cy.png({ full: true });
-      const link = document.createElement("a");
-      link.href = png;
-      link.download = "pathway.png";
-      link.click();
+    const pathwayData = {
+      "pathway_id": pathway?._id || "",
+      "pathway_name": pathway?.title || "",
+      "pathway_description": pathway?.description || "",
+      "pathway_category": {
+        "category_name": pathway?.category || "",
+        "category_id": "PW_000002"
+      },
+      "pathway_reference": pathway?.pubMeds?.map(item => ({
+        "reference_id": item?.id || "",
+        "reference_db": "PubMed",
+        "reference_title": item?.title || ""
+      })) || {},
+      "pathway_taxon": {
+        "taxon_db": "NCBI",
+        "taxon_id": "9606",
+        "taxon_name": pathway?.species || ""
+      },
+      "pathway_tissue": {
+        "tissue_db": "BRENDA Tissue Ontology",
+        "tissue_id": pathway?.tissue?.id || "",
+        "tissue_name": pathway?.tissue?.label || ""
+      },
+      "pathway_disease": pathway?.diseaseInput?.map(item => ({
+        "disease_db": "Mondo Disease Ontology (MONDO)",
+        "disease_id": item?.value?.Disease_id || "",
+        "disease_name": item?.value?.Disease_name || "",
+        "type": item?.type || ""
+      })) || [],
+      "pathway_reactions_num": pathway?.reactions?.length,
+      "reactions": pathway?.reactions?.map(item => ({
+        "rxn_number": item?.id || "",
+        "rxn_id": item?.id || "",
+        "rxn_component": [
+          {
+            "role": "reactant",
+            "reactant_info": item?.reactants?.map(item => ({
+              "type": item?.pType || "",
+              "db": "UniProt",
+              "id": reactantNodeId(item) || "",
+              "name": reactantNodeName(item) || "",
+              "cellular_location": {
+                "location_db": "GO Ontology",
+                "location_id": item?.cellularLocation?.cell_localization_id || "",
+                "location_name": item?.cellularLocation?.cell_localization_name || ""
+              },
+              "cell_type": {
+                "co_db": "Cell Ontology",
+                "co_id": item?.cellType?.cType_id || "",
+                "co_name": item?.cellType?.cType_name || ""
+              }
+            })) || []
+          },
+          {
+            "role": "controller",
+            "controller_info": item?.controllers?.map(item => ({
+              "type": item?.pType || "",
+              "db": "UniProt",
+              "id": controllerNodeId(item) || "",
+              "name": controllerNodeName(item) || "",
+              "cellular_location": {
+                "location_db": "GO Ontology",
+                "location_id": item?.cellularLocation?.cell_localization_id || "",
+                "location_name": item?.cellularLocation?.cell_localization_name || ""
+              },
+              "cell_type": {
+                "co_db": "Cell Ontology",
+                "co_id": item?.cellType?.cType_id || "",
+                "co_name": item?.cellType?.cType_name || ""
+              }
+            })) || []
+          },
+          {
+            "role": "product",
+            "product_info": item?.products?.map(item => ({
+              "type": item?.pType || "",
+              "db": "GO ontology",
+              "id": productNodeId(item) || "",
+              "name": productNodeName(item) || "",
+              "cellular_location": {
+                "location_db": "GO Ontology",
+                "location_id": item?.cellularLocation?.cell_localization_id || "",
+                "location_name": item?.cellularLocation?.cell_localization_name || ""
+              },
+              "cell_type": {
+                "co_db": "Cell Ontology",
+                "co_id": item?.cellType?.cType_id || "",
+                "co_name": item?.cellType?.cType_name || ""
+              }
+            })) || []
+          }
+        ]
+      })) || []
     }
+
+    const jsonString = JSON.stringify(pathwayData, null, 2); // Pretty print with indentation
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "pathway_data.json";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url); // Clean up
+
+    // if (window.cy) {
+    //   const png = window.cy.png({ full: true });
+    //   const link = document.createElement("a");
+    //   link.href = png;
+    //   link.download = "pathway.png";
+    //   link.click();
+    // }
   };
 
   const handleGoToPathwayResult = () => {
