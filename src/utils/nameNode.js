@@ -57,3 +57,65 @@ export const productNodeName = (product) => {
     return product.name
 
 }
+
+
+
+
+export const reactantNodeId = (reactant) => {
+    const type = reactant?.pType
+
+    if (type === "complex") {
+        return reactant.complexSymbolicName?.go_complex_id || ""
+    }
+
+    if (type === "protein") {
+        return reactant?.reactant_protein_uniprot_id || ""
+    }
+
+    if (type === "glycan") {
+        return reactant?.glycanText || ""
+    }
+
+    if (type === "small_molecule") {
+        return reactant?.smallMolecule?.Molecule_id || ""
+    }
+
+    if (type === "dna") {
+        return reactant?.geneName
+    }
+
+    if (type === "lipid") {
+        return reactant?.lipid?.backbone_id || ""
+    }
+
+    return ""
+
+}
+
+export const controllerNodeId = (controller) => {
+    const type = controller?.pType
+
+    if (type === "protein") {
+        return controller?.proteinSymbol || controller.proteinSymbolicName || ""
+    }
+
+    if (type === "enzyme") {
+        return controller?.controller_ec_enzyme?.enzyme_name?.value || ""
+    }
+
+    return ""
+
+}
+
+export const productNodeId = (product) => {
+    const type = product?.pType
+    if (type === "complex") {
+        return product?.complexSymbolicName?.go_complex_id || ""
+    }
+
+    if (type === "protein") {
+        return product?.reactant_protein_uniprot_id || ""
+    }
+    return ""
+
+}
