@@ -36,7 +36,7 @@ const SpeciesTable = ({
 
   // Prepare the data URL based on search text
   const inputText = data.species ? encodeURIComponent(data.species) : "";
-  const apiUrl = `https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/ncbiTaxon?input_text=${inputText}`;
+  const apiUrl = `https://pathway-sparqlist.alpha.kb-tohsa.org/sparqlist/api/ncbiTaxon?input_text=${inputText}`;
 
   // Close the modal
   const closeModal = () => {
