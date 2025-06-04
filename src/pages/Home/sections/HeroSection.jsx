@@ -15,11 +15,10 @@ const HeroSection = () => {
     >
       <div className="max-w-3xl">
         <h1 className="text-4xl md:text-5xl font-bold mb-10">
-          Glycan Pathway Repository
+          Glyco Pathway Designer
         </h1>
         <p className="text-3xl mb-10 text-gray-200">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          From monosaccharides to pathway signaling, we connect structures, functions, and discovery.
         </p>
         <div className="flex items-center justify-start gap-4">
           {heroLinks.map(link => (
