@@ -18,27 +18,27 @@ import axios from "axios";
 
 // Base URL for all SPARQList API endpoints
 const SPARQLIST_BASE_URL =
-  "https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api";
+  "https://pathway-sparqlist.alpha.kb-tohsa.org/sparqlist/api";
 
 const API_ENDPOINTS = {
-  Human: `${SPARQLIST_BASE_URL}/Human_disease`,
-  Animal: `${SPARQLIST_BASE_URL}/Animal_Disease`,
-  Plant: `${SPARQLIST_BASE_URL}/Plant_Disease`,
-  CellType: `${SPARQLIST_BASE_URL}/CellTypeOnto`,
-  Lipid: `${SPARQLIST_BASE_URL}/LipidMap`,
-  GoProteinComplex: `${SPARQLIST_BASE_URL}/GO_complex`,
-  ProteinModOntology: `${SPARQLIST_BASE_URL}/proteinModificationOntology`,
-  Tissue: `${SPARQLIST_BASE_URL}/Tissue_Onto`,
-  Cellular: `${SPARQLIST_BASE_URL}/GO_Cell_Location`,
-  Chibe: `${SPARQLIST_BASE_URL}/Chebi_sm`,
-  Enzyme: `${SPARQLIST_BASE_URL}/Uniprot_enzyme`,
-  Categories: `${SPARQLIST_BASE_URL}/PW_category`,
+  Human: `${SPARQLIST_BASE_URL}/mondo`,
+  /*Animal: `${SPARQLIST_BASE_URL}/Animal_Disease`,*/
+  Plant: `${SPARQLIST_BASE_URL}/plantdisease`,
+  CellType: `${SPARQLIST_BASE_URL}/cellType`,
+  Lipid: `${SPARQLIST_BASE_URL}/chebiLipid`,
+  GoProteinComplex: `${SPARQLIST_BASE_URL}/complexGo`,
+  ProteinModOntology: `${SPARQLIST_BASE_URL}/proteinModify`,
+  Tissue: `${SPARQLIST_BASE_URL}/brendaTissue`,
+  Cellular: `${SPARQLIST_BASE_URL}/cellLocationGo`,
+  Chibe: `${SPARQLIST_BASE_URL}/chebiSmallMolecule`,
+  Enzyme: `${SPARQLIST_BASE_URL}/upEnzyme`,
+  Categories: `${SPARQLIST_BASE_URL}/pathwayCategory`,
 };
 
 // Define name properties for each endpoint type
 const NAME_PROPERTIES = {
   Human: "Disease_name",
-  Animal: "Disease_name",
+  /*Animal: "Disease_name",*/
   Plant: "Disease_name",
   CellType: "cType_name",
   Lipid: "backbone_name",
