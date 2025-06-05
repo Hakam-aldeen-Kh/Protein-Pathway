@@ -36,7 +36,7 @@ const ProteinSearchTable = ({
     ? encodeURIComponent(reactantData.proteinSymbolicName)
     : "";
 
-  const apiUrl = `https://gpr-sparqlist.alpha.glycosmos.org/sparqlist/api/uniprot_keyword_search?input_text=${inputText}&input_site=${site}`;
+  const apiUrl = `https://pathway-sparqlist.alpha.kb-tohsa.org/sparqlist/api/upProteinList?input_text=${inputText}&input_site=${site}`;
 
   // Close the modal
   const closeModal = () => {
