@@ -209,7 +209,6 @@ const BasicInfoForm = ({ data, handleChange }) => {
                     className={`${index > 0 ? "w-[90%]" : "w-full"}`}
                   >
                     <option value="Human">Human</option>
-                    <option value="Animal">Animal</option>
                     <option value="Plant">Plant</option>
                   </FormElement>
                   {index > 0 && (
