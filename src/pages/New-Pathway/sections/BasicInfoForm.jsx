@@ -2,6 +2,7 @@ import { useState } from "react";
 import Accordion from "../../../common/Accordion";
 import FormElement from "../../../common/reaction/components/FormElement";
 import SpeciesTable from "./SpeciesTable";
+import PubMedID from "../components/PubMedID";
 
 const BasicInfoForm = ({ data, handleChange }) => {
   const [pubMeds, setPubMeds] = useState(
@@ -36,21 +37,37 @@ const BasicInfoForm = ({ data, handleChange }) => {
     handleChange({ target: { name: "pubMeds", value: newPubMeds } });
   };
 
-  const removePubMed = (pubMedIndex) => {
-    const newPubMeds = pubMeds.filter((_, index) => index !== pubMedIndex);
-    setPubMeds(newPubMeds);
-    handleChange({ target: { name: "pubMeds", value: newPubMeds } });
+  /**
+   * Robust handler for PubMed changes:
+   * - Accepts an event-like object or a raw value for convenience.
+   * - Uses functional setState to avoid stale closures/race conditions.
+   * - Calls parent handleChange once with the full new array.
+   */
+  const handleChangePubMed = (eOrValue, pubMedIndex, field) => {
+    const value =
+      eOrValue && eOrValue.target && typeof eOrValue.target.value !== "undefined"
+        ? eOrValue.target.value
+        : eOrValue;
+
+    setPubMeds((prevPubMeds) => {
+      const newPubMeds = prevPubMeds.map((pubMed, index) => {
+        if (index === pubMedIndex) {
+          return { ...pubMed, [field]: value };
+        }
+        return pubMed;
+      });
+      // sync parent once
+      handleChange({ target: { name: "pubMeds", value: newPubMeds } });
+      return newPubMeds;
+    });
   };
 
-  const handleChangePubMed = (e, pubMedIndex, field) => {
-    const newPubMeds = pubMeds.map((pubMed, index) => {
-      if (index === pubMedIndex) {
-        return { ...pubMed, [field]: e.target.value };
-      }
-      return pubMed;
+  const removePubMed = (pubMedIndex) => {
+    setPubMeds((prev) => {
+      const newPubMeds = prev.filter((_, index) => index !== pubMedIndex);
+      handleChange({ target: { name: "pubMeds", value: newPubMeds } });
+      return newPubMeds;
     });
-    setPubMeds(newPubMeds);
-    handleChange({ target: { name: "pubMeds", value: newPubMeds } });
   };
 
   const addRelatedDisease = () => {
@@ -160,35 +177,15 @@ const BasicInfoForm = ({ data, handleChange }) => {
             </button>
             <div className="space-y-2">
               {pubMeds?.map((item, index) => (
-                <div key={index} className="grid grid-cols-2 gap-x-4">
-                  <div className="flex items-end gap-x-1">
-                    <FormElement
-                      label="PubMed"
-                      placeholder="Add PubMed Title"
-                      value={item?.title}
-                      handleChange={(e) =>
-                        handleChangePubMed(e, index, "title")
-                      }
-                      className="w-[90%]"
-                    />
-                    <div
-                      className="flex items-center h-[40px] justify-center py-2 px-3 border bg-[#57369E] cursor-pointer rounded-lg hover:bg-[#00A7D3] transition-all duration-200"
-                      onClick={() => removePubMed(index)}
-                    >
-                      <img
-                        src="/images/icons/trash.svg"
-                        className="w-[24px] h-[24px]"
-                      />
-                    </div>
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Add PubMed ID"
-                    className="outline-none block w-full h-[40px] self-end flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
-                    value={item?.id}
-                    onChange={(e) => handleChangePubMed(e, index, "id")}
-                  />
-                </div>
+                <PubMedID
+                  key={index}
+                  handleChangePubMed={handleChangePubMed}
+                  removePubMed={removePubMed}
+                  setPubMeds={setPubMeds}
+                  handleChange={handleChange}
+                  item={item}
+                  index={index}
+                />
               ))}
             </div>
           </div>
@@ -219,6 +216,7 @@ const BasicInfoForm = ({ data, handleChange }) => {
                       <img
                         src="/images/icons/trash.svg"
                         className="w-[24px] h-[24px]"
+                        alt="Remove"
                       />
                     </div>
                   )}
