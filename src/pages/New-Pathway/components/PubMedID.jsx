@@ -9,11 +9,25 @@ const PubMedID = ({
   index,
   handleChangePubMed,
   removePubMed,
+  onStatusChange, // NEW: callback to report status up
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
   const inputRef = useRef(null);
+
+  // report status when local flags change
+  useEffect(() => {
+    if (typeof onStatusChange === "function") {
+      const status = {
+        loading: isLoading,
+        error: !!error,
+        valid: !isLoading && !error && !!item?.title,
+      };
+      onStatusChange(index, status);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, error, item?.title]);
 
   useEffect(() => {
     if (item?.title && item.title !== "") {

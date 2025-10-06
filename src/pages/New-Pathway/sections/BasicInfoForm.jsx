@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Accordion from "../../../common/Accordion";
 import FormElement from "../../../common/reaction/components/FormElement";
 import SpeciesTable from "./SpeciesTable";
 import PubMedID from "../components/PubMedID";
 
-const BasicInfoForm = ({ data, handleChange }) => {
+const BasicInfoForm = ({ data, handleChange, setIsReviewDisabled }) => {
   const [pubMeds, setPubMeds] = useState(
     data.pubMeds?.length > 0
       ? data.pubMeds.map((item) => ({
@@ -13,12 +13,51 @@ const BasicInfoForm = ({ data, handleChange }) => {
         }))
       : []
   );
+
+  // Track per-row status reported by PubMed component
+  // shape: { [index]: { loading: bool, error: bool, valid: bool } }
+  const [pubMedStatuses, setPubMedStatuses] = useState({});
+
+  useEffect(() => {
+    // sync initial parent value
+    handleChange({ target: { name: "pubMeds", value: pubMeds } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // only on mount
+
+  // whenever pubMeds or their statuses change, decide whether Review should be disabled
+  useEffect(() => {
+    const hasPubMeds = pubMeds && pubMeds.length > 0;
+
+    // if there are no pubmeds, don't disable review because of pubmeds
+    if (!hasPubMeds) {
+      setIsReviewDisabled(false);
+      return;
+    }
+
+    // if any status is loading or has error -> disable review
+    const statuses = Object.values(pubMedStatuses);
+    const anyLoading = statuses.some((s) => s?.loading);
+    const anyError = statuses.some((s) => s?.error);
+
+    const shouldDisableReview = anyLoading || anyError;
+
+    setIsReviewDisabled(shouldDisableReview);
+  }, [pubMeds, pubMedStatuses, setIsReviewDisabled]);
+
   const [relatedDiseases, setRelatedDiseases] = useState(
     data.diseaseInput && data.diseaseInput.length > 0
       ? data.diseaseInput
       : [{ type: "", value: "" }]
   );
   const [isOpen, setOpenTablePagination] = useState(false);
+
+  // Callback from PubMedID rows to report status
+  const handlePubMedStatusChange = (rowIndex, status) => {
+    setPubMedStatuses((prev) => {
+      const next = { ...prev, [rowIndex]: status };
+      return next;
+    });
+  };
 
   // Callback to handle species selection
   const handleSpeciesSelect = ({ species }) => {
@@ -35,6 +74,8 @@ const BasicInfoForm = ({ data, handleChange }) => {
     const newPubMeds = [...pubMeds, { id: "", title: "" }];
     setPubMeds(newPubMeds);
     handleChange({ target: { name: "pubMeds", value: newPubMeds } });
+    // initialize status for new row as not loading, no error, not valid
+    setPubMedStatuses((prev) => ({ ...prev, [newPubMeds.length - 1]: { loading: false, error: false, valid: false } }));
   };
 
   /**
@@ -66,6 +107,20 @@ const BasicInfoForm = ({ data, handleChange }) => {
     setPubMeds((prev) => {
       const newPubMeds = prev.filter((_, index) => index !== pubMedIndex);
       handleChange({ target: { name: "pubMeds", value: newPubMeds } });
+
+      // remove status entry and shift indexes down
+      setPubMedStatuses((prevStatuses) => {
+        const next = {};
+        Object.keys(prevStatuses)
+          .map((k) => parseInt(k, 10))
+          .filter((k) => k !== pubMedIndex)
+          .sort((a, b) => a - b)
+          .forEach((oldIndex, newIndex) => {
+            next[newIndex] = prevStatuses[oldIndex];
+          });
+        return next;
+      });
+
       return newPubMeds;
     });
   };
@@ -176,15 +231,16 @@ const BasicInfoForm = ({ data, handleChange }) => {
               + Add PubMed
             </button>
             <div className="space-y-2">
-              {pubMeds?.map((item, index) => (
+              {pubMeds?.map((item, idx) => (
                 <PubMedID
-                  key={index}
+                  key={idx}
                   handleChangePubMed={handleChangePubMed}
                   removePubMed={removePubMed}
                   setPubMeds={setPubMeds}
                   handleChange={handleChange}
                   item={item}
-                  index={index}
+                  index={idx}
+                  onStatusChange={handlePubMedStatusChange}
                 />
               ))}
             </div>
