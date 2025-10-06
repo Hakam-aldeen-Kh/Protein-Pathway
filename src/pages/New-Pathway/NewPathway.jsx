@@ -225,7 +225,7 @@ const NewPathway = () => {
                 />
               </Accordion>
 
-              <p className=" text-sm">To complete the pathway input, please click the &apos;Save Pathway&apos; button in the upper right corner after reviewing.</p>
+              <p className=" text-sm">To complete the pathway input, please click the &apos;Save a Pathway&apos; button in the upper right corner after reviewing.</p>
             </>
           ))}
 
