@@ -252,7 +252,7 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder, isEdit }) =>
               {filteredItems.length === 0 ? (
                 <div className="p-3 text-gray-500">No items found</div>
               ) : (
-                filteredItems.map((item, idx) => (
+                filteredItems?.map((item, idx) => (
                   <ComboboxOption
                     key={`${getItemName(item)}-${idx}`}
                     value={item}

@@ -204,7 +204,7 @@ const NewPathway = () => {
 
           {/* Reactions */}
           {pathwayData?.reactions?.map((reaction, index) => (
-            <>
+            <div key={index}>
               <Accordion
                 key={reaction.id}
                 title={`Reaction - ${reaction.id}`}
@@ -222,8 +222,29 @@ const NewPathway = () => {
                 />
               </Accordion>
 
-              <p className=" text-sm">To complete the pathway input, please click the &apos;Save Pathway&apos; button in the upper right corner after reviewing.</p>
-            </>
+              {/* <p className=" text-md text-indigo-500 bg-indigo-50 p-5 rounded">To complete the pathway input, please click the &apos;Save Pathway&apos; button in the upper right corner after reviewing.</p> */}
+              <div className="flex items-start gap-2 mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                <svg
+                  className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div className="flex-1">
+                  <p className="text-sm text-blue-800 font-medium">
+                    Remember to save your pathway
+                  </p>
+                  <p className="text-sm text-blue-600 mt-1">
+                    Once you`ve reviewed all the information, click the <span className="font-semibold">`Save Pathway`</span> button above to finalize your changes.
+                  </p>
+                </div>
+              </div>
+            </div>
           ))}
 
           <button

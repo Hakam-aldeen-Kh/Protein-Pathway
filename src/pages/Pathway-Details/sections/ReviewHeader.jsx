@@ -1,8 +1,8 @@
-import { Link, useOutletContext } from "react-router";
+import { Link, useOutletContext, useParams } from "react-router";
 
-const ReviewHeader = ({ pathwayId, title, description, pageState, handleSave, isEdit, editLoading }) => {
-    const { isLoading, handleDeletePathway } = useOutletContext();
-
+const ReviewHeader = ({ title, description, pageState, handleSave, isEdit, editLoading, handleExport, exportLoading }) => {
+    const { isLoading } = useOutletContext();
+    const { id: pathwayId } = useParams()
     return (
         <div className="flex gap-5 items-start w-full max-md:max-w-full">
             <div className="flex flex-col flex-1 shrink w-full basis-0 min-w-[240px] max-md:max-w-full">
@@ -71,8 +71,17 @@ const ReviewHeader = ({ pathwayId, title, description, pageState, handleSave, is
                                         </button>
                                     </div>
                                 </>
-
                             }
+
+                            <div className=" group">
+                                <button
+                                    className="flex gap-2 justify-center items-center self-stretch px-4 py-2 my-auto rounded-sm border border-violet-900 group-hover:border-transparent border-solid min-h-[40px] group-hover:text-white group-hover:bg-[#00A7D3] transition-colors duration-500 "
+                                    onClick={() => handleExport(pathwayId)}
+                                >
+                                    <span className="self-stretch my-auto">{exportLoading ? "Loading ..." : "Export to JSON"}</span>
+
+                                </button>
+                            </div>
                         </div>
                     }
 
@@ -80,6 +89,31 @@ const ReviewHeader = ({ pathwayId, title, description, pageState, handleSave, is
                 <p className="flex-1 shrink gap-10 mt-5 w-full text-xl text-[#626262] max-md:max-w-full">
                     {description || "no value "}
                 </p>
+
+                {/* Inline instruction for saving pathway - shown during review state */}
+                {pageState === "review" && (
+                    <div className="flex items-start gap-2 mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                        <svg
+                            className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0"
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div className="flex-1">
+                            <p className="text-sm text-blue-800 font-medium">
+                                Remember to save your pathway
+                            </p>
+                            <p className="text-sm text-blue-600 mt-1">
+                                Once you`ve reviewed all the information, click the <span className="font-semibold">`Save Pathway`</span> button above to finalize your changes.
+                            </p>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )

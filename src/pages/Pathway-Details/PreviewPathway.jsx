@@ -10,7 +10,7 @@ import { usePathway } from "../../hooks/usePathway";
 const PreviewPathway = () => {
   const { id } = useParams();
 
-  const { handleSubmitEditPathway, isLoading: editLoading } = usePathway()
+  const { handleSubmitEditPathway, isLoading: editLoading, exportLoading, handleExport } = usePathway()
   const { isAuthenticated, loading: authLoading } = useAuth(); // Add loading state from auth hook
 
   const [pathwayData, setPathwayClone] = useState(null);
@@ -95,6 +95,8 @@ const PreviewPathway = () => {
         handleSave={handleSaveAfterEdit}
         handleChangeClone={handleChangeClone}
         isLoading={editLoading}
+        exportLoading={exportLoading}
+        handleExport={handleExport}
       />
     </div>
   );
