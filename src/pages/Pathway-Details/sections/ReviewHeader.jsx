@@ -33,7 +33,7 @@ const ReviewHeader = ({ title, description, pageState, handleSave, isEdit, editL
                                     disabled={isLoading}
                                 >
                                     <span className="self-stretch my-auto">{
-                                        isLoading ? "Loading ..." : "Save Pathway"
+                                        isLoading ? "Loading ..." : "Save a Pathway"
                                     }</span>
                                     {/* <img src="/images/icons/document-download-light.svg" /> */}
                                 </button>

@@ -10,6 +10,8 @@ import Reaction from "../../common/reaction/Reaction";
 const NewPathway = () => {
   const { pathwayData, setPathwayData, cancleCreation } = useOutletContext();
 
+  const [isReviewDisabled, setIsReviewDisabled] = useState(true)
+
   const navigate = useNavigate();
 
   const [deleteModalData, setDeleteModalData] = useState({
@@ -191,8 +193,9 @@ const NewPathway = () => {
                 Cancel
               </button>
               <button
-                className="px-4 py-2 bg-[#57369E] text-white rounded"
+                className={`px-4 py-2 text-white rounded transition-all duration-200 ${isReviewDisabled ? "bg-gray-400" : "bg-[#57369E] hover:bg-[#00A7D3]"}`}
                 onClick={handleSubmit}
+                disabled={isReviewDisabled}
               >
                 Review
               </button>
@@ -200,7 +203,7 @@ const NewPathway = () => {
           </div>
 
           {/* Pathway Basic Information */}
-          <BasicInfoForm data={pathwayData} handleChange={handleChange} />
+          <BasicInfoForm data={pathwayData} handleChange={handleChange} setIsReviewDisabled={setIsReviewDisabled} />
 
           {/* Reactions */}
           {pathwayData?.reactions?.map((reaction, index) => (
