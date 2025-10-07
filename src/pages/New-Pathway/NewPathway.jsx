@@ -10,7 +10,7 @@ import Reaction from "../../common/reaction/Reaction";
 const NewPathway = () => {
   const { pathwayData, setPathwayData, cancleCreation } = useOutletContext();
 
-  const [isReviewDisabled, setIsReviewDisabled] = useState(true)
+  const [isReviewDisabled, setIsReviewDisabled] = useState(true);
 
   const navigate = useNavigate();
 
@@ -40,16 +40,16 @@ const NewPathway = () => {
         reactions: prevPathwayData.reactions.map((reaction) =>
           reaction.id === reactionId
             ? {
-              ...reaction,
-              [type]: reaction[type].map((item) =>
-                item.id === id
-                  ? {
-                    ...item,
-                    [name]: value === "on" ? (v ? v : checked) : value,
-                  }
-                  : item
-              ),
-            }
+                ...reaction,
+                [type]: reaction[type].map((item) =>
+                  item.id === id
+                    ? {
+                        ...item,
+                        [name]: value === "on" ? (v ? v : checked) : value,
+                      }
+                    : item
+                ),
+              }
             : reaction
         ),
       };
@@ -62,17 +62,16 @@ const NewPathway = () => {
   };
 
   const addReaction = (withController, newReactionId) => {
-
-    let reactionId = pathwayData.reactions[pathwayData.reactions.length - 1]?.id + 1 || 1;
-    let reOrder = false
+    let reactionId =
+      pathwayData.reactions[pathwayData.reactions.length - 1]?.id + 1 || 1;
+    let reOrder = false;
 
     if (newReactionId && newReactionId !== reactionId) {
-      reactionId = newReactionId
-      reOrder = true
+      reactionId = newReactionId;
+      reOrder = true;
     }
 
-
-    let newReaction = {}
+    let newReaction = {};
 
     if (withController === true) {
       newReaction = {
@@ -81,9 +80,7 @@ const NewPathway = () => {
         controllers: [{ id: 1, name: `controller_${reactionId}.1` }],
         products: [{ id: 1, name: `product_${reactionId}.1` }],
       };
-    }
-
-    else {
+    } else {
       newReaction = {
         id: reactionId,
         reactants: [{ id: 1, name: `reactant_${reactionId}.1` }],
@@ -92,10 +89,9 @@ const NewPathway = () => {
       };
     }
 
-
     if (reOrder) {
       setPathwayData((prevPathwayData) => {
-        let newReactions = [...prevPathwayData.reactions]
+        let newReactions = [...prevPathwayData.reactions];
         newReactions.splice(reactionId - 1, 0, newReaction);
 
         return {
@@ -103,15 +99,13 @@ const NewPathway = () => {
           reactions: newReactions,
         };
       });
-    }
-    else {
+    } else {
       setPathwayData((prevPathwayData) => {
         return {
           ...prevPathwayData,
           reactions: [...prevPathwayData.reactions, newReaction],
         };
       });
-
     }
 
     return newReaction;
@@ -124,43 +118,115 @@ const NewPathway = () => {
       closeModal: () =>
         setDeleteModalData((prev) => ({ ...prev, isModalOpen: false })),
       handleDelete: () => {
-        const targetReactionId = id
+        const targetReactionId = id;
 
-        const targetReaction = pathwayData.reactions.find(r => r.id === targetReactionId);
-
+        const targetReaction = pathwayData.reactions.find(
+          (r) => r.id === targetReactionId
+        );
 
         // remove linked between targetIndex and targetIndex+1
-        if (pathwayData.reactions.find(r => r.id === targetReactionId + 1)) {
-
-          handleChange({ target: { value: "", name: "reference" } }, targetReactionId + 1, "controllers", 1);
-          handleChange({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "controllers", 1);
-          handleChange({ target: { value: "", name: "productId", }, }, targetReactionId + 1, "controllers", 1);
-          handleChange({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "controllers", 1);
+        if (pathwayData.reactions.find((r) => r.id === targetReactionId + 1)) {
+          handleChange(
+            { target: { value: "", name: "reference" } },
+            targetReactionId + 1,
+            "controllers",
+            1
+          );
+          handleChange(
+            { target: { value: "", name: "fromReaction" } },
+            targetReactionId + 1,
+            "controllers",
+            1
+          );
+          handleChange(
+            { target: { value: "", name: "productId" } },
+            targetReactionId + 1,
+            "controllers",
+            1
+          );
+          handleChange(
+            { target: { value: "", name: "connectedData" } },
+            targetReactionId + 1,
+            "controllers",
+            1
+          );
 
           // handleChange({ target: { value: "", name: "conectedReactantId" } }, reaction.id, "products", productId)
 
           for (let i = 0; i < targetReaction.products.length; i += 1) {
-            const conectedReactantId = targetReaction.products[i].conectedReactantId
-            handleChange({ target: { value: false, name: "useNextReaction", }, }, targetReactionId, "products", targetReaction.products[i].id);
+            const conectedReactantId =
+              targetReaction.products[i].conectedReactantId;
+            handleChange(
+              { target: { value: false, name: "useNextReaction" } },
+              targetReactionId,
+              "products",
+              targetReaction.products[i].id
+            );
 
             if (conectedReactantId) {
-              handleChange({ target: { value: "", name: "reference" } }, targetReactionId + 1, "reactants", conectedReactantId);
-              handleChange({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "reactants", conectedReactantId);
-              handleChange({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "reactants", conectedReactantId);
+              handleChange(
+                { target: { value: "", name: "reference" } },
+                targetReactionId + 1,
+                "reactants",
+                conectedReactantId
+              );
+              handleChange(
+                { target: { value: "", name: "fromReaction" } },
+                targetReactionId + 1,
+                "reactants",
+                conectedReactantId
+              );
+              handleChange(
+                { target: { value: "", name: "connectedData" } },
+                targetReactionId + 1,
+                "reactants",
+                conectedReactantId
+              );
             }
           }
 
-          handleChange({ target: { value: false, name: "useNextReaction", }, }, targetReactionId, "controllers", 1);
+          handleChange(
+            { target: { value: false, name: "useNextReaction" } },
+            targetReactionId,
+            "controllers",
+            1
+          );
 
-          handleChange({ target: { value: "", name: "conectedReactantId" } }, targetReactionId, "controllers", 1)
-          handleChange({ target: { value: "", name: "targetReactionId" } }, targetReactionId, "controllers", 1)
+          handleChange(
+            { target: { value: "", name: "conectedReactantId" } },
+            targetReactionId,
+            "controllers",
+            1
+          );
+          handleChange(
+            { target: { value: "", name: "targetReactionId" } },
+            targetReactionId,
+            "controllers",
+            1
+          );
 
-          const conectedReactantId = targetReaction?.controllers[0]?.conectedReactantId
+          const conectedReactantId =
+            targetReaction?.controllers[0]?.conectedReactantId;
 
           if (conectedReactantId) {
-            handleChange({ target: { value: "", name: "reference" } }, targetReactionId + 1, "reactants", conectedReactantId);
-            handleChange({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "reactants", conectedReactantId);
-            handleChange({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "reactants", conectedReactantId);
+            handleChange(
+              { target: { value: "", name: "reference" } },
+              targetReactionId + 1,
+              "reactants",
+              conectedReactantId
+            );
+            handleChange(
+              { target: { value: "", name: "fromReaction" } },
+              targetReactionId + 1,
+              "reactants",
+              conectedReactantId
+            );
+            handleChange(
+              { target: { value: "", name: "connectedData" } },
+              targetReactionId + 1,
+              "reactants",
+              conectedReactantId
+            );
           }
         }
 
@@ -193,7 +259,11 @@ const NewPathway = () => {
                 Cancel
               </button>
               <button
-                className={`px-4 py-2 text-white rounded transition-all duration-200 ${isReviewDisabled? "bg-gray-400": "bg-[#57369E] hover:bg-[#00A7D3]" }`}
+                className={`px-4 py-2 text-white rounded transition-all duration-200 ${
+                  isReviewDisabled
+                    ? "bg-gray-400"
+                    : "bg-[#57369E] hover:bg-[#00A7D3]"
+                }`}
                 onClick={handleSubmit}
                 disabled={isReviewDisabled}
               >
@@ -203,13 +273,16 @@ const NewPathway = () => {
           </div>
 
           {/* Pathway Basic Information */}
-          <BasicInfoForm data={pathwayData} handleChange={handleChange} setIsReviewDisabled={setIsReviewDisabled} />
+          <BasicInfoForm
+            data={pathwayData}
+            handleChange={handleChange}
+            setIsReviewDisabled={setIsReviewDisabled}
+          />
 
           {/* Reactions */}
           {pathwayData?.reactions?.map((reaction, index) => (
-            <>
+            <div key={reaction.id}>
               <Accordion
-                key={reaction.id}
                 title={`Reaction - ${reaction.id}`}
                 className="border bg-[#DDD7EC] rounded-lg mb-4"
                 deleteFn={() => deleteReaction(reaction.id)}
@@ -224,10 +297,42 @@ const NewPathway = () => {
                   addReaction={addReaction}
                 />
               </Accordion>
-
-              <p className=" text-sm">To complete the pathway input, please click the &apos;Save a Pathway&apos; button in the upper right corner after reviewing.</p>
-            </>
+              <p className=" text-sm">
+                To complete the pathway input, please click the &apos;Save a
+                Pathway&apos; button in the upper right corner after reviewing.
+              </p>
+            </div>
           ))}
+
+          {(pathwayData.regulators ?? []).map((item, index) => (
+            <div key={item.id}>
+              <Accordion
+                title={`Regulator - ${item.id}`}
+                className="border bg-[#DDD7EC] rounded-lg mb-4"
+                deleteFn={() => deleteReaction(item.id)}
+              >
+                <Reaction
+                  reactions={pathwayData?.reactions}
+                  reactionIndex={index}
+                  reactionData={item}
+                  setPathwayData={setPathwayData}
+                  handleChangeData={handleChange}
+                  setDeleteModalData={setDeleteModalData}
+                  addReaction={addReaction}
+                />
+              </Accordion>
+              <p className=" text-sm">
+                To complete the pathway input, please click the &apos;Save a
+                Pathway&apos; button in the upper right corner after reviewing.
+              </p>
+            </div>
+          ))}
+          {(pathwayData.regulators ?? []).length < 1 && (
+            <div className="text-center text-gray-500 py-4">
+              No regulators found. You can add a regulator in the reaction
+              settings.
+            </div>
+          )}
 
           <button
             onClick={addReaction}

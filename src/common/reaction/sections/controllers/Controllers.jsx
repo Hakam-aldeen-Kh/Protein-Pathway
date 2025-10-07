@@ -1,6 +1,6 @@
 import { PlusIcon } from "lucide-react";
 import Accordion from "../../../Accordion";
-import ControllerForm from "./ControllerForm";
+import RegulatorForm from "../regulators/RegulatorForm";
 
 const Controllers = ({
   reactions,
@@ -81,7 +81,7 @@ const Controllers = ({
           title={`Controller - ${reaction.id}.${item.id}`}
           useInNextReaction={item.useNextReaction}
         >
-          <ControllerForm
+          <RegulatorForm
             isEdit={!item.reference || false}
             setPathwayData={setPathwayData}
             handleChangeData={handleChangeData}

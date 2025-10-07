@@ -1,6 +1,10 @@
 import { useMemo, useState } from "react";
 import ReactionModal from "./ReactionModal";
-import { controllerNodeName, productNodeName, reactantNodeName } from "../../../utils/nameNode";
+import {
+  regulatorNodeName,
+  productNodeName,
+  reactantNodeName,
+} from "../../../utils/nameNode";
 
 const ReactionTableRow = ({
   reactions,
@@ -15,14 +19,14 @@ const ReactionTableRow = ({
   reactionState,
 }) => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  // console.log(reactions);
+
   function capitalize(s) {
-    return String(s[0]).toUpperCase() + String(s).slice(1);
+    return String(s?.[0]).toUpperCase() + String(s).slice(1);
   }
 
   const cellTypes = useMemo(() => {
     return reactions.flatMap((reac) =>
-      reac.reactants
+      (reac.reactants ?? [])
         .map((r) =>
           r.cellType?.cType_name ? capitalize(r.cellType.cType_name) : null
         )
@@ -32,7 +36,7 @@ const ReactionTableRow = ({
 
   const cellLocation = useMemo(() => {
     return reactions.flatMap((reac) =>
-      reac.reactants
+      (reac.reactants ?? [])
         .map((r) =>
           r.cellularLocation?.cell_localization_name
             ? capitalize(r.cellularLocation.cell_localization_name)
@@ -45,33 +49,66 @@ const ReactionTableRow = ({
   return (
     <>
       <tr
-        className={`border-b-[5px] border-white rounded ${reactionState?.state === "new" ? "bg-green-100" : "bg-[#F1F5F9]"
-          }`}
+        className={`border-b-[5px] border-white rounded ${
+          reactionState?.state === "new" ? "bg-green-100" : "bg-[#F1F5F9]"
+        }`}
       >
         <td className="px-4 py-2">{reactionIndex + 1}</td>
-        <td className="h-full  py-2">
-          {reaction.reactants.map((reactantData, index) => (
-            <div key={index} className="px-4 flex items-center h-full">
+        <td className="h-full py-2">
+          {(reaction.reactants ?? []).map((reactantData, index) => (
+            <div
+              key={reactantData.id ?? index}
+              className="px-4 flex items-center h-full"
+            >
               <span className="text-violet-900 hover:text-violet-600">
-                {reactantData.connectedData ?
-                  reactantData.connectedData.type === "controllers" ?
-                    controllerNodeName(reactions?.find(item => item.id === reactantData?.fromReaction)[reactantData?.connectedData?.type]?.find(item => item.id === reactantData?.connectedData.id)) :
-                    productNodeName(reactions?.find(item => item.id === reactantData?.fromReaction)[reactantData?.connectedData?.type]?.find(item => item.id === reactantData?.connectedData.id)) :
-                  reactantNodeName(reactantData)}
+                {reactantData.connectedData
+                  ? reactantData.connectedData.type === "regulators"
+                    ? regulatorNodeName(
+                        reactions
+                          ?.find(
+                            (item) => item.id === reactantData?.fromReaction
+                          )
+                          ?.[reactantData?.connectedData?.type]?.find(
+                            (item) => item.id === reactantData?.connectedData.id
+                          )
+                      )
+                    : productNodeName(
+                        reactions
+                          ?.find(
+                            (item) => item.id === reactantData?.fromReaction
+                          )
+                          ?.[reactantData?.connectedData?.type]?.find(
+                            (item) => item.id === reactantData?.connectedData.id
+                          )
+                      )
+                  : reactantNodeName(reactantData)}
                 {reaction.reactants.length !== index + 1 && "-"}
               </span>
             </div>
           ))}
         </td>
-        <td className="px-4  py-2">
-          {reaction?.controllers?.length > 0 && reaction.controllers[0].name
-            ? reaction.controllers[0].connectedData ? productNodeName(reactions?.find(item => item.id === reaction.controllers[0]?.fromReaction)[reaction.controllers[0]?.connectedData?.type]?.find(item => item.id === reaction.controllers[0]?.connectedData.id)) :
-              controllerNodeName(reaction.controllers[0])
+        <td className="px-4 py-2">
+          {reaction?.regulators?.length > 0 && reaction.regulators[0]?.name
+            ? reaction.regulators[0]?.connectedData
+              ? productNodeName(
+                  reactions
+                    ?.find(
+                      (item) => item.id === reaction.regulators[0]?.fromReaction
+                    )
+                    ?.[reaction.regulators[0]?.connectedData?.type]?.find(
+                      (item) =>
+                        item.id === reaction.regulators[0]?.connectedData.id
+                    )
+                )
+              : regulatorNodeName(reaction.regulators[0])
             : "-"}
         </td>
-        <td className="h-full  py-2">
-          {reaction.products.map((item, index) => (
-            <div key={index} className="px-4 flex items-center h-full">
+        <td className="h-full py-2">
+          {(reaction.products ?? []).map((item, index) => (
+            <div
+              key={item.id ?? index}
+              className="px-4 flex items-center h-full"
+            >
               <span className="text-violet-900 hover:text-violet-600 cursor-pointer">
                 {productNodeName(item)}
                 {reaction.products.length !== index + 1 && " - "}
@@ -83,25 +120,25 @@ const ReactionTableRow = ({
         <td className="py-2">
           {cellTypes.length > 0
             ? cellTypes.map((cell, index) => (
-              <div key={index} className="px-4 flex items-center gap-2">
-                {cell}
-              </div>
-            ))
+                <div key={index} className="px-4 flex items-center gap-2">
+                  {cell}
+                </div>
+              ))
             : "-"}
         </td>
 
         <td className="py-2">
           {cellLocation.length > 0
             ? cellLocation.map((cell, index) => (
-              <div key={index} className="px-4 flex items-center gap-2">
-                {cell}
-              </div>
-            ))
+                <div key={index} className="px-4 flex items-center gap-2">
+                  {cell}
+                </div>
+              ))
             : "-"}
         </td>
 
         {isEdit && (
-          <td className="px-4 flex items-center h-full gap-x-2  py-2">
+          <td className="px-4 flex items-center h-full gap-x-2 py-2">
             <button onClick={() => addReactionAfterReaction(reaction.id)}>
               <img src="/images/icons/add-square.svg" alt="add" />
             </button>

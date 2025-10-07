@@ -3,8 +3,10 @@ const ReactionComponentsDiagram = () => {
     <div className="p-8 bg-white font-sans">
       {/* Top Section - Reaction Components */}
       <div className="mb-12">
-        <h1 className="text-2xl font-bold mb-8 text-black">Reaction Components</h1>
-        
+        <h1 className="text-2xl font-bold mb-8 text-black">
+          Reaction Components
+        </h1>
+
         <div className="flex items-center justify-center gap-8 relative">
           {/* Left side - Reactants */}
           <div className="flex flex-col gap-4">
@@ -15,17 +17,15 @@ const ReactionComponentsDiagram = () => {
               Reactant 2
             </div>
           </div>
-          
-          {/* Center - Controller and Arrow */}
+
+          {/* Center - Regulator and Arrow */}
           <div className="flex flex-col items-center gap-2">
             <div className="bg-purple-400 px-6 py-3 rounded-lg text-black font-medium italic text-lg border-2 border-purple-500">
-              controller
+              regulator
             </div>
-            <div className="text-purple-600 text-3xl font-bold">
-              →
-            </div>
+            <div className="text-purple-600 text-3xl font-bold">→</div>
           </div>
-          
+
           {/* Right side - Products */}
           <div className="flex flex-col gap-4">
             <div className="bg-blue-400 px-8 py-4 rounded-full text-black font-medium text-lg">
@@ -37,14 +37,15 @@ const ReactionComponentsDiagram = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Bottom Section - Table */}
       <div>
         <h2 className="text-2xl font-bold mb-4 text-black">
-          Input Order for Each Reaction of Pathway<br />
+          Input Order for Each Reaction of Pathway
+          <br />
           information
         </h2>
-        
+
         <table className="w-full border-collapse border border-gray-400">
           <thead>
             <tr className="bg-gray-300">
@@ -55,7 +56,7 @@ const ReactionComponentsDiagram = () => {
                 Reactant
               </th>
               <th className="border border-gray-400 p-4 text-center font-medium text-purple-600">
-                Controller
+                Regulator
               </th>
               <th className="border border-gray-400 p-4 text-center font-medium text-blue-600">
                 Product
@@ -70,9 +71,7 @@ const ReactionComponentsDiagram = () => {
               <td className="border border-gray-400 p-4 text-black text-center">
                 DLL1, NOTCH1
               </td>
-              <td className="border border-gray-400 p-4 text-black text-center">
-                
-              </td>
+              <td className="border border-gray-400 p-4 text-black text-center"></td>
               <td className="border border-gray-400 p-4 text-black text-center">
                 DLL4:NOTCH1
               </td>
