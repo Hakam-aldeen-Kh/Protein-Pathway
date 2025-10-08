@@ -35,21 +35,21 @@ export function reactionsDataToCytoscapeFormat(reactions) {
         })
 
 
-        // Process controllers
-        reaction.controllers.forEach((controller) => {
-            elements.push(createChemicalNode(`${controller.name}-process`, "", controller.cellularLocation.cell_localization_name, "process"));
-            elements.push(createChemicalNode(controller.name, controller, controller.cellularLocation.cell_localization_name, "macromolecule"));
+        // Process regulators
+        reaction.regulators.forEach((regulator) => {
+            elements.push(createChemicalNode(`${regulator.name}-process`, "", regulator.cellularLocation.cell_localization_name, "process"));
+            elements.push(createChemicalNode(regulator.name, regulator, regulator.cellularLocation.cell_localization_name, "macromolecule"));
 
-            elements.push(createEdge(`e${controller.name}-${controller.name}-process`, controller.name, `${controller.name}-process`, "stimulation"));
+            elements.push(createEdge(`e${regulator.name}-${regulator.name}-process`, regulator.name, `${regulator.name}-process`, "stimulation"));
 
-            // Add edge from  reactant to controller
+            // Add edge from  reactant to regulator
             reaction.reactants.forEach((reactant) => {
-                elements.push(createEdge(`e-${reactant.name}-${controller.name}-process`, reactant.name, `${controller.name}-process`));
+                elements.push(createEdge(`e-${reactant.name}-${regulator.name}-process`, reactant.name, `${regulator.name}-process`));
             });
 
-            // Add edge from controller to products
+            // Add edge from regulator to products
             reaction.products.forEach((product) => {
-                elements.push(createEdge(`e-${controller.name}-process-${product.name}`, `${controller.name}-process`, product.name));
+                elements.push(createEdge(`e-${regulator.name}-process-${product.name}`, `${regulator.name}-process`, product.name));
             });
         });
 
@@ -62,21 +62,21 @@ export function reactionsDataToCytoscapeFormat(reactions) {
         reaction.products.forEach((product) => {
             elements.push(createChemicalNode(product.name, product, product.cellularLocation.cell_localization_name, "simple chemical"));
             if (product.useNextReaction) {
-                if (product.type !== "controllers") {
-                    elements.push(createEdge(`e-${product.name}-${product.controller}-process`, product.name, `${product.controller}-process`));
+                if (product.type !== "regulators") {
+                    elements.push(createEdge(`e-${product.name}-${product.regulator}-process`, product.name, `${product.regulator}-process`));
                 }
                 else {
-                    elements.push(createChemicalNode(`${product.controller}-process`, "", product.cellularLocation.cell_localization_name, "process"));
-                    elements.push(createEdge(`e-${product.name}-${product.controller}-process`, product.name, `${product.controller}-process`, "stimulation"));
+                    elements.push(createChemicalNode(`${product.regulator}-process`, "", product.cellularLocation.cell_localization_name, "process"));
+                    elements.push(createEdge(`e-${product.name}-${product.regulator}-process`, product.name, `${product.regulator}-process`, "stimulation"));
 
-                    // Add edge from  reactant to controller
+                    // Add edge from  reactant to regulator
                     filterReaction[rIndex + 1].reactants.forEach((reactant) => {
-                        elements.push(createEdge(`e-${reactant.name}-${product.controller}-process`, reactant.name, `${product.controller}-process`));
+                        elements.push(createEdge(`e-${reactant.name}-${product.regulator}-process`, reactant.name, `${product.regulator}-process`));
                     });
 
-                    // Add edge from controller to products
+                    // Add edge from regulator to products
                     filterReaction[rIndex + 1].products.forEach((producti) => {
-                        elements.push(createEdge(`e-${product.controller}-process-${producti.name}`, `${product.controller}-process`, producti.name));
+                        elements.push(createEdge(`e-${product.regulator}-process-${producti.name}`, `${product.regulator}-process`, producti.name));
                     });
                 }
             }
@@ -136,7 +136,7 @@ function createEdge(id, source, target, type) {
 function getParent(reaction) {
     const result = [
         ...reaction.reactants.map(item => item.cellularLocation.cell_localization_name),
-        ...reaction.controllers.map(item => item.cellularLocation.cell_localization_name),
+        ...reaction.regulators.map(item => item.cellularLocation.cell_localization_name),
         ...reaction.products.map(item => item.cellularLocation.cell_localization_name)
     ];
 
@@ -147,7 +147,7 @@ function filterIsProductModern(arrays) {
     return arrays.map(item => ({
         ...item,
         reactants: item.reactants.filter(r => !r.isProduct),
-        controllers: item.controllers.filter(c => !c.isProduct),
+        regulators: item.regulators.filter(c => !c.isProduct),
         products: item.products.filter(p => !p.isProduct)
     }));
 }

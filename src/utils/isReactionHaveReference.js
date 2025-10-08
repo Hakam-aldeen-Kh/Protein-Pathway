@@ -3,7 +3,7 @@ export const isReactionHaveReference = (reaction) => {
         (r) => r.reference && r.reference.trim() !== ""
     );
 
-    const hasReferenceInControllers = reaction.controllers?.some(
+    const hasReferenceInControllers = reaction.regulators?.some(
         (c) => c.reference && c.reference.trim() !== ""
     );
 
