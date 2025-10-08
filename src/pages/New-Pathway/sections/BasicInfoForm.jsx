@@ -3,6 +3,7 @@ import Accordion from "../../../common/Accordion";
 import FormElement from "../../../common/reaction/components/FormElement";
 import SpeciesTable from "./SpeciesTable";
 import PubMedID from "../components/PubMedID";
+import PathwayCategory from "../components/PathwayCategory";
 
 const BasicInfoForm = ({ data, handleChange, setIsReviewDisabled }) => {
   const [pubMeds, setPubMeds] = useState(
@@ -75,7 +76,10 @@ const BasicInfoForm = ({ data, handleChange, setIsReviewDisabled }) => {
     setPubMeds(newPubMeds);
     handleChange({ target: { name: "pubMeds", value: newPubMeds } });
     // initialize status for new row as not loading, no error, not valid
-    setPubMedStatuses((prev) => ({ ...prev, [newPubMeds.length - 1]: { loading: false, error: false, valid: false } }));
+    setPubMedStatuses((prev) => ({
+      ...prev,
+      [newPubMeds.length - 1]: { loading: false, error: false, valid: false },
+    }));
   };
 
   /**
@@ -86,7 +90,9 @@ const BasicInfoForm = ({ data, handleChange, setIsReviewDisabled }) => {
    */
   const handleChangePubMed = (eOrValue, pubMedIndex, field) => {
     const value =
-      eOrValue && eOrValue.target && typeof eOrValue.target.value !== "undefined"
+      eOrValue &&
+      eOrValue.target &&
+      typeof eOrValue.target.value !== "undefined"
         ? eOrValue.target.value
         : eOrValue;
 
@@ -203,14 +209,22 @@ const BasicInfoForm = ({ data, handleChange, setIsReviewDisabled }) => {
             data={data}
           />
 
-          <FormElement
+          <PathwayCategory
+            name="category"
+            value={data?.category}
+            handleChange={handleChange}
+            isRequired={true}
+            label="Pathway Category"
+          />
+
+          {/* <FormElement
             type="itemType"
             label="Pathway Category"
             name="category"
             value={data?.category}
             handleChange={handleChange}
             itemType="Categories"
-          />
+          /> */}
         </div>
 
         <div className="grid grid-cols-2 gap-4">
