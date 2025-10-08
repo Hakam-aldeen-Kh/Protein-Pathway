@@ -161,7 +161,7 @@ const ProductForm = ({
 
     console.log("nextReaction", localReactions);
 
-    const findController = nextReaction.controllers[0]
+    const findController = nextReaction.regulators[0]
 
     if (!findController) {
       setPathwayData((prevPathwayData) => ({
@@ -170,11 +170,11 @@ const ProductForm = ({
           reaction.id === reactionId
             ? {
               ...reaction,
-              controllers: [
-                ...reaction.controllers,
+              regulators: [
+                ...reaction.regulators,
                 {
                   id: 1,
-                  name: `controller_${reactionId}.${1}`,
+                  name: `regulator_${reactionId}.${1}`,
                 },
               ],
             }
@@ -197,7 +197,7 @@ const ProductForm = ({
     let targetReaction = null
 
     if (!foundNextReaction && e.target.value) {
-      if (e.target.value === "controllers") {
+      if (e.target.value === "regulators") {
         targetReaction = addReaction(true, targetReactionId)
       }
       else {
@@ -210,11 +210,11 @@ const ProductForm = ({
     }
 
     // reset reference property in reactant and controller
-    handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "controllers", 1);
-    handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "controllers", 1);
-    handleChangeData({ target: { value: "", name: "productId", }, }, targetReactionId, "controllers", 1);
+    handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "regulators", 1);
+    handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "regulators", 1);
+    handleChangeData({ target: { value: "", name: "productId", }, }, targetReactionId, "regulators", 1);
     handleChangeData({ target: { value: "", name: "conectedReactantId" } }, reaction.id, "products", productId)
-    handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "controllers", 1);
+    handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "regulators", 1);
 
 
     if (targetReactantId) {
@@ -223,7 +223,7 @@ const ProductForm = ({
       handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "reactants", targetReactantId);
     }
 
-    if (e.target.value === "controllers") {
+    if (e.target.value === "regulators") {
       addController(targetReactionId)
 
       const reference = `(Product - ${reaction.id}.${productData.id} of Reaction ${reaction.id})`
@@ -231,25 +231,25 @@ const ProductForm = ({
       handleChangeData({ target: { value: true, name: "useNextReaction", }, }, reaction.id, "products", productId);
       handleChangeData({ target: { value: targetReactionId, name: "targetReactionId" } }, reaction.id, "products", productId)
 
-      handleChangeData({ target: { value: reference, name: "reference", }, }, targetReactionId, "controllers", 1);
-      handleChangeData({ target: { value: productId, name: "productId", }, }, targetReactionId, "controllers", 1);
+      handleChangeData({ target: { value: reference, name: "reference", }, }, targetReactionId, "regulators", 1);
+      handleChangeData({ target: { value: productId, name: "productId", }, }, targetReactionId, "regulators", 1);
 
-      handleChangeData({ target: { value: reaction.id, name: "fromReaction" } }, targetReactionId, "controllers", 1);
+      handleChangeData({ target: { value: reaction.id, name: "fromReaction" } }, targetReactionId, "regulators", 1);
 
-      handleChangeData({ target: { value: { type: "products", id: productId }, name: "connectedData" } }, targetReactionId, "controllers", 1);
+      handleChangeData({ target: { value: { type: "products", id: productId }, name: "connectedData" } }, targetReactionId, "regulators", 1);
 
       // uncheck controller in next reaction if is checked
       const foundControllerCheckedNextReaction = reactions.find(item => item.id === reaction.id + 1)
       console.log(foundControllerCheckedNextReaction);
 
-      if (foundControllerCheckedNextReaction && foundControllerCheckedNextReaction.controllers[0]?.useNextReaction) {
-        handleChangeData({ target: { value: "", name: "conectedReactantId" } }, targetReactionId, "controllers", 1)
-        handleChangeData({ target: { value: "", name: "targetReactionId" } }, targetReactionId, "controllers", 1)
-        handleChangeData({ target: { value: false, name: "useNextReaction", }, }, targetReactionId, "controllers", productId);
+      if (foundControllerCheckedNextReaction && foundControllerCheckedNextReaction.regulators[0]?.useNextReaction) {
+        handleChangeData({ target: { value: "", name: "conectedReactantId" } }, targetReactionId, "regulators", 1)
+        handleChangeData({ target: { value: "", name: "targetReactionId" } }, targetReactionId, "regulators", 1)
+        handleChangeData({ target: { value: false, name: "useNextReaction", }, }, targetReactionId, "regulators", productId);
 
-        handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId + 1, "reactants", foundControllerCheckedNextReaction.controllers[0].conectedReactantId);
-        handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "reactants", foundControllerCheckedNextReaction.controllers[0].conectedReactantId);
-        handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "reactants", foundControllerCheckedNextReaction.controllers[0].conectedReactantId);
+        handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId + 1, "reactants", foundControllerCheckedNextReaction.regulators[0].conectedReactantId);
+        handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId + 1, "reactants", foundControllerCheckedNextReaction.regulators[0].conectedReactantId);
+        handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId + 1, "reactants", foundControllerCheckedNextReaction.regulators[0].conectedReactantId);
       }
 
     }
@@ -272,18 +272,18 @@ const ProductForm = ({
     }
 
     else {
-      handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "controllers", 1);
-      handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "controllers", 1);
+      handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "regulators", 1);
+      handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "regulators", 1);
       handleChangeData({ target: { value: false, name: "useNextReaction", }, }, reaction.id, "products", productId);
       handleChangeData({ target: { value: "", name: "targetReactionId" } }, reaction.id, "products", productId)
 
       handleChangeData({ target: { value: "", name: "reference" } }, targetReactionId, "reactants", targetReactantId);
       handleChangeData({ target: { value: "", name: "fromReaction" } }, targetReactionId, "reactants", targetReactantId);
-      handleChangeData({ target: { value: "", name: "productId", }, }, targetReactionId, "controllers", 1);
+      handleChangeData({ target: { value: "", name: "productId", }, }, targetReactionId, "regulators", 1);
       handleChangeData({ target: { value: "", name: "conectedReactantId" } }, reaction.id, "products", productId)
 
       handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "reactants", targetReactantId);
-      handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "controllers", 1);
+      handleChangeData({ target: { value: "", name: "connectedData" } }, targetReactionId, "regulators", 1);
     }
 
   }
@@ -404,29 +404,29 @@ const ProductForm = ({
         />
       </div>
 
-      {/* found referense in next reaction in controller */}
-      {!reactions.find(item => item.id === reaction.id + 1)?.controllers[0]?.reference ?
+      {/* found referense in next reaction in regulator */}
+      {!reactions.find(item => item.id === reaction.id + 1)?.regulators[0]?.reference ?
         <div className="grid grid-cols-2 gap-4">
           <FormElement
             isRequired={false}
             type="radio"
             id={`type2-${reaction.id}-${productId}`}
-            placeholder={"Use this product as a controller in the next reaction"}
+            placeholder={"Use this product as a regulator in the next reaction"}
             name={`type`}
-            value={"controllers"}
+            value={"regulators"}
             checked={productData?.type}
             handleChange={handleChangeRadioBtn}
           />
         </div>
-        : reactions.find(item => item.id === reaction.id + 1)?.controllers[0]?.productId === productId &&
+        : reactions.find(item => item.id === reaction.id + 1)?.regulators[0]?.productId === productId &&
         <div className="grid grid-cols-2 gap-4">
           <FormElement
             isRequired={false}
             type="radio"
             id={`type2-${reaction.id}-${productId}`}
-            placeholder={"Use this product as a controller in the next reaction"}
+            placeholder={"Use this product as a regulator in the next reaction"}
             name={`type`}
-            value={"controllers"}
+            value={"regulators"}
             checked={productData?.type}
             handleChange={handleChangeRadioBtn}
           />
