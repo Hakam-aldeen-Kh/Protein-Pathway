@@ -1,21 +1,26 @@
 import { useNavigate } from "react-router";
-
 import Graph from "../../../common/Graph";
 import { layouts } from "../../Pathway-Result/components/layouts";
-
 import { reactionsDataToCytoscapeFormat } from "../../../utils/reactionsDataToCytoscapeFormat";
 import { capitalize } from "../../../hooks/useCapitalize";
 import { useState } from "react";
-import { controllerNodeId, controllerNodeName, productNodeId, productNodeName, reactantNodeId, reactantNodeName } from "../../../utils/nameNode";
+import {
+  regulatorNodeId,
+  regulatorNodeName,
+  productNodeId,
+  productNodeName,
+  reactantNodeId,
+  reactantNodeName,
+} from "../../../utils/nameNode";
 
 const PathwayInfo = ({ pathway, id }) => {
   const navigate = useNavigate();
-  const [layout, setLayout] = useState(layouts.klay)
-
+  const [layout, setLayout] = useState(layouts.klay);
 
   const today = new Date();
-  const recordDate = `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`;
-
+  const recordDate = `${today.getDate()}.${
+    today.getMonth() + 1
+  }.${today.getFullYear()}`;
 
   const getDiseaseNames = (diseaseInput) => {
     if (!Array.isArray(diseaseInput) || diseaseInput.length === 0) {
@@ -29,7 +34,7 @@ const PathwayInfo = ({ pathway, id }) => {
     return diseaseNames.length > 0 ? diseaseNames.join(", ") : "";
   };
 
-  const relatedDiseasesValues = getDiseaseNames(pathway?.diseaseInput)
+  const relatedDiseasesValues = getDiseaseNames(pathway?.diseaseInput);
 
   const pathwayData = [
     { label: "Species", value: pathway?.species || "no value" },
@@ -37,106 +42,123 @@ const PathwayInfo = ({ pathway, id }) => {
     { label: "Tissue:", value: pathway?.tissue?.label || "no value" },
     { label: "Related Disease:", value: relatedDiseasesValues || "no value" },
     { label: "Record Date:", value: pathway?.recordDate || recordDate },
-    { label: "PubMeds", value: JSON.stringify(pathway.pubMeds) === '{}' ? "no value" : pathway?.pubMeds, isArray: Array.isArray(pathway?.pubMeds) },
-
+    {
+      label: "PubMeds",
+      value:
+        JSON.stringify(pathway.pubMeds) === "{}"
+          ? "no value"
+          : pathway?.pubMeds,
+      isArray: Array.isArray(pathway?.pubMeds),
+    },
   ];
-
 
   const handleExport = () => {
     const pathwayData = {
-      "pathway_id": pathway?._id || "",
-      "pathway_name": pathway?.title || "",
-      "pathway_description": pathway?.description || "",
-      "pathway_category": {
-        "category_name": pathway?.category || "",
-        "category_id": "PW_000002"
+      pathway_id: pathway?._id || "",
+      pathway_name: pathway?.title || "",
+      pathway_description: pathway?.description || "",
+      pathway_category: {
+        category_name: pathway?.category || "",
+        category_id: "PW_000002",
       },
-      "pathway_reference": pathway?.pubMeds?.map(item => ({
-        "reference_id": item?.id || "",
-        "reference_db": "PubMed",
-        "reference_title": item?.title || ""
-      })) || {},
-      "pathway_taxon": {
-        "taxon_db": "NCBI",
-        "taxon_id": "9606",
-        "taxon_name": pathway?.species || ""
+      pathway_reference:
+        pathway?.pubMeds?.map((item) => ({
+          reference_id: item?.id || "",
+          reference_db: "PubMed",
+          reference_title: item?.title || "",
+        })) || {},
+      pathway_taxon: {
+        taxon_db: "NCBI",
+        taxon_id: "9606",
+        taxon_name: pathway?.species || "",
       },
-      "pathway_tissue": {
-        "tissue_db": "BRENDA Tissue Ontology",
-        "tissue_id": pathway?.tissue?.id || "",
-        "tissue_name": pathway?.tissue?.label || ""
+      pathway_tissue: {
+        tissue_db: "BRENDA Tissue Ontology",
+        tissue_id: pathway?.tissue?.id || "",
+        tissue_name: pathway?.tissue?.label || "",
       },
-      "pathway_disease": pathway?.diseaseInput?.map(item => ({
-        "disease_db": "Mondo Disease Ontology (MONDO)",
-        "disease_id": item?.value?.Disease_id || "",
-        "disease_name": item?.value?.Disease_name || "",
-        "type": item?.type || ""
-      })) || [],
-      "pathway_reactions_num": pathway?.reactions?.length,
-      "reactions": pathway?.reactions?.map(item => ({
-        "rxn_number": item?.id || "",
-        "rxn_id": item?.id || "",
-        "rxn_component": [
-          {
-            "role": "reactant",
-            "reactant_info": item?.reactants?.map(item => ({
-              "type": item?.pType || "",
-              "db": "UniProt",
-              "id": reactantNodeId(item) || "",
-              "name": reactantNodeName(item) || "",
-              "cellular_location": {
-                "location_db": "GO Ontology",
-                "location_id": item?.cellularLocation?.cell_localization_id || "",
-                "location_name": item?.cellularLocation?.cell_localization_name || ""
-              },
-              "cell_type": {
-                "co_db": "Cell Ontology",
-                "co_id": item?.cellType?.cType_id || "",
-                "co_name": item?.cellType?.cType_name || ""
-              }
-            })) || []
-          },
-          {
-            "role": "controller",
-            "controller_info": item?.controllers?.map(item => ({
-              "type": item?.pType || "",
-              "db": "UniProt",
-              "id": controllerNodeId(item) || "",
-              "name": controllerNodeName(item) || "",
-              "cellular_location": {
-                "location_db": "GO Ontology",
-                "location_id": item?.cellularLocation?.cell_localization_id || "",
-                "location_name": item?.cellularLocation?.cell_localization_name || ""
-              },
-              "cell_type": {
-                "co_db": "Cell Ontology",
-                "co_id": item?.cellType?.cType_id || "",
-                "co_name": item?.cellType?.cType_name || ""
-              }
-            })) || []
-          },
-          {
-            "role": "product",
-            "product_info": item?.products?.map(item => ({
-              "type": item?.pType || "",
-              "db": "GO ontology",
-              "id": productNodeId(item) || "",
-              "name": productNodeName(item) || "",
-              "cellular_location": {
-                "location_db": "GO Ontology",
-                "location_id": item?.cellularLocation?.cell_localization_id || "",
-                "location_name": item?.cellularLocation?.cell_localization_name || ""
-              },
-              "cell_type": {
-                "co_db": "Cell Ontology",
-                "co_id": item?.cellType?.cType_id || "",
-                "co_name": item?.cellType?.cType_name || ""
-              }
-            })) || []
-          }
-        ]
-      })) || []
-    }
+      pathway_disease:
+        pathway?.diseaseInput?.map((item) => ({
+          disease_db: "Mondo Disease Ontology (MONDO)",
+          disease_id: item?.value?.Disease_id || "",
+          disease_name: item?.value?.Disease_name || "",
+          type: item?.type || "",
+        })) || [],
+      pathway_reactions_num: pathway?.reactions?.length,
+      reactions:
+        pathway?.reactions?.map((item) => ({
+          rxn_number: item?.id || "",
+          rxn_id: item?.id || "",
+          rxn_component: [
+            {
+              role: "reactant",
+              reactant_info:
+                item?.reactants?.map((item) => ({
+                  type: item?.pType || "",
+                  db: "UniProt",
+                  id: reactantNodeId(item) || "",
+                  name: reactantNodeName(item) || "",
+                  cellular_location: {
+                    location_db: "GO Ontology",
+                    location_id:
+                      item?.cellularLocation?.cell_localization_id || "",
+                    location_name:
+                      item?.cellularLocation?.cell_localization_name || "",
+                  },
+                  cell_type: {
+                    co_db: "Cell Ontology",
+                    co_id: item?.cellType?.cType_id || "",
+                    co_name: item?.cellType?.cType_name || "",
+                  },
+                })) || [],
+            },
+            {
+              role: "regulator",
+              regulator_info:
+                item?.regulators?.map((item) => ({
+                  type: item?.pType || "",
+                  db: "UniProt",
+                  id: regulatorNodeId(item) || "",
+                  name: regulatorNodeName(item) || "",
+                  cellular_location: {
+                    location_db: "GO Ontology",
+                    location_id:
+                      item?.cellularLocation?.cell_localization_id || "",
+                    location_name:
+                      item?.cellularLocation?.cell_localization_name || "",
+                  },
+                  cell_type: {
+                    co_db: "Cell Ontology",
+                    co_id: item?.cellType?.cType_id || "",
+                    co_name: item?.cellType?.cType_name || "",
+                  },
+                })) || [],
+            },
+            {
+              role: "product",
+              product_info:
+                item?.products?.map((item) => ({
+                  type: item?.pType || "",
+                  db: "GO ontology",
+                  id: productNodeId(item) || "",
+                  name: productNodeName(item) || "",
+                  cellular_location: {
+                    location_db: "GO Ontology",
+                    location_id:
+                      item?.cellularLocation?.cell_localization_id || "",
+                    location_name:
+                      item?.cellularLocation?.cell_localization_name || "",
+                  },
+                  cell_type: {
+                    co_db: "Cell Ontology",
+                    co_id: item?.cellType?.cType_id || "",
+                    co_name: item?.cellType?.cType_name || "",
+                  },
+                })) || [],
+            },
+          ],
+        })) || [],
+    };
 
     const jsonString = JSON.stringify(pathwayData, null, 2); // Pretty print with indentation
     const blob = new Blob([jsonString], { type: "application/json" });
@@ -171,7 +193,9 @@ const PathwayInfo = ({ pathway, id }) => {
   return (
     <div className="flex flex-col w-full max-md:max-w-full">
       <div className="flex flex-col w-full max-md:max-w-full">
-        <h2 className="text-2xl font-bold text-neutral-900">Pathway Basic Information</h2>
+        <h2 className="text-2xl font-bold text-neutral-900">
+          Pathway Basic Information
+        </h2>
         <div className="flex flex-wrap gap-5 mt-2 w-full max-md:max-w-full">
           <div className="flex flex-col flex-1 shrink self-start text-base basis-0 min-w-[240px] max-md:max-w-full">
             {pathwayData.map((item, index) => (
@@ -183,15 +207,14 @@ const PathwayInfo = ({ pathway, id }) => {
                   {capitalize(item.label)}
                 </div>
                 <div className="flex-1 shrink gap-2.5 self-stretch p-2 my-auto rounded-lg bg-slate-100 min-w-[240px] text-neutral-900 max-md:max-w-full">
-                  {
-                    item.isArray ? item?.value?.map((item, index) =>
-                      <div key={index} className="flex gap-2">
-                        <span>ID: {item.id}</span>
-                        <span>Title: {item.title}</span>
-                      </div>
-                    ) : capitalize(item.value)
-                  }
-
+                  {item.isArray
+                    ? item?.value?.map((item, index) => (
+                        <div key={index} className="flex gap-2">
+                          <span>ID: {item.id}</span>
+                          <span>Title: {item.title}</span>
+                        </div>
+                      ))
+                    : capitalize(item.value)}
                 </div>
               </div>
             ))}
@@ -214,10 +237,9 @@ const PathwayInfo = ({ pathway, id }) => {
                 className="flex gap-2 text-white justify-center items-center self-stretch px-0.5 my-auto w-6 h-6 rounded bg-neutral-900 bg-opacity-50 min-h-[24px]"
                 onClick={() => {
                   if (layout === layouts.klay) {
-                    setLayout(layouts.cola)
-                  }
-                  else {
-                    setLayout(layouts.klay)
+                    setLayout(layouts.cola);
+                  } else {
+                    setLayout(layouts.klay);
                   }
                 }}
               >

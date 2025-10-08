@@ -1,6 +1,6 @@
 import { PlusIcon } from "lucide-react";
 import Accordion from "../../../Accordion";
-import RegulatorForm from "../regulators/RegulatorForm";
+import RegulatorForm from "./RegulatorForm";
 
 const Regulators = ({
   reactions,
