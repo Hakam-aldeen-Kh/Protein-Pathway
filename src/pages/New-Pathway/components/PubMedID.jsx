@@ -104,16 +104,21 @@ const PubMedID = ({
             ref={inputRef}
             type="text"
             placeholder="Add PubMed ID"
-            className={`outline-none block w-full h-[40px] self-end flex-1 rounded-md border p-2 shadow-sm transition-colors ${
-              isDisabled
-                ? "bg-gray-100 border-gray-300"
-                : error
+            className={`outline-none block w-full h-[40px] self-end flex-1 rounded-md border p-2 shadow-sm transition-colors ${isDisabled
+              ? "bg-gray-100 border-gray-300"
+              : error
                 ? "border-red-500"
                 : "border-gray-300 focus:border-[#57369E] focus:ring-[#57369E]"
-            }`}
+              }`}
             value={item?.id || ""}
             onChange={(e) => handleChangePubMed(e, index, "id")}
-            onBlur={handleOnBlur}
+            // onBlur={handleOnBlur}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleOnBlur();
+                // e.target.blur();
+              }
+            }}
             disabled={isDisabled}
             aria-label="PubMed ID"
           />
@@ -154,13 +159,12 @@ const PubMedID = ({
             type="text"
             value={item?.title || ""}
             placeholder="Title will appear here"
-            className={`outline-none h-[40px] w-full block rounded-md border p-2 shadow-sm ${
-              isDisabled
-                ? "bg-gray-100 border-gray-300"
-                : error
+            className={`outline-none h-[40px] w-full block rounded-md border p-2 shadow-sm ${isDisabled
+              ? "bg-gray-100 border-gray-300"
+              : error
                 ? "border-red-500"
                 : "border-gray-300 focus:border-[#57369E] focus:ring-[#57369E]"
-            }`}
+              }`}
           />
         </div>
       </div>

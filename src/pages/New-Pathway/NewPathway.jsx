@@ -40,16 +40,16 @@ const NewPathway = () => {
         reactions: prevPathwayData.reactions.map((reaction) =>
           reaction.id === reactionId
             ? {
-                ...reaction,
-                [type]: reaction[type].map((item) =>
-                  item.id === id
-                    ? {
-                        ...item,
-                        [name]: value === "on" ? (v ? v : checked) : value,
-                      }
-                    : item
-                ),
-              }
+              ...reaction,
+              [type]: reaction[type]?.map((item) =>
+                item.id === id
+                  ? {
+                    ...item,
+                    [name]: value === "on" ? (v ? v : checked) : value,
+                  }
+                  : item
+              ),
+            }
             : reaction
         ),
       };
@@ -257,11 +257,10 @@ const NewPathway = () => {
                 Cancel
               </button>
               <button
-                className={`px-4 py-2 text-white rounded transition-all duration-200 ${
-                  isReviewDisabled
-                    ? "bg-gray-400"
-                    : "bg-[#57369E] hover:bg-[#00A7D3]"
-                }`}
+                className={`px-4 py-2 text-white rounded transition-all duration-200 ${isReviewDisabled
+                  ? "bg-gray-400"
+                  : "bg-[#57369E] hover:bg-[#00A7D3]"
+                  }`}
                 onClick={handleSubmit}
                 disabled={isReviewDisabled}
               >
