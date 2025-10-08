@@ -118,7 +118,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
         )
       );
 
-      // // edge to controller
+      // // edge to regulator
       elements.push(
         createEdge(
           `e-${reactant.name}-process-${reaction.id}`,
@@ -153,13 +153,13 @@ export function reactionsDataToCytoscapeFormat(reactions) {
           product.name,
           productNodeName(product),
           product.cellularLocation?.cell_localization_name,
-          product.useNextReaction && product.type === "controllers"
+          product.useNextReaction && product.type === "regulators"
             ? findClass(product?.pType || "protein")
             : findClass(product?.pType)
         )
       );
 
-      // // edge to controller
+      // // edge to regulator
       elements.push(
         createEdge(
           `e-${product.name}-process-${reaction.id}`,
@@ -169,7 +169,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
       );
 
       // is this product useNextReaction and type is reactants:
-      // edge form this product to controller in next reaction and
+      // edge form this product to regulator in next reaction and
       // delete reactant which is product in next reaction
       const targetReaction1 = reactions.find(
         (item) => item.id === product.targetReactionId
@@ -206,12 +206,12 @@ export function reactionsDataToCytoscapeFormat(reactions) {
         );
       }
 
-      // is this product useNextReaction and type is controllers:
-      // edge form this product to controller in next reaction and
+      // is this product useNextReaction and type is regulators:
+      // edge form this product to regulator in next reaction and
       // delete reactant which is product in next reaction
       else if (
         product.useNextReaction &&
-        product.type === "controllers" &&
+        product.type === "regulators" &&
         targetReaction1
       ) {
         elements.push(
@@ -223,9 +223,9 @@ export function reactionsDataToCytoscapeFormat(reactions) {
           )
         );
 
-        toDeletedFromElements.push(targetReaction1.controllers[0].name);
+        toDeletedFromElements.push(targetReaction1.regulators[0].name);
         toDeletedFromElements.push(
-          `e-${targetReaction1.controllers[0].name}-process-${reaction.id + 1}`
+          `e-${targetReaction1.regulators[0].name}-process-${reaction.id + 1}`
         );
       }
     });
