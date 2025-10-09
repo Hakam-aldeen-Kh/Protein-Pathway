@@ -50,14 +50,37 @@ function ReactionTable({
     });
   };
 
+  // Helper function to create default glycans array
+  const createDefaultGlycans = () => [
+    { glycanTextType: "", glycanText: "" }
+  ];
+
   const addReaction = () => {
     let reactionId = reactions[reactions.length - 1]?.id + 1 || 1;
 
     const newReaction = {
       id: reactionId,
-      reactants: [{ id: 1, name: `reactant_${reactionId}.1` }],
-      regulators: [{ id: 1, name: `regulator_${reactionId}.1` }],
-      products: [{ id: 1, name: `product_${reactionId}.1` }],
+      reactants: [
+        { 
+          id: 1, 
+          name: `reactant_${reactionId}.1`,
+          glycans: createDefaultGlycans() // Initialize with default glycans array
+        }
+      ],
+      regulators: [
+        { 
+          id: 1, 
+          name: `regulator_${reactionId}.1`,
+          glycans: createDefaultGlycans() // Initialize with default glycans array
+        }
+      ],
+      products: [
+        { 
+          id: 1, 
+          name: `product_${reactionId}.1`,
+          glycans: createDefaultGlycans() // Initialize with default glycans array
+        }
+      ],
     };
 
     setReactionState((prevState) => [
@@ -207,9 +230,27 @@ function ReactionTable({
       // Insert new reaction after target
       const newReaction = {
         id: targetReactionId + 1, // New ID is targetId + 1
-        reactants: [{ id: 1, name: `reactant_${targetReactionId + 1}.1` }],
-        regulators: [{ id: 1, name: `regulator_${targetReactionId + 1}.1` }],
-        products: [{ id: 1, name: `product_${targetReactionId + 1}.1` }],
+        reactants: [
+          { 
+            id: 1, 
+            name: `reactant_${targetReactionId + 1}.1`,
+            glycans: createDefaultGlycans() // Initialize with default glycans array
+          }
+        ],
+        regulators: [
+          { 
+            id: 1, 
+            name: `regulator_${targetReactionId + 1}.1`,
+            glycans: createDefaultGlycans() // Initialize with default glycans array
+          }
+        ],
+        products: [
+          { 
+            id: 1, 
+            name: `product_${targetReactionId + 1}.1`,
+            glycans: createDefaultGlycans() // Initialize with default glycans array
+          }
+        ],
       };
 
       // Insert the new reaction after the target index
@@ -225,15 +266,21 @@ function ReactionTable({
           id: newId,
           reactants: oldReaction.reactants.map((r) => ({
             ...r,
-            name: `reactant_${newId}.1`,
+            name: `reactant_${newId}.${r.id}`,
+            // Preserve glycans array or initialize with default
+            glycans: Array.isArray(r.glycans) ? r.glycans : createDefaultGlycans()
           })),
           regulators: oldReaction.regulators.map((c) => ({
             ...c,
-            name: `regulator_${newId}.1`,
+            name: `regulator_${newId}.${c.id}`,
+            // Preserve glycans array or initialize with default
+            glycans: Array.isArray(c.glycans) ? c.glycans : createDefaultGlycans()
           })),
           products: oldReaction.products.map((p) => ({
             ...p,
-            name: `product_${newId}.1`,
+            name: `product_${newId}.${p.id}`,
+            // Preserve glycans array or initialize with default
+            glycans: Array.isArray(p.glycans) ? p.glycans : createDefaultGlycans()
           })),
         };
       }
@@ -441,6 +488,8 @@ function ReactionTable({
               items.map((item) => ({
                 ...item,
                 name: `${type}_${newId}.${item.id}`,
+                // Preserve glycans array or initialize with default
+                glycans: Array.isArray(item.glycans) ? item.glycans : createDefaultGlycans()
               }));
 
             return {
