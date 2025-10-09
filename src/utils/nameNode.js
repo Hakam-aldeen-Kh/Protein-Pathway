@@ -16,7 +16,11 @@ export const reactantNodeName = (reactant) => {
   }
 
   if (type === "glycan") {
-    return reactant?.glycanText || reactant.name;
+    // Handle multiple glycans
+
+    return reactant.glycans.map((glycan) => glycan.glycanText || "");
+
+    // return reactant?.glycanText || reactant.name;
   }
 
   if (type === "small_molecule") {
@@ -79,6 +83,13 @@ export const reactantNodeId = (reactant) => {
   }
 
   if (type === "glycan") {
+    // Handle multiple glycans
+    if (Array.isArray(reactant.glycans) && reactant.glycans.length > 0) {
+      return reactant.glycans
+        .map((glycan) => glycan.glycanText || "")
+        .filter(Boolean)
+        .join("|");
+    }
     return reactant?.glycanText || "";
   }
 
