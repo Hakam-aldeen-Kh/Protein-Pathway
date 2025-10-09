@@ -20,7 +20,7 @@ const PubMedID = ({
   const expandedDivRef = useRef(null);
   const fetchTimeoutRef = useRef(null);
 
-  // Notify parent on changes (memoized)
+  // Notify parent on changes (without onStatusChange in deps to avoid infinite loop)
   useEffect(() => {
     if (typeof onStatusChange === "function") {
       onStatusChange(index, {
@@ -29,7 +29,8 @@ const PubMedID = ({
         valid: !isLoading && !error && !!item?.title,
       });
     }
-  }, [isLoading, error, item?.title, index, onStatusChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, error, item?.title, index]);
 
   useEffect(() => {
     setIsLocked(!!(item?.title && item.title !== ""));
@@ -48,11 +49,16 @@ const PubMedID = ({
     if (statusRef.current) statusRef.current.textContent = msg;
   }, []);
 
-  const fetchTitleForId = useCallback(async () => {
-    if (!item?.id || item.id.trim() === "" || isLocked) return;
+  const fetchTitleForId = useCallback(async (pubmedId) => {
+    // Use passed value or fall back to item.id
+    const idToFetch = pubmedId !== undefined ? pubmedId : item?.id;
+    
+    // Don't fetch if no ID or already locked
+    if (!idToFetch || idToFetch.trim() === "") return;
+    if (isLocked) return;
 
     // Validate PubMed ID format (should be numeric)
-    if (!/^\d+$/.test(item.id.trim())) {
+    if (!/^\d+$/.test(idToFetch.trim())) {
       setError("PubMed ID must contain only numbers.");
       announce("Invalid PubMed ID format.");
       return;
@@ -63,7 +69,7 @@ const PubMedID = ({
     announce("Fetching PubMed title...");
 
     const apiUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${encodeURIComponent(
-      item.id.trim()
+      idToFetch.trim()
     )}&retmode=json`;
 
     try {
@@ -78,8 +84,8 @@ const PubMedID = ({
       const data = await response.json();
       const result = data?.result;
 
-      if (result && result[item.id.trim()]) {
-        const title = result[item.id.trim()].title || "";
+      if (result && result[idToFetch.trim()]) {
+        const title = result[idToFetch.trim()].title || "";
         handleChangePubMed({ target: { value: title } }, index, "title");
         setError(null);
         setIsLocked(true);
@@ -103,7 +109,7 @@ const PubMedID = ({
     } finally {
       setIsLoading(false);
     }
-  }, [item?.id, isLocked, handleChangePubMed, index, announce]);
+  }, [isLocked, handleChangePubMed, index, announce]);
 
   const handleClearTitleAndId = useCallback(() => {
     setPubMeds((prev) => {
@@ -147,10 +153,17 @@ const PubMedID = ({
     if (error) setError(null);
   }, [handleChangePubMed, index, error]);
 
+  const handleBlur = useCallback((e) => {
+    // Pass the current input value directly to avoid stale state
+    const currentValue = e.target.value;
+    fetchTitleForId(currentValue);
+  }, [fetchTitleForId]);
+
   const handleKeyDown = useCallback((e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      fetchTitleForId();
+      // Pass the current input value
+      fetchTitleForId(e.target.value);
     } else if (e.key === "Escape") {
       e.preventDefault();
       handleClearTitleAndId();
@@ -195,7 +208,7 @@ const PubMedID = ({
             }`}
             value={item?.id || ""}
             onChange={handleInputChange}
-            onBlur={fetchTitleForId}
+            onBlur={handleBlur}
             onKeyDown={handleKeyDown}
             disabled={isLocked || isLoading}
           />
@@ -344,7 +357,7 @@ const PubMedID = ({
             {error}{" "}
             <button
               type="button"
-              onClick={fetchTitleForId}
+              onClick={() => fetchTitleForId(item?.id)}
               className="underline ml-1 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 rounded"
               disabled={isLoading}
             >
