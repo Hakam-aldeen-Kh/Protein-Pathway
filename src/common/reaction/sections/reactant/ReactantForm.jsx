@@ -20,7 +20,8 @@ const ReactantForm = ({
 
   if (reactantData?.connectedData) {
     reactantData = reactions
-      ?.find((item) => item.id === reactantData?.fromReaction)[reactantData?.connectedData?.type]?.find(
+      ?.find((item) => item.id === reactantData?.fromReaction)
+      ?.[reactantData?.connectedData?.type]?.find(
         (item) => item.id === reactantData?.connectedData.id
       );
   }
@@ -36,7 +37,7 @@ const ReactantForm = ({
 
   const addGlycan = () => {
     // Clean up incomplete glycans before adding a new one
-          
+
     setGlycans((prev) => {
       const updated = [...prev, { glycanTextType: "", glycanText: "" }];
       handleChange({
@@ -152,7 +153,7 @@ const ReactantForm = ({
               onRemove={() => removeGlycan(idx)}
             />
           ))}
-          
+
           <button
             type="button"
             className="w-full mt-4 px-4 py-2.5 bg-[#57369E] text-white rounded-lg hover:bg-[#00A7D3] transition-colors duration-200 font-medium flex items-center justify-center gap-2"
