@@ -17,7 +17,6 @@ export const reactantNodeName = (reactant) => {
 
   if (type === "glycan") {
     // Handle multiple glycans
-
     return reactant.glycans.map((glycan) => glycan.glycanText || "");
 
     // return reactant?.glycanText || reactant.name;
@@ -68,6 +67,27 @@ export const productNodeName = (product) => {
   if (type === "protein") {
     return product.proteinSymbol || product.proteinSymbolicName || product.name;
   }
+
+  if (type === "glycan") {
+    // Handle multiple glycans
+    if (Array.isArray(product.glycans) && product.glycans.length > 0) {
+      return product.glycans.map((glycan) => glycan.glycanText || "");
+    }
+    return product?.glycanText || product.name;
+  }
+
+  if (type === "small_molecule") {
+    return product.smallMolecule?.Molecule_name || product.name;
+  }
+
+  if (type === "dna") {
+    return product.geneName || product.name;
+  }
+
+  if (type === "lipid") {
+    return product.lipid?.backbone_name || product.name;
+  }
+
   return product.name;
 };
 
@@ -124,12 +144,37 @@ export const regulatorNodeId = (regulator) => {
 
 export const productNodeId = (product) => {
   const type = product?.pType;
+
   if (type === "complex") {
     return product?.complexSymbolicName?.go_complex_id || "";
   }
 
   if (type === "protein") {
-    return product?.reactant_protein_uniprot_id || "";
+    return product?.product_protein_uniprot_id || product?.reactant_protein_uniprot_id || "";
   }
+
+  if (type === "glycan") {
+    // Handle multiple glycans
+    if (Array.isArray(product.glycans) && product.glycans.length > 0) {
+      return product.glycans
+        .map((glycan) => glycan.glycanText || "")
+        .filter(Boolean)
+        .join("|");
+    }
+    return product?.glycanText || "";
+  }
+
+  if (type === "small_molecule") {
+    return product?.smallMolecule?.Molecule_id || "";
+  }
+
+  if (type === "dna") {
+    return product?.geneName || "";
+  }
+
+  if (type === "lipid") {
+    return product?.lipid?.backbone_id || "";
+  }
+
   return "";
 };

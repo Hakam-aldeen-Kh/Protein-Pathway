@@ -80,6 +80,13 @@ const ReactionTableRow = ({
     return { baseName, glycanInfo };
   };
 
+  const formatProductDisplay = (productData) => {
+    const glycanInfo = getGlycanInfo(productData.glycans);
+    const baseName = productNodeName(productData);
+
+    return { baseName, glycanInfo };
+  };
+
   return (
     <>
       <tr
@@ -141,17 +148,38 @@ const ReactionTableRow = ({
         </td>
 
         <td className="py-2 align-top">
-          <div className="px-4 space-y-1">
-            {(reaction.products ?? []).map((item, index) => (
-              <div key={item.id ?? index} className="flex items-center">
-                <span className="text-violet-900 hover:text-violet-600 cursor-pointer font-medium">
-                  {productNodeName(item)}
-                </span>
-                {reaction.products.length !== index + 1 && (
-                  <span className="text-gray-400 font-light mx-2">•</span>
-                )}
-              </div>
-            ))}
+          <div className="px-4 space-y-3">
+            {(reaction.products ?? []).map((productData, index) => {
+              const { baseName, glycanInfo } = formatProductDisplay(productData);
+
+              return (
+                <div
+                  key={productData.id ?? index}
+                  className="flex items-start gap-2"
+                >
+                  <div className="flex-1 space-y-1">
+                    {glycanInfo.length === 0 && (
+                      <div className="text-violet-900 hover:text-violet-600 cursor-pointer font-medium">
+                        {baseName}
+                      </div>
+                    )}
+
+                    {glycanInfo.map((glycan, gIdx) => (
+                      <div
+                        key={gIdx}
+                        className="text-violet-900 hover:text-violet-600 cursor-pointer font-medium"
+                      >
+                        {glycan.glycanText}
+                      </div>
+                    ))}
+                  </div>
+
+                  {reaction.products.length !== index + 1 && (
+                    <span className="text-gray-400 font-light mt-1">•</span>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </td>
 
