@@ -25,6 +25,7 @@ const FormElement = ({
   className,
   glycanTextType,
   isEdit = true,
+  spanText = "", // New prop for additional span text
 }) => {
   const [paginationTableBtn, setPaginationTableBtn] = useState(true);
 
@@ -45,17 +46,22 @@ const FormElement = ({
       </label>
       <div className="flex items-center justify-center gap-2">
         {type === "input" && (
-          <input
-            disabled={!isEdit}
-            type="text"
-            value={value || ""}
-            name={name}
-            required={isRequired}
-            onChange={handleInputChange}
-            onBlur={handleOnBlur}
-            placeholder={placeholder}
-            className="mt-1 outline-none h-[40px] block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
-          />
+          <div className="flex flex-col w-full flex-1">
+            <input
+              disabled={!isEdit}
+              type="text"
+              value={value || ""}
+              name={name}
+              required={isRequired}
+              onChange={handleInputChange}
+              onBlur={handleOnBlur}
+              placeholder={placeholder}
+              className="mt-1 outline-none h-[40px] block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
+            />
+            {spanText && (
+              <span className="text-xs text-gray-500 mt-1">{spanText}</span>
+            )}
+          </div>
         )}
 
         {type === "select" && (
@@ -76,8 +82,9 @@ const FormElement = ({
 
         {type === "paginationTable" && (
           <div
-            className={`${customStyle ? customStyle : "select-container w-full flex-1"
-              }`}
+            className={`${
+              customStyle ? customStyle : "select-container w-full flex-1"
+            }`}
           >
             <input
               disabled={!isEdit}
@@ -95,10 +102,11 @@ const FormElement = ({
                   type="button"
                   disabled={paginationTableBtn}
                   onClick={() => setOpenTablePagination(true)}
-                  className={`px-8 w-fit py-[10px] rounded-sm text-white font-semibold transition-all ${paginationTableBtn
-                    ? "bg-gray-400 cursor-not-allowed opacity-70"
-                    : "bg-[#57369E] hover:bg-[#00A7D3]"
-                    }`}
+                  className={`px-8 w-fit py-[10px] rounded-sm text-white font-semibold transition-all ${
+                    paginationTableBtn
+                      ? "bg-gray-400 cursor-not-allowed opacity-70"
+                      : "bg-[#57369E] hover:bg-[#00A7D3]"
+                  }`}
                 >
                   Search
                 </button>
@@ -115,8 +123,9 @@ const FormElement = ({
         )}
         {type === "speciesPaginationTable" && (
           <div
-            className={`${customStyle ? customStyle : "select-container w-full flex-1"
-              }`}
+            className={`${
+              customStyle ? customStyle : "select-container w-full flex-1"
+            }`}
           >
             <input
               type="text"
@@ -133,10 +142,11 @@ const FormElement = ({
                   type="button"
                   disabled={paginationTableBtn}
                   onClick={() => setOpenTablePagination(true)}
-                  className={`px-8 w-fit py-[10px] rounded-sm text-white font-semibold transition-all ${paginationTableBtn
-                    ? "bg-gray-400 cursor-not-allowed opacity-70"
-                    : "bg-[#57369E] hover:bg-[#00A7D3]"
-                    }`}
+                  className={`px-8 w-fit py-[10px] rounded-sm text-white font-semibold transition-all ${
+                    paginationTableBtn
+                      ? "bg-gray-400 cursor-not-allowed opacity-70"
+                      : "bg-[#57369E] hover:bg-[#00A7D3]"
+                  }`}
                 >
                   Search
                 </button>

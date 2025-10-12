@@ -1,6 +1,7 @@
 import FormElement from "../../../components/FormElement";
 
 const Complex = ({ reactantData, handleChange, isEdit }) => {
+  
   return (
     <>
       <div>
@@ -29,6 +30,7 @@ const Complex = ({ reactantData, handleChange, isEdit }) => {
             value={reactantData?.complexSymbolGo}
             handleChange={handleChange}
             placeholder="Complex Symbol"
+            spanText="The complex symbol will appear after chosen a symbolic name and you can edit it" // add this span
           />
         </div>
       </div>
