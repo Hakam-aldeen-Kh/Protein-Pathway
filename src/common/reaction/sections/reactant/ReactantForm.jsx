@@ -7,6 +7,7 @@ import Glycan from "./reactant-type/Glycan";
 import Lipid from "./reactant-type/Lipid";
 import Protein from "./reactant-type/Protein";
 import SmallMolecule from "./reactant-type/SmallMolecule";
+import Rna from "./reactant-type/Rna";
 
 const ReactantForm = ({
   handleChangeData,
@@ -260,6 +261,7 @@ const ReactantForm = ({
           <option value="glycan">Glycan</option>
           <option value="small_molecule">Small molecule</option>
           <option value="dna">DNA</option>
+          <option value="rna">RNA</option>  {/* ADD THIS LINE */}
           <option value="lipid">Lipid</option>
         </FormElement>
       </div>
@@ -322,6 +324,15 @@ const ReactantForm = ({
           isEdit={isEdit}
         />
       )}
+
+      {reactantData.pType === "rna" && (
+        <Rna
+          reactantData={reactantData}
+          handleChange={handleChange}
+          isEdit={isEdit}
+        />
+      )}
+
       {reactantData.pType === "enzyme" && (
         <div className="grid grid-cols-2 gap-4">
           <FormElement

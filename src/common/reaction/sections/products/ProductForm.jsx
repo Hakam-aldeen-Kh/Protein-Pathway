@@ -6,6 +6,7 @@ import Lipid from "./products-type/Lipid";
 import Dna from "./products-type/Dna";
 import Glycan from "./products-type/Glycan";
 import SmallMolecule from "./products-type/SmallMolecule";
+import Rna from "./products-type/Rna";
 // change
 
 const ProductForm = ({
@@ -148,15 +149,15 @@ const ProductForm = ({
         reactions: prevPathwayData.reactions.map((reaction) =>
           reaction.id === reactionId
             ? {
-                ...reaction,
-                reactants: [
-                  ...reaction.reactants,
-                  {
-                    id: reactantId,
-                    name: `reactant_${reactionId}.${reactantId}`,
-                  },
-                ],
-              }
+              ...reaction,
+              reactants: [
+                ...reaction.reactants,
+                {
+                  id: reactantId,
+                  name: `reactant_${reactionId}.${reactantId}`,
+                },
+              ],
+            }
             : reaction
         ),
       }));
@@ -178,15 +179,15 @@ const ProductForm = ({
         reactions: prevPathwayData.reactions.map((reaction) =>
           reaction.id === reactionId
             ? {
-                ...reaction,
-                regulators: [
-                  ...reaction.regulators,
-                  {
-                    id: 1,
-                    name: `regulator_${reactionId}.${1}`,
-                  },
-                ],
-              }
+              ...reaction,
+              regulators: [
+                ...reaction.regulators,
+                {
+                  id: 1,
+                  name: `regulator_${reactionId}.${1}`,
+                },
+              ],
+            }
             : reaction
         ),
       }));
@@ -597,6 +598,7 @@ const ProductForm = ({
           <option value="glycan">Glycan</option>
           <option value="small_molecule">Small molecule</option>
           <option value="dna">DNA</option>
+          <option value="rna">RNA</option>  {/* ADD THIS LINE */}
           <option value="lipid">Lipid</option>
         </FormElement>
       </div>
@@ -643,6 +645,14 @@ const ProductForm = ({
 
       {productData.pType === "lipid" && (
         <Lipid productData={productData} handleChange={handleChange} />
+      )}
+
+      {productData.pType === "rna" && (
+        <Rna
+          productData={productData}
+          handleChange={handleChange}
+          isEdit={true}
+        />
       )}
 
       {/* Protein Size (commit part) */}
