@@ -34,6 +34,10 @@ export const reactantNodeName = (reactant) => {
     return reactant.lipid?.backbone_name || reactant.name;
   }
 
+  if (type === "rna") {
+    return reactant?.rnaName || reactant?.rnaGeneSymbol || reactant.name;
+  }
+
   return reactant.name;
 };
 
@@ -88,6 +92,10 @@ export const productNodeName = (product) => {
     return product.lipid?.backbone_name || product.name;
   }
 
+  if (type === "rna") {
+    return product?.rnaName || product?.rnaGeneSymbol || product.name;
+  }
+
   return product.name;
 };
 
@@ -123,6 +131,10 @@ export const reactantNodeId = (reactant) => {
 
   if (type === "lipid") {
     return reactant?.lipid?.backbone_id || "";
+  }
+
+  if (type === "rna") {
+    return reactant?.rnaDatabaseId || reactant?.transcriptId || reactant?.mirnaId || reactant?.rnacentralId || "";
   }
 
   return "";
@@ -174,6 +186,10 @@ export const productNodeId = (product) => {
 
   if (type === "lipid") {
     return product?.lipid?.backbone_id || "";
+  }
+
+  if (type === "rna") {
+    return product?.rnaDatabaseId || product?.transcriptId || product?.mirnaId || product?.rnacentralId || "";
   }
 
   return "";

@@ -193,10 +193,9 @@ export function reactionsDataToCytoscapeFormat(reactions) {
         );
 
         toDeletedFromElements.push(
-          `e-${
-            targetReaction2.reactants.find(
-              (item) => item.id === product.conectedReactantId
-            ).name
+          `e-${targetReaction2.reactants.find(
+            (item) => item.id === product.conectedReactantId
+          ).name
           }-process-${reaction.id + 1}`
         );
         toDeletedFromElements.push(
@@ -295,6 +294,8 @@ function findClass(type) {
     return "macromolecule";
   } else if (type === "enzyme") {
     return "enzyme";
+  } else if (type === "rna") {
+    return "nucleic acid feature";  // SBGN class for RNA
   } else {
     return "simple chemical";
   }
