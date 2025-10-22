@@ -17,7 +17,7 @@ export const reactantNodeName = (reactant) => {
 
   if (type === "glycan") {
     // Handle multiple glycans
-    return reactant.glycans.map((glycan) => glycan.glycanText || "");
+    return reactant.glycans?.map((glycan) => glycan.glycanText || "");
 
     // return reactant?.glycanText || reactant.name;
   }
@@ -144,7 +144,7 @@ export const regulatorNodeId = (regulator) => {
   const type = regulator?.pType;
 
   if (type === "protein") {
-    return regulator?.proteinSymbol || regulator.proteinSymbolicName || "";
+    return regulator?.reactant_protein_uniprot_id || regulator?.proteinSymbol || regulator.proteinSymbolicName || "";
   }
 
   if (type === "enzyme") {

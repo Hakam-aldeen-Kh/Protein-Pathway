@@ -1,16 +1,17 @@
 import { useState } from "react";
 import FormElement from "../../../components/FormElement";
+import GlycanImageDisplay from "../../../components/GlycanImageDisplay";
 
-const Glycan = ({ 
-  reactantData, 
-  handleChange, 
+const Glycan = ({
+  reactantData,
+  handleChange,
   isEdit,
   index,
   onRemove,
-  canDelete = false 
+  canDelete = false
 }) => {
   const [isDisabled, setIsDisabled] = useState(false);
-  
+
   const handleGlycanTextTypeChange = (e) => {
     handleChange(e);
     setIsDisabled(false);
@@ -43,35 +44,47 @@ const Glycan = ({
 
       {/* Glycan Text Type and Text */}
       <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <FormElement
-            isEdit={isEdit}
-            isRequired={false}
-            type="select"
-            label="Glycan Text Type"
-            name="glycanTextType"
-            value={reactantData?.glycanTextType}
-            handleChange={handleGlycanTextTypeChange}
-            placeholder="Select Glycan Text Type"
-          >
-            <option value="Linear code">Linear code</option>
-            <option value="IUPAC Extended">IUPAC Extended</option>
-            <option value="IUPAC condensed">IUPAC condensed</option>
-            <option value="GlyTouCan ID">GlyTouCan ID</option>
-          </FormElement>
-          
-          <FormElement
-            isRequired={false}
-            glycanTextType={reactantData?.glycanTextType}
-            type="Glycan Text"
-            label="Glycan Text"
-            isDisabled={isDisabled}
-            setIsDisabled={setIsDisabled}
-            name="glycanText"
-            value={reactantData?.glycanText}
-            handleChange={handleChange}
-            placeholder="Type Glycan Text"
-          />
+        <div className="flex gap-4 items-start">
+
+          <div className="grid grid-cols-2 gap-4 flex-1">
+            <FormElement
+              isEdit={isEdit}
+              isRequired={false}
+              type="select"
+              label="Glycan Text Type"
+              name="glycanTextType"
+              value={reactantData?.glycanTextType}
+              handleChange={handleGlycanTextTypeChange}
+              placeholder="Select Glycan Text Type"
+            >
+              <option value="Linear code">Linear code</option>
+              <option value="IUPAC Extended">IUPAC Extended</option>
+              <option value="IUPAC condensed">IUPAC condensed</option>
+              <option value="GlyTouCan ID">GlyTouCan ID</option>
+            </FormElement>
+
+            <FormElement
+              isRequired={false}
+              glycanTextType={reactantData?.glycanTextType}
+              type="Glycan Text"
+              label="Glycan Text"
+              isDisabled={isDisabled}
+              setIsDisabled={setIsDisabled}
+              name="glycanText"
+              value={reactantData?.glycanText}
+              handleChange={handleChange}
+              placeholder="Type Glycan Text"
+            />
+          </div>
+          <div className="flex-shrink-0">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Structure
+            </label>
+            <GlycanImageDisplay
+              imageUrl={reactantData?.glycanImage}
+              glycanText={reactantData?.glycanText}
+            />
+          </div>
         </div>
 
         {/* Binding Backbone Information */}
