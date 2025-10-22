@@ -18,9 +18,8 @@ const PathwayInfo = ({ pathway, id }) => {
   const [layout, setLayout] = useState(layouts.klay);
 
   const today = new Date();
-  const recordDate = `${today.getDate()}.${
-    today.getMonth() + 1
-  }.${today.getFullYear()}`;
+  const recordDate = `${today.getDate()}.${today.getMonth() + 1
+    }.${today.getFullYear()}`;
 
   const getDiseaseNames = (diseaseInput) => {
     if (!Array.isArray(diseaseInput) || diseaseInput.length === 0) {
@@ -209,11 +208,11 @@ const PathwayInfo = ({ pathway, id }) => {
                 <div className="flex-1 shrink gap-2.5 self-stretch p-2 my-auto rounded-lg bg-slate-100 min-w-[240px] text-neutral-900 max-md:max-w-full">
                   {item.isArray
                     ? item?.value?.map((item, index) => (
-                        <div key={index} className="flex gap-2">
-                          <span>ID: {item.id}</span>
-                          <span>Title: {item.title}</span>
-                        </div>
-                      ))
+                      <div key={index} className="flex gap-2">
+                        <span>ID: {item.id}</span>
+                        <span>Title: {item.title}</span>
+                      </div>
+                    ))
                     : capitalize(item.value)}
                 </div>
               </div>
@@ -221,7 +220,7 @@ const PathwayInfo = ({ pathway, id }) => {
           </div>
 
           <div className="flex relative flex-1 shrink gap-5 min-h-[280px] rounded h-full basis-0 min-w-[240px] max-md:max-w-full mt-5 border">
-            <div className="w-full  object-contain cursor-pointer z-0 flex-1 shrink p-1 basis-0 min-w-[240px] max-md:max-w-full relative">
+            <div className="w-full  object-contain cursor-pointer z-0 flex-1 shrink p-1 basis-0 min-w-[240px] max-md:max-w-full">
               <Graph
                 elements={
                   pathway.reactionsA ||
@@ -230,6 +229,7 @@ const PathwayInfo = ({ pathway, id }) => {
                 layout={layout}
                 touch={true}
               />
+
             </div>
 
             <div className="flex absolute top-2 right-2 z-0 gap-2.5 items-center self-start">

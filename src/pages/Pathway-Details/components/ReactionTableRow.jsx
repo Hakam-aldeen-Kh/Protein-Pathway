@@ -60,19 +60,19 @@ const ReactionTableRow = ({
       baseName =
         reactantData.connectedData.type === "regulators"
           ? regulatorNodeName(
-              reactions
-                ?.find((item) => item.id === reactantData?.fromReaction)
-                ?.[reactantData?.connectedData?.type]?.find(
-                  (item) => item.id === reactantData?.connectedData.id
-                )
-            )
+            reactions
+              ?.find((item) => item.id === reactantData?.fromReaction)
+              ?.[reactantData?.connectedData?.type]?.find(
+                (item) => item.id === reactantData?.connectedData.id
+              )
+          )
           : productNodeName(
-              reactions
-                ?.find((item) => item.id === reactantData?.fromReaction)
-                ?.[reactantData?.connectedData?.type]?.find(
-                  (item) => item.id === reactantData?.connectedData.id
-                )
-            );
+            reactions
+              ?.find((item) => item.id === reactantData?.fromReaction)
+              ?.[reactantData?.connectedData?.type]?.find(
+                (item) => item.id === reactantData?.connectedData.id
+              )
+          );
     } else {
       baseName = reactantNodeName(reactantData);
     }
@@ -90,9 +90,8 @@ const ReactionTableRow = ({
   return (
     <>
       <tr
-        className={`border-b-[5px] border-white rounded ${
-          reactionState?.state === "new" ? "bg-green-100" : "bg-[#F1F5F9]"
-        }`}
+        className={`border-b-[5px] border-white rounded ${reactionState?.state === "new" ? "bg-green-100" : "bg-[#F1F5F9]"
+          }`}
       >
         <td className="px-4 py-2 font-medium align-top">{reactionIndex + 1}</td>
 
@@ -115,8 +114,35 @@ const ReactionTableRow = ({
                     )}
 
                     {glycanInfo.map((glycan, gIdx) => (
-                      <div key={gIdx} className="text-violet-900">
-                        {glycan.glycanText}
+                      <div className="flex items-center gap-4" key={gIdx}>
+                        {/* Glycan Image */}
+                        {glycan.glycanImage ? (
+                          <div className="flex-shrink-0">
+                            <img
+                              src={glycan.glycanImage}
+                              alt={glycan.glycanText || "Glycan structure"}
+                              className="w-[100px] h-[100px] object-contain border border-gray-300 rounded-lg bg-white p-1"
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                e.target.nextSibling.style.display = 'flex';
+                              }}
+                            />
+                            <div
+                              className="hidden w-[100px] h-[100px] items-center justify-center border-2 border-dashed border-gray-300 rounded-lg bg-gray-50"
+                            >
+                              <span className="text-xs text-gray-500">No image</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex-shrink-0 w-[100px] h-[100px] flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
+                            <span className="text-xs text-gray-500">No image</span>
+                          </div>
+                        )}
+
+                        {/* Glycan Text */}
+                        <div className="text-violet-900">
+                          {glycan.glycanText || "No glycan text"}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -134,15 +160,15 @@ const ReactionTableRow = ({
           {reaction?.regulators?.length > 0 && reaction.regulators[0]?.name
             ? reaction.regulators[0]?.connectedData
               ? productNodeName(
-                  reactions
-                    ?.find(
-                      (item) => item.id === reaction.regulators[0]?.fromReaction
-                    )
-                    ?.[reaction.regulators[0]?.connectedData?.type]?.find(
-                      (item) =>
-                        item.id === reaction.regulators[0]?.connectedData.id
-                    )
-                )
+                reactions
+                  ?.find(
+                    (item) => item.id === reaction.regulators[0]?.fromReaction
+                  )
+                  ?.[reaction.regulators[0]?.connectedData?.type]?.find(
+                    (item) =>
+                      item.id === reaction.regulators[0]?.connectedData.id
+                  )
+              )
               : regulatorNodeName(reaction.regulators[0])
             : "-"}
         </td>
@@ -165,11 +191,35 @@ const ReactionTableRow = ({
                     )}
 
                     {glycanInfo.map((glycan, gIdx) => (
-                      <div
-                        key={gIdx}
-                        className="text-violet-900 hover:text-violet-600 cursor-pointer font-medium"
-                      >
-                        {glycan.glycanText}
+                      <div className="flex items-center gap-4" key={gIdx}>
+                        {/* Glycan Image */}
+                        {glycan.glycanImage ? (
+                          <div className="flex-shrink-0">
+                            <img
+                              src={glycan.glycanImage}
+                              alt={glycan.glycanText || "Glycan structure"}
+                              className="w-[100px] h-[100px] object-contain border border-gray-300 rounded-lg bg-white p-1"
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                e.target.nextSibling.style.display = 'flex';
+                              }}
+                            />
+                            <div
+                              className="hidden w-[100px] h-[100px] items-center justify-center border-2 border-dashed border-gray-300 rounded-lg bg-gray-50"
+                            >
+                              <span className="text-xs text-gray-500">No image</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex-shrink-0 w-[100px] h-[100px] flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
+                            <span className="text-xs text-gray-500">No image</span>
+                          </div>
+                        )}
+
+                        {/* Glycan Text */}
+                        <div className="text-violet-900">
+                          {glycan.glycanText || "No glycan text"}
+                        </div>
                       </div>
                     ))}
                   </div>

@@ -107,6 +107,7 @@ const GlycanText = ({
 
       const convertedValue = response?.data.id || response?.data;
       handleChange({ target: { name, value: convertedValue } });
+      handleChange({ target: { name: "glycanImage", value: `https://image.glycosmos.org/snfg/png/${convertedValue}` } });
       setIsDisabled(true);
     } catch (error) {
       if (
@@ -136,18 +137,19 @@ const GlycanText = ({
     setIsDisabled(false);
     setError(null);
     handleChange({ target: { name: "glycanText", value: "" } });
+    handleChange({ target: { name: "glycanImage", value: "" } });
+
   };
 
   return (
     <div className="relative mt-1 w-full" onClick={handleContainerClick}>
       <div
-        className={`flex items-center border rounded-md shadow-sm transition-colors ${
-          isDisabled
-            ? "bg-gray-100"
-            : error
+        className={`flex items-center border rounded-md shadow-sm transition-colors ${isDisabled
+          ? "bg-gray-100"
+          : error
             ? "border-red-500"
             : "border-gray-300 focus-within:border-[#57369E] focus-within:ring-[#57369E]"
-        }`}
+          }`}
       >
         <input
           ref={inputRef}

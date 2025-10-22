@@ -52,21 +52,6 @@ const GraphView = ({ pathwayData, backLink }) => {
 
       <div className="flex-1 h-full bg-white rounded-lg shadow-lg flex items-center justify-center">
         <Graph elements={pathwayData.reactionsA || reactionsDataToCytoscapeFormat(pathwayData.reactions)} layout={layout} touch={true} />
-        <div id="tooltip" style={{
-          position: "absolute",
-          display: "none",
-          backgroundColor: "white",
-          border: "1px solid #ccc",
-          borderRadius: "8px",
-          padding: "10px",
-          zIndex: 9999,
-          width: "200px",
-          height: "200px",
-          boxShadow: "0 0 10px rgba(0,0,0,0.2)"
-        }}>
-          <img id="tooltip-image" style={{ width: "100%", borderRadius: "6px" }} />
-          <div id="tooltip-title" style={{ marginTop: "5px", fontWeight: "bold" }}></div>
-        </div>
       </div>
 
       <div className="w-[150px] space-y-2">

@@ -1,7 +1,14 @@
+// ============================================
+// 1. reactionsDataToCytoscapeFormat.js
+// ============================================
+
 import {
   reactantNodeName,
+  reactantNodeId,
   regulatorNodeName,
+  regulatorNodeId,
   productNodeName,
+  productNodeId,
 } from "./nameNode";
 
 export function reactionsDataToCytoscapeFormat(reactions) {
@@ -24,28 +31,38 @@ export function reactionsDataToCytoscapeFormat(reactions) {
           reactionRegulator?.cellularLocation?.cell_localization_name,
           reactionRegulator?.cellularLocation?.cell_localization_name,
           "",
-          "complex"
+          "complex",
+          null,
+          null,
+          null
         )
       );
     }
 
-    // regulator shape
+    // regulator shape (process node)
     elements.push(
       createChemicalNode(
         `process-${reaction.id}`,
         "",
         reaction.products[0]?.cellularLocation?.cell_localization_name,
-        "process"
+        "process",
+        null,
+        null,
+        null
       )
     );
 
     if (reactionRegulator) {
+      const regulatorId = regulatorNodeId(reactionRegulator);
       elements.push(
         createChemicalNode(
           reactionRegulator.name,
           regulatorNodeName(reactionRegulator),
           reactionRegulator.cellularLocation?.cell_localization_name,
-          findClass(reactionRegulator?.pType || "protein")
+          findClass(reactionRegulator?.pType || "protein"),
+          null,
+          regulatorId,
+          reactionRegulator?.pType || "protein"
         )
       );
       elements.push(
@@ -91,7 +108,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
 
     // create node for each reactant with edge form reactant to regulator inside parent node
     reaction.reactants?.forEach((reactant) => {
-      // // parent node
+      // parent node
       if (
         reactant.cellularLocation?.cell_localization_name &&
         !isFindElement(
@@ -104,21 +121,43 @@ export function reactionsDataToCytoscapeFormat(reactions) {
             reactant.cellularLocation?.cell_localization_name,
             reactant.cellularLocation?.cell_localization_name,
             "",
-            "complex"
+            "complex",
+            null,
+            null,
+            null
           )
         );
       }
-      // // reactant node
+
+      // Get glycan images if it's a glycan type
+      let glycanImages = null;
+      if (reactant.pType === "glycan") {
+        // For multiple glycans, collect all images
+        if (Array.isArray(reactant.glycans) && reactant.glycans.length > 0) {
+          glycanImages = reactant.glycans
+            .map((glycan) => glycan.glycanImage)
+            .filter(Boolean);
+        } else if (reactant.glycanImage) {
+          glycanImages = [reactant.glycanImage];
+        }
+      }
+
+      const reactantId = reactantNodeId(reactant);
+
+      // reactant node
       elements.push(
         createChemicalNode(
           reactant.name,
           reactantNodeName(reactant),
           reactant.cellularLocation?.cell_localization_name,
-          findClass(reactant?.pType)
+          findClass(reactant?.pType),
+          glycanImages,
+          reactantId,
+          reactant?.pType
         )
       );
 
-      // // edge to regulator
+      // edge to process
       elements.push(
         createEdge(
           `e-${reactant.name}-process-${reaction.id}`,
@@ -130,7 +169,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
 
     // create node for each product with edge form product to regulator inside parent node
     reaction.products.forEach((product) => {
-      // // parent node
+      // parent node
       if (
         product.cellularLocation?.cell_localization_name &&
         !isFindElement(
@@ -143,11 +182,30 @@ export function reactionsDataToCytoscapeFormat(reactions) {
             product.cellularLocation?.cell_localization_name,
             product.cellularLocation?.cell_localization_name,
             "",
-            "complex"
+            "complex",
+            null,
+            null,
+            null
           )
         );
       }
-      // // product node
+
+      // Get glycan images if it's a glycan type
+      let glycanImages = null;
+      if (product.pType === "glycan") {
+        // For multiple glycans, collect all images
+        if (Array.isArray(product.glycans) && product.glycans.length > 0) {
+          glycanImages = product.glycans
+            .map((glycan) => glycan.glycanImage)
+            .filter(Boolean);
+        } else if (product.glycanImage) {
+          glycanImages = [product.glycanImage];
+        }
+      }
+
+      const productId = productNodeId(product);
+
+      // product node
       elements.push(
         createChemicalNode(
           product.name,
@@ -155,11 +213,14 @@ export function reactionsDataToCytoscapeFormat(reactions) {
           product.cellularLocation?.cell_localization_name,
           product.useNextReaction && product.type === "regulators"
             ? findClass(product?.pType || "protein")
-            : findClass(product?.pType)
+            : findClass(product?.pType),
+          glycanImages,
+          productId,
+          product?.pType
         )
       );
 
-      // // edge to regulator
+      // edge to process
       elements.push(
         createEdge(
           `e-${product.name}-process-${reaction.id}`,
@@ -168,9 +229,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
         )
       );
 
-      // is this product useNextReaction and type is reactants:
-      // edge form this product to regulator in next reaction and
-      // delete reactant which is product in next reaction
+      // is this product useNextReaction and type is reactants
       const targetReaction1 = reactions.find(
         (item) => item.id === product.targetReactionId
       );
@@ -204,10 +263,7 @@ export function reactionsDataToCytoscapeFormat(reactions) {
           ).name
         );
       }
-
-      // is this product useNextReaction and type is regulators:
-      // edge form this product to regulator in next reaction and
-      // delete reactant which is product in next reaction
+      // is this product useNextReaction and type is regulators
       else if (
         product.useNextReaction &&
         product.type === "regulators" &&
@@ -237,8 +293,8 @@ export function reactionsDataToCytoscapeFormat(reactions) {
   return elements;
 }
 
-function createChemicalNode(id, name, parent, classType) {
-  return {
+function createChemicalNode(id, name, parent, classType, glycanImages = null, databaseId = null, pType = null) {
+  const nodeData = {
     data: {
       id,
       class: classType,
@@ -246,6 +302,8 @@ function createChemicalNode(id, name, parent, classType) {
       parent: parent,
       stateVariables: [],
       unitsOfInformation: [],
+      databaseId: databaseId || "",
+      pType: pType || "",
     },
     group: "nodes",
     removed: false,
@@ -256,6 +314,16 @@ function createChemicalNode(id, name, parent, classType) {
     pannable: false,
     classes: "",
   };
+
+  // Add glycan images if provided (can be single or multiple)
+  if (glycanImages && Array.isArray(glycanImages) && glycanImages.length > 0) {
+    nodeData.data.glycanImages = glycanImages;
+    nodeData.data.glycanCount = glycanImages.length;
+    // Use first image as primary background for single image display
+    nodeData.data.backgroundImage = glycanImages[0];
+  }
+
+  return nodeData;
 }
 
 function createEdge(id, source, target, type) {
@@ -288,15 +356,24 @@ function isFindElement(elements, id) {
 }
 
 function findClass(type) {
+  // SBGN Process Diagram entity types
   if (type === "complex") {
     return "complex";
   } else if (type === "protein") {
-    return "macromolecule";
+    return "macromolecule"; // SBGN: rounded rectangle
   } else if (type === "enzyme") {
-    return "enzyme";
+    return "macromolecule"; // Enzymes are proteins, so macromolecule
   } else if (type === "rna") {
-    return "nucleic acid feature";  // SBGN class for RNA
+    return "nucleic acid feature"; // SBGN: bottom-rounded rectangle
+  } else if (type === "dna") {
+    return "nucleic acid feature"; // SBGN: bottom-rounded rectangle
+  } else if (type === "glycan") {
+    return "glycan"; // Custom class for glycan with image
+  } else if (type === "lipid") {
+    return "simple chemical"; // SBGN: circle
+  } else if (type === "small_molecule") {
+    return "simple chemical"; // SBGN: circle
   } else {
-    return "simple chemical";
+    return "simple chemical"; // Default to simple chemical
   }
 }
