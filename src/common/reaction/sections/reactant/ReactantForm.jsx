@@ -35,6 +35,9 @@ const ReactantForm = ({
       : [{ glycanTextType: "", glycanText: "" }]
   );
 
+  // --- (تعديلنا) حالة التحميل لجلب الـ API ---
+  const [isLoading, setIsLoading] = useState(false);
+
   const addGlycan = () => {
     setGlycans((prev) => {
       const updated = [...prev, { glycanTextType: "", glycanText: "" }];
@@ -68,67 +71,67 @@ const ReactantForm = ({
     });
   };
 
-  // --- START: API Fetching Logic ---
+  // --- START: (تعديلنا) منطق جلب الـ API الجديد والمباشر ---
 
   /**
-   * STEP 1: Fetches the definition for a given ChEBI or PR identifier.
+   * يبحث مباشرة في IntAct API باستخدام اسم المركب
+   * ويختار الرمز "الأقصر" (الأبسط) كأفضل نتيجة.
    */
-  const fetchSymbolDefinition = async (complexId) => {
-    if (!complexId || !complexId.includes("_")) {
-      return null;
-    }
-    const [prefix, id] = complexId.split("_");
-    let apiUrl = "";
-    let definition = null;
-    try {
-      if (prefix === "CHEBI") {
-        apiUrl = `https://www.ebi.ac.uk/chebi/backend/api/public/compound/${id}/?format=json`;
-        const response = await axios.get(apiUrl);
-        definition = response.data?.definition;
-      } else if (prefix === "PR") {
-        const curie = `${prefix}:${id}`;
-        apiUrl = `https://www.ebi.ac.uk/ols4/api/v2/ontologies/pr/classes?curie=${curie}`;
-        const response = await axios.get(apiUrl);
-        definition = response.data?.elements?.[0]?.definition?.[0]?.value;
-      }
-      return definition;
-    } catch (error) {
-      console.error(
-        `Failed to fetch definition for ${complexId}:`,
-        error.message
-      );
-      return null;
-    }
-  };
+  const fetchDirectComplexSymbol = async (complexName) => {
+    if (!complexName) return null;
 
-  /**
-   * STEP 2: Searches UniProt using a definition string.
-   */
-  const searchUniProtByDefinition = async (definition) => {
-    if (!definition) return null;
     try {
-      const encodedQuery = encodeURIComponent(definition);
-      const uniProtApiUrl = `https://rest.uniprot.org/uniprotkb/search?query=${encodedQuery}&fields=accession,protein_name,gene_primary,organism_id&format=json`;
-      const response = await axios.get(uniProtApiUrl);
-      return response.data;
-    } catch (error) {
-      console.error("Failed to search UniProt:", error.message);
-      return null;
-    }
-  };
-
-  /**
-   * STEP 3: Fetches the full UniProt entry for a given accession number.
-   */
-  const fetchUniProtEntryByAccession = async (accession) => {
-    if (!accession) return null;
-    try {
-      const apiUrl = `https://rest.uniprot.org/uniprotkb/${accession}`;
+      const encodedName = encodeURIComponent(complexName);
+      const apiUrl = `https://www.ebi.ac.uk/intact/complex-ws/search/${encodedName}`;
       const response = await axios.get(apiUrl);
-      return response.data;
+
+      const results = response.data?.elements || response.data?.complexes;
+
+      if (!results || results.length === 0) {
+        console.log(`No IntAct complex found for name: ${complexName}`);
+        return null;
+      }
+
+      let priority1Matches = [];
+      let priority2Matches = [];
+
+      // 1. جمع كل الرموز من كل النتائج
+      for (const complex of results) {
+        if (complex.complexName && complex.complexName.includes(":")) {
+          priority1Matches.push(complex.complexName);
+        }
+        if (complex.systematicName && complex.systematicName.includes(":")) {
+          priority2Matches.push(complex.systematicName);
+        }
+      }
+
+      let bestMatch = null;
+
+      // 2. اختيار الأقصر من القائمة الأولى
+      if (priority1Matches.length > 0) {
+        priority1Matches.sort((a, b) => a.length - b.length);
+        bestMatch = priority1Matches[0];
+      } 
+      // 3. أو اختيار الأقصر من القائمة الثانية
+      else if (priority2Matches.length > 0) {
+        priority2Matches.sort((a, b) => a.length - b.length);
+        bestMatch = priority2Matches[0];
+      } 
+      // 4. أو بناء الرمز يدوياً من النتيجة الأولى (Fallback)
+      else if (
+        results[0].interactors &&
+        results[0].interactors.length > 0
+      ) {
+        bestMatch = results[0].interactors
+          .map((i) => i.name || i.shortName)
+          .filter(Boolean)
+          .join(":");
+      }
+
+      return bestMatch;
     } catch (error) {
       console.error(
-        `Failed to fetch UniProt entry for ${accession}:`,
+        `Failed to fetch complex data from IntAct for "${complexName}":`,
         error.message
       );
       return null;
@@ -136,81 +139,32 @@ const ReactantForm = ({
   };
 
   /**
-   * STEP 4: Fetches protein complex data from the IntAct database.
-   */
-  const fetchIntactComplexData = async (accession) => {
-    if (!accession) return null;
-    try {
-      const apiUrl = `https://www.ebi.ac.uk/intact/complex-ws/search/${accession}`;
-      const response = await axios.get(apiUrl);
-      // The IntAct API response structure might differ, this is an example
-      const elements = response.data?.complexes || response.data?.elements;
-      if (elements && elements.length > 0) {
-        return elements.map(
-          (element) => element.complex_name || element.complexName
-        );
-      }
-      return [];
-    } catch (error) {
-      console.error(
-        `Failed to fetch IntAct data for ${accession}:`,
-        error.message
-      );
-      return [];
-    }
-  };
-
-  /**
-   * Main orchestrator function to fetch all complex data
-   */
-  const fetchComplexData = async (complexId) => {
-    if (!complexId) return null;
-
-    // Step 1: Get definition
-    const definition = await fetchSymbolDefinition(complexId);
-    if (!definition) return null;
-
-    // Step 2: Get search results
-    const searchResults = await searchUniProtByDefinition(definition);
-    const firstAccession = searchResults?.results?.[0]?.primaryAccession;
-    if (!firstAccession) return null;
-
-    // Step 3 & 4: Run in parallel
-    const [detailedProteinData, complexNames] = await Promise.all([
-      fetchUniProtEntryByAccession(firstAccession),
-      fetchIntactComplexData(firstAccession),
-    ]);
-
-    return {
-      definition,
-      accession: firstAccession,
-      proteinData: detailedProteinData,
-      complexNames: complexNames || [],
-    };
-  };
-
-  /**
-   * Handles changes for the Complex component and triggers the API fetch chain.
+   * (تعديلنا) دالة التحكم الجديدة التي تستدعي الـ API المباشر
+   * وتدير حالة التحميل.
    */
   const handleChangeComplex = async (e) => {
     const { name, value } = e.target;
 
-    // Update the form state with the selected complex symbolic name
+    // 1. تحديث الفورم
     handleChange({ target: { name, value } });
 
-    // If the changed field is 'complexSymbolicName' and it has an ID, fetch the data
-    if (name === "complexSymbolicName" && value?.go_complex_id) {
-      const result = await fetchComplexData(value.go_complex_id);
+    // 2. التحقق إذا كنا بحاجة لجلب البيانات
+    if (name === "complexSymbolicName" && value?.go_complex_name) {
+      setIsLoading(true); // بدء التحميل
 
-      // If we got complex names back, update the 'complexSymbolGo' field
-      if (result?.complexNames && result.complexNames.length > 0) {
+      const symbol = await fetchDirectComplexSymbol(value.go_complex_name);
+
+      setIsLoading(false); // إيقاف التحميل
+
+      // 3. تحديث حقل الرمز (نفترض أن اسمه complexSymbolGo)
+      if (symbol) {
         handleChange({
-          target: { name: "complexSymbolGo", value: result.complexNames },
+          target: { name: "complexSymbolGo", value: symbol },
         });
       } else {
-        // Otherwise, clear the 'complexSymbolGo' field
+        // إفراغ الحقل للسماح بالإدخال اليدوي
         handleChange({
-          target: { name: "complexSymbolGo", value: [] },
+          target: { name: "complexSymbolGo", value: "" },
         });
       }
     }
@@ -261,7 +215,7 @@ const ReactantForm = ({
           <option value="glycan">Glycan</option>
           <option value="small_molecule">Small molecule</option>
           <option value="dna">DNA</option>
-          <option value="rna">RNA</option>  {/* ADD THIS LINE */}
+          <option value="rna">RNA</option> {/* (تعديلك) تم الإبقاء عليه */}
           <option value="lipid">Lipid</option>
         </FormElement>
       </div>
@@ -269,8 +223,9 @@ const ReactantForm = ({
       {reactantData.pType === "complex" && (
         <Complex
           reactantData={reactantData}
-          handleChange={handleChangeComplex} // Use the new handler here
+          handleChange={handleChangeComplex} // (تعديلنا) استخدام الدالة الجديدة
           isEdit={isEdit}
+          isLoading={isLoading} // (تعديلنا) تمرير حالة التحميل
         />
       )}
       {reactantData.pType === "lipid" && (
@@ -325,7 +280,7 @@ const ReactantForm = ({
         />
       )}
 
-      {reactantData.pType === "rna" && (
+      {reactantData.pType === "rna" && ( 
         <Rna
           reactantData={reactantData}
           handleChange={handleChange}

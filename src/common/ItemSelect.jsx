@@ -161,6 +161,7 @@ const ItemSelect = ({ itemType, value, onChange, name, placeholder, isEdit }) =>
   const handleClearSelection = (e) => {
     e.stopPropagation();
     setSelectedItem(null);
+    setQuery("");
     if (onChange) {
       onChange({
         target: { name, value: null },

@@ -1,6 +1,14 @@
 import FormElement from "../../../components/FormElement";
+import { useEffect } from "react";
 
 const Complex = ({ reactantData, handleChange, isEdit }) => {
+  useEffect(() => {
+    if (!reactantData?.complexSymbolicName && reactantData?.complexSymbolGo) {
+      handleChange({
+        target: { name: "complexSymbolGo", value: "" },
+      });
+    }
+  }, [reactantData?.complexSymbolicName, reactantData?.complexSymbolGo, handleChange]);
   
   return (
     <>
