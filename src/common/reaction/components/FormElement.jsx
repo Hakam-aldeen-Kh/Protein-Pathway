@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 import ItemSelect from "../../ItemSelect"; // Adjust path as needed
 import EnzymeContainer from "../../EnzymeContainer";
 import GlycanText from "./GlycanText";
@@ -26,6 +27,7 @@ const FormElement = ({
   glycanTextType,
   isEdit = true,
   spanText = "", // New prop for additional span text
+  isLoading = false, // New prop for loading state
 }) => {
   const [paginationTableBtn, setPaginationTableBtn] = useState(true);
 
@@ -47,17 +49,24 @@ const FormElement = ({
       <div className="flex items-center justify-center gap-2">
         {type === "input" && (
           <div className="flex flex-col w-full flex-1">
-            <input
-              disabled={!isEdit}
-              type="text"
-              value={value || ""}
-              name={name}
-              required={isRequired}
-              onChange={handleInputChange}
-              onBlur={handleOnBlur}
-              placeholder={placeholder}
-              className="mt-1 outline-none h-[40px] block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
-            />
+            <div className="relative">
+              <input
+                disabled={!isEdit || isLoading}
+                type="text"
+                value={value || ""}
+                name={name}
+                required={isRequired}
+                onChange={handleInputChange}
+                onBlur={handleOnBlur}
+                placeholder={placeholder}
+                className="mt-1 outline-none h-[40px] block w-full flex-1 rounded-md border p-2 border-gray-300 shadow-sm focus:border-[#57369E] focus:ring-[#57369E]"
+              />
+              {isLoading && (
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Loader2 className="h-4 w-4 animate-spin text-[#57369E]" aria-label="Loading" />
+                </div>
+              )}
+            </div>
             {spanText && (
               <span className="text-xs text-gray-500 mt-1">{spanText}</span>
             )}
