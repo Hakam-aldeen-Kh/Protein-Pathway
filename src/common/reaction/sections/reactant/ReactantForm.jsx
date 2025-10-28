@@ -37,6 +37,7 @@ const ReactantForm = ({
 
   // --- (تعديلنا) حالة التحميل لجلب الـ API ---
   const [isLoading, setIsLoading] = useState(false);
+  const [notFound, setNotFound] = useState(false);
 
   const addGlycan = () => {
     setGlycans((prev) => {
@@ -151,6 +152,7 @@ const ReactantForm = ({
     // 2. التحقق إذا كنا بحاجة لجلب البيانات
     if (name === "complexSymbolicName" && value?.go_complex_name) {
       setIsLoading(true); // بدء التحميل
+      setNotFound(false); // إعادة تعيين حالة عدم العثور
 
       const symbol = await fetchDirectComplexSymbol(value.go_complex_name);
 
@@ -161,11 +163,13 @@ const ReactantForm = ({
         handleChange({
           target: { name: "complexSymbolGo", value: symbol },
         });
+        setNotFound(false);
       } else {
-        // إفراغ الحقل للسماح بالإدخال اليدوي
+        // إفراغ الحقل والإشارة إلى عدم العثور
         handleChange({
           target: { name: "complexSymbolGo", value: "" },
         });
+        setNotFound(true);
       }
     }
   };
@@ -226,6 +230,7 @@ const ReactantForm = ({
           handleChange={handleChangeComplex} // (تعديلنا) استخدام الدالة الجديدة
           isEdit={isEdit}
           isLoading={isLoading} // (تعديلنا) تمرير حالة التحميل
+          notFound={notFound} // (تعديلنا) تمرير حالة عدم العثور
         />
       )}
       {reactantData.pType === "lipid" && (

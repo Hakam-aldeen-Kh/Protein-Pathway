@@ -1,7 +1,7 @@
 import FormElement from "../../../components/FormElement";
 import { useEffect } from "react";
 
-const Complex = ({ reactantData, handleChange, isEdit }) => {
+const Complex = ({ reactantData, handleChange, isEdit, isLoading, notFound }) => {
   useEffect(() => {
     if (!reactantData?.complexSymbolicName && reactantData?.complexSymbolGo) {
       handleChange({
@@ -39,7 +39,15 @@ const Complex = ({ reactantData, handleChange, isEdit }) => {
             handleChange={handleChange}
             placeholder="Complex Symbol"
             spanText="The complex symbol will appear after chosen a symbolic name and you can edit it" // add this span
+            isLoading={isLoading}
           />
+          {notFound && (
+            <div className="col-span-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+              <p className="text-sm text-yellow-800">
+                <span className="font-semibold">Complex not found</span> in the database. Please enter the complex symbol manually.
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
