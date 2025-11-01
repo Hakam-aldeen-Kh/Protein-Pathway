@@ -72,12 +72,9 @@ const ReactantForm = ({
     });
   };
 
-  // --- START: (تعديلنا) منطق جلب الـ API الجديد والمباشر ---
-
   /**
-   * يبحث مباشرة في IntAct API باستخدام اسم المركب
-   * ويختار الرمز "الأقصر" (الأبسط) كأفضل نتيجة.
-   */
+ * Fetches complex symbol with proper filtering and fallback methods
+ */
   const fetchDirectComplexSymbol = async (complexName) => {
     if (!complexName) return null;
 
@@ -93,11 +90,34 @@ const ReactantForm = ({
         return null;
       }
 
+      // Filter for curated, human, macromolecular complexes only
+      const filteredResults = results.filter(complex => {
+        // Only curated complexes (filter out predicted)
+        const isCurated = complex.complexAC && !complex.predictedComplex;
+
+        // Filter by species (human)
+        const isHuman =
+          complex.organismName?.toLowerCase().includes('human') ||
+          complex.organismName?.toLowerCase().includes('homo sapiens') ||
+          complex.taxId === '9606';
+
+        // Filter out class/functional concepts (check if it's an actual complex)
+        const isActualComplex = complex.complexAC && complex.complexAC.startsWith('CPX-');
+
+        return isCurated && isHuman && isActualComplex;
+      });
+
+      if (filteredResults.length === 0) {
+        console.log(`No curated human complexes found for: ${complexName}`);
+        return await attemptFallbackMethods(complexName);
+      }
+
+      // Try to get complex symbol from filtered results
+      let bestMatch = null;
       let priority1Matches = [];
       let priority2Matches = [];
 
-      // 1. جمع كل الرموز من كل النتائج
-      for (const complex of results) {
+      for (const complex of filteredResults) {
         if (complex.complexName && complex.complexName.includes(":")) {
           priority1Matches.push(complex.complexName);
         }
@@ -106,27 +126,17 @@ const ReactantForm = ({
         }
       }
 
-      let bestMatch = null;
-
-      // 2. اختيار الأقصر من القائمة الأولى
       if (priority1Matches.length > 0) {
         priority1Matches.sort((a, b) => a.length - b.length);
         bestMatch = priority1Matches[0];
-      } 
-      // 3. أو اختيار الأقصر من القائمة الثانية
-      else if (priority2Matches.length > 0) {
+      } else if (priority2Matches.length > 0) {
         priority2Matches.sort((a, b) => a.length - b.length);
         bestMatch = priority2Matches[0];
-      } 
-      // 4. أو بناء الرمز يدوياً من النتيجة الأولى (Fallback)
-      else if (
-        results[0].interactors &&
-        results[0].interactors.length > 0
-      ) {
-        bestMatch = results[0].interactors
-          .map((i) => i.name || i.shortName)
-          .filter(Boolean)
-          .join(":");
+      }
+
+      // If no symbol found in filtered results, try fallback methods
+      if (!bestMatch) {
+        bestMatch = await attemptFallbackMethods(complexName, filteredResults[0]);
       }
 
       return bestMatch;
@@ -138,6 +148,201 @@ const ReactantForm = ({
       return null;
     }
   };
+
+  /**
+   * Fallback Option 1: Query QuickGO for GO term components
+   */
+  const fetchFromQuickGO = async (complexName) => {
+    try {
+      // Extract GO ID from complex name (e.g., GO:0045254)
+      const goMatch = complexName.match(/GO:\d+/);
+      if (!goMatch) return null;
+
+      const goId = goMatch[0];
+      const apiUrl = `https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/${goId}/complete`;
+      const response = await axios.get(apiUrl);
+
+      const termData = response.data?.results?.[0];
+      if (!termData) return null;
+
+      // Look for has_component relationships
+      const components = [];
+
+      if (termData.children) {
+        for (const child of termData.children) {
+          if (child.relation === 'has_component') {
+            // Extract component name/symbol
+            const componentName = child.name;
+            // Try to extract short symbol (e.g., "E1AR", "LE25T", "B44R")
+            const symbolMatch = componentName.match(/\b([A-Z][A-Z0-9]{2,5})\b/);
+            if (symbolMatch) {
+              components.push(symbolMatch[1]);
+            }
+          }
+        }
+      }
+
+      if (components.length > 0) {
+        return components.join(':');
+      }
+
+      return null;
+    } catch (error) {
+      console.error(`Failed to fetch from QuickGO for GO term:`, error.message);
+      return null;
+    }
+  };
+
+  /**
+   * Fallback Option 2: Use UniProt API to get gene names
+   */
+  const fetchFromUniProt = async (complexData) => {
+    try {
+      if (!complexData?.interactors || complexData.interactors.length === 0) {
+        return null;
+      }
+
+      const geneNames = [];
+
+      // Extract UniProt IDs or protein references
+      for (const interactor of complexData.interactors) {
+        let uniprotId = null;
+
+        // Try to get UniProt ID from various fields
+        if (interactor.uniprotId) {
+          uniprotId = interactor.uniprotId;
+        } else if (interactor.identifier && interactor.identifier.includes('uniprotkb:')) {
+          uniprotId = interactor.identifier.split('uniprotkb:')[1];
+        } else if (interactor.identifierLink && interactor.identifierLink.includes('uniprot')) {
+          const match = interactor.identifierLink.match(/uniprot\.org\/uniprot\/([A-Z0-9]+)/);
+          if (match) uniprotId = match[1];
+        }
+
+        if (uniprotId) {
+          try {
+            const apiUrl = `https://rest.uniprot.org/uniprotkb/${uniprotId}.json`;
+            const response = await axios.get(apiUrl);
+
+            // Get primary gene name
+            const primaryGene = response.data?.genes?.[0]?.geneName?.value;
+            if (primaryGene) {
+              geneNames.push(primaryGene);
+            }
+          } catch (err) {
+            console.error(`Failed to fetch UniProt data for ${uniprotId}:`, err.message);
+          }
+        }
+      }
+
+      if (geneNames.length > 0) {
+        return geneNames.join(':');
+      }
+
+      return null;
+    } catch (error) {
+      console.error(`Failed to fetch from UniProt:`, error.message);
+      return null;
+    }
+  };
+
+  /**
+   * Main fallback attempt function
+   * Tries fallback methods in order of priority
+   */
+  const attemptFallbackMethods = async (complexName, complexData = null) => {
+    console.log('Attempting fallback methods for:', complexName);
+
+    // Option 1: Try QuickGO if GO term exists
+    if (complexName.includes('GO:')) {
+      console.log('Trying QuickGO fallback...');
+      const goSymbol = await fetchFromQuickGO(complexName);
+      if (goSymbol) {
+        console.log('QuickGO fallback successful:', goSymbol);
+        return goSymbol;
+      }
+    }
+
+    // Option 2: Try UniProt if we have complex data with protein references
+    if (complexData) {
+      console.log('Trying UniProt fallback...');
+      const uniprotSymbol = await fetchFromUniProt(complexData);
+      if (uniprotSymbol) {
+        console.log('UniProt fallback successful:', uniprotSymbol);
+        return uniprotSymbol;
+      }
+    }
+
+    // Option 3: No linked data - return null (user must enter manually)
+    console.log('No fallback method succeeded - manual entry required');
+    return null;
+  };
+
+  // --- START: (تعديلنا) منطق جلب الـ API الجديد والمباشر ---
+
+  /**
+   * يبحث مباشرة في IntAct API باستخدام اسم المركب
+   * ويختار الرمز "الأقصر" (الأبسط) كأفضل نتيجة.
+   */
+  // const fetchDirectComplexSymbol = async (complexName) => {
+  //   if (!complexName) return null;
+
+  //   try {
+  //     const encodedName = encodeURIComponent(complexName);
+  //     const apiUrl = `https://www.ebi.ac.uk/intact/complex-ws/search/${encodedName}`;
+  //     const response = await axios.get(apiUrl);
+
+  //     const results = response.data?.elements || response.data?.complexes;
+
+  //     if (!results || results.length === 0) {
+  //       console.log(`No IntAct complex found for name: ${complexName}`);
+  //       return null;
+  //     }
+
+  //     let priority1Matches = [];
+  //     let priority2Matches = [];
+
+  //     // 1. جمع كل الرموز من كل النتائج
+  //     for (const complex of results) {
+  //       if (complex.complexName && complex.complexName.includes(":")) {
+  //         priority1Matches.push(complex.complexName);
+  //       }
+  //       if (complex.systematicName && complex.systematicName.includes(":")) {
+  //         priority2Matches.push(complex.systematicName);
+  //       }
+  //     }
+
+  //     let bestMatch = null;
+
+  //     // 2. اختيار الأقصر من القائمة الأولى
+  //     if (priority1Matches.length > 0) {
+  //       priority1Matches.sort((a, b) => a.length - b.length);
+  //       bestMatch = priority1Matches[0];
+  //     } 
+  //     // 3. أو اختيار الأقصر من القائمة الثانية
+  //     else if (priority2Matches.length > 0) {
+  //       priority2Matches.sort((a, b) => a.length - b.length);
+  //       bestMatch = priority2Matches[0];
+  //     } 
+  //     // 4. أو بناء الرمز يدوياً من النتيجة الأولى (Fallback)
+  //     else if (
+  //       results[0].interactors &&
+  //       results[0].interactors.length > 0
+  //     ) {
+  //       bestMatch = results[0].interactors
+  //         .map((i) => i.name || i.shortName)
+  //         .filter(Boolean)
+  //         .join(":");
+  //     }
+
+  //     return bestMatch;
+  //   } catch (error) {
+  //     console.error(
+  //       `Failed to fetch complex data from IntAct for "${complexName}":`,
+  //       error.message
+  //     );
+  //     return null;
+  //   }
+  // };
 
   /**
    * (تعديلنا) دالة التحكم الجديدة التي تستدعي الـ API المباشر
@@ -285,7 +490,7 @@ const ReactantForm = ({
         />
       )}
 
-      {reactantData.pType === "rna" && ( 
+      {reactantData.pType === "rna" && (
         <Rna
           reactantData={reactantData}
           handleChange={handleChange}
