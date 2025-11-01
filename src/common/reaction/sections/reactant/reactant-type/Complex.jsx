@@ -9,7 +9,7 @@ const Complex = ({ reactantData, handleChange, isEdit, isLoading, notFound }) =>
       });
     }
   }, [reactantData?.complexSymbolicName, reactantData?.complexSymbolGo, handleChange]);
-  
+
   return (
     <>
       <div>
@@ -26,7 +26,7 @@ const Complex = ({ reactantData, handleChange, isEdit, isLoading, notFound }) =>
             name="complexSymbolicName"
             value={reactantData?.complexSymbolicName}
             handleChange={handleChange}
-            placeholder="Symbolic Name (NF-KappaB p50/p65 complex)"
+            placeholder="Symbolic Names (NF-KappaB p50/p65 complex)"
           />
 
           <FormElement
